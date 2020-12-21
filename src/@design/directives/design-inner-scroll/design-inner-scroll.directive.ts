@@ -2,12 +2,12 @@ import { Directive, ElementRef, OnDestroy, OnInit, Renderer2 } from '@angular/co
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
-import { FuseMatchMediaService } from '@design/services/match-media.service';
+import { DesignMatchMediaService } from '@design/services/match-media.service';
 
 @Directive({
     selector: '.inner-scroll'
 })
-export class FuseInnerScrollDirective implements OnInit, OnDestroy
+export class DesignInnerScrollDirective implements OnInit, OnDestroy
 {
     // Private
     private _parent: any;
@@ -18,12 +18,12 @@ export class FuseInnerScrollDirective implements OnInit, OnDestroy
      * Constructor
      *
      * @param {ElementRef} _elementRef
-     * @param {FuseMatchMediaService} _fuseMediaMatchService
+     * @param {DesignMatchMediaService} _designMediaMatchService
      * @param {Renderer2} _renderer
      */
     constructor(
         private _elementRef: ElementRef,
-        private _fuseMediaMatchService: FuseMatchMediaService,
+        private _designMediaMatchService: DesignMatchMediaService,
         private _renderer: Renderer2
     )
     {
@@ -53,7 +53,7 @@ export class FuseInnerScrollDirective implements OnInit, OnDestroy
         this._grandParent = this._renderer.parentNode(this._parent);
 
         // Register to the media query changes
-        this._fuseMediaMatchService.onMediaChange
+        this._designMediaMatchService.onMediaChange
             .pipe(takeUntil(this._unsubscribeAll))
             .subscribe((alias) => {
 

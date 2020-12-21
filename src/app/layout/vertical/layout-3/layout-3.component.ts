@@ -2,7 +2,7 @@ import { Component, OnDestroy, OnInit, ViewEncapsulation } from '@angular/core';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
-import { FuseConfigService } from '@design/services/config.service';
+import { DesignConfigService } from '@design/services/config.service';
 import { navigation } from 'app/navigation/navigation';
 
 @Component({
@@ -13,7 +13,7 @@ import { navigation } from 'app/navigation/navigation';
 })
 export class VerticalLayout3Component implements OnInit, OnDestroy
 {
-    fuseConfig: any;
+    designConfig: any;
     navigation: any;
 
     // Private
@@ -22,10 +22,10 @@ export class VerticalLayout3Component implements OnInit, OnDestroy
     /**
      * Constructor
      *
-     * @param {FuseConfigService} _fuseConfigService
+     * @param {DesignConfigService} _designConfigService
      */
     constructor(
-        private _fuseConfigService: FuseConfigService
+        private _designConfigService: DesignConfigService
     )
     {
         // Set the defaults
@@ -45,10 +45,10 @@ export class VerticalLayout3Component implements OnInit, OnDestroy
     ngOnInit(): void
     {
         // Subscribe to config changes
-        this._fuseConfigService.config
+        this._designConfigService.config
             .pipe(takeUntil(this._unsubscribeAll))
             .subscribe((config) => {
-                this.fuseConfig = config;
+                this.designConfig = config;
             });
     }
 

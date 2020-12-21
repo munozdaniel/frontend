@@ -1,11 +1,11 @@
 import { Component } from '@angular/core';
 
 @Component({
-    selector   : 'fuse-demo-content',
+    selector   : 'design-demo-content',
     templateUrl: './demo-content.component.html',
     styleUrls  : ['./demo-content.component.scss']
 })
-export class FuseDemoContentComponent
+export class DesignDemoContentComponent
 {
     /**
      * Constructor

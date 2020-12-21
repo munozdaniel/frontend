@@ -1,8 +1,8 @@
-@import "src/@design/scss/fuse";
+@import "src/@design/scss/design";
 
 :host {
 
-    .fuse-search-bar {
+    .design-search-bar {
         display: flex;
         flex: 0 1 auto;
         min-width: 64px;
@@ -13,14 +13,14 @@
             height: 56px;
         }
 
-        .fuse-search-bar-content {
+        .design-search-bar-content {
             display: flex;
             flex: 1 1 auto;
             align-items: center;
             justify-content: flex-start;
 
-            .fuse-search-bar-expander,
-            .fuse-search-bar-collapser {
+            .design-search-bar-expander,
+            .design-search-bar-collapser {
                 cursor: pointer;
                 padding: 0 20px;
                 margin: 0;
@@ -34,7 +34,7 @@
                 }
             }
 
-            .fuse-search-bar-loader {
+            .design-search-bar-loader {
                 width: 64px !important;
                 height: 64px !important;
                 line-height: 64px !important;
@@ -45,11 +45,11 @@
                 }
             }
 
-            .fuse-search-bar-collapser {
+            .design-search-bar-collapser {
                 display: none;
             }
 
-            #fuse-search-bar-input {
+            #design-search-bar-input {
                 display: none;
                 flex: 1 0 auto;
                 min-height: 64px;
@@ -67,13 +67,13 @@
             left: 0;
             z-index: 10;
 
-            .fuse-search-bar-content {
+            .design-search-bar-content {
 
-                #fuse-search-bar-input {
+                #design-search-bar-input {
                     display: flex;
                 }
 
-                .fuse-search-bar-collapser {
+                .design-search-bar-collapser {
                     display: flex;
                 }
             }
@@ -82,7 +82,7 @@
 
     body {
 
-        &.fuse-search-bar-expanded {
+        &.design-search-bar-expanded {
 
             #toolbar {
                 z-index: 999 !important;

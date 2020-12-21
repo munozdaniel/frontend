@@ -1,12 +1,12 @@
-@mixin fuse-widget-theme($theme) {
+@mixin design-widget-theme($theme) {
 
     $background: map-get($theme, background);
     $foreground: map-get($theme, foreground);
 
-    fuse-widget {
+    design-widget {
 
-        > .fuse-widget-front,
-        > .fuse-widget-back {
+        > .design-widget-front,
+        > .design-widget-back {
             background: map-get($background, card);
             border-color: map-get($foreground, divider);
         }

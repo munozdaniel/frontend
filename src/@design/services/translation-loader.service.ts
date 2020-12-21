@@ -10,7 +10,7 @@ export interface Locale
 @Injectable({
     providedIn: 'root'
 })
-export class FuseTranslationLoaderService
+export class DesignTranslationLoaderService
 {
     /**
      * Constructor

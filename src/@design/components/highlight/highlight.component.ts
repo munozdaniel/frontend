@@ -6,11 +6,11 @@ import * as Prism from 'prismjs/prism';
 import '@design/components/highlight/prism-languages';
 
 @Component({
-    selector : 'fuse-highlight',
+    selector : 'design-highlight',
     template : '',
     styleUrls: ['./highlight.component.scss']
 })
-export class FuseHighlightComponent implements OnInit, OnDestroy
+export class DesignHighlightComponent implements OnInit, OnDestroy
 {
     // Source
     @ContentChild('source', {static: true})
@@ -104,7 +104,7 @@ export class FuseHighlightComponent implements OnInit, OnDestroy
 
         // Remove the first and the last line of the source
         // code if they are blank lines. This way, the html
-        // can be formatted properly while using fuse-highlight
+        // can be formatted properly while using design-highlight
         // component
         if ( !sourceLines[0].trim() )
         {

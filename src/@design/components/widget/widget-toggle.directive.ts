@@ -1,9 +1,9 @@
 import { Directive, ElementRef } from '@angular/core';
 
 @Directive({
-    selector: '[fuseWidgetToggle]'
+    selector: '[designWidgetToggle]'
 })
-export class FuseWidgetToggleDirective
+export class DesignWidgetToggleDirective
 {
     /**
      * Constructor

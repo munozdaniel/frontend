@@ -3,20 +3,20 @@ import { ModuleWithProviders, NgModule, Optional, SkipSelf } from '@angular/core
 import { FUSE_CONFIG } from '@design/services/config.service';
 
 @NgModule()
-export class FuseModule
+export class DesignModule
 {
-    constructor(@Optional() @SkipSelf() parentModule: FuseModule)
+    constructor(@Optional() @SkipSelf() parentModule: DesignModule)
     {
         if ( parentModule )
         {
-            throw new Error('FuseModule is already loaded. Import it in the AppModule only!');
+            throw new Error('DesignModule is already loaded. Import it in the AppModule only!');
         }
     }
 
     static forRoot(config): ModuleWithProviders
     {
         return {
-            ngModule : FuseModule,
+            ngModule : DesignModule,
             providers: [
                 {
                     provide : FUSE_CONFIG,

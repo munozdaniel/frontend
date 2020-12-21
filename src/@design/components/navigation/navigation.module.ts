@@ -6,12 +6,12 @@ import { MatIconModule } from '@angular/material/icon';
 
 import { TranslateModule } from '@ngx-translate/core';
 
-import { FuseNavigationComponent } from './navigation.component';
-import { FuseNavVerticalItemComponent } from './vertical/item/item.component';
-import { FuseNavVerticalCollapsableComponent } from './vertical/collapsable/collapsable.component';
-import { FuseNavVerticalGroupComponent } from './vertical/group/group.component';
-import { FuseNavHorizontalItemComponent } from './horizontal/item/item.component';
-import { FuseNavHorizontalCollapsableComponent } from './horizontal/collapsable/collapsable.component';
+import { DesignNavigationComponent } from './navigation.component';
+import { DesignNavVerticalItemComponent } from './vertical/item/item.component';
+import { DesignNavVerticalCollapsableComponent } from './vertical/collapsable/collapsable.component';
+import { DesignNavVerticalGroupComponent } from './vertical/group/group.component';
+import { DesignNavHorizontalItemComponent } from './horizontal/item/item.component';
+import { DesignNavHorizontalCollapsableComponent } from './horizontal/collapsable/collapsable.component';
 
 @NgModule({
     imports     : [
@@ -24,17 +24,17 @@ import { FuseNavHorizontalCollapsableComponent } from './horizontal/collapsable/
         TranslateModule.forChild()
     ],
     exports     : [
-        FuseNavigationComponent
+        DesignNavigationComponent
     ],
     declarations: [
-        FuseNavigationComponent,
-        FuseNavVerticalGroupComponent,
-        FuseNavVerticalItemComponent,
-        FuseNavVerticalCollapsableComponent,
-        FuseNavHorizontalItemComponent,
-        FuseNavHorizontalCollapsableComponent
+        DesignNavigationComponent,
+        DesignNavVerticalGroupComponent,
+        DesignNavVerticalItemComponent,
+        DesignNavVerticalCollapsableComponent,
+        DesignNavHorizontalItemComponent,
+        DesignNavHorizontalCollapsableComponent
     ]
 })
-export class FuseNavigationModule
+export class DesignNavigationModule
 {
 }

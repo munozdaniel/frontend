@@ -3,7 +3,7 @@
     "version": 1,
     "newProjectRoot": "projects",
     "projects": {
-        "fuse": {
+        "design": {
             "projectType": "application",
             "schematics": {
                 "@schematics/angular:component": {
@@ -17,7 +17,7 @@
                 "build": {
                     "builder": "@angular-devkit/build-angular:browser",
                     "options": {
-                        "outputPath": "dist/fuse",
+                        "outputPath": "dist/design",
                         "index": "src/index.html",
                         "main": "src/main.ts",
                         "polyfills": "src/polyfills.ts",
@@ -74,25 +74,25 @@
                 "serve": {
                     "builder": "@angular-devkit/build-angular:dev-server",
                     "options": {
-                        "browserTarget": "fuse:build"
+                        "browserTarget": "design:build"
                     },
                     "configurations": {
                         "production": {
-                            "browserTarget": "fuse:build:production"
+                            "browserTarget": "design:build:production"
                         },
                         "hmr": {
                             "hmr": true,
-                            "browserTarget": "fuse:build:hmr"
+                            "browserTarget": "design:build:hmr"
                         },
                         "ec": {
-                            "browserTarget": "fuse:build:ec"
+                            "browserTarget": "design:build:ec"
                         }
                     }
                 },
                 "extract-i18n": {
                     "builder": "@angular-devkit/build-angular:extract-i18n",
                     "options": {
-                        "browserTarget": "fuse:build"
+                        "browserTarget": "design:build"
                     }
                 },
                 "test": {
@@ -129,16 +129,16 @@
                     "builder": "@angular-devkit/build-angular:protractor",
                     "options": {
                         "protractorConfig": "e2e/protractor.conf.js",
-                        "devServerTarget": "fuse:serve"
+                        "devServerTarget": "design:serve"
                     },
                     "configurations": {
                         "production": {
-                            "devServerTarget": "fuse:serve:production"
+                            "devServerTarget": "design:serve:production"
                         }
                     }
                 }
             }
         }
     },
-    "defaultProject": "fuse"
+    "defaultProject": "design"
 }

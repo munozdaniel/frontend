@@ -55,10 +55,10 @@
 
     <div class="children" [@slideInOut]="isOpen">
         <ng-container *ngFor="let item of item.children">
-            <fuse-nav-vertical-item *ngIf="item.type=='item'" [item]="item"></fuse-nav-vertical-item>
-            <fuse-nav-vertical-collapsable *ngIf="item.type=='collapsable'"
-                                           [item]="item"></fuse-nav-vertical-collapsable>
-            <fuse-nav-vertical-group *ngIf="item.type=='group'" [item]="item"></fuse-nav-vertical-group>
+            <design-nav-vertical-item *ngIf="item.type=='item'" [item]="item"></design-nav-vertical-item>
+            <design-nav-vertical-collapsable *ngIf="item.type=='collapsable'"
+                                           [item]="item"></design-nav-vertical-collapsable>
+            <design-nav-vertical-group *ngIf="item.type=='group'" [item]="item"></design-nav-vertical-group>
         </ng-container>
     </div>
 

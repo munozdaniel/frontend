@@ -1,2 +1,2 @@
-export * from './fuse-config';
-export * from './fuse-navigation';
+export * from './design-config';
+export * from './design-navigation';

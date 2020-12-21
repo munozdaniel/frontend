@@ -1,8 +1,8 @@
-@import "src/@design/scss/fuse";
+@import "src/@design/scss/design";
 
-fuse-sidebar {
+design-sidebar {
 
-    &.navbar-fuse-sidebar {
+    &.navbar-design-sidebar {
         overflow: hidden;
 
         &.folded:not(.unfolded) {

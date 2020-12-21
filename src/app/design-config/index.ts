@@ -1,14 +1,14 @@
-import { FuseConfig } from '@design/types';
+import { DesignConfig } from '@design/types';
 
 /**
- * Default Fuse Configuration
+ * Default Design Configuration
  *
  * You can edit these options to change the default options. All these options also can be
  * changed per component basis. See `app/main/pages/authentication/login/login.component.ts`
  * constructor method to learn more about changing these options per component basis.
  */
 
-export const fuseConfig: FuseConfig = {
+export const designConfig: DesignConfig = {
     // Color themes can be defined in src/app/app.theme.scss
     colorTheme      : 'theme-default',
     customScrollbars: true,
@@ -16,8 +16,8 @@ export const fuseConfig: FuseConfig = {
         style    : 'vertical-layout-1',
         width    : 'fullwidth',
         navbar   : {
-            primaryBackground  : 'fuse-navy-700',
-            secondaryBackground: 'fuse-navy-900',
+            primaryBackground  : 'design-navy-700',
+            secondaryBackground: 'design-navy-900',
             folded             : false,
             hidden             : false,
             position           : 'left',
@@ -25,13 +25,13 @@ export const fuseConfig: FuseConfig = {
         },
         toolbar  : {
             customBackgroundColor: false,
-            background           : 'fuse-white-500',
+            background           : 'design-white-500',
             hidden               : false,
             position             : 'below-static'
         },
         footer   : {
             customBackgroundColor: true,
-            background           : 'fuse-navy-900',
+            background           : 'design-navy-900',
             hidden               : false,
             position             : 'below-fixed'
         },

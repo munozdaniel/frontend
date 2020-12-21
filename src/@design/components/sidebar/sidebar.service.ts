@@ -1,14 +1,14 @@
 import { Injectable } from '@angular/core';
 
-import { FuseSidebarComponent } from './sidebar.component';
+import { DesignSidebarComponent } from './sidebar.component';
 
 @Injectable({
     providedIn: 'root'
 })
-export class FuseSidebarService
+export class DesignSidebarService
 {
     // Private
-    private _registry: { [key: string]: FuseSidebarComponent } = {};
+    private _registry: { [key: string]: DesignSidebarComponent } = {};
 
     /**
      * Constructor
@@ -59,9 +59,9 @@ export class FuseSidebarService
      * Return the sidebar with the given key
      *
      * @param key
-     * @returns {FuseSidebarComponent}
+     * @returns {DesignSidebarComponent}
      */
-    getSidebar(key): FuseSidebarComponent
+    getSidebar(key): DesignSidebarComponent
     {
         // Check if the sidebar exists
         if ( !this._registry[key] )

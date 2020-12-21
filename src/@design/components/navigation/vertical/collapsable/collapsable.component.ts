@@ -3,20 +3,20 @@ import { NavigationEnd, Router } from '@angular/router';
 import { merge, Subject } from 'rxjs';
 import { filter, takeUntil } from 'rxjs/operators';
 
-import { FuseNavigationItem } from '@design/types';
-import { fuseAnimations } from '@design/animations';
-import { FuseNavigationService } from '@design/components/navigation/navigation.service';
+import { DesignNavigationItem } from '@design/types';
+import { designAnimations } from '@design/animations';
+import { DesignNavigationService } from '@design/components/navigation/navigation.service';
 
 @Component({
-    selector   : 'fuse-nav-vertical-collapsable',
+    selector   : 'design-nav-vertical-collapsable',
     templateUrl: './collapsable.component.html',
     styleUrls  : ['./collapsable.component.scss'],
-    animations : fuseAnimations
+    animations : designAnimations
 })
-export class FuseNavVerticalCollapsableComponent implements OnInit, OnDestroy
+export class DesignNavVerticalCollapsableComponent implements OnInit, OnDestroy
 {
     @Input()
-    item: FuseNavigationItem;
+    item: DesignNavigationItem;
 
     @HostBinding('class')
     classes = 'nav-collapsable nav-item';
@@ -31,12 +31,12 @@ export class FuseNavVerticalCollapsableComponent implements OnInit, OnDestroy
      * Constructor
      *
      * @param {ChangeDetectorRef} _changeDetectorRef
-     * @param {FuseNavigationService} _fuseNavigationService
+     * @param {DesignNavigationService} _designNavigationService
      * @param {Router} _router
      */
     constructor(
         private _changeDetectorRef: ChangeDetectorRef,
-        private _fuseNavigationService: FuseNavigationService,
+        private _designNavigationService: DesignNavigationService,
         private _router: Router
     )
     {
@@ -74,7 +74,7 @@ export class FuseNavVerticalCollapsableComponent implements OnInit, OnDestroy
             });
 
         // Listen for collapsing of any navigation item
-        this._fuseNavigationService.onItemCollapsed
+        this._designNavigationService.onItemCollapsed
             .pipe(takeUntil(this._unsubscribeAll))
             .subscribe(
                 (clickedItem) => {
@@ -116,9 +116,9 @@ export class FuseNavVerticalCollapsableComponent implements OnInit, OnDestroy
 
         // Subscribe to navigation item
         merge(
-            this._fuseNavigationService.onNavigationItemAdded,
-            this._fuseNavigationService.onNavigationItemUpdated,
-            this._fuseNavigationService.onNavigationItemRemoved
+            this._designNavigationService.onNavigationItemAdded,
+            this._designNavigationService.onNavigationItemUpdated,
+            this._designNavigationService.onNavigationItemRemoved
         ).pipe(takeUntil(this._unsubscribeAll))
          .subscribe(() => {
 
@@ -153,8 +153,8 @@ export class FuseNavVerticalCollapsableComponent implements OnInit, OnDestroy
         this.isOpen = !this.isOpen;
 
         // Navigation collapse toggled...
-        this._fuseNavigationService.onItemCollapsed.next(this.item);
-        this._fuseNavigationService.onItemCollapseToggled.next();
+        this._designNavigationService.onItemCollapsed.next(this.item);
+        this._designNavigationService.onItemCollapseToggled.next();
     }
 
     /**
@@ -172,7 +172,7 @@ export class FuseNavVerticalCollapsableComponent implements OnInit, OnDestroy
         // Mark for check
         this._changeDetectorRef.markForCheck();
 
-        this._fuseNavigationService.onItemCollapseToggled.next();
+        this._designNavigationService.onItemCollapseToggled.next();
     }
 
     /**
@@ -190,7 +190,7 @@ export class FuseNavVerticalCollapsableComponent implements OnInit, OnDestroy
         // Mark for check
         this._changeDetectorRef.markForCheck();
 
-        this._fuseNavigationService.onItemCollapseToggled.next();
+        this._designNavigationService.onItemCollapseToggled.next();
     }
 
     /**

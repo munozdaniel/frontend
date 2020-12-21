@@ -6,12 +6,12 @@ import { filter } from 'rxjs/operators';
 import * as _ from 'lodash';
 
 // Create the injection token for the custom settings
-export const FUSE_CONFIG = new InjectionToken('fuseCustomConfig');
+export const FUSE_CONFIG = new InjectionToken('designCustomConfig');
 
 @Injectable({
     providedIn: 'root'
 })
-export class FuseConfigService
+export class DesignConfigService
 {
     // Private
     private _configSubject: BehaviorSubject<any>;

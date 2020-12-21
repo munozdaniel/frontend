@@ -4,8 +4,8 @@ import { takeUntil } from 'rxjs/operators';
 import { TranslateService } from '@ngx-translate/core';
 import * as _ from 'lodash';
 
-import { FuseConfigService } from '@design/services/config.service';
-import { FuseSidebarService } from '@design/components/sidebar/sidebar.service';
+import { DesignConfigService } from '@design/services/config.service';
+import { DesignSidebarService } from '@design/components/sidebar/sidebar.service';
 
 import { navigation } from 'app/navigation/navigation';
 
@@ -32,13 +32,13 @@ export class ToolbarComponent implements OnInit, OnDestroy
     /**
      * Constructor
      *
-     * @param {FuseConfigService} _fuseConfigService
-     * @param {FuseSidebarService} _fuseSidebarService
+     * @param {DesignConfigService} _designConfigService
+     * @param {DesignSidebarService} _designSidebarService
      * @param {TranslateService} _translateService
      */
     constructor(
-        private _fuseConfigService: FuseConfigService,
-        private _fuseSidebarService: FuseSidebarService,
+        private _designConfigService: DesignConfigService,
+        private _designSidebarService: DesignSidebarService,
         private _translateService: TranslateService
     )
     {
@@ -100,7 +100,7 @@ export class ToolbarComponent implements OnInit, OnDestroy
     ngOnInit(): void
     {
         // Subscribe to the config changes
-        this._fuseConfigService.config
+        this._designConfigService.config
             .pipe(takeUntil(this._unsubscribeAll))
             .subscribe((settings) => {
                 this.horizontalNavbar = settings.layout.navbar.position === 'top';
@@ -133,7 +133,7 @@ export class ToolbarComponent implements OnInit, OnDestroy
      */
     toggleSidebarOpen(key): void
     {
-        this._fuseSidebarService.getSidebar(key).toggleOpen();
+        this._designSidebarService.getSidebar(key).toggleOpen();
     }
 
     /**

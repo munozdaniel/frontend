@@ -1,6 +1,6 @@
 import { browser, by, element } from 'protractor';
 
-export class FusePage
+export class DesignPage
 {
     navigateTo(): Promise<any>
     {

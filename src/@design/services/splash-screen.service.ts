@@ -8,7 +8,7 @@ import { filter, take } from 'rxjs/operators';
 @Injectable({
     providedIn: 'root'
 })
-export class FuseSplashScreenService
+export class DesignSplashScreenService
 {
     splashScreenEl: any;
     player: AnimationPlayer;
@@ -42,7 +42,7 @@ export class FuseSplashScreenService
     private _init(): void
     {
         // Get the splash screen element
-        this.splashScreenEl = this._document.body.querySelector('#fuse-splash-screen');
+        this.splashScreenEl = this._document.body.querySelector('#design-splash-screen');
 
         // If the splash screen element exists...
         if ( this.splashScreenEl )

@@ -4,7 +4,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatToolbarModule } from '@angular/material/toolbar';
 
-import { FuseSharedModule } from '@design/shared.module';
+import { DesignSharedModule } from '@design/shared.module';
 
 import { FooterComponent } from 'app/layout/components/footer/footer.component';
 
@@ -19,7 +19,7 @@ import { FooterComponent } from 'app/layout/components/footer/footer.component';
         MatIconModule,
         MatToolbarModule,
 
-        FuseSharedModule
+        DesignSharedModule
     ],
     exports     : [
         FooterComponent

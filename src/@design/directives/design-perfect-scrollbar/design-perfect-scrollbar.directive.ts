@@ -5,13 +5,13 @@ import { fromEvent, Subject } from 'rxjs';
 import { debounceTime, filter, takeUntil } from 'rxjs/operators';
 import PerfectScrollbar from 'perfect-scrollbar';
 import * as _ from 'lodash';
-import { FusePerfectScrollbarGeometry, FusePerfectScrollbarPosition } from '@design/directives/fuse-perfect-scrollbar/fuse-perfect-scrollbar.interfaces';
-import { FuseConfigService } from '@design/services/config.service';
+import { DesignPerfectScrollbarGeometry, DesignPerfectScrollbarPosition } from '@design/directives/design-perfect-scrollbar/design-perfect-scrollbar.interfaces';
+import { DesignConfigService } from '@design/services/config.service';
 
 @Directive({
-    selector: '[fusePerfectScrollbar]'
+    selector: '[designPerfectScrollbar]'
 })
-export class FusePerfectScrollbarDirective implements OnInit, AfterViewInit, OnDestroy
+export class DesignPerfectScrollbarDirective implements OnInit, AfterViewInit, OnDestroy
 {
     isInitialized: boolean;
     isMobile: boolean;
@@ -28,13 +28,13 @@ export class FusePerfectScrollbarDirective implements OnInit, AfterViewInit, OnD
      * Constructor
      *
      * @param {ElementRef} elementRef
-     * @param {FuseConfigService} _fuseConfigService
+     * @param {DesignConfigService} _designConfigService
      * @param {Platform} _platform
      * @param {Router} _router
      */
     constructor(
         public elementRef: ElementRef,
-        private _fuseConfigService: FuseConfigService,
+        private _designConfigService: DesignConfigService,
         private _platform: Platform,
         private _router: Router
     )
@@ -63,7 +63,7 @@ export class FusePerfectScrollbarDirective implements OnInit, AfterViewInit, OnD
      * @param value
      */
     @Input()
-    set fusePerfectScrollbarOptions(value)
+    set designPerfectScrollbarOptions(value)
     {
         // Merge the options
         this._options = _.merge({}, this._options, value);
@@ -78,7 +78,7 @@ export class FusePerfectScrollbarDirective implements OnInit, AfterViewInit, OnD
         });
     }
 
-    get fusePerfectScrollbarOptions(): any
+    get designPerfectScrollbarOptions(): any
     {
         // Return the options
         return this._options;
@@ -89,7 +89,7 @@ export class FusePerfectScrollbarDirective implements OnInit, AfterViewInit, OnD
      *
      * @param {boolean | ""} value
      */
-    @Input('fusePerfectScrollbar')
+    @Input('designPerfectScrollbar')
     set enabled(value: boolean | '')
     {
         // If nothing is provided with the directive (empty string),
@@ -155,7 +155,7 @@ export class FusePerfectScrollbarDirective implements OnInit, AfterViewInit, OnD
     ngAfterViewInit(): void
     {
         // Check if scrollbars enabled or not from the main config
-        this._fuseConfigService.config
+        this._designConfigService.config
             .pipe(takeUntil(this._unsubscribeAll))
             .subscribe(
                 (settings) => {
@@ -164,7 +164,7 @@ export class FusePerfectScrollbarDirective implements OnInit, AfterViewInit, OnD
             );
 
         // Scroll to the top on every route change
-        if ( this.fusePerfectScrollbarOptions.updateOnRouteChange )
+        if ( this.designPerfectScrollbarOptions.updateOnRouteChange )
         {
             this._router.events
                 .pipe(
@@ -227,7 +227,7 @@ export class FusePerfectScrollbarDirective implements OnInit, AfterViewInit, OnD
 
         // Initialize the perfect-scrollbar
         this.ps = new PerfectScrollbar(this.elementRef.nativeElement, {
-            ...this.fusePerfectScrollbarOptions
+            ...this.designPerfectScrollbarOptions
         });
 
         // Unbind 'keydown' events of PerfectScrollbar since it causes an extremely
@@ -326,9 +326,9 @@ export class FusePerfectScrollbarDirective implements OnInit, AfterViewInit, OnD
      *
      * @param prefix
      */
-    geometry(prefix: string = 'scroll'): FusePerfectScrollbarGeometry
+    geometry(prefix: string = 'scroll'): DesignPerfectScrollbarGeometry
     {
-        return new FusePerfectScrollbarGeometry(
+        return new DesignPerfectScrollbarGeometry(
             this.elementRef.nativeElement[prefix + 'Left'],
             this.elementRef.nativeElement[prefix + 'Top'],
             this.elementRef.nativeElement[prefix + 'Width'],
@@ -341,18 +341,18 @@ export class FusePerfectScrollbarDirective implements OnInit, AfterViewInit, OnD
      *
      * @param absolute
      */
-    position(absolute: boolean = false): FusePerfectScrollbarPosition
+    position(absolute: boolean = false): DesignPerfectScrollbarPosition
     {
         if ( !absolute && this.ps )
         {
-            return new FusePerfectScrollbarPosition(
+            return new DesignPerfectScrollbarPosition(
                 this.ps.reach.x || 0,
                 this.ps.reach.y || 0
             );
         }
         else
         {
-            return new FusePerfectScrollbarPosition(
+            return new DesignPerfectScrollbarPosition(
                 this.elementRef.nativeElement.scrollLeft,
                 this.elementRef.nativeElement.scrollTop
             );

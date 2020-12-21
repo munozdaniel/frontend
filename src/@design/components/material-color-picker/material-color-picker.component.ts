@@ -1,24 +1,24 @@
 import { Component, EventEmitter, forwardRef, Input, Output, ViewEncapsulation } from '@angular/core';
 
-import { fuseAnimations } from '@design/animations';
+import { designAnimations } from '@design/animations';
 import { MatColors } from '@design/mat-colors';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 
 export const FUSE_MATERIAL_COLOR_PICKER_VALUE_ACCESSOR: any = {
     provide    : NG_VALUE_ACCESSOR,
-    useExisting: forwardRef(() => FuseMaterialColorPickerComponent),
+    useExisting: forwardRef(() => DesignMaterialColorPickerComponent),
     multi      : true
 };
 
 @Component({
-    selector     : 'fuse-material-color-picker',
+    selector     : 'design-material-color-picker',
     templateUrl  : './material-color-picker.component.html',
     styleUrls    : ['./material-color-picker.component.scss'],
-    animations   : fuseAnimations,
+    animations   : designAnimations,
     encapsulation: ViewEncapsulation.None,
     providers    : [FUSE_MATERIAL_COLOR_PICKER_VALUE_ACCESSOR]
 })
-export class FuseMaterialColorPickerComponent implements ControlValueAccessor
+export class DesignMaterialColorPickerComponent implements ControlValueAccessor
 {
     colors: any;
     hues: string[];
@@ -73,7 +73,7 @@ export class FuseMaterialColorPickerComponent implements ControlValueAccessor
             return;
         }
 
-        // Split the color value (red-400, blue-500, fuse-navy-700 etc.)
+        // Split the color value (red-400, blue-500, design-navy-700 etc.)
         const colorParts = value.split('-');
 
         // Take the very last part as the selected hue value

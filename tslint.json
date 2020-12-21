@@ -9,12 +9,12 @@
         "component-class-suffix": true,
         "contextual-lifecycle": true,
         "directive-class-suffix": true,
-        "directive-selector": [true, "attribute", ["fuse", ""], "camelCase"],
+        "directive-selector": [true, "attribute", ["design", ""], "camelCase"],
         "component-selector": [
             true,
             "element",
             "attribute",
-            ["fuse", ""],
+            ["design", ""],
             ["kebab-case", "camelCase"]
         ],
         "import-blacklist": [true, "rxjs/Rx"],

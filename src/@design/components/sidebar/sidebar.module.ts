@@ -1,15 +1,15 @@
 import { NgModule } from '@angular/core';
 
-import { FuseSidebarComponent } from './sidebar.component';
+import { DesignSidebarComponent } from './sidebar.component';
 
 @NgModule({
     declarations: [
-        FuseSidebarComponent
+        DesignSidebarComponent
     ],
     exports     : [
-        FuseSidebarComponent
+        DesignSidebarComponent
     ]
 })
-export class FuseSidebarModule
+export class DesignSidebarModule
 {
 }

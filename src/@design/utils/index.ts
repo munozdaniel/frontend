@@ -1,4 +1,4 @@
-export class FuseUtils
+export class DesignUtils
 {
     /**
      * Filter array by string

@@ -1,27 +1,27 @@
 import { NgModule } from '@angular/core';
 
-import { FuseIfOnDomDirective } from '@design/directives/fuse-if-on-dom/fuse-if-on-dom.directive';
-import { FuseInnerScrollDirective } from '@design/directives/fuse-inner-scroll/fuse-inner-scroll.directive';
-import { FusePerfectScrollbarDirective } from '@design/directives/fuse-perfect-scrollbar/fuse-perfect-scrollbar.directive';
-import { FuseMatSidenavHelperDirective, FuseMatSidenavTogglerDirective } from '@design/directives/fuse-mat-sidenav/fuse-mat-sidenav.directive';
+import { DesignIfOnDomDirective } from '@design/directives/design-if-on-dom/design-if-on-dom.directive';
+import { DesignInnerScrollDirective } from '@design/directives/design-inner-scroll/design-inner-scroll.directive';
+import { DesignPerfectScrollbarDirective } from '@design/directives/design-perfect-scrollbar/design-perfect-scrollbar.directive';
+import { DesignMatSidenavHelperDirective, DesignMatSidenavTogglerDirective } from '@design/directives/design-mat-sidenav/design-mat-sidenav.directive';
 
 @NgModule({
     declarations: [
-        FuseIfOnDomDirective,
-        FuseInnerScrollDirective,
-        FuseMatSidenavHelperDirective,
-        FuseMatSidenavTogglerDirective,
-        FusePerfectScrollbarDirective
+        DesignIfOnDomDirective,
+        DesignInnerScrollDirective,
+        DesignMatSidenavHelperDirective,
+        DesignMatSidenavTogglerDirective,
+        DesignPerfectScrollbarDirective
     ],
     imports     : [],
     exports     : [
-        FuseIfOnDomDirective,
-        FuseInnerScrollDirective,
-        FuseMatSidenavHelperDirective,
-        FuseMatSidenavTogglerDirective,
-        FusePerfectScrollbarDirective
+        DesignIfOnDomDirective,
+        DesignInnerScrollDirective,
+        DesignMatSidenavHelperDirective,
+        DesignMatSidenavTogglerDirective,
+        DesignPerfectScrollbarDirective
     ]
 })
-export class FuseDirectivesModule
+export class DesignDirectivesModule
 {
 }

@@ -6,7 +6,7 @@
     <mat-icon>palette</mat-icon>
 </button>
 
-<mat-menu #colorMenu="matMenu" class="fuse-material-color-picker-menu mat-elevation-z8">
+<mat-menu #colorMenu="matMenu" class="design-material-color-picker-menu mat-elevation-z8">
 
     <header [ngClass]="selectedColor?.class || 'accent'" class="mat-elevation-z4"
             fxLayout="row" fxLayoutAlign="space-between center">
@@ -39,7 +39,7 @@
 
         <div class="view" *ngSwitchCase="'palettes'">
 
-            <div fxLayout="row wrap" fxLayoutAlign="start start" class="colors" fusePerfectScrollbar>
+            <div fxLayout="row wrap" fxLayoutAlign="start start" class="colors" designPerfectScrollbar>
                 <div class="color" fxLayout="row" fxLayoutAlign="center center"
                      *ngFor="let color of (colors | keys)"
                      [ngClass]="color.key"
@@ -50,10 +50,10 @@
         </div>
 
         <div class="view" *ngSwitchCase="'hues'">
-            <div fxLayout="row wrap" fxLayoutAlign="start start" class="colors" fusePerfectScrollbar>
+            <div fxLayout="row wrap" fxLayoutAlign="start start" class="colors" designPerfectScrollbar>
                 <div class="color" fxLayout="row" fxLayoutAlign="center center"
                      *ngFor="let hue of hues"
-                     [fxHide]="selectedPalette === 'fuse-white' && hue !== '500' || selectedPalette === 'fuse-black' && hue !== '500'"
+                     [fxHide]="selectedPalette === 'design-white' && hue !== '500' || selectedPalette === 'design-black' && hue !== '500'"
                      [ngClass]="selectedPalette + '-' + hue"
                      [class.selected]="selectedHue === hue"
                      (click)="selectHue($event, hue)">

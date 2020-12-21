@@ -1,8 +1,8 @@
 import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
 
-import { FuseSidebarModule } from '@design/components/index';
-import { FuseSharedModule } from '@design/shared.module';
+import { DesignSidebarModule } from '@design/components/index';
+import { DesignSharedModule } from '@design/shared.module';
 
 import { ContentModule } from 'app/layout/components/content/content.module';
 import { FooterModule } from 'app/layout/components/footer/footer.module';
@@ -19,8 +19,8 @@ import { VerticalLayout3Component } from 'app/layout/vertical/layout-3/layout-3.
     imports     : [
         RouterModule,
 
-        FuseSharedModule,
-        FuseSidebarModule,
+        DesignSharedModule,
+        DesignSidebarModule,
 
         ContentModule,
         FooterModule,

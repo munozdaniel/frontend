@@ -1,12 +1,12 @@
-# Fuse - Angular
+# Design - Angular
 
 Material Design Admin Template with Angular 8 and Angular Material
 
 ## The Community
 
-Share your ideas, discuss Fuse and help each other.
+Share your ideas, discuss Design and help each other.
 
-[Click here](http://fusetheme.com/community) to see our Community page.
+[Click here](http://designtheme.com/community) to see our Community page.
 
 ## Development server
 

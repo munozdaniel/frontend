@@ -6,11 +6,11 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 
-import { FuseProgressBarComponent } from './progress-bar.component';
+import { DesignProgressBarComponent } from './progress-bar.component';
 
 @NgModule({
     declarations: [
-        FuseProgressBarComponent
+        DesignProgressBarComponent
     ],
     imports     : [
         CommonModule,
@@ -21,9 +21,9 @@ import { FuseProgressBarComponent } from './progress-bar.component';
         MatProgressBarModule
     ],
     exports     : [
-        FuseProgressBarComponent
+        DesignProgressBarComponent
     ]
 })
-export class FuseProgressBarModule
+export class DesignProgressBarModule
 {
 }

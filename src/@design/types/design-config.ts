@@ -1,4 +1,4 @@
-export interface FuseConfig
+export interface DesignConfig
 {
     colorTheme: string;
     customScrollbars: boolean;

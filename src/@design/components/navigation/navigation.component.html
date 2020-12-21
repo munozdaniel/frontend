@@ -5,10 +5,10 @@
 
         <ng-container *ngFor="let item of navigation">
 
-            <fuse-nav-vertical-group *ngIf="item.type=='group'" [item]="item"></fuse-nav-vertical-group>
-            <fuse-nav-vertical-collapsable *ngIf="item.type=='collapsable'"
-                                           [item]="item"></fuse-nav-vertical-collapsable>
-            <fuse-nav-vertical-item *ngIf="item.type=='item'" [item]="item"></fuse-nav-vertical-item>
+            <design-nav-vertical-group *ngIf="item.type=='group'" [item]="item"></design-nav-vertical-group>
+            <design-nav-vertical-collapsable *ngIf="item.type=='collapsable'"
+                                           [item]="item"></design-nav-vertical-collapsable>
+            <design-nav-vertical-item *ngIf="item.type=='item'" [item]="item"></design-nav-vertical-item>
 
         </ng-container>
 
@@ -20,10 +20,10 @@
 
         <ng-container *ngFor="let item of navigation">
 
-            <fuse-nav-horizontal-collapsable *ngIf="item.type=='group'" [item]="item"></fuse-nav-horizontal-collapsable>
-            <fuse-nav-horizontal-collapsable *ngIf="item.type=='collapsable'"
-                                             [item]="item"></fuse-nav-horizontal-collapsable>
-            <fuse-nav-horizontal-item *ngIf="item.type=='item'" [item]="item"></fuse-nav-horizontal-item>
+            <design-nav-horizontal-collapsable *ngIf="item.type=='group'" [item]="item"></design-nav-horizontal-collapsable>
+            <design-nav-horizontal-collapsable *ngIf="item.type=='collapsable'"
+                                             [item]="item"></design-nav-horizontal-collapsable>
+            <design-nav-horizontal-item *ngIf="item.type=='item'" [item]="item"></design-nav-horizontal-item>
 
         </ng-container>
 

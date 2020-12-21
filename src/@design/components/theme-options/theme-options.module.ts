@@ -12,15 +12,15 @@ import { MatRadioModule } from '@angular/material/radio';
 import { MatSelectModule } from '@angular/material/select';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 
-import { FuseDirectivesModule } from '@design/directives/directives';
-import { FuseMaterialColorPickerModule } from '@design/components/material-color-picker/material-color-picker.module';
-import { FuseSidebarModule } from '@design/components/sidebar/sidebar.module';
+import { DesignDirectivesModule } from '@design/directives/directives';
+import { DesignMaterialColorPickerModule } from '@design/components/material-color-picker/material-color-picker.module';
+import { DesignSidebarModule } from '@design/components/sidebar/sidebar.module';
 
-import { FuseThemeOptionsComponent } from '@design/components/theme-options/theme-options.component';
+import { DesignThemeOptionsComponent } from '@design/components/theme-options/theme-options.component';
 
 @NgModule({
     declarations: [
-        FuseThemeOptionsComponent
+        DesignThemeOptionsComponent
     ],
     imports     : [
         CommonModule,
@@ -39,14 +39,14 @@ import { FuseThemeOptionsComponent } from '@design/components/theme-options/them
         MatSelectModule,
         MatSlideToggleModule,
 
-        FuseDirectivesModule,
-        FuseMaterialColorPickerModule,
-        FuseSidebarModule
+        DesignDirectivesModule,
+        DesignMaterialColorPickerModule,
+        DesignSidebarModule
     ],
     exports     : [
-        FuseThemeOptionsComponent
+        DesignThemeOptionsComponent
     ]
 })
-export class FuseThemeOptionsModule
+export class DesignThemeOptionsModule
 {
 }

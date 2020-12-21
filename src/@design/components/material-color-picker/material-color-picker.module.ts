@@ -6,13 +6,13 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatTooltipModule } from '@angular/material/tooltip';
 
-import { FusePipesModule } from '@design/pipes/pipes.module';
+import { DesignPipesModule } from '@design/pipes/pipes.module';
 
-import { FuseMaterialColorPickerComponent } from '@design/components/material-color-picker/material-color-picker.component';
+import { DesignMaterialColorPickerComponent } from '@design/components/material-color-picker/material-color-picker.component';
 
 @NgModule({
     declarations: [
-        FuseMaterialColorPickerComponent
+        DesignMaterialColorPickerComponent
     ],
     imports: [
         CommonModule,
@@ -24,12 +24,12 @@ import { FuseMaterialColorPickerComponent } from '@design/components/material-co
         MatMenuModule,
         MatTooltipModule,
 
-        FusePipesModule
+        DesignPipesModule
     ],
     exports: [
-        FuseMaterialColorPickerComponent
+        DesignMaterialColorPickerComponent
     ],
 })
-export class FuseMaterialColorPickerModule
+export class DesignMaterialColorPickerModule
 {
 }

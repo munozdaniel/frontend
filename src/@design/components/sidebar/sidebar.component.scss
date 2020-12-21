@@ -1,6 +1,6 @@
-@import "src/@design/scss/fuse";
+@import "src/@design/scss/design";
 
-fuse-sidebar {
+design-sidebar {
     display: flex;
     flex-direction: column;
     flex: 1 0 auto;
@@ -54,7 +54,7 @@ fuse-sidebar {
     }
 }
 
-.fuse-sidebar-overlay {
+.design-sidebar-overlay {
     position: absolute;
     top: 0;
     bottom: 0;

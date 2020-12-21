@@ -1,5 +1,5 @@
 import { Pipe, PipeTransform } from '@angular/core';
-import { FuseUtils } from '@design/utils';
+import { DesignUtils } from '@design/utils';
 
 @Pipe({name: 'filter'})
 export class FilterPipe implements PipeTransform
@@ -14,6 +14,6 @@ export class FilterPipe implements PipeTransform
      */
     transform(mainArr: any[], searchText: string, property: string): any
     {
-        return FuseUtils.filterArrayByString(mainArr, searchText);
+        return DesignUtils.filterArrayByString(mainArr, searchText);
     }
 }

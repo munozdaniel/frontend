@@ -637,7 +637,7 @@ const matColors = {
         }
     },
 
-    'fuse-navy': {
+    'design-navy': {
         50      : '#ECECEE',
         100     : '#C5C6CB',
         200     : '#9EA1A9',
@@ -670,14 +670,14 @@ const matColors = {
         }
     },
 
-    'fuse-white': {
+    'design-white': {
         500     : 'white',
         contrast: {
             500: black87
         }
     },
 
-    'fuse-black': {
+    'design-black': {
         500     : 'black',
         contrast: {
             500: 'white'

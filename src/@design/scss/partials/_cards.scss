@@ -6,7 +6,7 @@
     $background: map-get($theme, background);
     $foreground: map-get($theme, foreground);
 
-    .fuse-card {
+    .design-card {
         background: map-get($background, card);
         border-color: map-get($foreground, divider);
 
@@ -19,7 +19,7 @@
 // -----------------------------------------------------------------------------------------------------
 // @ Cards
 // -----------------------------------------------------------------------------------------------------
-.fuse-card {
+.design-card {
     max-width: 320px;
     min-width: 320px;
     border-radius: 8px;

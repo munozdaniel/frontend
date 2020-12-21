@@ -1,16 +1,16 @@
-import { FusePage } from './app.po';
+import { DesignPage } from './app.po';
 import { browser, logging } from 'protractor';
 
-describe('Fuse App', () => {
-    let page: FusePage;
+describe('Design App', () => {
+    let page: DesignPage;
 
     beforeEach(() => {
-        page = new FusePage();
+        page = new DesignPage();
     });
 
     it('should display welcome message', () => {
         page.navigateTo();
-        expect(page.getParagraphText()).toEqual('Welcome to Fuse!');
+        expect(page.getParagraphText()).toEqual('Welcome to Design!');
     });
 
     afterEach(async () => {

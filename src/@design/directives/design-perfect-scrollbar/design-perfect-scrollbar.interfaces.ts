@@ -1,4 +1,4 @@
-export class FusePerfectScrollbarGeometry
+export class DesignPerfectScrollbarGeometry
 {
     public x: number;
     public y: number;
@@ -15,7 +15,7 @@ export class FusePerfectScrollbarGeometry
     }
 }
 
-export class FusePerfectScrollbarPosition
+export class DesignPerfectScrollbarPosition
 {
     public x: number | 'start' | 'end';
     public y: number | 'start' | 'end';

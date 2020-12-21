@@ -2,17 +2,17 @@ import { Component, EventEmitter, OnDestroy, OnInit, Output } from '@angular/cor
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
-import { FuseConfigService } from '@design/services/config.service';
+import { DesignConfigService } from '@design/services/config.service';
 
 @Component({
-    selector   : 'fuse-search-bar',
+    selector   : 'design-search-bar',
     templateUrl: './search-bar.component.html',
     styleUrls  : ['./search-bar.component.scss']
 })
-export class FuseSearchBarComponent implements OnInit, OnDestroy
+export class DesignSearchBarComponent implements OnInit, OnDestroy
 {
     collapsed: boolean;
-    fuseConfig: any;
+    designConfig: any;
 
     @Output()
     input: EventEmitter<any>;
@@ -23,10 +23,10 @@ export class FuseSearchBarComponent implements OnInit, OnDestroy
     /**
      * Constructor
      *
-     * @param {FuseConfigService} _fuseConfigService
+     * @param {DesignConfigService} _designConfigService
      */
     constructor(
-        private _fuseConfigService: FuseConfigService
+        private _designConfigService: DesignConfigService
     )
     {
         // Set the defaults
@@ -47,11 +47,11 @@ export class FuseSearchBarComponent implements OnInit, OnDestroy
     ngOnInit(): void
     {
         // Subscribe to config changes
-        this._fuseConfigService.config
+        this._designConfigService.config
             .pipe(takeUntil(this._unsubscribeAll))
             .subscribe(
                 (config) => {
-                    this.fuseConfig = config;
+                    this.designConfig = config;
                 }
             );
     }

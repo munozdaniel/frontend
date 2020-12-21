@@ -4,21 +4,21 @@ import { DOCUMENT } from '@angular/common';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
-import { fuseAnimations } from '@design/animations';
-import { FuseConfigService } from '@design/services/config.service';
-import { FuseNavigationService } from '@design/components/navigation/navigation.service';
-import { FuseSidebarService } from '@design/components/sidebar/sidebar.service';
+import { designAnimations } from '@design/animations';
+import { DesignConfigService } from '@design/services/config.service';
+import { DesignNavigationService } from '@design/components/navigation/navigation.service';
+import { DesignSidebarService } from '@design/components/sidebar/sidebar.service';
 
 @Component({
-    selector     : 'fuse-theme-options',
+    selector     : 'design-theme-options',
     templateUrl  : './theme-options.component.html',
     styleUrls    : ['./theme-options.component.scss'],
     encapsulation: ViewEncapsulation.None,
-    animations   : fuseAnimations
+    animations   : designAnimations
 })
-export class FuseThemeOptionsComponent implements OnInit, OnDestroy
+export class DesignThemeOptionsComponent implements OnInit, OnDestroy
 {
-    fuseConfig: any;
+    designConfig: any;
     form: FormGroup;
 
     @HostBinding('class.bar-closed')
@@ -32,17 +32,17 @@ export class FuseThemeOptionsComponent implements OnInit, OnDestroy
      *
      * @param {DOCUMENT} document
      * @param {FormBuilder} _formBuilder
-     * @param {FuseConfigService} _fuseConfigService
-     * @param {FuseNavigationService} _fuseNavigationService
-     * @param {FuseSidebarService} _fuseSidebarService
+     * @param {DesignConfigService} _designConfigService
+     * @param {DesignNavigationService} _designNavigationService
+     * @param {DesignSidebarService} _designSidebarService
      * @param {Renderer2} _renderer
      */
     constructor(
         @Inject(DOCUMENT) private document: any,
         private _formBuilder: FormBuilder,
-        private _fuseConfigService: FuseConfigService,
-        private _fuseNavigationService: FuseNavigationService,
-        private _fuseSidebarService: FuseSidebarService,
+        private _designConfigService: DesignConfigService,
+        private _designNavigationService: DesignNavigationService,
+        private _designSidebarService: DesignSidebarService,
         private _renderer: Renderer2
     )
     {
@@ -98,12 +98,12 @@ export class FuseThemeOptionsComponent implements OnInit, OnDestroy
         });
 
         // Subscribe to the config changes
-        this._fuseConfigService.config
+        this._designConfigService.config
             .pipe(takeUntil(this._unsubscribeAll))
             .subscribe((config) => {
 
                 // Update the stored config
-                this.fuseConfig = config;
+                this.designConfig = config;
 
                 // Set the config form values without emitting an event
                 // so that we don't end up with an infinite loop
@@ -126,7 +126,7 @@ export class FuseThemeOptionsComponent implements OnInit, OnDestroy
             .subscribe((config) => {
 
                 // Update the config
-                this._fuseConfigService.config = config;
+                this._designConfigService.config = config;
             });
 
         // Add customize nav item that opens the bar programmatically
@@ -148,7 +148,7 @@ export class FuseThemeOptionsComponent implements OnInit, OnDestroy
             ]
         };
 
-        this._fuseNavigationService.addNavigationItem(customFunctionNavItem, 'end');
+        this._designNavigationService.addNavigationItem(customFunctionNavItem, 'end');
     }
 
     /**
@@ -161,7 +161,7 @@ export class FuseThemeOptionsComponent implements OnInit, OnDestroy
         this._unsubscribeAll.complete();
 
         // Remove the custom function menu
-        this._fuseNavigationService.removeNavigationItem('custom-function');
+        this._designNavigationService.removeNavigationItem('custom-function');
     }
 
     // -----------------------------------------------------------------------------------------------------
@@ -186,21 +186,21 @@ export class FuseThemeOptionsComponent implements OnInit, OnDestroy
                     layout: {
                         width    : 'fullwidth',
                         navbar   : {
-                            primaryBackground  : 'fuse-navy-700',
-                            secondaryBackground: 'fuse-navy-900',
+                            primaryBackground  : 'design-navy-700',
+                            secondaryBackground: 'design-navy-900',
                             folded             : false,
                             hidden             : false,
                             position           : 'left',
                             variant            : 'vertical-style-1'
                         },
                         toolbar  : {
-                            background           : 'fuse-white-500',
+                            background           : 'design-white-500',
                             customBackgroundColor: false,
                             hidden               : false,
                             position             : 'below-static'
                         },
                         footer   : {
-                            background           : 'fuse-navy-900',
+                            background           : 'design-navy-900',
                             customBackgroundColor: true,
                             hidden               : false,
                             position             : 'below-static'
@@ -222,21 +222,21 @@ export class FuseThemeOptionsComponent implements OnInit, OnDestroy
                     layout: {
                         width    : 'fullwidth',
                         navbar   : {
-                            primaryBackground  : 'fuse-navy-700',
-                            secondaryBackground: 'fuse-navy-900',
+                            primaryBackground  : 'design-navy-700',
+                            secondaryBackground: 'design-navy-900',
                             folded             : false,
                             hidden             : false,
                             position           : 'left',
                             variant            : 'vertical-style-1'
                         },
                         toolbar  : {
-                            background           : 'fuse-white-500',
+                            background           : 'design-white-500',
                             customBackgroundColor: false,
                             hidden               : false,
                             position             : 'below'
                         },
                         footer   : {
-                            background           : 'fuse-navy-900',
+                            background           : 'design-navy-900',
                             customBackgroundColor: true,
                             hidden               : false,
                             position             : 'below'
@@ -258,21 +258,21 @@ export class FuseThemeOptionsComponent implements OnInit, OnDestroy
                     layout: {
                         width    : 'fullwidth',
                         navbar   : {
-                            primaryBackground  : 'fuse-navy-700',
-                            secondaryBackground: 'fuse-navy-900',
+                            primaryBackground  : 'design-navy-700',
+                            secondaryBackground: 'design-navy-900',
                             folded             : false,
                             hidden             : false,
                             position           : 'left',
                             layout             : 'vertical-style-1'
                         },
                         toolbar  : {
-                            background           : 'fuse-white-500',
+                            background           : 'design-white-500',
                             customBackgroundColor: false,
                             hidden               : false,
                             position             : 'above-static'
                         },
                         footer   : {
-                            background           : 'fuse-navy-900',
+                            background           : 'design-navy-900',
                             customBackgroundColor: true,
                             hidden               : false,
                             position             : 'above-static'
@@ -294,21 +294,21 @@ export class FuseThemeOptionsComponent implements OnInit, OnDestroy
                     layout: {
                         width    : 'fullwidth',
                         navbar   : {
-                            primaryBackground  : 'fuse-navy-700',
-                            secondaryBackground: 'fuse-navy-900',
+                            primaryBackground  : 'design-navy-700',
+                            secondaryBackground: 'design-navy-900',
                             folded             : false,
                             hidden             : false,
                             position           : 'top',
                             variant            : 'vertical-style-1'
                         },
                         toolbar  : {
-                            background           : 'fuse-white-500',
+                            background           : 'design-white-500',
                             customBackgroundColor: false,
                             hidden               : false,
                             position             : 'above'
                         },
                         footer   : {
-                            background           : 'fuse-navy-900',
+                            background           : 'design-navy-900',
                             customBackgroundColor: true,
                             hidden               : false,
                             position             : 'above-fixed'
@@ -336,6 +336,6 @@ export class FuseThemeOptionsComponent implements OnInit, OnDestroy
      */
     toggleSidebarOpen(key): void
     {
-        this._fuseSidebarService.getSidebar(key).toggleOpen();
+        this._designSidebarService.getSidebar(key).toggleOpen();
     }
 }

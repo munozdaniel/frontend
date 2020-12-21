@@ -6,17 +6,17 @@ import { MediaObserver } from '@angular/flex-layout';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
-import { FuseSidebarService } from './sidebar.service';
-import { FuseMatchMediaService } from '@design/services/match-media.service';
-import { FuseConfigService } from '@design/services/config.service';
+import { DesignSidebarService } from './sidebar.service';
+import { DesignMatchMediaService } from '@design/services/match-media.service';
+import { DesignConfigService } from '@design/services/config.service';
 
 @Component({
-    selector     : 'fuse-sidebar',
+    selector     : 'design-sidebar',
     templateUrl  : './sidebar.component.html',
     styleUrls    : ['./sidebar.component.scss'],
     encapsulation: ViewEncapsulation.None
 })
-export class FuseSidebarComponent implements OnInit, OnDestroy
+export class DesignSidebarComponent implements OnInit, OnDestroy
 {
     // Name
     @Input()
@@ -68,7 +68,7 @@ export class FuseSidebarComponent implements OnInit, OnDestroy
 
     // Private
     private _folded: boolean;
-    private _fuseConfig: any;
+    private _designConfig: any;
     private _wasActive: boolean;
     private _wasFolded: boolean;
     private _backdrop: HTMLElement | null = null;
@@ -84,9 +84,9 @@ export class FuseSidebarComponent implements OnInit, OnDestroy
      * @param {AnimationBuilder} _animationBuilder
      * @param {ChangeDetectorRef} _changeDetectorRef
      * @param {ElementRef} _elementRef
-     * @param {FuseConfigService} _fuseConfigService
-     * @param {FuseMatchMediaService} _fuseMatchMediaService
-     * @param {FuseSidebarService} _fuseSidebarService
+     * @param {DesignConfigService} _designConfigService
+     * @param {DesignMatchMediaService} _designMatchMediaService
+     * @param {DesignSidebarService} _designSidebarService
      * @param {MediaObserver} _mediaObserver
      * @param {Renderer2} _renderer
      */
@@ -94,9 +94,9 @@ export class FuseSidebarComponent implements OnInit, OnDestroy
         private _animationBuilder: AnimationBuilder,
         private _changeDetectorRef: ChangeDetectorRef,
         private _elementRef: ElementRef,
-        private _fuseConfigService: FuseConfigService,
-        private _fuseMatchMediaService: FuseMatchMediaService,
-        private _fuseSidebarService: FuseSidebarService,
+        private _designConfigService: DesignConfigService,
+        private _designMatchMediaService: DesignMatchMediaService,
+        private _designSidebarService: DesignSidebarService,
         private _mediaObserver: MediaObserver,
         private _renderer: Renderer2
     )
@@ -212,14 +212,14 @@ export class FuseSidebarComponent implements OnInit, OnDestroy
     ngOnInit(): void
     {
         // Subscribe to config changes
-        this._fuseConfigService.config
+        this._designConfigService.config
             .pipe(takeUntil(this._unsubscribeAll))
             .subscribe((config) => {
-                this._fuseConfig = config;
+                this._designConfig = config;
             });
 
         // Register the sidebar
-        this._fuseSidebarService.register(this.name, this);
+        this._designSidebarService.register(this.name, this);
 
         // Setup visibility
         this._setupVisibility();
@@ -246,7 +246,7 @@ export class FuseSidebarComponent implements OnInit, OnDestroy
         }
 
         // Unregister the sidebar
-        this._fuseSidebarService.unregister(this.name);
+        this._designSidebarService.unregister(this.name);
 
         // Unsubscribe from all subscriptions
         this._unsubscribeAll.next();
@@ -314,7 +314,7 @@ export class FuseSidebarComponent implements OnInit, OnDestroy
         this._showSidebar();
 
         // Act on every media change
-        this._fuseMatchMediaService.onMediaChange
+        this._designMatchMediaService.onMediaChange
             .pipe(takeUntil(this._unsubscribeAll))
             .subscribe(() => {
 
@@ -450,12 +450,12 @@ export class FuseSidebarComponent implements OnInit, OnDestroy
         this._backdrop = this._renderer.createElement('div');
 
         // Add a class to the backdrop element
-        this._backdrop.classList.add('fuse-sidebar-overlay');
+        this._backdrop.classList.add('design-sidebar-overlay');
 
         // Add a class depending on the invisibleOverlay option
         if ( this.invisibleOverlay )
         {
-            this._backdrop.classList.add('fuse-sidebar-overlay-invisible');
+            this._backdrop.classList.add('design-sidebar-overlay-invisible');
         }
 
         // Append the backdrop to the parent of the sidebar

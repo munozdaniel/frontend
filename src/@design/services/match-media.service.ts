@@ -6,7 +6,7 @@ import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
 @Injectable({
     providedIn: 'root'
 })
-export class FuseMatchMediaService
+export class DesignMatchMediaService
 {
     activeMediaQuery: string;
     onMediaChange: BehaviorSubject<string> = new BehaviorSubject<string>('');

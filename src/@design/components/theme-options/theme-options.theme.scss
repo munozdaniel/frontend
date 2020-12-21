@@ -1,9 +1,9 @@
-@mixin fuse-theme-options-theme($theme) {
+@mixin design-theme-options-theme($theme) {
 
     $background: map-get($theme, background);
     $foreground: map-get($theme, foreground);
 
-    fuse-theme-options {
+    design-theme-options {
 
         .theme-options-panel {
 

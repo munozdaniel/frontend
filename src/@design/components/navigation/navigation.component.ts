@@ -2,16 +2,16 @@ import { ChangeDetectionStrategy, ChangeDetectorRef, Component, Input, OnInit, V
 import { merge, Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
-import { FuseNavigationService } from '@design/components/navigation/navigation.service';
+import { DesignNavigationService } from '@design/components/navigation/navigation.service';
 
 @Component({
-    selector       : 'fuse-navigation',
+    selector       : 'design-navigation',
     templateUrl    : './navigation.component.html',
     styleUrls      : ['./navigation.component.scss'],
     encapsulation  : ViewEncapsulation.None,
     changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class FuseNavigationComponent implements OnInit
+export class DesignNavigationComponent implements OnInit
 {
     @Input()
     layout = 'vertical';
@@ -25,11 +25,11 @@ export class FuseNavigationComponent implements OnInit
     /**
      *
      * @param {ChangeDetectorRef} _changeDetectorRef
-     * @param {FuseNavigationService} _fuseNavigationService
+     * @param {DesignNavigationService} _designNavigationService
      */
     constructor(
         private _changeDetectorRef: ChangeDetectorRef,
-        private _fuseNavigationService: FuseNavigationService
+        private _designNavigationService: DesignNavigationService
     )
     {
         // Set the private defaults
@@ -46,15 +46,15 @@ export class FuseNavigationComponent implements OnInit
     ngOnInit(): void
     {
         // Load the navigation either from the input or from the service
-        this.navigation = this.navigation || this._fuseNavigationService.getCurrentNavigation();
+        this.navigation = this.navigation || this._designNavigationService.getCurrentNavigation();
 
         // Subscribe to the current navigation changes
-        this._fuseNavigationService.onNavigationChanged
+        this._designNavigationService.onNavigationChanged
             .pipe(takeUntil(this._unsubscribeAll))
             .subscribe(() => {
 
                 // Load the navigation
-                this.navigation = this._fuseNavigationService.getCurrentNavigation();
+                this.navigation = this._designNavigationService.getCurrentNavigation();
 
                 // Mark for check
                 this._changeDetectorRef.markForCheck();
@@ -62,9 +62,9 @@ export class FuseNavigationComponent implements OnInit
 
         // Subscribe to navigation item
         merge(
-            this._fuseNavigationService.onNavigationItemAdded,
-            this._fuseNavigationService.onNavigationItemUpdated,
-            this._fuseNavigationService.onNavigationItemRemoved
+            this._designNavigationService.onNavigationItemAdded,
+            this._designNavigationService.onNavigationItemUpdated,
+            this._designNavigationService.onNavigationItemRemoved
         ).pipe(takeUntil(this._unsubscribeAll))
          .subscribe(() => {
 

@@ -1,6 +1,6 @@
-import { FuseNavigation } from '@design/types';
+import { DesignNavigation } from '@design/types';
 
-export const navigation: FuseNavigation[] = [
+export const navigation: DesignNavigation[] = [
     {
         id       : 'applications',
         title    : 'Applications',

@@ -1,4 +1,4 @@
-fuse-widget {
+design-widget {
     display: block;
     position: relative;
     perspective: 3000px;
@@ -10,7 +10,7 @@ fuse-widget {
         transition: transform 1s;
     }
 
-    > .fuse-widget-front {
+    > .design-widget-front {
         display: flex;
         flex-direction: column;
         flex: 1 1 auto;
@@ -27,7 +27,7 @@ fuse-widget {
         border: 1px solid;
     }
 
-    > .fuse-widget-back {
+    > .design-widget-back {
         display: block;
         position: absolute;
         top: 12px;
@@ -44,7 +44,7 @@ fuse-widget {
         backface-visibility: hidden;
         border: 1px solid;
 
-        [fuseWidgetToggle] {
+        [designWidgetToggle] {
             position: absolute;
             top: 0;
             right: 0;
@@ -53,13 +53,13 @@ fuse-widget {
 
     &.flipped {
 
-        > .fuse-widget-front {
+        > .design-widget-front {
             visibility: hidden;
             opacity: 0;
             transform: rotateY(180deg);
         }
 
-        > .fuse-widget-back {
+        > .design-widget-back {
             display: block;
             visibility: visible;
             opacity: 1;

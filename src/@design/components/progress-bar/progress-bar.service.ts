@@ -6,7 +6,7 @@ import { filter } from 'rxjs/operators';
 @Injectable({
     providedIn: 'root'
 })
-export class FuseProgressBarService
+export class DesignProgressBarService
 {
     // Private
     private _bufferValue: BehaviorSubject<number>;

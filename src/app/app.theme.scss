@@ -1,21 +1,21 @@
 // -----------------------------------------------------------------------------------------------------
-// @ Custom color maps for Fuse
+// @ Custom color maps for Design
 // -----------------------------------------------------------------------------------------------------
-$fuse-white: (
+$design-white: (
     500: white,
     contrast: (
         500: $dark-primary-text
     )
 );
 
-$fuse-black: (
+$design-black: (
     500: black,
     contrast: (
         500: $light-primary-text,
     )
 );
 
-$fuse-navy: (
+$design-navy: (
     50: #ECECEE,
     100: #C5C6CB,
     200: #9EA1A9,
@@ -48,14 +48,14 @@ $fuse-navy: (
     )
 );
 
-// Generate Fuse color classes for custom palettes
+// Generate Design color classes for custom palettes
 $custom_palettes: (
-    fuse-white: $fuse-white,
-    fuse-black: $fuse-black,
-    fuse-navy: $fuse-navy
+    design-white: $design-white,
+    design-black: $design-black,
+    design-navy: $design-navy
 );
 
-@include fuse-color-classes($custom_palettes);
+@include design-color-classes($custom_palettes);
 
 // -----------------------------------------------------------------------------------------------------
 // @ Typography
@@ -94,7 +94,7 @@ $typography: mat-typography-config(
 // -----------------------------------------------------------------------------------------------------
 
 // Define the primary, accent and warn palettes
-$default-primary-palette: mat-palette($fuse-navy);
+$default-primary-palette: mat-palette($design-navy);
 $default-accent-palette: mat-palette($mat-light-blue, 600, 400, 700);
 $default-warn-palette: mat-palette($mat-red);
 
@@ -108,20 +108,20 @@ body.theme-default {
     // Create an Angular Material theme from the $theme map
     @include angular-material-theme($theme);
 
-    // Apply the theme to the Fuse Core
-    @include fuse-core-theme($theme);
+    // Apply the theme to the Design Core
+    @include design-core-theme($theme);
 
     // Apply the theme to the user components
     @include components-theme($theme);
 
-    // Generate Fuse color classes for primary, accent and warn colors
+    // Generate Design color classes for primary, accent and warn colors
     $palettes: (
         primary: $default-primary-palette,
         accent: $default-accent-palette,
         warn: $default-warn-palette
     );
 
-    @include fuse-color-classes($palettes);
+    @include design-color-classes($palettes);
 }
 
 // -----------------------------------------------------------------------------------------------------
@@ -129,7 +129,7 @@ body.theme-default {
 // -----------------------------------------------------------------------------------------------------
 
 // Define the primary, accent and warn palettes
-$yellow-light-theme-primary-palette: mat-palette($fuse-navy, 600, 400, 700);
+$yellow-light-theme-primary-palette: mat-palette($design-navy, 600, 400, 700);
 $yellow-light-theme-accent-palette: mat-palette($mat-yellow, 600, 400, 700);
 $yellow-light-theme-warn-palette: mat-palette($mat-red);
 
@@ -143,20 +143,20 @@ body.theme-yellow-light {
     // Generate the Angular Material theme
     @include angular-material-theme($yellow-light-theme);
 
-    // Apply the theme to the Fuse Core
-    @include fuse-core-theme($yellow-light-theme);
+    // Apply the theme to the Design Core
+    @include design-core-theme($yellow-light-theme);
 
     // Apply the theme to the user components
     @include components-theme($yellow-light-theme);
 
-    // Generate Fuse color classes for primary, accent and warn colors
+    // Generate Design color classes for primary, accent and warn colors
     $palettes: (
         primary: $yellow-light-theme-primary-palette,
         accent: $yellow-light-theme-accent-palette,
         warn: $yellow-light-theme-warn-palette
     );
 
-    @include fuse-color-classes($palettes);
+    @include design-color-classes($palettes);
 }
 
 // -----------------------------------------------------------------------------------------------------
@@ -178,20 +178,20 @@ body.theme-blue-gray-dark {
     // Generate the Angular Material theme
     @include angular-material-theme($blue-gray-dark-theme);
 
-    // Apply the theme to the Fuse Core
-    @include fuse-core-theme($blue-gray-dark-theme);
+    // Apply the theme to the Design Core
+    @include design-core-theme($blue-gray-dark-theme);
 
     // Apply the theme to the user components
     @include components-theme($blue-gray-dark-theme);
 
-    // Generate Fuse color classes for primary, accent and warn colors
+    // Generate Design color classes for primary, accent and warn colors
     $palettes: (
         primary: $blue-gray-dark-theme-primary-palette,
         accent: $blue-gray-dark-theme-accent-palette,
         warn: $blue-gray-dark-theme-warn-palette
     );
 
-    @include fuse-color-classes($palettes);
+    @include design-color-classes($palettes);
 }
 
 // -----------------------------------------------------------------------------------------------------
@@ -213,18 +213,18 @@ body.theme-pink-dark {
     // Generate the Angular Material theme
     @include angular-material-theme($pink-dark-theme);
 
-    // Apply the theme to the Fuse Core
-    @include fuse-core-theme($pink-dark-theme);
+    // Apply the theme to the Design Core
+    @include design-core-theme($pink-dark-theme);
 
     // Apply the theme to the user components
     @include components-theme($pink-dark-theme);
 
-    // Generate Fuse color classes for primary, accent and warn colors
+    // Generate Design color classes for primary, accent and warn colors
     $palettes: (
         primary: $pink-dark-theme-primary-palette,
         accent: $pink-dark-theme-accent-palette,
         warn: $pink-dark-theme-warn-palette
     );
 
-    @include fuse-color-classes($palettes);
+    @include design-color-classes($palettes);
 }
