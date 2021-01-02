@@ -17,12 +17,11 @@ import { designConfig } from 'app/design-config';
 
 import { AppComponent } from 'app/app.component';
 import { LayoutModule } from 'app/layout/layout.module';
-import { SampleModule } from 'app/main/sample/sample.module';
 
 const appRoutes: Routes = [
     {
         path      : '**',
-        redirectTo: 'sample'
+        redirectTo: 'home'
     }
 ];
 
@@ -54,7 +53,6 @@ const appRoutes: Routes = [
 
         // App modules
         LayoutModule,
-        SampleModule
     ],
     bootstrap   : [
         AppComponent

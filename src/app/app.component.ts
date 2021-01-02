@@ -1,7 +1,6 @@
 import { Component, Inject, OnDestroy, OnInit } from '@angular/core';
 import { DOCUMENT } from '@angular/common';
 import { Platform } from '@angular/cdk/platform';
-import { TranslateService } from '@ngx-translate/core';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
@@ -9,11 +8,8 @@ import { DesignConfigService } from '@design/services/config.service';
 import { DesignNavigationService } from '@design/components/navigation/navigation.service';
 import { DesignSidebarService } from '@design/components/sidebar/sidebar.service';
 import { DesignSplashScreenService } from '@design/services/splash-screen.service';
-import { DesignTranslationLoaderService } from '@design/services/translation-loader.service';
 
 import { navigation } from 'app/navigation/navigation';
-import { locale as navigationEnglish } from 'app/navigation/i18n/en';
-import { locale as navigationTurkish } from 'app/navigation/i18n/tr';
 
 @Component({
     selector   : 'app',
@@ -38,7 +34,6 @@ export class AppComponent implements OnInit, OnDestroy
      * @param {DesignSplashScreenService} _designSplashScreenService
      * @param {DesignTranslationLoaderService} _designTranslationLoaderService
      * @param {Platform} _platform
-     * @param {TranslateService} _translateService
      */
     constructor(
         @Inject(DOCUMENT) private document: any,
@@ -46,8 +41,6 @@ export class AppComponent implements OnInit, OnDestroy
         private _designNavigationService: DesignNavigationService,
         private _designSidebarService: DesignSidebarService,
         private _designSplashScreenService: DesignSplashScreenService,
-        private _designTranslationLoaderService: DesignTranslationLoaderService,
-        private _translateService: TranslateService,
         private _platform: Platform
     )
     {
@@ -59,18 +52,6 @@ export class AppComponent implements OnInit, OnDestroy
 
         // Set the main navigation as our current navigation
         this._designNavigationService.setCurrentNavigation('main');
-
-        // Add languages
-        this._translateService.addLangs(['en', 'tr']);
-
-        // Set the default language
-        this._translateService.setDefaultLang('en');
-
-        // Set the navigation translations
-        this._designTranslationLoaderService.loadTranslations(navigationEnglish, navigationTurkish);
-
-        // Use a language
-        this._translateService.use('en');
 
         /**
          * ----------------------------------------------------------------------------------------------------

@@ -3,23 +3,16 @@ import { DesignNavigation } from '@design/types';
 export const navigation: DesignNavigation[] = [
     {
         id       : 'applications',
-        title    : 'Applications',
-        translate: 'NAV.APPLICATIONS',
+        title    : 'MENU',
         type     : 'group',
         children : [
             {
-                id       : 'sample',
-                title    : 'Sample',
-                translate: 'NAV.SAMPLE.TITLE',
+                id       : 'home',
+                title    : 'Home',
                 type     : 'item',
-                icon     : 'email',
-                url      : '/sample',
-                badge    : {
-                    title    : '25',
-                    translate: 'NAV.SAMPLE.BADGE',
-                    bg       : '#F44336',
-                    fg       : '#FFFFFF'
-                }
+                icon     : 'home',
+                url      : '/',
+                
             }
         ]
     }

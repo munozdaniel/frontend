@@ -1,7 +1,10 @@
 {
-    "name": "design",
-    "version": "8.1.2",
-    "license": "https://themeforest.net/licenses/terms/regular",
+    "name": "administracionescolar",
+    "version": "1.0.0",
+    "author": {
+        "name": "Muñoz Daniel Eduardo",
+        "email": "munozda87@hotmail.com"
+    },
     "scripts": {
         "ng": "ng",
         "start": "ng serve --open",
