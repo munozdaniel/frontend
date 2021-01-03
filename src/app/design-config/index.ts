@@ -32,7 +32,7 @@ export const designConfig: DesignConfig = {
         footer   : {
             customBackgroundColor: true,
             background           : 'design-navy-900',
-            hidden               : false,
+            hidden               : true,
             position             : 'below-fixed'
         },
         sidepanel: {
