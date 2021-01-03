@@ -129,16 +129,29 @@ export class DesignThemeOptionsComponent implements OnInit, OnDestroy
                 this._designConfigService.config = config;
             });
 
-        // Add customize nav item that opens the bar programmatically
+        // En tiempo de ejecucion. TODO: Verificar permisos
         const customFunctionNavItem = {
             id      : 'custom-function',
-            title   : 'Custom Function',
-            type    : 'group',
-            icon    : 'settings',
+            title   : 'Administrar',
+            type    : 'collapsable',
             children: [
                 {
+                    id: "usuarios",
+                    title: "Usuarios",
+                    type: "item",
+                    icon: "users",
+                    url: "/usuarios",
+                },
+                {
+                    id: "micuenta",
+                    title: "Mi Cuenta",
+                    type: "item",
+                    icon: "account",
+                    url: "/mi-cuenta",
+                },
+                {
                     id      : 'customize',
-                    title   : 'Customize',
+                    title   : 'Diseño',
                     type    : 'item',
                     icon    : 'settings',
                     function: () => {

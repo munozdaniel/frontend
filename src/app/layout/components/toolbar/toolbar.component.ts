@@ -124,13 +124,5 @@ export class ToolbarComponent implements OnInit, OnDestroy {
         this._designSidebarService.getSidebar(key).toggleOpen();
     }
 
-    /**
-     * Search
-     *
-     * @param value
-     */
-    search(value): void {
-        // Do your search here...
-        console.log(value);
-    }
+ 
 }
