@@ -8,27 +8,27 @@ const routes = [
   },
   {
     path: 'home',
-    loadChildren: 'src/app/features/home/home.module#HomeModule',
+    loadChildren: () => import('src/app/features/home/home.module').then(m => m.HomeModule),
   },
   {
     path: 'autenticacion',
-    loadChildren: 'src/app/features/autenticacion/autenticacion.module#AutenticacionRoutingModule',
+    loadChildren: () => import('src/app/features/autenticacion/autenticacion.module').then(m => m.AutenticacionRoutingModule),
   },
   {
     path: 'parametrizar',
-    loadChildren: 'src/app/features/parametrizar/parametrizar.module#ParametrizarModule',
+    loadChildren: () => import('src/app/features/parametrizar/parametrizar.module').then(m => m.ParametrizarModule),
   },
   {
     path: 'taller',
-    loadChildren: 'src/app/features/taller/taller.module#TallerModule',
+    loadChildren: () => import('src/app/features/taller/taller.module').then(m => m.TallerModule),
   },
   {
     path: 'informes',
-    loadChildren: 'src/app/features/informes/informes.module#InformesModule',
+    loadChildren: () => import('src/app/features/informes/informes.module').then(m => m.InformesModule),
   },
   {
     path: 'administrar',
-    loadChildren: 'src/app/features/administrar/administrar.module#AdministrarModule',
+    loadChildren: () => import('src/app/features/administrar/administrar.module').then(m => m.AdministrarModule),
   },
   
 ];

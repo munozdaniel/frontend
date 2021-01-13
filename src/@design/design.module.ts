@@ -13,7 +13,7 @@ export class DesignModule
         }
     }
 
-    static forRoot(config): ModuleWithProviders
+    static forRoot(config): ModuleWithProviders<DesignModule>
     {
         return {
             ngModule : DesignModule,
