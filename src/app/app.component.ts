@@ -148,6 +148,9 @@ export class AppComponent implements OnInit, OnDestroy {
             (datos) => {
                 console.log("auth user$", datos);
                 this.isLogin = datos ? true : false;
+                if (!datos) {
+                    this.auth.loginWithRedirect();
+                }
             },
             (error) => {
                 console.log("[ERROR]", error);

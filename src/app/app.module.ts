@@ -24,6 +24,7 @@ import { CallbackComponent } from "./features/callback/callback.component";
 import { AppRoutingModule } from "./app-routing.module";
 import { AuthHttpInterceptor, AuthModule } from "@auth0/auth0-angular";
 import { environment } from "environments/environment";
+import { SharedModule } from './shared/shared.module';
 
 const appRoutes: Routes = [
     {
@@ -55,7 +56,8 @@ const appRoutes: Routes = [
         DesignSharedModule,
         DesignSidebarModule,
         DesignThemeOptionsModule,
-
+        // Shared
+        SharedModule,
         // App modules
         LayoutModule,
         // Import the module into the application, with configuration
