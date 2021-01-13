@@ -1,15 +1,24 @@
 <!-- PROGRESS BAR -->
 <design-progress-bar></design-progress-bar>
 <!-- / PROGRESS BAR -->
+<div *ngIf="!isLogin" fxLayout="row" fxLayoutAlign="center center" class="w-100-p">
+    <button  (click)="auth.loginWithRedirect()">Log in</button>
+</div>
 
 <!-- VERTICAL LAYOUT 1 -->
-<ng-container *ngIf="designConfig.layout.style === 'vertical-layout-1'">
+<ng-container
+    *ngIf="designConfig.layout.style === 'vertical-layout-1' && isLogin"
+>
     <vertical-layout-1></vertical-layout-1>
 </ng-container>
 <!-- / VERTICAL LAYOUT 1 -->
 
-
-<design-sidebar name="themeOptionsPanel" class="theme-options-sidebar" position="right" [invisibleOverlay]="true">
+<design-sidebar
+    name="themeOptionsPanel"
+    class="theme-options-sidebar"
+    position="right"
+    [invisibleOverlay]="true"
+>
     <design-theme-options></design-theme-options>
 </design-sidebar>
 <!-- / THEME OPTIONS PANEL -->

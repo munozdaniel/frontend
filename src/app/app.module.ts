@@ -1,6 +1,6 @@
 import { NgModule } from "@angular/core";
 import { BrowserModule, Title } from "@angular/platform-browser";
-import { HttpClientModule } from "@angular/common/http";
+import { HttpClientModule, HTTP_INTERCEPTORS } from "@angular/common/http";
 import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
 import { RouterModule, Routes } from "@angular/router";
 import { MatMomentDateModule } from "@angular/material-moment-adapter";
@@ -20,8 +20,10 @@ import { designConfig } from "app/design-config";
 
 import { AppComponent } from "app/app.component";
 import { LayoutModule } from "app/layout/layout.module";
-import { CallbackComponent } from './features/callback/callback.component';
-import { AppRoutingModule } from './app-routing.module';
+import { CallbackComponent } from "./features/callback/callback.component";
+import { AppRoutingModule } from "./app-routing.module";
+import { AuthHttpInterceptor, AuthModule } from "@auth0/auth0-angular";
+import { environment } from "environments/environment";
 
 const appRoutes: Routes = [
     {
@@ -39,7 +41,7 @@ const appRoutes: Routes = [
         RouterModule.forRoot(appRoutes),
 
         AppRoutingModule,
-        
+
         // Material moment date module
         MatMomentDateModule,
 
@@ -56,8 +58,19 @@ const appRoutes: Routes = [
 
         // App modules
         LayoutModule,
+        // Import the module into the application, with configuration
+        AuthModule.forRoot({
+            ...environment.auth,
+        }),
     ],
     bootstrap: [AppComponent],
-    providers: [Title],
+    providers: [
+        Title,
+        {
+            provide: HTTP_INTERCEPTORS,
+            useClass: AuthHttpInterceptor,
+            multi: true,
+        },
+    ],
 })
 export class AppModule {}

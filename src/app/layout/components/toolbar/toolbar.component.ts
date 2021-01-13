@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit, ViewEncapsulation } from "@angular/core";
+import { Component, Inject, OnDestroy, OnInit, ViewEncapsulation } from "@angular/core";
 import { Subject } from "rxjs";
 import { takeUntil } from "rxjs/operators";
 import * as _ from "lodash";
@@ -7,7 +7,8 @@ import { DesignConfigService } from "@design/services/config.service";
 import { DesignSidebarService } from "@design/components/sidebar/sidebar.service";
 
 import { navigation } from "app/navigation/navigation";
-import { AuthService } from 'app/auth/auth.service';
+import { AuthService } from "@auth0/auth0-angular";
+import { DOCUMENT } from '@angular/common';
 
 @Component({
     selector: "toolbar",
@@ -34,6 +35,7 @@ export class ToolbarComponent implements OnInit, OnDestroy {
      */
     constructor(
         public auth: AuthService,
+        @Inject(DOCUMENT) public document: Document,
         private _designConfigService: DesignConfigService,
         private _designSidebarService: DesignSidebarService
     ) {
@@ -125,6 +127,4 @@ export class ToolbarComponent implements OnInit, OnDestroy {
     toggleSidebarOpen(key): void {
         this._designSidebarService.getSidebar(key).toggleOpen();
     }
-
- 
 }
