@@ -7,6 +7,7 @@ import { DesignConfigService } from "@design/services/config.service";
 import { DesignSidebarService } from "@design/components/sidebar/sidebar.service";
 
 import { navigation } from "app/navigation/navigation";
+import { AuthService } from 'app/auth/auth.service';
 
 @Component({
     selector: "toolbar",
@@ -32,6 +33,7 @@ export class ToolbarComponent implements OnInit, OnDestroy {
      * @param {DesignSidebarService} _designSidebarService
      */
     constructor(
+        public auth: AuthService,
         private _designConfigService: DesignConfigService,
         private _designSidebarService: DesignSidebarService
     ) {

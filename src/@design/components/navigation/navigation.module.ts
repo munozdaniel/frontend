@@ -4,7 +4,6 @@ import { RouterModule } from '@angular/router';
 import { MatRippleModule } from '@angular/material/core';
 import { MatIconModule } from '@angular/material/icon';
 
-import { TranslateModule } from '@ngx-translate/core';
 
 import { DesignNavigationComponent } from './navigation.component';
 import { DesignNavVerticalItemComponent } from './vertical/item/item.component';
@@ -21,7 +20,6 @@ import { DesignNavHorizontalCollapsableComponent } from './horizontal/collapsabl
         MatIconModule,
         MatRippleModule,
 
-        TranslateModule.forChild()
     ],
     exports     : [
         DesignNavigationComponent

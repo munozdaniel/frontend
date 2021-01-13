@@ -6,7 +6,6 @@ import { RouterModule, Routes } from "@angular/router";
 import { MatMomentDateModule } from "@angular/material-moment-adapter";
 import { MatButtonModule } from "@angular/material/button";
 import { MatIconModule } from "@angular/material/icon";
-import { TranslateModule } from "@ngx-translate/core";
 import "hammerjs";
 
 import { DesignModule } from "@design/design.module";
@@ -21,6 +20,8 @@ import { designConfig } from "app/design-config";
 
 import { AppComponent } from "app/app.component";
 import { LayoutModule } from "app/layout/layout.module";
+import { CallbackComponent } from './features/callback/callback.component';
+import { AppRoutingModule } from './app-routing.module';
 
 const appRoutes: Routes = [
     {
@@ -30,15 +31,15 @@ const appRoutes: Routes = [
 ];
 
 @NgModule({
-    declarations: [AppComponent],
+    declarations: [AppComponent, CallbackComponent],
     imports: [
         BrowserModule,
         BrowserAnimationsModule,
         HttpClientModule,
         RouterModule.forRoot(appRoutes),
 
-        TranslateModule.forRoot(),
-
+        AppRoutingModule,
+        
         // Material moment date module
         MatMomentDateModule,
 
