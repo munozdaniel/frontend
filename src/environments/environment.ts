@@ -23,4 +23,6 @@ export const environment = {
             ],
         },
     },
+    NAMESPACE: 'http://myapp.com/roles'
+
 };
