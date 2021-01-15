@@ -9,6 +9,7 @@ import { GhostsComponent } from './components/ghosts/ghosts.component';
 import { EmptyDataComponent } from './components/empty-data/empty-data.component';
 import { VolverComponent } from './volver/volver.component';
 import { FlexLayoutModule } from '@angular/flex-layout';
+import { EmailUnverifiedComponent } from './components/email-unverified/email-unverified.component';
 
 
 @NgModule({
@@ -32,7 +33,7 @@ import { FlexLayoutModule } from '@angular/flex-layout';
     GhostsComponent,
     EmptyDataComponent,
     VolverComponent,
-
+    EmailUnverifiedComponent
   ],
   declarations: [
     Error401Component,
@@ -41,6 +42,7 @@ import { FlexLayoutModule } from '@angular/flex-layout';
     GhostsComponent,
     EmptyDataComponent,
     VolverComponent,
+    EmailUnverifiedComponent,
   ],
 })
 export class SharedModule {}

@@ -34,10 +34,11 @@ export class ToolbarComponent implements OnInit, OnDestroy {
      * @param {DesignSidebarService} _designSidebarService
      */
     constructor(
-        public auth: AuthService,
+        public authService: AuthService,
         @Inject(DOCUMENT) public document: Document,
         private _designConfigService: DesignConfigService,
-        private _designSidebarService: DesignSidebarService
+        private _designSidebarService: DesignSidebarService,
+
     ) {
         // Set the defaults
         this.userStatusOptions = [
