@@ -5,7 +5,9 @@ import { mergeMap } from 'rxjs/operators';
 import * as auth0 from 'auth0-js';
 import { environment } from 'environments/environment';
 
-@Injectable()
+@Injectable({
+  providedIn: 'root',
+})
 export class AuthorizeService {
   // Create Auth0 web auth instance
   private _auth0 = new auth0.WebAuth({
@@ -14,7 +16,7 @@ export class AuthorizeService {
     responseType: 'token',
     redirectUri: environment.auth.redirectUri,
     audience: environment.auth.audience,
-    scope: environment.auth.scope
+    scope: environment.auth.scope,
   });
   accessToken: string;
   userProfile: any;
@@ -74,7 +76,7 @@ export class AuthorizeService {
   }
 
   private _setSession(authResult, profile?) {
-    this.expiresAt = (authResult.expiresIn * 1000) + Date.now();
+    this.expiresAt = authResult.expiresIn * 1000 + Date.now();
     // Store expiration in local storage to access in constructor
     localStorage.setItem('expires_at', JSON.stringify(this.expiresAt));
     this.accessToken = authResult.accessToken;
@@ -102,7 +104,7 @@ export class AuthorizeService {
     const fullRedirect = decodeURI(localStorage.getItem('authRedirect'));
     const redirectArr = fullRedirect.split('?tab=');
     const navArr = [redirectArr[0] || '/'];
-    const tabObj = redirectArr[1] ? { queryParams: { tab: redirectArr[1] }} : null;
+    const tabObj = redirectArr[1] ? { queryParams: { tab: redirectArr[1] } } : null;
 
     if (!tabObj) {
       this.router.navigate(navArr);
@@ -130,7 +132,7 @@ export class AuthorizeService {
     // End Auth0 authentication session
     this._auth0.logout({
       clientId: environment.auth.clientId,
-      returnTo: environment.BASE_URI
+      returnTo: environment.BASE_URI,
     });
   }
 
@@ -152,28 +154,25 @@ export class AuthorizeService {
 
   scheduleRenewal() {
     // If last token is expired, do nothing
-    if (!this.tokenValid) { return; }
+    if (!this.tokenValid) {
+      return;
+    }
     // Unsubscribe from previous expiration observable
     this.unscheduleRenewal();
     // Create and subscribe to expiration observable
     const expiresIn$ = of(this.expiresAt).pipe(
-      mergeMap(
-        expires => {
-          const now = Date.now();
-          // Use timer to track delay until expiration
-          // to run the refresh at the proper time
-          return timer(Math.max(1, expires - now));
-        }
-      )
+      mergeMap((expires) => {
+        const now = Date.now();
+        // Use timer to track delay until expiration
+        // to run the refresh at the proper time
+        return timer(Math.max(1, expires - now));
+      })
     );
 
-    this.refreshSub = expiresIn$
-      .subscribe(
-        () => {
-          this.renewToken();
-          this.scheduleRenewal();
-        }
-      );
+    this.refreshSub = expiresIn$.subscribe(() => {
+      this.renewToken();
+      this.scheduleRenewal();
+    });
   }
 
   unscheduleRenewal() {
@@ -181,5 +180,4 @@ export class AuthorizeService {
       this.refreshSub.unsubscribe();
     }
   }
-
 }

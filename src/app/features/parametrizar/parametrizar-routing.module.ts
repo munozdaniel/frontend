@@ -7,7 +7,7 @@ import { AsignaturasAgregarComponent } from './containers/asignaturas-agregar/as
 import { AsignaturasEditarComponent } from './containers/asignaturas-editar/asignaturas-editar.component';
 import { AsignaturasComponent } from './containers/asignaturas/asignaturas.component';
 
- // parametrizar/
+ // parametrizar/alumnos
 const routes: Routes = [
     {
         path: "alumnos",
@@ -45,4 +45,4 @@ const routes: Routes = [
     imports: [RouterModule.forChild(routes)],
     exports: [RouterModule],
 })
-export class HomeRoutingModule {}
+export class ParametrizarRoutingModule {}

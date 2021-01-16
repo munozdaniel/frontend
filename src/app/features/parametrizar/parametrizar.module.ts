@@ -9,13 +9,19 @@ import { AlumnosEditarComponent } from './containers/alumnos-editar/alumnos-edit
 import { AlumnosAgregarComponent } from './containers/alumnos-agregar/alumnos-agregar.component';
 import { AsignaturasAgregarComponent } from './containers/asignaturas-agregar/asignaturas-agregar.component';
 import { AsignaturasEditarComponent } from './containers/asignaturas-editar/asignaturas-editar.component';
+import { ParametrizarRoutingModule } from './parametrizar-routing.module';
+import { DesignSharedModule } from '@design/shared.module';
+import { SharedModule } from 'app/shared/shared.module';
 
 
 
 @NgModule({
   declarations: [AlumnosComponent, AsignaturasComponent, AlumnosMenuParamComponent, AlumnosTablaParamComponent, AlumnosFormComponent, AlumnosEditarComponent, AlumnosAgregarComponent, AsignaturasAgregarComponent, AsignaturasEditarComponent],
   imports: [
-    CommonModule
+    CommonModule,
+    ParametrizarRoutingModule,
+    SharedModule,
+    DesignSharedModule
   ]
 })
 export class ParametrizarModule { }
