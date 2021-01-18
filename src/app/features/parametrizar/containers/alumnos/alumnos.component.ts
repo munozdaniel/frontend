@@ -15,54 +15,35 @@ import Swal from 'sweetalert2';
   selector: 'app-alumnos',
   template: `
     <div class="w-100-p p-24" fxLayout="column">
-      <app-alumnos-menu-param [cargando]="cargando" (retAgregarAlumno)="setAgregarAlumno($event)" fxFlex="100"> </app-alumnos-menu-param>
+      <app-alumnos-menu-param [cargando]="cargando" (retAgregarAlumno)="setAgregarAlumno($event)"> </app-alumnos-menu-param>
       <app-alumnos-tabla-param
-        [total]="total"
-        [totalAlumnosPorPagina]="totalAlumnosPorPagina"
         [cargando]="cargando"
         [alumnos]="alumnos"
         (retEliminarAlumno)="setEliminarAlumno($event)"
-        (retCambiarPagina)="setCambiarPagina($event)"
-        fxFlex="100"
       ></app-alumnos-tabla-param>
-
-      <button mat-flat-button (click)="obtenerAlumnos()">ObtenerAlumnos</button>
     </div>
   `,
   styles: [],
 })
 export class AlumnosComponent implements OnInit {
-  consulta: IQueryPag = {
-    ordenBy: null,
-    page: null,
-    limit: null,
-    query: null,
-    select: null,
-  };
-  total: number;
-  totalAlumnosPorPagina = 5;
   alumnos: IAlumno[] = [];
   // alumnos$: Observable<IAlumno[]>;
   cargando = false;
   constructor(private _router: Router, private _alumnoService: AlumnoService) {}
 
   ngOnInit(): void {
-    this.consulta.page = 0;
-    this.consulta.limit = this.totalAlumnosPorPagina;
     this.obtenerAlumnos();
   }
   obtenerAlumnos() {
     this.cargando = true;
-    console.log('this.consulta', this.consulta);
     this._alumnoService
-      .obtenerAlumnosPaginados(this.consulta)
+      .obtenerAlumnos()
       .pipe(untilDestroyed(this))
       .subscribe(
-        (datos: IAlumnoPaginado) => {
+        (datos) => {
           console.log('datos', datos);
           this.cargando = false;
-          this.alumnos = [...datos.docs];
-          this.total = datos.total;
+          this.alumnos = datos;
         },
         (error) => {
           this.cargando = false;
@@ -76,13 +57,6 @@ export class AlumnosComponent implements OnInit {
     }
   }
 
-  setCambiarPagina(evento: IPaginado) {
-    if (evento) {
-      this.consulta.page = evento.pageIndex;
-      this.consulta.limit = evento.pageSize;
-      this.obtenerAlumnos();
-    }
-  }
   setEliminarAlumno(evento: IAlumno) {
     if (evento) {
       const unAlumno: IAlumno = evento;

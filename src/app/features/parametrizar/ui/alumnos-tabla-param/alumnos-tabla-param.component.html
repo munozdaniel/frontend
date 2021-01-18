@@ -1,11 +1,8 @@
-<div fxFlex="100" class="p-24">
-  <div fxLayout fxLayoutAlign="start center">
-    <h1 class="px-12">Alumnos</h1>
-    <mat-spinner *ngIf="cargando" matSuffix class="ml-10" diameter="20"></mat-spinner>
-  </div>
-  <ghosts *ngIf="cargando" [tipo]="'custom'" [class]="'w-100-p h-200'"></ghosts>
 
-  <div *ngIf="!cargando" fxLayout="column" class="w-100-p">
+  <!-- <ghosts  [tipo]="'custom'" [class]="'w-100-p h-200'"></ghosts> -->
+
+  <div fxLayout="column" class="w-100-p">
+      <mat-progress-bar *ngIf="cargando" mode="indeterminate"></mat-progress-bar>
     <div
       *ngIf="alumnos && alumnos.length > 0"
       [@animate]="{ value: '*', params: { delay: '50ms', scale: '0.2' } }"
@@ -13,11 +10,11 @@
       fxLayoutAlign="center center"
       fxLayout="row"
     >
-      <!-- <mat-form-field appearance="outline" color="accent" class="w-40-p">
+      <mat-form-field appearance="outline" color="accent" class="w-40-p">
         <mat-label>Búsqueda Rápida</mat-label>
         <input matInput users (keyup)="filtroRapido($event.target.value)" [disabled]="dataSource.data.length == 0" />
         <mat-icon matSuffix>search</mat-icon>
-      </mat-form-field> -->
+      </mat-form-field>
     </div>
     <table
       mat-table
@@ -25,7 +22,6 @@
       #sort="matSort"
       [dataSource]="dataSource"
       class="borde-tabla mat-elevation-z4 w-100-p"
-      [class.mt-20]="!alumnos || alumnos.length < 1"
     >
       <!-- Progress Resolucion -->
       <ng-container matColumnDef="fecha_pedido">
@@ -66,10 +62,10 @@
     </table>
     <app-empty-data *ngIf="!alumnos || alumnos.length < 1"></app-empty-data>
     <!-- Paginado -------------------------------------------------- -->
-    <!-- <mat-paginator class="border-paginador paginator mat-elevation-z2" #paginator [pageSize]="5" [pageSizeOptions]="[5, 10, 25, 100]">
-        </mat-paginator> -->
+    <mat-paginator class="border-paginador paginator mat-elevation-z2" #paginator [pageSize]="5" [pageSizeOptions]="[5, 10, 25, 100]">
+        </mat-paginator> 
     <!-- PAGINADOR -->
-    <mat-paginator
+    <!-- <mat-paginator
       #paginator
       class="border-paginador paginator mat-elevation-z2"
       (page)="pageEvent = $event; cambioPagina($event)"
@@ -77,10 +73,5 @@
       [pageSize]="totalAlumnosPorPagina"
       [pageSizeOptions]="[2, 5, 10, 25, 100]"
     >
-    </mat-paginator>
-    <div>
-      <p>total:{{ total }}</p>
-      <p>totalAlumnosPorPagina:{{ totalAlumnosPorPagina }}</p>
-    </div>
+    </mat-paginator> -->
   </div>
-</div>

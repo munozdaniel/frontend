@@ -24,11 +24,9 @@ export class AlumnosTablaParamComponent implements OnInit, OnChanges {
   columnas: string[] = ['identificador', 'nombre', 'dni', 'seguimientoEtap', 'opciones'];
   // Input
   @Input() alumnos: IAlumno[];
-  @Input() total: number;
-  @Input() totalAlumnosPorPagina: number;
+  
   // Output
   @Output() retEliminarAlumno = new EventEmitter<IAlumno>();
-  @Output() retCambiarPagina = new EventEmitter<IPaginado>();
   constructor(private _router: Router) {}
 
   ngOnInit(): void {}
@@ -49,8 +47,5 @@ export class AlumnosTablaParamComponent implements OnInit, OnChanges {
   eliminar(row: IAlumno) {
     this.retEliminarAlumno.emit(row);
   }
-  cambioPagina(evento: IPaginado) {
-    console.log('cambioPagina', evento);
-    this.retCambiarPagina.emit(evento);
-  }
+ 
 }

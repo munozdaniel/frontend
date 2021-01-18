@@ -50,6 +50,12 @@ export class AlumnoService {
 
     return this.http.get<any>(url);
   }
+  obtenerAlumnos(): Observable<IAlumno[]> {
+    const query = `/alumnos/habilitados`;
+    const url = this.url + query;
+
+    return this.http.get<any>(url);
+  }
   agregarAlumno(alumno: IAlumno): Observable<IAlumno> {
     const query = `/alumnos`;
     const url = this.url + query;
