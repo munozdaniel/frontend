@@ -2,13 +2,13 @@ import { IAdulto } from './iAdulto';
 
 export interface IAlumno {
   _id: string;
-  identificador?: number;// Numero secuencial empezando en 100
+  identificador?: number; // Numero secuencial empezando en 100
   adultos: IAdulto[];
   tipoDni: string;
   dni: string;
   nombreCompleto: string;
   fechaNacimiento: string;
-  sexo: string;
+  sexo: 'Masculino' | 'Femenino' | 'Otros';
   nacionalidad: string;
   observacionTelefono?: string;
   telefono?: string;
@@ -16,12 +16,13 @@ export interface IAlumno {
   email: string;
   fechaIngreso: string;
   procedenciaColegioPrimario: string;
-  procedenciaColegioSecundario: string;
-  fechaDeBaja: string;
-  motivoDeBaja: string;
+  procedenciaColegioSecundario?: string;
+  fechaDeBaja?: string;
+  motivoDeBaja?: string;
   domicilio: string;
 
   cantidadIntegranteGrupoFamiliar: number;
+
   seguimientoEtap: string;
 
   nombreCompletoTae: string;

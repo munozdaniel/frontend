@@ -7,4 +7,6 @@ export interface IAdulto {
   fechaCreacion: Date;
   fechaModificacion?: Date;
   activo: boolean;
+
+  index?:number; // Para trabajarlo en la vista
 }

@@ -1,1 +1,500 @@
-<p>alumnos-form works!</p>
+<button mat-button color="primary" (click)="setDatosPersonalesTest()">SetDatos Personales</button>
+<div fxLayout="row" fxLayoutAlign="center start" class="w-100-p">
+  <mat-horizontal-stepper [linear]="true" #stepper>
+    <mat-step [stepControl]="formDatosPersonales" label="Alumno">
+      <div class="w-100-p mb-12" fxLayout="row" fxLayoutAlign="end start">
+        <button mat-raised-button matStepperNext color="accent">Siguiente</button>
+      </div>
+      <form [formGroup]="formDatosPersonales" fxLayout="column">
+        <div class="w-100-p" fxLayout="row" fxLayoutAlign="space-between start">
+          <div fxFlex.gt-xs="42" fxFlex.xs="100" fxLayout="column">
+            <div fxFlex="100" fxLayout="row" fxLayoutAlign="space-between start">
+              <!-- TipoDni ============================= -->
+              <mat-form-field appearance="outline" fxFlex.gt-xs="45" fxFlex.xs="100">
+                <mat-label class="lbl">Tipo Documento</mat-label>
+                <mat-select formControlName="tipoDni">
+                  <mat-option value="DNI">DNI</mat-option>
+                  <mat-option value="CI">CEDULA DE IDENTIDAD</mat-option>
+                  <mat-option value="LC">LIBRETA CIVICA</mat-option>
+                  <mat-option value="PASAPORTE">PASAPORTE</mat-option>
+                  <mat-option value="PARTIDANACIMIENTO">PART. DE NACIMIENTO-IDENTIDAD</mat-option>
+                </mat-select>
+                <mat-error *ngIf="formDatosPersonales.controls.tipoDni.hasError('required')"> Este campo es requerido. </mat-error>
+              </mat-form-field>
+              <!-- Dni ============================= -->
+              <mat-form-field appearance="outline" fxFlex.gt-xs="45" fxFlex.xs="100">
+                <mat-label class="lbl">Documento</mat-label>
+                <input matInput type="text" formControlName="dni" maxlength="9" minlength="7" autocomplete="off" />
+                <mat-error *ngIf="formDatosPersonales.controls.dni.hasError('required')"> Este campo es requerido. </mat-error>
+                <mat-error
+                  *ngIf="
+                    !formDatosPersonales.get('dni').hasError('required') &&
+                    (formDatosPersonales.get('dni').hasError('minlength') || formDatosPersonales.get('dni').hasError('maxlength'))
+                  "
+                >
+                  Se requieren 9 caracteres máximo
+                </mat-error>
+              </mat-form-field>
+            </div>
+
+            <!-- Nombre Completo ============================= -->
+            <mat-form-field appearance="outline">
+              <mat-label class="lbl">Nombre Completo</mat-label>
+              <input matInput type="text" formControlName="nombreCompleto" minlength="3" maxlength="250" autocomplete="off" />
+              <mat-error *ngIf="formDatosPersonales.controls.nombreCompleto.hasError('required')"> Este campo es requerido. </mat-error>
+              <mat-error
+                *ngIf="
+                  !formDatosPersonales.get('nombreCompleto').hasError('required') &&
+                  (formDatosPersonales.get('nombreCompleto').hasError('minlength')
+                   || formDatosPersonales.get('nombreCompleto').hasError('maxlength'))
+                "
+              >
+                Minimo 3 caracteres y Máximo 250
+              </mat-error>
+            </mat-form-field>
+            <!-- Sexo ============================= -->
+            <mat-form-field appearance="outline">
+              <mat-label class="lbl">Sexo</mat-label>
+              <mat-select formControlName="sexo">
+                <mat-option value="FEMENINO">FEMENINO</mat-option>
+                <mat-option value="MASCULINO">MASCULINO</mat-option>
+                <mat-option value="OTRO">OTROS</mat-option>
+              </mat-select>
+              <mat-error *ngIf="formDatosPersonales.controls.sexo.hasError('required')"> Este campo es requerido. </mat-error>
+              <mat-error
+              *ngIf="
+                !formDatosPersonales.get('sexo').hasError('required') &&
+                (formDatosPersonales.get('sexo').hasError('minlength')
+                 || formDatosPersonales.get('sexo').hasError('maxlength'))
+              "
+            >
+              Minimo 4 caracteres y Máximo 9
+            </mat-error>
+            </mat-form-field>
+            <!-- FechaNacimiento ============================= -->
+            <mat-form-field appearance="outline">
+              <mat-label>Fecha de Nacimiento</mat-label>
+              <input matInput [matDatepicker]="picker" formControlName="fechaNacimiento" />
+              <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+              <mat-datepicker #picker></mat-datepicker>
+              <mat-error *ngIf="formDatosPersonales.controls.fechaNacimiento.hasError('required')"> Este campo es requerido. </mat-error>
+            </mat-form-field>
+            <!-- Nacionalidad ============================= -->
+            <mat-form-field appearance="outline" fxFlex.gt-xs="45" fxFlex.xs="100">
+              <mat-label class="lbl">Nacionalidad</mat-label>
+              <mat-select formControlName="nacionalidad">
+                <mat-option *ngFor="let nacionalidad of nacionalidades" [value]="nacionalidad">{{ nacionalidad }}</mat-option>
+              </mat-select>
+              <mat-error *ngIf="formDatosPersonales.controls.nacionalidad.hasError('required')"> Este campo es requerido. </mat-error>
+            </mat-form-field>
+
+            <!-- telefono ============================= -->
+            <mat-form-field appearance="outline">
+              <mat-label class="lbl"> Teléfono </mat-label>
+              <input matInput type="number" formControlName="telefono" minlength="4" maxlength="50" autocomplete="off" />
+              <mat-error *ngIf="formDatosPersonales.controls.telefono.hasError('required')"> Este campo es requerido. </mat-error>
+              <mat-error
+              *ngIf="
+                !formDatosPersonales.get('telefono').hasError('required') &&
+                (formDatosPersonales.get('telefono').hasError('minlength')
+                 || formDatosPersonales.get('telefono').hasError('maxlength'))
+              "
+            >
+              Minimo 7 caracteres y Máximo 20 (sin guiones)
+            </mat-error>
+            <mat-hint>Solo Números</mat-hint>
+            </mat-form-field>
+            <!-- celular ============================= -->
+            <mat-form-field appearance="outline">
+              <mat-label class="lbl"> Celular </mat-label>
+              <input matInput type="number" formControlName="celular" minlength="4" maxlength="50" autocomplete="off" />
+              <mat-error *ngIf="formDatosPersonales.controls.celular.hasError('required')"> Este campo es requerido. </mat-error>
+              <mat-error
+              *ngIf="
+                !formDatosPersonales.get('celular').hasError('required') &&
+                (formDatosPersonales.get('celular').hasError('minlength')
+                 || formDatosPersonales.get('celular').hasError('maxlength'))
+              "
+            >
+              Minimo 7 caracteres y Máximo 20 (sin guiones)
+            </mat-error>
+            <mat-hint>Solo Números</mat-hint>
+            </mat-form-field>
+            <!-- observacionTelefono ============================= -->
+            <mat-form-field appearance="outline">
+              <mat-label class="lbl">Observación sobre Teléfono/Celular</mat-label>
+              <input matInput type="text" formControlName="observacionTelefono" minlength="3" maxlength="50" autocomplete="off" />
+              <!-- <mat-hint align="end">{{ formDatosPersonales.controls.observacionTelefono.value.length }} / 50</mat-hint> -->
+              <mat-error
+              *ngIf="
+                !formDatosPersonales.get('observacionTelefono').hasError('required') &&
+                (formDatosPersonales.get('observacionTelefono').hasError('minlength')
+                 || formDatosPersonales.get('observacionTelefono').hasError('maxlength'))
+              "
+            >
+              Minimo 3 caracteres y Máximo 50
+            </mat-error>
+            </mat-form-field>
+          </div>
+          <!--  ============================= -->
+          <!--  ============================= -->
+          <div fxFlex.gt-xs="42" fxFlex.xs="100" fxLayout="column">
+            <!-- email ============================= -->
+            <mat-form-field appearance="outline" class="w-100-p">
+              <mat-label class="lbl"> Email </mat-label>
+              <input matInput type="email" formControlName="email" minlength="4" maxlength="50" autocomplete="off" />
+              <mat-error *ngIf="formDatosPersonales.controls.email.hasError('required')"> Este campo es requerido. </mat-error>
+              <mat-error
+                *ngIf="formDatosPersonales.controls.email.hasError('email') && !formDatosPersonales.controls.email.hasError('required')"
+              >
+                Email inválido
+              </mat-error>
+              <mat-error
+              *ngIf="
+                !formDatosPersonales.get('email').hasError('required') &&
+                (formDatosPersonales.get('email').hasError('minlength')
+                 || formDatosPersonales.get('email').hasError('maxlength'))
+              "
+            >
+              Minimo 4 caracteres y Máximo 50
+            </mat-error>
+            </mat-form-field>
+            <!-- fechaIngreso ============================= -->
+            <mat-form-field appearance="outline">
+              <mat-label>Fecha de Ingreso</mat-label>
+              <input matInput [matDatepicker]="pickerIngreso" formControlName="fechaIngreso" />
+              <mat-datepicker-toggle matSuffix [for]="pickerIngreso"></mat-datepicker-toggle>
+              <mat-datepicker #pickerIngreso></mat-datepicker>
+              <mat-error *ngIf="formDatosPersonales.controls.fechaIngreso.hasError('required')"> Este campo es requerido. </mat-error>
+            </mat-form-field>
+            <!-- procedencia colegio primario ============================= -->
+            <mat-form-field appearance="outline">
+              <mat-label class="lbl">Procedencia colegio primario</mat-label>
+              <input matInput type="text" formControlName="procedenciaColegioPrimario" minlength="4" maxlength="50" autocomplete="off" />
+              <mat-error *ngIf="formDatosPersonales.controls.procedenciaColegioPrimario.hasError('required')">
+                Este campo es requerido.
+              </mat-error>
+              <mat-error
+              *ngIf="
+                !formDatosPersonales.get('procedenciaColegioPrimario').hasError('required') &&
+                (formDatosPersonales.get('procedenciaColegioPrimario').hasError('minlength')
+                 || formDatosPersonales.get('procedenciaColegioPrimario').hasError('maxlength'))
+              "
+            >
+              Minimo 4 caracteres y Máximo 50
+            </mat-error>
+            </mat-form-field>
+            <!-- procedencia colegio secundario ============================= -->
+            <mat-form-field appearance="outline">
+              <mat-label class="lbl">Procedencia colegio secundario</mat-label>
+              <input matInput type="text" formControlName="procedenciaColegioSecundario" minlength="4" maxlength="50" autocomplete="off" />
+              <mat-error
+              *ngIf="
+                (formDatosPersonales.get('procedenciaColegioSecundario').hasError('minlength')
+                 || formDatosPersonales.get('procedenciaColegioSecundario').hasError('maxlength'))
+              "
+            >
+              Minimo 4 caracteres y Máximo 50
+            </mat-error> 
+         </mat-form-field>
+            <!-- fecha de baja ============================= -->
+            <mat-form-field appearance="outline">
+              <mat-label>Fecha de Baja</mat-label>
+              <input matInput [matDatepicker]="pickerBaja" formControlName="fechaDeBaja" />
+              <mat-datepicker-toggle matSuffix [for]="pickerBaja"></mat-datepicker-toggle>
+              <mat-datepicker #pickerBaja></mat-datepicker>
+            </mat-form-field>
+            <!-- motivo de baja ============================= -->
+            <mat-form-field appearance="outline">
+              <mat-label class="lbl">Motivo de Baja</mat-label>
+              <input matInput type="text" formControlName="motivoDeBaja" minlength="4" maxlength="50" autocomplete="off" />
+              <mat-error
+              *ngIf="
+                (formDatosPersonales.get('motivoDeBaja').hasError('minlength')
+                 || formDatosPersonales.get('motivoDeBaja').hasError('maxlength'))
+              "
+            >
+              Minimo 4 caracteres y Máximo 50
+            </mat-error> </mat-form-field>
+            <!-- domicilio ============================= -->
+            <mat-form-field appearance="outline">
+              <mat-label class="lbl">Domicilio</mat-label>
+              <input matInput type="text" formControlName="domicilio" minlength="4" maxlength="100" autocomplete="off" />
+              <mat-error *ngIf="formDatosPersonales.controls.domicilio.hasError('required')"> Este campo es requerido. </mat-error>
+              <mat-error
+              *ngIf="
+                (formDatosPersonales.get('domicilio').hasError('minlength')
+                 || formDatosPersonales.get('domicilio').hasError('maxlength'))
+              "
+            >
+              Minimo 4 caracteres y Máximo 50
+            </mat-error>
+            </mat-form-field>
+            <!-- cantidad integrantes grupo familiar ============================= -->
+            <mat-form-field appearance="outline">
+              <mat-label class="lbl">Cantidad de Intregantes del grupo familiar</mat-label>
+              <input matInput type="number" formControlName="cantidadIntegranteGrupoFamiliar" autocomplete="off" />
+              <mat-error *ngIf="formDatosPersonales.controls.cantidadIntegranteGrupoFamiliar.hasError('required')">
+                Este campo es requerido.
+              </mat-error>
+            </mat-form-field>
+            <!-- observacion ============================= -->
+            <mat-form-field appearance="fill" fxFlexAlign.gt-xs="center" class="w-100-p">
+              <mat-label class="lbl">Observación General</mat-label>
+              <textarea
+                matInput
+                type="text"
+                cdkTextareaAutosize
+                cdkAutosizeMinRows="4"
+                cdkAutosizeMaxRows="6"
+                rows="5"
+                cols="40"
+                formControlName="observacion"
+              ></textarea>
+              <mat-error
+              *ngIf="
+                (formDatosPersonales.get('observacion').hasError('minlength')
+                 || formDatosPersonales.get('observacion').hasError('maxlength'))
+              "
+            >
+              Minimo 4 caracteres y Máximo 100
+            </mat-error>
+            </mat-form-field>
+          </div>
+        </div>
+        <div class="w-100-p mb-12" fxLayout="row" fxLayoutAlign="end start">
+          <button mat-raised-button matStepperNext color="accent">Siguiente</button>
+        </div>
+        {{ formDatosPersonales.value | json }}
+      </form>
+    </mat-step>
+    <mat-step label="Padre/Madre/Tutor">
+      <div class="w-100-p mb-12" fxLayout="row" fxLayoutAlign="space-between start">
+        <button mat-raised-button matStepperPrevious color="warn">Volver</button>
+        <button mat-raised-button matStepperNext color="accent">Siguiente</button>
+      </div>
+      <div fxLayout="row" fxLayoutAlign="space-between start" class="w-100-p">
+        <form [formGroup]="formAdulto" (ngSubmit)="agregarAdulto()" fxFlex.xs="100" fxFlex.gt-xs="45" fxLayout="column">
+          <p class="text_red">Ingrese al menos un registro</p>
+          <!-- tipo adulto ============================= -->
+          <mat-form-field appearance="outline">
+            <mat-label class="lbl">Tipo de Adulto</mat-label>
+            <mat-select formControlName="tipoAdulto">
+              <mat-option value="TUTOR">TUTOR</mat-option>
+              <mat-option value="PADRE">PADRE </mat-option>
+              <mat-option value="MADRE">MADRE </mat-option>
+            </mat-select>
+            <mat-error *ngIf="formAdulto.controls.tipoAdulto.hasError('required')"> Este campo es requerido. </mat-error>
+          </mat-form-field>
+          <!-- nombre completo ============================= -->
+          <mat-form-field appearance="outline">
+            <mat-label class="lbl">Nombre Completo</mat-label>
+            <input matInput type="text" formControlName="nombreCompleto" minlength="4" maxlength="50" autocomplete="off" />
+            <mat-error *ngIf="formAdulto.controls.nombreCompleto.hasError('required')"> Este campo es requerido. </mat-error>
+          </mat-form-field>
+          <!-- telefono ============================= -->
+          <mat-form-field appearance="outline">
+            <mat-label class="lbl"> Teléfono </mat-label>
+            <input matInput type="number" formControlName="telefono" minlength="4" maxlength="50" autocomplete="off" />
+            <mat-error *ngIf="formAdulto.controls.telefono.hasError('required')"> Este campo es requerido. </mat-error>
+          </mat-form-field>
+          <!-- celular ============================= -->
+          <mat-form-field appearance="outline">
+            <mat-label class="lbl"> Celular </mat-label>
+            <input matInput type="number" formControlName="celular" minlength="4" maxlength="50" autocomplete="off" />
+            <mat-error *ngIf="formAdulto.controls.celular.hasError('required')"> Este campo es requerido. </mat-error>
+          </mat-form-field>
+          <!-- email ============================= -->
+          <mat-form-field appearance="outline">
+            <mat-label class="lbl"> Email </mat-label>
+            <input matInput type="email" formControlName="email" minlength="4" maxlength="50" autocomplete="off" />
+            <mat-error *ngIf="formAdulto.controls.email.hasError('email') && !formAdulto.controls.email.hasError('required')">
+              Email inválido
+            </mat-error>
+            <mat-error *ngIf="formAdulto.controls.email.hasError('required')"> Este campo es requerido. </mat-error>
+          </mat-form-field>
+          <button mat-raised-button color="accent" type="submit">Agregar {{ formAdulto.controls.tipoAdulto.value }}</button>
+        </form>
+        <div fxLayout="column" fxFlex.xs="100" fxFlex.gt-xs="45">
+          <h2>Padre/Madre/Tutores asignados:</h2>
+
+          <p *ngIf="adultos || adultos.length < 1">No se ha ingresado ningún registro</p>
+          <mat-list>
+            <mat-list-item *ngFor="let adulto of adultos">
+              <div fxLayout="row" fxLayoutAlign="space-between start" class="w-100-p mt-24">
+                <div fxLayout="column">
+                  <strong>{{ adulto.nombreCompleto }}</strong>
+                  <small
+                    ><span>{{ adulto.telefono ? adulto.telefono : 'SIN TELEFONO' }}</span> -
+                    <span>{{ adulto.celular ? adulto.celular : 'SIN CELULAR' }}</span></small
+                  >
+                  <small class="fg--red"> {{ adulto.tipoAdulto }}</small>
+                </div>
+                <button mat-icon-button color="warn" (click)="quitarAdulto(adulto)"><mat-icon>delete_forever</mat-icon></button>
+              </div>
+            </mat-list-item>
+          </mat-list>
+        </div>
+      </div>
+      <div class="w-100-p mt-12" fxLayout="row" fxLayoutAlign="space-between start">
+        <button mat-raised-button matStepperPrevious color="warn">Volver</button>
+        <button mat-raised-button matStepperNext color="accent">Siguiente</button>
+      </div>
+    </mat-step>
+    <mat-step [stepControl]="formEtap" label="ETAP" [optional]="!seguimientoEtap">
+      <div class="w-100-p mt-24" fxLayout="row" fxLayoutAlign="space-between start">
+        <button mat-raised-button matStepperPrevious color="warn">Volver</button>
+        <button mat-raised-button matStepperNext color="accent">Siguiente</button>
+      </div>
+      <div fxFlex="100" fxLayout="column" fxLayoutAlign="center center" class=" ">
+        <div class="border p-24">
+          <mat-checkbox [(ngModel)]="seguimientoEtap" (ngModelChange)="actualizarFormEtap()">Seguimiento ETAP</mat-checkbox>
+        </div>
+      </div>
+      <form [formGroup]="formEtap" fxFlex="100" fxLayout="column" fxLayoutAlign="center center">
+        <!-- nombreCompletoTae ============================= -->
+        <!-- Nombre Completo ============================= -->
+        <mat-form-field appearance="outline">
+          <mat-label class="lbl">Nombre Completo</mat-label>
+          <input matInput type="text" formControlName="nombreCompletoTae" minlength="3" maxlength="250" autocomplete="off" />
+          <mat-error *ngIf="formEtap.controls.nombreCompletoTae.hasError('required')"> Este campo es requerido. </mat-error>
+        </mat-form-field>
+        <!-- emailTae ============================= -->
+        <mat-form-field appearance="outline">
+          <mat-label class="lbl"> Email </mat-label>
+          <input matInput type="email" formControlName="emailTae" minlength="4" maxlength="50" autocomplete="off" />
+          <mat-error *ngIf="formEtap.controls.emailTae.hasError('required')"> Este campo es requerido. </mat-error>
+          <mat-error *ngIf="formEtap.controls.emailTae.hasError('email') && !formEtap.controls.emailTae.hasError('required')">
+            Email inválido
+          </mat-error>
+        </mat-form-field>
+        <!-- archivoDiagnostico ============================= -->
+        <mat-form-field appearance="outline">
+          <mat-label class="lbl">Archivo Diagnostico</mat-label>
+          <input matInput type="text" formControlName="archivoDiagnostico" minlength="3" maxlength="250" autocomplete="off" />
+          <mat-error *ngIf="formEtap.controls.archivoDiagnostico.hasError('required')"> Este campo es requerido. </mat-error>
+        </mat-form-field>
+
+        <div class="w-100-p mt-12" fxLayout="row" fxLayoutAlign="space-between start">
+          <button mat-raised-button matStepperPrevious color="warn">Volver</button>
+          <button mat-raised-button matStepperNext color="accent">Siguiente</button>
+        </div>
+      </form>
+    </mat-step>
+    <mat-step>
+      <ng-template matStepLabel>Guardar</ng-template>
+      <div class="w-100-p mt-12" fxLayout="row" fxLayoutAlign="space-between start">
+        <button mat-raised-button matStepperPrevious color="warn">Volver</button>
+        <button mat-raised-button matStepperNext color="accent" (click)="guardarAlumno()">Guardar Alumno</button>
+      </div>
+      <p>Verifique que todos los datos hayan sido cargados correctamente</p>
+      <div fxLayout="row" fxLayoutAlign="space-between" class="p-24">
+        <div class="border p-12" fxFlex.xs="100" fxFlex.gt-xs="45">
+          <h3><ins>Datos Personales</ins></h3>
+          <div *ngIf="formDatosPersonales.value as alumno" class="resumen_personal">
+            <p>
+              <strong>Tipo de Identifcación:</strong><span>{{ alumno.tipoDni }}</span>
+            </p>
+            <p>
+              <strong>Identifcación:</strong><span>{{ alumno.dni }}</span>
+            </p>
+            <p>
+              <strong>Nombre Completo:</strong><span>{{ alumno.nombreCompleto }}</span>
+            </p>
+            <p>
+              <strong>Sexo:</strong><span>{{ alumno.sexo }}</span>
+            </p>
+            <p>
+              <strong>Fecha de Nacimiento:</strong><span>{{ alumno.fechaNacimiento | date: 'dd/MM/yyyy' }}</span>
+            </p>
+            <p>
+              <strong>Nacionalidad:</strong><span>{{ alumno.nacionalidad }}</span>
+            </p>
+            <p>
+              <strong>Observacion Telefono:</strong
+              ><span>{{ alumno.observacionTelefono ? alumno.observacionTelefono : 'SIN OBSERVACION' }}</span>
+            </p>
+            <p>
+              <strong>Telefono:</strong><span>{{ alumno.telefono }}</span>
+            </p>
+            <p>
+              <strong>Celular:</strong><span>{{ alumno.celular }}</span>
+            </p>
+            <p>
+              <strong>Email:</strong><span>{{ alumno.email }}</span>
+            </p>
+            <p>
+              <strong>Fecha de Ingreso:</strong><span>{{ alumno.fechaIngreso | date: 'dd/MM/yyyy' }}</span>
+            </p>
+            <p>
+              <strong>Procedencia colegio Primario:</strong><span>{{ alumno.procedenciaColegioPrimario }}</span>
+            </p>
+            <p>
+              <strong>Procedencia colegio Secundario:</strong><span>{{ alumno.procedenciaColegioSecundario }}</span>
+            </p>
+            <p>
+              <strong>Fecha de Baja:</strong
+              ><span>{{ alumno.fechaDeBaja ? (alumno.fechaDeBaja | date: 'dd/MM/yyyy') : 'NO REGISTRADO' }}</span>
+            </p>
+            <p>
+              <strong>Motivo de Baja:</strong><span>{{ alumno.motivoDeBaja ? alumno.motivoDeBaja : 'NO REGISTRADO' }}</span>
+            </p>
+            <p>
+              <strong>Domicilio:</strong><span>{{ alumno.domicilio }}</span>
+            </p>
+            <p>
+              <strong>Cantidad de integrantes del grupo familiar:</strong><span>{{ alumno.cantidadIntegranteGrupoFamiliar }}</span>
+            </p>
+            <p>
+              <strong>Observación:</strong><span>{{ alumno.observacion }}</span>
+            </p>
+          </div>
+        </div>
+        <div fxFlex.xs="100" fxFlex.gt-xs="45" fxLayout="column">
+          <div class="border p-12">
+            <h3><ins>Padre/Madre/Tutores</ins></h3>
+            <div *ngIf="adultos.length < 1">
+              <p>No se han cargado registros.</p>
+            </div>
+            <div *ngFor="let adulto of adultos">
+              <p>
+                <strong>Tipo de Adulto:</strong><span>{{ adulto.tipoAdulto }}</span>
+              </p>
+              <p>
+                <strong>Nombre Completo:</strong><span>{{ adulto.nombreCompleto }}</span>
+              </p>
+              <p>
+                <strong>Telefono:</strong><span>{{ adulto.telefono ? adulto.telefono : 'SIN REGISTRAR' }}</span>
+              </p>
+              <p>
+                <strong>Celular:</strong><span>{{ adulto.celular ? adulto.celular : 'SIN REGISTRAR' }}</span>
+              </p>
+              <p>
+                <strong>Email:</strong><span>{{ adulto.email }}</span>
+              </p>
+            </div>
+          </div>
+
+          <div class="border p-12">
+            <h3><ins>Etap</ins></h3>
+            <div *ngIf="formEtap.value as etap" class="resumen_etap">
+              <p>
+                <strong>Nombre Completo Tae:</strong><span>{{ etap.nombreCompleto }}</span>
+              </p>
+              <p>
+                <strong>Email:</strong><span>{{ etap.emailEtap }}</span>
+              </p>
+              <p>
+                <strong>Diagnositico:</strong><span>{{ etap.archivoDiagnostico }}</span>
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="w-100-p mt-12" fxLayout="row" fxLayoutAlign="space-between start">
+        <button mat-raised-button matStepperPrevious color="warn">Volver</button>
+        <button mat-raised-button matStepperNext color="accent" (click)="guardarAlumno()">Guardar Alumno</button>
+      </div>
+    </mat-step>
+  </mat-horizontal-stepper>
+</div>
