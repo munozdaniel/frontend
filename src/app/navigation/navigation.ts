@@ -18,7 +18,7 @@ export const navigation: DesignNavigation[] = [
                 title: "Asignatura",
                 type: "item",
                 icon: "users",
-                url: "/parametrizar/asignatura",
+                url: "/parametrizar/asignaturas",
             },
             
         ],

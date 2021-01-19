@@ -6,6 +6,7 @@ import { AlumnosVerComponent } from './containers/alumnos-ver/alumnos-ver.compon
 import { AlumnosComponent } from './containers/alumnos/alumnos.component';
 import { AsignaturasAgregarComponent } from './containers/asignaturas-agregar/asignaturas-agregar.component';
 import { AsignaturasEditarComponent } from './containers/asignaturas-editar/asignaturas-editar.component';
+import { AsignaturasVerComponent } from './containers/asignaturas-ver/asignaturas-ver.component';
 import { AsignaturasComponent } from './containers/asignaturas/asignaturas.component';
 
  // parametrizar/alumnos
@@ -43,6 +44,11 @@ const routes: Routes = [
     {
         path: "asignaturas-editar/:id",
         component: AsignaturasEditarComponent,
+        //  DEBE estar autenticados
+    },
+    {
+        path: "asignaturas-ver/:id",
+        component: AsignaturasVerComponent,
         //  DEBE estar autenticados
     },
 ];

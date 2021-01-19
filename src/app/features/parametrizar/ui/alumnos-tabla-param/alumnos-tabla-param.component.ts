@@ -21,7 +21,7 @@ export class AlumnosTablaParamComponent implements OnInit, OnChanges {
   @ViewChild('paginator') set setPaginator(paginator: MatPaginator) {
     this.dataSource.paginator = paginator;
   }
-  columnas: string[] = ['identificador', 'nombre', 'dni', 'seguimientoEtap', 'opciones'];
+  columnas: string[] = ['alumnoNro', 'nombre', 'dni', 'seguimientoEtap', 'opciones'];
   // Input
   @Input() alumnos: IAlumno[];
   

@@ -13,6 +13,10 @@ import { ParametrizarRoutingModule } from './parametrizar-routing.module';
 import { DesignSharedModule } from '@design/shared.module';
 import { SharedModule } from 'app/shared/shared.module';
 import { AlumnosVerComponent } from './containers/alumnos-ver/alumnos-ver.component';
+import { AsignaturasTablaParamComponent } from './ui/asignaturas-tabla-param/asignaturas-tabla-param.component';
+import { AsignaturasMenuParamComponent } from './ui/asignaturas-menu-param/asignaturas-menu-param.component';
+import { AsignaturasFormComponent } from './ui/asignaturas-form/asignaturas-form.component';
+import { AsignaturasVerComponent } from './containers/asignaturas-ver/asignaturas-ver.component';
 
 @NgModule({
   declarations: [
@@ -24,7 +28,7 @@ import { AlumnosVerComponent } from './containers/alumnos-ver/alumnos-ver.compon
     AlumnosEditarComponent,
     AlumnosAgregarComponent,
     AsignaturasAgregarComponent,
-    AsignaturasEditarComponent,AlumnosVerComponent
+    AsignaturasEditarComponent,AlumnosVerComponent, AsignaturasTablaParamComponent, AsignaturasMenuParamComponent, AsignaturasFormComponent, AsignaturasVerComponent
   ],
   imports: [CommonModule, ParametrizarRoutingModule, SharedModule, DesignSharedModule],
 })

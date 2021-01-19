@@ -1,0 +1,106 @@
+<div class="mat-elevation-z4 mat-card p-12">
+  <form [formGroup]="form" fxLayout="column" (ngSubmit)="guardarAsignatura()">
+    <div class="w-100-p" fxLayout="row" fxLayoutAlign="space-between start">
+      <div fxFlex.gt-xs="42" fxFlex.xs="100" fxLayout="column">
+        <!-- Detalle ============================= -->
+        <mat-form-field appearance="outline" fxFlex.gt-xs="45" fxFlex.xs="100">
+          <mat-label class="lbl">Detalle</mat-label>
+          <input matInput type="text" formControlName="detalle" maxlength="50" minlength="7" autocomplete="off" />
+          <mat-error *ngIf="form.controls.detalle.hasError('required')"> Este campo es requerido. </mat-error>
+          <mat-error
+            *ngIf="
+              !form.get('detalle').hasError('required') &&
+              (form.get('detalle').hasError('minlength') || form.get('detalle').hasError('maxlength'))
+            "
+          >
+            Se requieren 9 caracteres máximo
+          </mat-error>
+        </mat-form-field>
+        <!-- tipoAsignatura ============================= -->
+        <mat-form-field appearance="outline" fxFlex.gt-xs="45" fxFlex.xs="100">
+          <mat-label class="lbl">Tipo Asignatura</mat-label>
+          <mat-select formControlName="tipoAsignatura">
+            <mat-option *ngFor="let tipo of tiposAsignatura" [value]="tipo">{{ tipo }}</mat-option>
+          </mat-select>
+          <mat-error *ngIf="form.controls.tipoAsignatura.hasError('required')"> Este campo es requerido. </mat-error>
+        </mat-form-field>
+        <!-- tipoCiclo ============================= -->
+        <mat-form-field appearance="outline" fxFlex.gt-xs="45" fxFlex.xs="100">
+          <mat-label class="lbl">Tipo de Ciclo</mat-label>
+          <mat-select formControlName="tipoCiclo">
+            <mat-option *ngFor="let ciclo of ciclos" [value]="ciclo">{{ ciclo }}</mat-option>
+          </mat-select>
+          <mat-error *ngIf="form.controls.tipoCiclo.hasError('required')"> Este campo es requerido. </mat-error>
+        </mat-form-field>
+        <!-- curso ============================= -->
+        <mat-form-field appearance="outline" fxFlex.gt-xs="45" fxFlex.xs="100">
+          <mat-label class="lbl">Curso</mat-label>
+          <mat-select formControlName="curso">
+            <mat-option value="1">CURSO 1</mat-option>
+            <mat-option value="2">CURSO 2</mat-option>
+            <mat-option value="3">CURSO 3</mat-option>
+            <mat-option value="4">CURSO 4</mat-option>
+            <mat-option value="5">CURSO 5</mat-option>
+            <mat-option value="6">CURSO 6</mat-option>
+          </mat-select>
+          <mat-error *ngIf="form.controls.curso.hasError('required')"> Este campo es requerido. </mat-error>
+        </mat-form-field>
+      </div>
+      <div fxFlex.gt-xs="42" fxFlex.xs="100" fxLayout="column">
+        <!-- horasCatedraSemanales ============================= -->
+        <mat-form-field appearance="outline">
+          <mat-label class="lbl">Horas Catedra Semanal</mat-label>
+          <input matInput type="number" min="0" formControlName="horasCatedraSemanales" autocomplete="off" />
+          <mat-error *ngIf="form.controls.horasCatedraSemanales.hasError('required')"> Este campo es requerido. </mat-error>
+          <mat-error
+            *ngIf="
+              !form.controls.horasCatedraSemanales.hasError('required') &&
+              (form.controls.horasCatedraSemanales.hasError('min') || form.controls.horasCatedraSemanales.hasError('max'))
+            "
+            >Ingrese un valor entre 0 y 500</mat-error
+          >
+        </mat-form-field>
+        <!-- horasCatedraAnuales ============================= -->
+        <mat-form-field appearance="outline">
+          <mat-label class="lbl">Horas Catedra Anual</mat-label>
+          <input matInput type="number" min="0" formControlName="horasCatedraAnuales" autocomplete="off" />
+          <mat-error *ngIf="form.controls.horasCatedraAnuales.hasError('required')"> Este campo es requerido. </mat-error>
+          <mat-error
+            *ngIf="
+              !form.controls.horasCatedraAnuales.hasError('required') &&
+              (form.controls.horasCatedraAnuales.hasError('min') || form.controls.horasCatedraAnuales.hasError('max'))
+            "
+            >Ingrese un valor entre 0 y 500</mat-error
+          >
+        </mat-form-field>
+        <!-- tipoFormacion ============================= -->
+        <mat-form-field appearance="outline" fxFlex.gt-xs="45" fxFlex.xs="100">
+          <mat-label class="lbl">Formación</mat-label>
+          <mat-select formControlName="tipoFormacion">
+            <mat-option value="FORMACIÓN ÉTICA - CIUDADANA - HUMANISTICA GENERAL"
+              >FORMACIÓN ÉTICA - CIUDADANA - HUMANISTICA GENERAL</mat-option
+            >
+            <mat-option value="FORMACIÓN CIENTÍFICA - TECNOLÓGICA">FORMACIÓN CIENTÍFICA - TECNOLÓGICA</mat-option>
+            <mat-option value="FORMACIÓN TÉCNICA - ESPÉCIFICA">FORMACIÓN TÉCNICA - ESPÉCIFICA</mat-option>
+          </mat-select>
+          <mat-error *ngIf="form.controls.tipoAsignatura.hasError('required')"> Este campo es requerido. </mat-error>
+        </mat-form-field>
+        <!-- meses ============================= -->
+        <mat-form-field appearance="outline">
+          <mat-label class="lbl">Meses</mat-label>
+          <input matInput type="number" min="0" formControlName="meses" autocomplete="off" />
+          <mat-error *ngIf="form.controls.meses.hasError('required')"> Este campo es requerido. </mat-error>
+          <mat-error
+            *ngIf="
+              !form.controls.meses.hasError('required') && (form.controls.meses.hasError('min') || form.controls.meses.hasError('max'))
+            "
+            >Ingrese un valor entre 0 y 12</mat-error
+          >
+        </mat-form-field>
+      </div>
+    </div>
+    <div fxLayout="row" fxLayoutAlign="center start">
+      <button mat-raised-button color="accent">Guardar Asignatura</button>
+    </div>
+  </form>
+</div>

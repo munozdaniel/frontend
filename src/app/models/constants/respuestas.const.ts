@@ -13,6 +13,13 @@ export const ALUMNO_ACTUALIZADO_SUCCESS = 'El alumno ha sido actualizado correct
 export const ALUMNO_ACTUALIZADO_ERROR = 'Ups! Ocurrió un error. No se pudo actualizar el alumno.';
 export const ALUMNO_AGREGADO_SUCCESS = 'El alumno ha sido agregado correctamente.';
 export const ALUMNO_AGREGADO_ERROR = 'Ups! Ocurrió un error. No se pudo agregar el alumno.';
+// Asignatura
+export const ASIGNATURA_ELIMINADO_SUCCESS = 'El asignatura ha sido eliminado correctamente';
+export const ASIGNATURA_ELIMINADO_ERROR = 'Ups! Ocurrió un error. No se pudo eliminar el asignatura.';
+export const ASIGNATURA_ACTUALIZADO_SUCCESS = 'El asignatura ha sido actualizado correctamente';
+export const ASIGNATURA_ACTUALIZADO_ERROR = 'Ups! Ocurrió un error. No se pudo actualizar el asignatura.';
+export const ASIGNATURA_AGREGADO_SUCCESS = 'El asignatura ha sido agregado correctamente.';
+export const ASIGNATURA_AGREGADO_ERROR = 'Ups! Ocurrió un error. No se pudo agregar el asignatura.';
 
 // Categorias
 export const CATEGORIAS_LIST_ERROR = `Error al cargar las categorias, actualice la página.
