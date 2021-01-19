@@ -11,7 +11,7 @@ import { Observable } from 'rxjs';
 export class AsignaturaService {
   protected url = environment.apiURI;
   constructor(private http: HttpClient) {}
-  findAsignaturas( filter = '', sortOrder = 'asc', pageNumber = 0, pageSize = 3): Observable<IAsignatura[]> {
+  findAsignaturas(filter = '', sortOrder = 'asc', pageNumber = 0, pageSize = 3): Observable<IAsignatura[]> {
     return this.http.get<any>('asignaturas/paginado2', {
       params: new HttpParams()
         .set('filter', filter)
@@ -20,34 +20,34 @@ export class AsignaturaService {
         .set('pageSize', pageSize.toString()),
     });
   }
-//   obtenerAsignaturasPaginados(consulta?: IQueryPag): Observable<IAsignaturaPaginado> {
-//     let query = `asignaturas/paginado`;
-//     if (consulta) {
-//       // page: 1, limit: 1,
-//       console.log('consulta.page', consulta.page);
+  //   obtenerAsignaturasPaginados(consulta?: IQueryPag): Observable<IAsignaturaPaginado> {
+  //     let query = `asignaturas/paginado`;
+  //     if (consulta) {
+  //       // page: 1, limit: 1,
+  //       console.log('consulta.page', consulta.page);
 
-//       if (consulta.page || consulta.page > 0) {
-//         console.log('OK');
-//         query += `?page=${consulta.page + 1}`; // +1 porque el mat-paginator anda raro
-//       } else {
-//         console.log('NOOOO');
-//         query += `?page=1`;
-//       }
-//       if (consulta.limit) {
-//         query += `&limit=${consulta.limit}`;
-//       }
-//       if (consulta.ordenBy) {
-//         query += `&sort=${JSON.stringify(consulta.ordenBy)}`;
-//       }
-//       // No se va a usar en este caso
-//       if (consulta.query) {
-//         query += `&query=${JSON.stringify(consulta.query)}`;
-//       }
-//     }
-//     const url = this.url + query;
+  //       if (consulta.page || consulta.page > 0) {
+  //         console.log('OK');
+  //         query += `?page=${consulta.page + 1}`; // +1 porque el mat-paginator anda raro
+  //       } else {
+  //         console.log('NOOOO');
+  //         query += `?page=1`;
+  //       }
+  //       if (consulta.limit) {
+  //         query += `&limit=${consulta.limit}`;
+  //       }
+  //       if (consulta.ordenBy) {
+  //         query += `&sort=${JSON.stringify(consulta.ordenBy)}`;
+  //       }
+  //       // No se va a usar en este caso
+  //       if (consulta.query) {
+  //         query += `&query=${JSON.stringify(consulta.query)}`;
+  //       }
+  //     }
+  //     const url = this.url + query;
 
-//     return this.http.get<any>(url);
-//   }
+  //     return this.http.get<any>(url);
+  //   }
   obtenerAsignaturaPorId(productoId: string): Observable<IAsignatura> {
     const query = `asignaturas/${productoId}`;
     const url = this.url + query;
@@ -55,6 +55,12 @@ export class AsignaturaService {
     return this.http.get<any>(url);
   }
   obtenerAsignaturas(): Observable<IAsignatura[]> {
+    const query = `asignaturas`;
+    const url = this.url + query;
+
+    return this.http.get<any>(url);
+  }
+  obtenerAsignaturasHabilitadas(): Observable<IAsignatura[]> {
     const query = `asignaturas/habilitados`;
     const url = this.url + query;
 
@@ -80,7 +86,13 @@ export class AsignaturaService {
     return this.http.delete<any>(url);
   }
   deshabilitarAsignatura(asignaturaId: string, activo: boolean): Observable<any> {
-    const query = `asignaturas/estado/${asignaturaId}`;
+    const query = `asignaturas/deshabilitar/${asignaturaId}`;
+    const url = this.url + query;
+
+    return this.http.put<any>(url, { activo });
+  }
+  habilitarAsignatura(asignaturaId: string, activo: boolean): Observable<any> {
+    const query = `asignaturas/habilitar/${asignaturaId}`;
     const url = this.url + query;
 
     return this.http.put<any>(url, { activo });

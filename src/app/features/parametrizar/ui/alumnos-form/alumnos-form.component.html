@@ -496,7 +496,7 @@
       </div>
       <div class="w-100-p mt-12" fxLayout="row" fxLayoutAlign="space-between start">
         <button mat-raised-button matStepperPrevious color="warn">Volver</button>
-        <button mat-raised-button matStepperNext color="accent" (click)="guardarAlumno()">Guardar Alumno</button>
+        <button *ngIf="!soloLectura" mat-raised-button matStepperNext color="accent" (click)="guardarAlumno()">Guardar Alumno</button>
       </div>
     </mat-step>
   </mat-horizontal-stepper>

@@ -1,12 +1,14 @@
 import { Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges, ViewChild } from '@angular/core';
 import { MatTableDataSource, MatSort, MatPaginator } from '@angular/material';
 import { Router } from '@angular/router';
+import { designAnimations } from '@design/animations';
 import { IAsignatura } from 'app/models/interface/iAsignatura';
 
 @Component({
   selector: 'app-asignaturas-tabla-param',
   templateUrl: './asignaturas-tabla-param.component.html',
   styleUrls: ['./asignaturas-tabla-param.component.scss'],
+  animations:designAnimations
 })
 export class AsignaturasTablaParamComponent implements OnInit, OnChanges {
   @Input() cargando: boolean;
@@ -31,7 +33,8 @@ export class AsignaturasTablaParamComponent implements OnInit, OnChanges {
     'opciones',
   ];
   // Output
-  @Output() retEliminarAsignatura = new EventEmitter<IAsignatura>();
+  @Output() retDeshabilitarAsignatura = new EventEmitter<IAsignatura>();
+  @Output() retHabilitarAsignatura = new EventEmitter<IAsignatura>();
   constructor(private _router: Router) {}
 
   ngOnInit(): void {}
@@ -52,7 +55,10 @@ export class AsignaturasTablaParamComponent implements OnInit, OnChanges {
   ver(row: IAsignatura) {
     this._router.navigate(['/parametrizar/asignaturas-ver/' + row._id]);
   }
-  eliminar(row: IAsignatura) {
-    this.retEliminarAsignatura.emit(row);
+  deshabilitar(row: IAsignatura) {
+    this.retDeshabilitarAsignatura.emit(row);
+  }
+  habilitar(row: IAsignatura) {
+    this.retHabilitarAsignatura.emit(row);
   }
 }

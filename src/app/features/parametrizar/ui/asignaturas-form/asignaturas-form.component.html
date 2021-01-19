@@ -100,7 +100,7 @@
       </div>
     </div>
     <div fxLayout="row" fxLayoutAlign="center start">
-      <button mat-raised-button color="accent">Guardar Asignatura</button>
+      <button *ngIf="!soloLectura" mat-raised-button color="accent">Guardar Asignatura</button>
     </div>
   </form>
 </div>
