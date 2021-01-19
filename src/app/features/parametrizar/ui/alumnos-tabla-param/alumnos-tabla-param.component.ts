@@ -44,6 +44,9 @@ export class AlumnosTablaParamComponent implements OnInit, OnChanges {
   editar(row: IAlumno) {
     this._router.navigate(['/parametrizar/alumnos-editar/' + row._id]);
   }
+  ver(row: IAlumno) {
+    this._router.navigate(['/parametrizar/alumnos-ver/' + row._id]);
+  }
   eliminar(row: IAlumno) {
     this.retEliminarAlumno.emit(row);
   }

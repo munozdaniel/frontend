@@ -2,6 +2,7 @@ import { NgModule } from "@angular/core";
 import { Routes, RouterModule } from "@angular/router";
 import { AlumnosAgregarComponent } from './containers/alumnos-agregar/alumnos-agregar.component';
 import { AlumnosEditarComponent } from './containers/alumnos-editar/alumnos-editar.component';
+import { AlumnosVerComponent } from './containers/alumnos-ver/alumnos-ver.component';
 import { AlumnosComponent } from './containers/alumnos/alumnos.component';
 import { AsignaturasAgregarComponent } from './containers/asignaturas-agregar/asignaturas-agregar.component';
 import { AsignaturasEditarComponent } from './containers/asignaturas-editar/asignaturas-editar.component';
@@ -22,6 +23,11 @@ const routes: Routes = [
     {
         path: "alumnos-editar/:id",
         component: AlumnosEditarComponent,
+        //  DEBE estar autenticados
+    },
+    {
+        path: "alumnos-ver/:id",
+        component: AlumnosVerComponent,
         //  DEBE estar autenticados
     },
     {

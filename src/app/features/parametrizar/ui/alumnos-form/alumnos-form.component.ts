@@ -14,6 +14,7 @@ import Swal from 'sweetalert2';
   providers: CONFIG_PROVIDER, // Para el time
 })
 export class AlumnosFormComponent implements OnInit, OnChanges {
+  @Input() soloLectura?: boolean = false;
   @Input() alumno: IAlumno;
   @Input() cargando: boolean;
   @Input() resetear: boolean;
@@ -94,7 +95,12 @@ export class AlumnosFormComponent implements OnInit, OnChanges {
     console.log('this.alumno.sexo', this.alumno.tipoDni);
     this.formDatosPersonales.controls.sexo.setValue(this.alumno.sexo.toUpperCase());
     this.formDatosPersonales.controls.tipoDni.setValue(this.alumno.tipoDni ? this.alumno.tipoDni.toUpperCase() : 'DNI');
-    this.actualizarFormEtap();
+    if (!this.soloLectura) {
+      this.actualizarFormEtap();
+    }else{
+        this.formDatosPersonales.disable();
+        this.formEtap.disable();
+    }
   }
   agregarAdulto() {
     if (this.formAdulto.valid) {
@@ -108,7 +114,7 @@ export class AlumnosFormComponent implements OnInit, OnChanges {
     const index = this.adultos.findIndex((x) => x.index === adulto.index);
     console.log('index', index);
     if (index !== -1) {
-      this.adultos.splice( index,1);
+      this.adultos.splice(index, 1);
     }
   }
   setDatosPersonalesTest() {

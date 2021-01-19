@@ -12,16 +12,20 @@ import { AsignaturasEditarComponent } from './containers/asignaturas-editar/asig
 import { ParametrizarRoutingModule } from './parametrizar-routing.module';
 import { DesignSharedModule } from '@design/shared.module';
 import { SharedModule } from 'app/shared/shared.module';
-
-
+import { AlumnosVerComponent } from './containers/alumnos-ver/alumnos-ver.component';
 
 @NgModule({
-  declarations: [AlumnosComponent, AsignaturasComponent, AlumnosMenuParamComponent, AlumnosTablaParamComponent, AlumnosFormComponent, AlumnosEditarComponent, AlumnosAgregarComponent, AsignaturasAgregarComponent, AsignaturasEditarComponent],
-  imports: [
-    CommonModule,
-    ParametrizarRoutingModule,
-    SharedModule,
-    DesignSharedModule
-  ]
+  declarations: [
+    AlumnosComponent,
+    AsignaturasComponent,
+    AlumnosMenuParamComponent,
+    AlumnosTablaParamComponent,
+    AlumnosFormComponent,
+    AlumnosEditarComponent,
+    AlumnosAgregarComponent,
+    AsignaturasAgregarComponent,
+    AsignaturasEditarComponent,AlumnosVerComponent
+  ],
+  imports: [CommonModule, ParametrizarRoutingModule, SharedModule, DesignSharedModule],
 })
-export class ParametrizarModule { }
+export class ParametrizarModule {}

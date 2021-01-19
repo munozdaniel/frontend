@@ -3,7 +3,7 @@ import { ActivatedRoute } from '@angular/router';
 import { AlumnoService } from 'app/core/services/alumno.service';
 import { IAlumno } from 'app/models/interface/iAlumno';
 import { Observable, of } from 'rxjs';
-import { catchError } from 'rxjs/operators';
+import { catchError, finalize } from 'rxjs/operators';
 import Swal from 'sweetalert2';
 
 @Component({
@@ -23,7 +23,7 @@ import Swal from 'sweetalert2';
   styles: [],
 })
 export class AlumnosEditarComponent implements OnInit {
-  cargando = false;
+  cargando = true;
   resetear = false;
   alumno$: Observable<IAlumno>;
   alumnoId: string;
@@ -36,7 +36,7 @@ export class AlumnosEditarComponent implements OnInit {
     this._activeRoute.params.subscribe((params) => {
       this.alumnoId = params['id'];
       console.log(' this.alumnoId', this.alumnoId);
-      this.alumno$ = this._alumnoService.obtenerAlumnoPorId(this.alumnoId);
+      this.alumno$ = this._alumnoService.obtenerAlumnoPorId(this.alumnoId).pipe(finalize(() => (this.cargando = false)));
     });
   }
   setDatosForm(evento: IAlumno) {
@@ -75,11 +75,11 @@ export class AlumnosEditarComponent implements OnInit {
       if (result.isConfirmed) {
         console.log('result1', result);
         if (result.value) {
-            Swal.fire({
-                title: 'Operación Exitosa',
-                text: 'El alumno ha sido actualizado correctamente.',
-                icon: 'success',
-              });
+          Swal.fire({
+            title: 'Operación Exitosa',
+            text: 'El alumno ha sido actualizado correctamente.',
+            icon: 'success',
+          });
         } else {
           Swal.fire({
             title: 'Oops! Ocurrió un error',
