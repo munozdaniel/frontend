@@ -1,4 +1,4 @@
-import { NgModule } from "@angular/core";
+import { LOCALE_ID, NgModule } from "@angular/core";
 import { BrowserModule, Title } from "@angular/platform-browser";
 import { HttpClientModule, HTTP_INTERCEPTORS } from "@angular/common/http";
 import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
@@ -25,6 +25,10 @@ import { AppRoutingModule } from "./app-routing.module";
 import { AuthHttpInterceptor, AuthModule } from "@auth0/auth0-angular";
 import { environment } from "environments/environment";
 import { SharedModule } from './shared/shared.module';
+import { registerLocaleData } from '@angular/common';
+
+import localeEsAr from '@angular/common/locales/es-AR';
+registerLocaleData(localeEsAr, 'es-Ar');
 
 const appRoutes: Routes = [
     {
@@ -73,6 +77,7 @@ const appRoutes: Routes = [
             useClass: AuthHttpInterceptor,
             multi: true,
         },
+        { provide: LOCALE_ID, useValue: 'es-Ar' } 
     ],
 })
 export class AppModule {}

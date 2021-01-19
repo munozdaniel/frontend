@@ -9,7 +9,8 @@ import Swal from 'sweetalert2';
 @Component({
   selector: 'app-alumnos-agregar',
   template: `
-    <div fxLayout="column" class="w-100-p p-12">
+    <button-volver></button-volver>
+    <div fxLayout="column" class="w-100-p p-12 mt-16">
       <h1>Agregar Alumno</h1>
       <app-alumnos-form [resetear]="resetear" [cargando]="cargando" (retDatosForm)="setDatosForm($event)"></app-alumnos-form>
     </div>
@@ -29,7 +30,7 @@ export class AlumnosAgregarComponent implements OnInit {
     }
   }
   confirmarGuardar(alumno: IAlumno) {
-      console.log('alumno length ', alumno.dni.length);
+    console.log('alumno length ', alumno.dni.length);
     Swal.fire({
       title: '¿Está seguro de continuar?',
       html: 'Está a punto de guardar un nuevo alumno.',
@@ -71,7 +72,7 @@ export class AlumnosAgregarComponent implements OnInit {
           }).then((result2) => {
             console.log('result2', result2);
             if (result2.isConfirmed) {
-              this._router.navigate(['parametrizar/alumnos-editar/'+result.value._id]);
+              this._router.navigate(['parametrizar/alumnos-editar/' + result.value._id]);
             } else {
               this.resetear = true;
             }

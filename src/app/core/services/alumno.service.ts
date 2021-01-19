@@ -5,7 +5,6 @@ import { IAlumnoPaginado } from 'app/models/interface/iAlumnoPaginado';
 import { IQueryPag } from 'app/models/interface/iQueryPag';
 import { environment } from 'environments/environment';
 import { Observable } from 'rxjs';
-import { map } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root',
@@ -14,7 +13,7 @@ export class AlumnoService {
   protected url = environment.apiURI;
   constructor(private http: HttpClient) {}
   findAlumnos( filter = '', sortOrder = 'asc', pageNumber = 0, pageSize = 3): Observable<IAlumno[]> {
-    return this.http.get<any>('/alumnos/paginado2', {
+    return this.http.get<any>('alumnos/paginado2', {
       params: new HttpParams()
         .set('filter', filter)
         .set('sortOrder', sortOrder)
@@ -23,7 +22,7 @@ export class AlumnoService {
     });
   }
   obtenerAlumnosPaginados(consulta?: IQueryPag): Observable<IAlumnoPaginado> {
-    let query = `/alumnos/paginado`;
+    let query = `alumnos/paginado`;
     if (consulta) {
       // page: 1, limit: 1,
       console.log('consulta.page', consulta.page);
@@ -50,33 +49,39 @@ export class AlumnoService {
 
     return this.http.get<any>(url);
   }
+  obtenerAlumnoPorId(productoId: string): Observable<IAlumno> {
+    const query = `alumnos/${productoId}`;
+    const url = this.url + query;
+
+    return this.http.get<any>(url);
+  }
   obtenerAlumnos(): Observable<IAlumno[]> {
-    const query = `/alumnos/habilitados`;
+    const query = `alumnos/habilitados`;
     const url = this.url + query;
 
     return this.http.get<any>(url);
   }
   agregarAlumno(alumno: IAlumno): Observable<IAlumno> {
-    const query = `/alumnos`;
+    const query = `alumnos`;
     const url = this.url + query;
 
     return this.http.put<any>(url, alumno);
   }
 
   actualizarAlumno(alumnoId: string, alumno: IAlumno): Observable<any> {
-    const query = `/alumnos/${alumnoId}`;
+    const query = `alumnos/${alumnoId}`;
     const url = this.url + query;
 
     return this.http.patch<any>(url, alumno);
   }
   eliminarAlumno(alumnoId: string): Observable<any> {
-    const query = `/alumnos/${alumnoId}`;
+    const query = `alumnos/${alumnoId}`;
     const url = this.url + query;
 
     return this.http.delete<any>(url);
   }
   deshabilitarAlumno(alumnoId: string, activo: boolean): Observable<any> {
-    const query = `/alumnos/estado/${alumnoId}`;
+    const query = `alumnos/estado/${alumnoId}`;
     const url = this.url + query;
 
     return this.http.put<any>(url, { activo });

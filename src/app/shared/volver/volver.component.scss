@@ -1,7 +1,94 @@
-.boton_volver{
-  display: flex; justify-content: flex-start; align-items: center; padding:4px
-}
-.boton_volver:hover{
-  text-transform:unset ;
+// Boton atras
+#container {
+    position: absolute;
+    top: 15px;
+    left: 25px;
+  }
+  button {
+    position: relative !important;
+    display: inline-block !important;
+    cursor: pointer !important;
+    outline: none !important;
+    border: 0 !important;
+    vertical-align: middle !important;
+    text-decoration: none !important;
+    background: transparent !important;
+    padding: 0 !important;
+    font-size: inherit !important;
+    font-family: inherit !important;
+  }
+  button.learn-more {
+    width: 12rem;
+    height: auto;
+  }
+  button.learn-more .circle {
+    -webkit-transition: all 0.45s cubic-bezier(0.65, 0, 0.076, 1);
+    transition: all 0.45s cubic-bezier(0.65, 0, 0.076, 1);
+    position: relative;
+    display: block;
+    margin: 0;
+    width: 3rem;
+    height: 3rem;
+    background: #282936;
+    border-radius: 1.625rem;
+  }
+  button.learn-more .circle .icon {
+    -webkit-transition: all 0.45s cubic-bezier(0.65, 0, 0.076, 1);
+    transition: all 0.45s cubic-bezier(0.65, 0, 0.076, 1);
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    margin: auto;
+    background: #fff;
+  }
+  button.learn-more .circle .icon.arrow {
+    -webkit-transition: all 0.45s cubic-bezier(0.65, 0, 0.076, 1);
+    transition: all 0.45s cubic-bezier(0.65, 0, 0.076, 1);
+     left: 0.625rem;
+    //left: 0rem;
+    width: 1.125rem;
+    height: 0.125rem;
+    background: none;
+  }
   
-}
+  button.learn-more .circle .icon.arrow::before {
+    position: absolute;
+    content: '';
+    top: -0.25rem;
+    // right: 0.0625rem;
+    width: 0.625rem;
+    height: 0.625rem;
+    border-top: 0.2rem solid #fff;
+    border-right: 0.2rem solid #fff;
+    -webkit-transform: rotate(-135deg);
+    transform: rotate(-135deg) scale(1.5);
+  }
+  button:hover .circle {
+    width: 100%;
+  }
+  button:hover .circle .icon.arrow {
+   // background: #fff;
+    -webkit-transform: translate(1rem, 0);
+    transform: translate(1rem, 0);
+  }
+  button.learn-more .button-text {
+    -webkit-transition: all 0.45s cubic-bezier(0.65, 0, 0.076, 1);
+    transition: all 0.45s cubic-bezier(0.65, 0, 0.076, 1);
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    padding: 0.75rem 0;
+    margin: -4px 0 0 1.85rem;
+    color: transparent;
+    font-weight: 700;
+    line-height: 1.6;
+    text-align: center;
+    text-transform: uppercase;
+  }
+  
+  button:hover .button-text {
+    color: #fff;
+  }
+  

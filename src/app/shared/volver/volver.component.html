@@ -1,4 +1,9 @@
-<a class="boton_volver"  (click)="goBack()" >
-  <mat-icon>arrow_back_ios</mat-icon>
-  <p>VOLVER</p>
-</a>
+<div id="container" [ngStyle]="{ top: top, left: left }">
+    <button class="learn-more" (click)="goBack()">
+      <span class="circle" aria-hidden="true">
+        <span class="icon arrow"></span>
+      </span>
+      <span class="button-text">VOLVER</span>
+    </button>
+  </div>
+  

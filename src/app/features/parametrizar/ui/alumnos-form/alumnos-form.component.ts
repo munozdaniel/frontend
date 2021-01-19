@@ -14,6 +14,7 @@ import Swal from 'sweetalert2';
   providers: CONFIG_PROVIDER, // Para el time
 })
 export class AlumnosFormComponent implements OnInit, OnChanges {
+  @Input() alumno: IAlumno;
   @Input() cargando: boolean;
   @Input() resetear: boolean;
   @Output() retDatosForm = new EventEmitter<IAlumno>();
@@ -25,7 +26,6 @@ export class AlumnosFormComponent implements OnInit, OnChanges {
 
   adultos: IAdulto[] = [];
   alumnoData = ALUMNO_DATA;
-  alumno: IAlumno;
   seguimientoEtap = false;
   constructor(private _fb: FormBuilder) {}
   ngOnChanges(changes: SimpleChanges): void {
@@ -34,6 +34,9 @@ export class AlumnosFormComponent implements OnInit, OnChanges {
       this.adultos = [];
       this.formEtap.reset();
       this.formAdulto.reset();
+    }
+    if (changes.alumno && changes.alumno.currentValue) {
+      this.setFormularios();
     }
   }
 
@@ -75,6 +78,24 @@ export class AlumnosFormComponent implements OnInit, OnChanges {
       email: [null, [Validators.required, Validators.email]],
     });
   }
+  setFormularios() {
+    if (!this.formDatosPersonales && !this.formEtap) {
+      setTimeout(() => {
+        this.setFormularios();
+      }, 1000);
+      return;
+    }
+
+    this.formDatosPersonales.patchValue(this.alumno);
+    this.formEtap.patchValue(this.alumno);
+    this.adultos = this.alumno.adultos.map((x: IAdulto, index: number) => ({ ...x, index: index + 1 }));
+    this.seguimientoEtap = this.alumno.seguimientoEtap && this.alumno.seguimientoEtap === 'SI' ? true : false;
+    console.log('this.alumno.sexo', this.alumno.sexo);
+    console.log('this.alumno.sexo', this.alumno.tipoDni);
+    this.formDatosPersonales.controls.sexo.setValue(this.alumno.sexo.toUpperCase());
+    this.formDatosPersonales.controls.tipoDni.setValue(this.alumno.tipoDni ? this.alumno.tipoDni.toUpperCase() : 'DNI');
+    this.actualizarFormEtap();
+  }
   agregarAdulto() {
     if (this.formAdulto.valid) {
       const adulto: IAdulto = { ...this.formAdulto.value, activo: true, index: this.adultos.length + 1 };
@@ -83,9 +104,11 @@ export class AlumnosFormComponent implements OnInit, OnChanges {
     }
   }
   quitarAdulto(adulto: IAdulto) {
+    console.log('adulto', adulto);
     const index = this.adultos.findIndex((x) => x.index === adulto.index);
+    console.log('index', index);
     if (index !== -1) {
-      this.adultos.splice(1, index);
+      this.adultos.splice( index,1);
     }
   }
   setDatosPersonalesTest() {
