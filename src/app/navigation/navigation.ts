@@ -20,6 +20,13 @@ export const navigation: DesignNavigation[] = [
                 icon: "users",
                 url: "/parametrizar/asignaturas",
             },
+            {
+                id: "parametrizar_profesores",
+                title: "Profesores",
+                type: "item",
+                icon: "users",
+                url: "/parametrizar/profesores",
+            },
             
         ],
         

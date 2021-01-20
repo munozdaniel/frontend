@@ -17,6 +17,14 @@ import { AsignaturasTablaParamComponent } from './ui/asignaturas-tabla-param/asi
 import { AsignaturasMenuParamComponent } from './ui/asignaturas-menu-param/asignaturas-menu-param.component';
 import { AsignaturasFormComponent } from './ui/asignaturas-form/asignaturas-form.component';
 import { AsignaturasVerComponent } from './containers/asignaturas-ver/asignaturas-ver.component';
+import { ProfesoresComponent } from './containers/profesores/profesores.component';
+import { ProfesoresAgregarComponent } from './containers/profesores-agregar/profesores-agregar.component';
+import { ProfesoresEditarComponent } from './containers/profesores-editar/profesores-editar.component';
+import { ProfesoresVerComponent } from './containers/profesores-ver/profesores-ver.component';
+import { ProfesoresFormComponent } from './ui/profesores-form/profesores-form.component';
+import { ProfesoresTablaParamComponent } from './ui/profesores-tabla-param/profesores-tabla-param.component';
+import { ProfesoresMenuParamComponent } from './ui/profesores-menu-param/profesores-menu-param.component';
+import { AlumnosComisionesComponent } from './ui/alumnos-comisiones/alumnos-comisiones.component';
 
 @NgModule({
   declarations: [
@@ -28,7 +36,7 @@ import { AsignaturasVerComponent } from './containers/asignaturas-ver/asignatura
     AlumnosEditarComponent,
     AlumnosAgregarComponent,
     AsignaturasAgregarComponent,
-    AsignaturasEditarComponent,AlumnosVerComponent, AsignaturasTablaParamComponent, AsignaturasMenuParamComponent, AsignaturasFormComponent, AsignaturasVerComponent
+    AsignaturasEditarComponent,AlumnosVerComponent, AsignaturasTablaParamComponent, AsignaturasMenuParamComponent, AsignaturasFormComponent, AsignaturasVerComponent, ProfesoresComponent, ProfesoresAgregarComponent, ProfesoresEditarComponent, ProfesoresVerComponent, ProfesoresFormComponent, ProfesoresTablaParamComponent, ProfesoresMenuParamComponent, AlumnosComisionesComponent
   ],
   imports: [CommonModule, ParametrizarRoutingModule, SharedModule, DesignSharedModule],
 })

@@ -1,7 +1,7 @@
 import { Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { ALUMNO_DATA } from 'app/models/constants/alumnoData';
 import { NACIONALIDADES } from 'app/models/constants/nacionalidad';
+import { ALUMNO_DATA } from 'app/models/data/alumnoData';
 import { IAdulto } from 'app/models/interface/iAdulto';
 import { IAlumno } from 'app/models/interface/iAlumno';
 import { CONFIG_PROVIDER } from 'app/shared/config.provider';

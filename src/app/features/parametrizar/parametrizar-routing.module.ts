@@ -8,6 +8,10 @@ import { AsignaturasAgregarComponent } from './containers/asignaturas-agregar/as
 import { AsignaturasEditarComponent } from './containers/asignaturas-editar/asignaturas-editar.component';
 import { AsignaturasVerComponent } from './containers/asignaturas-ver/asignaturas-ver.component';
 import { AsignaturasComponent } from './containers/asignaturas/asignaturas.component';
+import { ProfesoresAgregarComponent } from './containers/profesores-agregar/profesores-agregar.component';
+import { ProfesoresEditarComponent } from './containers/profesores-editar/profesores-editar.component';
+import { ProfesoresVerComponent } from './containers/profesores-ver/profesores-ver.component';
+import { ProfesoresComponent } from './containers/profesores/profesores.component';
 
  // parametrizar/alumnos
 const routes: Routes = [
@@ -49,6 +53,26 @@ const routes: Routes = [
     {
         path: "asignaturas-ver/:id",
         component: AsignaturasVerComponent,
+        //  DEBE estar autenticados
+    },
+    {
+        path: "profesores",
+        component: ProfesoresComponent,
+        //  DEBE estar autenticados
+    },
+    {
+        path: "profesores-agregar",
+        component: ProfesoresAgregarComponent,
+        //  DEBE estar autenticados
+    },
+    {
+        path: "profesores-editar/:id",
+        component: ProfesoresEditarComponent,
+        //  DEBE estar autenticados
+    },
+    {
+        path: "profesores-ver/:id",
+        component: ProfesoresVerComponent,
         //  DEBE estar autenticados
     },
 ];

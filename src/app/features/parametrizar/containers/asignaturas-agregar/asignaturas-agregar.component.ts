@@ -66,7 +66,7 @@ export class AsignaturasAgregarComponent implements OnInit {
             showCancelButton: true,
             confirmButtonColor: '#3085d6',
             confirmButtonText: 'Finalizar',
-            cancelButtonText: 'Agregar otro asignatura',
+            cancelButtonText: 'Agregar otra asignatura',
             showLoaderOnConfirm: true,
           }).then((result2) => {
             console.log('result2', result2);

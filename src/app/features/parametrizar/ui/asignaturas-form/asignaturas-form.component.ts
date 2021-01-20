@@ -1,6 +1,6 @@
 import { Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
-import { ASIGNATURA_DATA } from 'app/models/constants/asignaturaData';
+import { ASIGNATURA_DATA } from 'app/models/data/asignaturaData';
 import { IAsignatura } from 'app/models/interface/iAsignatura';
 import Swal from 'sweetalert2';
 
@@ -40,7 +40,7 @@ export class AsignaturasFormComponent implements OnInit, OnChanges {
       detalle: [null, [Validators.required, Validators.minLength(4), Validators.maxLength(50)]],
       tipoAsignatura: [null, [Validators.required]],
       tipoCiclo: [null, [Validators.required]],
-      curso: [null, [Validators.required, Validators.min(1), , Validators.max(6)]],
+      curso: [null, [Validators.required, Validators.min(1),   Validators.max(6)]],
       horasCatedraAnuales: [null, [Validators.required]],
       horasCatedraSemanales: [null, [Validators.required]],
       tipoFormacion: [null, [Validators.required]],
