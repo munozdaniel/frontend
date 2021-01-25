@@ -1,23 +1,17 @@
-<div fxLayout="column" fxFlex.xs="100" fxFlex.gt-xs="100">
-  <mat-list>
-    <mat-list-item *ngFor="let adulto of adultos" class="my-24 ">
-      <div fxLayout="row" fxLayoutAlign="space-between start" class="mat-card mat-elevation-z4 mt-12 w-100-p p-24">
-        <div>
-          <div>
-            <strong>{{ adulto.index }}. {{ adulto.nombreCompleto }}</strong>
-          </div>
-          <div>
-            <small
-              ><span>Telefono: {{ adulto.telefono ? adulto.telefono : 'NO REGISTRADO' }}</span> -
-              <span>Celular: {{ adulto.celular ? adulto.celular : 'NO REGISTRADO' }}</span></small
-            >
-          </div>
-          <small class="fg--red"> {{ adulto.tipoAdulto }}</small>
-        </div>
-        <button mat-icon-button color="warn" (click)="quitarAdulto(adulto)">
-          <mat-icon>delete_forever</mat-icon>
-        </button>
-      </div>
-    </mat-list-item>
-  </mat-list>
+<div *ngFor="let adulto of adultos" fxLayout="row" fxLayoutAlign="space-between start" class="mat-card mat-elevation-z4 mb-8 w-100-p p-24">
+  <div>
+    <div>
+      <strong>{{ adulto.index }}. {{ adulto.nombreCompleto }}</strong>
+    </div>
+    <div>
+      <small
+        ><span>Telefono: {{ adulto.telefono ? adulto.telefono : 'NO REGISTRADO' }}</span> -
+        <span>Celular: {{ adulto.celular ? adulto.celular : 'NO REGISTRADO' }}</span></small
+      >
+    </div>
+    <small class="fg--red"> {{ adulto.tipoAdulto }}</small>
+  </div>
+  <button mat-icon-button color="warn" (click)="quitarAdulto(adulto)">
+    <mat-icon>delete_forever</mat-icon>
+  </button>
 </div>
