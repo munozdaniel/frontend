@@ -1,5 +1,5 @@
 export interface IComision {
-  _id: string;
+  _id?: string;
   comisionNro: number;
   comision: string;
   alumnoId?: string;
@@ -8,7 +8,9 @@ export interface IComision {
   division: number;
   condicion: string;
 
-  fechaCreacion: Date;
+  fechaCreacion?: Date;
   fechaModificacion?: Date;
   activo: boolean;
+
+  index?:number; // ejecucion
 }

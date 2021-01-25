@@ -281,10 +281,14 @@
             <button mat-raised-button color="primary" type="button" (click)="abrirModalAdulto()">Agregar Adulto</button>
           </div>
           <p *ngIf="!adultos || adultos.length < 1">No se ha ingresado ningún registro</p>
-          <app-adultos-tabla-param [adultos]="adultos" (retEliminarAdulto)="setEliminarAdulto($event)" class="w-100-p"></app-adultos-tabla-param>
+          <app-adultos-tabla-param
+            [adultos]="adultos"
+            (retEliminarAdulto)="setEliminarAdulto($event)"
+            class="w-100-p"
+          ></app-adultos-tabla-param>
         </div>
       </div>
-      
+
       <div class="w-100-p mt-12" fxLayout="row" fxLayoutAlign="space-between start">
         <button mat-raised-button matStepperPrevious color="warn">Volver</button>
         <button mat-raised-button matStepperNext color="accent">Siguiente</button>
@@ -345,7 +349,12 @@
             <button mat-raised-button color="primary" type="button" (click)="abrirModalComision()">Agregar Comisión</button>
           </div>
           <p *ngIf="!comisiones || comisiones.length < 1">No se ha ingresado ningún registro</p>
-          <app-comisiones-tabla-param [comisiones]="comisiones" class="w-100-p"></app-comisiones-tabla-param>
+          <app-comisiones-tabla-param
+            [comisiones]="comisiones"
+            (retEliminarComision)="setEliminarComision($event)"
+            (retEditarComision)="setEditarComision($event)"
+            class="w-100-p"
+          ></app-comisiones-tabla-param>
         </div>
       </div>
       <div class="w-100-p mt-12" fxLayout="row" fxLayoutAlign="space-between start">

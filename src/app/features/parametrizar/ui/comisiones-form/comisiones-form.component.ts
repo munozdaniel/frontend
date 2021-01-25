@@ -28,8 +28,12 @@ export class ComisionesFormComponent implements OnInit {
     public dialogRef: MatDialogRef<ComisionesFormComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any
   ) {
-    if (data.esModal) {
+    if (data && data.esModal) {
       this.esModal = data.esModal;
+      if (data.comision) {
+        this.comision = data.comision;
+        this.setDatos();
+      }
     }
     const actual = moment().year();
     for (let index = 10; index > 0; index--) {
@@ -69,8 +73,17 @@ export class ComisionesFormComponent implements OnInit {
       this.form.disable();
     }
   }
-  setDatosPersonalesTest() {
-    this.form.patchValue(this.comisionData);
+  test() {
+    this.comision = {comisionNro:1, activo: true, cicloLectivo: 2020, comision: 'C', condicion: 'REGULAR', curso: 1, division: 1 };
+  }
+  setDatos() {
+    if (!this.form) {
+      setTimeout(() => {
+        this.setDatos();
+      }, 1000);
+      return;
+    }
+    this.form.patchValue(this.comision);
   }
   guardarComision() {
     console.log('this.form.valid', this.form.valid);

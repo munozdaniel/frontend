@@ -8,59 +8,56 @@ import { IComision } from 'app/models/interface/iComision';
   selector: 'app-comisiones-tabla-param',
   templateUrl: './comisiones-tabla-param.component.html',
   styleUrls: ['./comisiones-tabla-param.component.scss'],
-  animations:designAnimations
-
+  animations: designAnimations,
 })
 export class ComisionesTablaParamComponent implements OnInit, OnChanges {
-    @Input() soloLectura: boolean = false;
-    @Input() cargando: boolean;
-    @Input() comisiones: IComision[];
-    // ALUMNOS ________________________________
-    dataSource: MatTableDataSource<any> = new MatTableDataSource([]);
-    @ViewChild('sort') set setSort(sort: MatSort) {
-      this.dataSource.sort = sort;
-    }
-    @ViewChild('paginator') set setPaginator(paginator: MatPaginator) {
-      this.dataSource.paginator = paginator;
-    }
-    columnas: string[] = [
-      'comisionNro',
-      'comision',
-      'alumno',
-      'cicloLectivo',
-      'curso',
-      'division',
-      'condicion',
-      'opciones',
-    ];
-    // Output
-    @Output() retDeshabilitarComision = new EventEmitter<IComision>();
-    @Output() retHabilitarComision = new EventEmitter<IComision>();
-    constructor(private _router: Router) {}
-  
-    ngOnInit(): void {}
-    ngOnChanges(changes: SimpleChanges): void {
-      if (changes.comisiones && changes.comisiones.currentValue) {
-        this.dataSource.data = changes.comisiones.currentValue;
-      }
-    }
-    filtroRapido(filterValue: string) {
-      this.dataSource.filter = filterValue.trim().toLowerCase();
-      if (this.dataSource.paginator) {
-        this.dataSource.paginator.firstPage();
-      }
-    }
-    editar(row: IComision) {
-      this._router.navigate(['/parametrizar/comisiones-editar/' + row._id]);
-    }
-    ver(row: IComision) {
-      this._router.navigate(['/parametrizar/comisiones-ver/' + row._id]);
-    }
-    deshabilitar(row: IComision) {
-      this.retDeshabilitarComision.emit(row);
-    }
-    habilitar(row: IComision) {
-      this.retHabilitarComision.emit(row);
-    }
+  @Input() soloLectura: boolean = false;
+  @Input() cargando: boolean;
+  @Input() comisiones: IComision[];
+  // ALUMNOS ________________________________
+  dataSource: MatTableDataSource<any> = new MatTableDataSource([]);
+  @ViewChild('sort') set setSort(sort: MatSort) {
+    this.dataSource.sort = sort;
+  }
+  @ViewChild('paginator') set setPaginator(paginator: MatPaginator) {
+    this.dataSource.paginator = paginator;
+  }
+  columnas: string[] = [ 'comision', 'alumno', 'cicloLectivo', 'curso', 'division', 'condicion', 'opciones'];
+  // Output
+  @Output() retEditarComision = new EventEmitter<IComision>();
+  @Output() retEliminarComision = new EventEmitter<IComision>();
+  @Output() retDeshabilitarComision = new EventEmitter<IComision>();
+  @Output() retHabilitarComision = new EventEmitter<IComision>();
+  constructor(private _router: Router) {}
 
+  ngOnInit(): void {}
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes.comisiones && changes.comisiones.currentValue) {
+      this.dataSource.data = changes.comisiones.currentValue;
+    }
+  }
+  filtroRapido(filterValue: string) {
+    this.dataSource.filter = filterValue.trim().toLowerCase();
+    if (this.dataSource.paginator) {
+      this.dataSource.paginator.firstPage();
+    }
+  }
+  eliminar(row: IComision) {
+    this.retEliminarComision.emit(row);
+  }
+  editar(row: IComision) {
+    console.log('row editar', row);
+    this.retEditarComision.emit(row);
+
+    //   this._router.navigate(['/parametrizar/comisiones-editar/' + row._id]);
+  }
+  ver(row: IComision) {
+    this._router.navigate(['/parametrizar/comisiones-ver/' + row._id]);
+  }
+  deshabilitar(row: IComision) {
+    this.retDeshabilitarComision.emit(row);
+  }
+  habilitar(row: IComision) {
+    this.retHabilitarComision.emit(row);
+  }
 }

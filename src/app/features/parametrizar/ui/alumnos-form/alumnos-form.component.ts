@@ -105,12 +105,11 @@ export class AlumnosFormComponent implements OnInit, OnChanges {
     });
 
     dialogRef.afterClosed().subscribe(({ adulto }: any) => {
-      adulto.index = this.adultos.length + 1;
+      adulto.index = Math.random();
       this.adultos = [...this.adultos, adulto];
     });
   }
   setEliminarAdulto(adulto: IAdulto) {
-    console.log('adulto', adulto);
     const index = this.adultos.findIndex((x) => x.index === adulto.index);
     console.log('index', index);
     if (index !== -1) {
@@ -174,7 +173,37 @@ export class AlumnosFormComponent implements OnInit, OnChanges {
     });
 
     dialogRef.afterClosed().subscribe(({ comision }: any) => {
+      comision.index = Math.random();
       this.comisiones = [...this.comisiones, comision];
     });
+  }
+  setEliminarComision(evento: IComision) {
+    if (evento) {
+      const index = this.comisiones.findIndex((x) => x.index === evento.index);
+      console.log('index', index);
+      if (index !== -1) {
+        this.comisiones.splice(index, 1);
+        this.comisiones = [...this.comisiones];
+      }
+    }
+  }
+  setEditarComision(evento: IComision) {
+    if (evento) {
+      console.log('evento', evento);
+      const dialogRef = this._dialog.open(ComisionesFormComponent, {
+        data: { esModal: true, comision: evento },
+        width: '50%',
+      });
+
+      dialogRef.afterClosed().subscribe(({ comision }: any) => {
+        console.log('setEditarComisionindex', comision);
+        const index = this.comisiones.findIndex((x) => x.index === evento.index);
+        console.log('setEditarComisionindex', index);
+        if (index !== -1) {
+          this.comisiones[index] = comision;
+          this.comisiones = [...this.comisiones];
+        }
+      });
+    }
   }
 }
