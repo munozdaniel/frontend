@@ -44,8 +44,8 @@
       <th mat-header-cell *matHeaderCellDef mat-sort-header>Telefonos</th>
       <td mat-cell *matCellDef="let row">
         <div fxLayout="column">
-          <span><strong>Telefono: </strong> {{ row.telefono }}</span>
-          <span><strong>Celular: </strong> {{ row.celular }}</span>
+          <span><strong>Telefono: </strong> {{ row.telefono?row.telefono:'SIN REGISTRAR' }}</span>
+          <span><strong>Celular: </strong> {{ row.celular?row.celular:'SIN REGISTRAR' }}</span>
         </div>
       </td>
     </ng-container>

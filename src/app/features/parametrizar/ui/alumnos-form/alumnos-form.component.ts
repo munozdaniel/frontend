@@ -1,11 +1,14 @@
 import { Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { MatDialog } from '@angular/material';
 import { NACIONALIDADES } from 'app/models/constants/nacionalidad';
 import { ALUMNO_DATA } from 'app/models/data/alumnoData';
 import { IAdulto } from 'app/models/interface/iAdulto';
 import { IAlumno } from 'app/models/interface/iAlumno';
+import { IComision } from 'app/models/interface/iComision';
 import { CONFIG_PROVIDER } from 'app/shared/config.provider';
 import Swal from 'sweetalert2';
+import { ComisionesFormComponent } from '../comisiones-form/comisiones-form.component';
 
 @Component({
   selector: 'app-alumnos-form',
@@ -23,18 +26,21 @@ export class AlumnosFormComponent implements OnInit, OnChanges {
   formDatosPersonales: FormGroup;
   formEtap: FormGroup;
   formAdulto: FormGroup;
+  formComision: FormGroup;
   nacionalidades = NACIONALIDADES;
 
   adultos: IAdulto[] = [];
+  comisiones: IComision[] = [];
   alumnoData = ALUMNO_DATA;
   seguimientoEtap = false;
-  constructor(private _fb: FormBuilder) {}
+  constructor(private _fb: FormBuilder, private _dialog: MatDialog) {}
   ngOnChanges(changes: SimpleChanges): void {
     if (changes.resetear && changes.resetear.currentValue === true) {
       this.formDatosPersonales.reset();
       this.adultos = [];
       this.formEtap.reset();
       this.formAdulto.reset();
+      this.formComision.reset();
     }
     if (changes.alumno && changes.alumno.currentValue) {
       this.setFormularios();
@@ -78,6 +84,13 @@ export class AlumnosFormComponent implements OnInit, OnChanges {
       celular: [null, []],
       email: [null, [Validators.required, Validators.email]],
     });
+    this.formComision = this._fb.group({
+      comision: [null, [Validators.required]],
+      cicloLectivo: [null, [Validators.required]],
+      curso: [null, [Validators.required]],
+      division: [null, [Validators.required]],
+      condicion: [null, [Validators.required]],
+    });
   }
   setFormularios() {
     if (!this.formDatosPersonales && !this.formEtap) {
@@ -97,9 +110,9 @@ export class AlumnosFormComponent implements OnInit, OnChanges {
     this.formDatosPersonales.controls.tipoDni.setValue(this.alumno.tipoDni ? this.alumno.tipoDni.toUpperCase() : 'DNI');
     if (!this.soloLectura) {
       this.actualizarFormEtap();
-    }else{
-        this.formDatosPersonales.disable();
-        this.formEtap.disable();
+    } else {
+      this.formDatosPersonales.disable();
+      this.formEtap.disable();
     }
   }
   agregarAdulto() {
@@ -159,11 +172,22 @@ export class AlumnosFormComponent implements OnInit, OnChanges {
       ...this.formDatosPersonales.value,
       ...this.formEtap.value,
       adultos: this.adultos,
+      comisiones: this.comisiones,
       telefono: this.formDatosPersonales.controls.telefono.value.toString(),
       celular: this.formDatosPersonales.controls.celular.value.toString(),
       seguimientoEtap: this.seguimientoEtap ? 'SI' : 'NO',
     };
     console.log('alumno', alumno);
     this.retDatosForm.emit(alumno);
+  }
+  abrirModalComision() {
+    const dialogRef = this._dialog.open(ComisionesFormComponent, {
+      data: { esModal: true },
+      width: '50%',
+    });
+
+    dialogRef.afterClosed().subscribe(({ comision }: any) => {
+      this.comisiones = [...this.comisiones, comision];
+    });
   }
 }

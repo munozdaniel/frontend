@@ -6,6 +6,7 @@
       <div class="w-100-p mb-12" fxLayout="row" fxLayoutAlign="end start">
         <button mat-raised-button matStepperNext color="accent">Siguiente</button>
       </div>
+      <!-- 1. PASO DATOS PERSONALES ==================================== -->
       <form [formGroup]="formDatosPersonales" fxLayout="column">
         <div class="w-100-p" fxLayout="row" fxLayoutAlign="space-between start">
           <div fxFlex.gt-xs="42" fxFlex.xs="100" fxLayout="column">
@@ -265,12 +266,14 @@
         {{ formDatosPersonales.value | json }}
       </form>
     </mat-step>
+    <!-- 2. PASO ADULTOS ==================================== -->
     <mat-step label="Padre/Madre/Tutor">
       <div class="w-100-p mb-12" fxLayout="row" fxLayoutAlign="space-between start">
         <button mat-raised-button matStepperPrevious color="warn">Volver</button>
         <button mat-raised-button matStepperNext color="accent">Siguiente</button>
       </div>
       <div fxLayout="row" fxLayoutAlign="space-between start" class="w-100-p">
+        <div *ngIf="soloLectura" fxHide.xs fxFlex.gt-xs="45"></div>
         <form
           *ngIf="!soloLectura"
           [formGroup]="formAdulto"
@@ -334,7 +337,9 @@
                   >
                   <small class="fg--red"> {{ adulto.tipoAdulto }}</small>
                 </div>
-                <button mat-icon-button color="warn" (click)="quitarAdulto(adulto)"><mat-icon>delete_forever</mat-icon></button>
+                <button *ngIf="soloLectura" mat-icon-button color="warn" (click)="quitarAdulto(adulto)">
+                  <mat-icon>delete_forever</mat-icon>
+                </button>
               </div>
             </mat-list-item>
           </mat-list>
@@ -345,13 +350,14 @@
         <button mat-raised-button matStepperNext color="accent">Siguiente</button>
       </div>
     </mat-step>
+    <!-- 3. PASO ETAP ==================================== -->
     <mat-step [stepControl]="formEtap" label="ETAP" [optional]="!seguimientoEtap">
       <div class="w-100-p mt-24" fxLayout="row" fxLayoutAlign="space-between start">
         <button mat-raised-button matStepperPrevious color="warn">Volver</button>
         <button mat-raised-button matStepperNext color="accent">Siguiente</button>
       </div>
       <div fxFlex="100" fxLayout="column" fxLayoutAlign="center center" class=" ">
-        <div class="border p-24 mb-12">
+        <div *ngIf="!soloLectura" class="border p-24 mb-12">
           <mat-checkbox [(ngModel)]="seguimientoEtap" (ngModelChange)="actualizarFormEtap()">Seguimiento ETAP</mat-checkbox>
         </div>
       </div>
@@ -384,6 +390,31 @@
         <button mat-raised-button matStepperNext color="accent">Siguiente</button>
       </div>
     </mat-step>
+    <!-- 4. PASO ADULTOS ==================================== -->
+    <mat-step label="Comisiones" [optional]="true">
+      <div class="w-100-p mb-12" fxLayout="row" fxLayoutAlign="space-between start">
+        <button mat-raised-button matStepperPrevious color="warn">Volver</button>
+        <button mat-raised-button matStepperNext color="accent">Siguiente</button>
+      </div>
+      <div fxLayout="row" fxLayoutAlign="center start" class="w-100-p">
+        <div fxLayout="column" fxFlex.xs="100" fxFlex.gt-xs="80">
+          <h2 fxLayout="row" fxLayoutAlign="space-between center">
+            Comisiones <span>{{ comisiones?.length }}</span>
+          </h2>
+          <div>
+            <button mat-raised-button color="primary" type="button" (click)="abrirModalComision()">Agregar Comisión</button>
+          </div>
+          <p *ngIf="!comisiones || comisiones.length < 1">No se ha ingresado ningún registro</p>
+          <app-comisiones-tabla-param [comisiones]="comisiones" class="w-100-p"></app-comisiones-tabla-param>
+        </div>
+      </div>
+      <div class="w-100-p mt-12" fxLayout="row" fxLayoutAlign="space-between start">
+        <button mat-raised-button matStepperPrevious color="warn">Volver</button>
+        <button mat-raised-button matStepperNext color="accent">Siguiente</button>
+      </div>
+    </mat-step>
+    <!-- 5. PASO CONFIRMAR ==================================== -->
+
     <mat-step>
       <ng-template matStepLabel>Guardar</ng-template>
       <div class="w-100-p mt-12" fxLayout="row" fxLayoutAlign="space-between start">
@@ -455,41 +486,52 @@
         </div>
         <div fxFlex.xs="100" fxFlex.gt-xs="45" fxLayout="column">
           <div class="border p-12">
-            <h3><ins>Padre/Madre/Tutores</ins></h3>
-            <div *ngIf="adultos.length < 1">
-              <p>No se han cargado registros.</p>
-            </div>
-            <div *ngFor="let adulto of adultos">
-              <p>
-                <strong>Tipo de Adulto:</strong><span>{{ adulto.tipoAdulto }}</span>
-              </p>
-              <p>
-                <strong>Nombre Completo:</strong><span>{{ adulto.nombreCompleto }}</span>
-              </p>
-              <p>
-                <strong>Telefono:</strong><span>{{ adulto.telefono ? adulto.telefono : 'SIN REGISTRAR' }}</span>
-              </p>
-              <p>
-                <strong>Celular:</strong><span>{{ adulto.celular ? adulto.celular : 'SIN REGISTRAR' }}</span>
-              </p>
-              <p>
-                <strong>Email:</strong><span>{{ adulto.email }}</span>
-              </p>
-            </div>
+            <h2>Padre/Madre/Tutores</h2>
+            <mat-accordion *ngIf="adultos && adultos.length > 0; else sinAdultos">
+              <mat-expansion-panel *ngFor="let adulto of adultos">
+                <mat-expansion-panel-header>
+                  <mat-panel-title> {{ adulto.tipoAdulto }} </mat-panel-title>
+                  <mat-panel-description> {{ adulto.nombreCompleto }} </mat-panel-description>
+                </mat-expansion-panel-header>
+                <div class="resumen">
+                  <p>
+                    <strong>Tipo de Adulto:</strong><span>{{ adulto.tipoAdulto }}</span>
+                  </p>
+                  <p>
+                    <strong>Nombre Completo:</strong><span>{{ adulto.nombreCompleto }}</span>
+                  </p>
+                  <p>
+                    <strong>Telefono:</strong><span>{{ adulto.telefono ? adulto.telefono : 'SIN REGISTRAR' }}</span>
+                  </p>
+                  <p>
+                    <strong>Celular:</strong><span>{{ adulto.celular ? adulto.celular : 'SIN REGISTRAR' }}</span>
+                  </p>
+                  <p>
+                    <strong>Email:</strong><span>{{ adulto.email }}</span>
+                  </p>
+                </div>
+              </mat-expansion-panel>
+            </mat-accordion>
+            <ng-template #sinAdultos>
+              <h3>No hay registros asignados</h3>
+            </ng-template>
           </div>
 
           <div class="border p-12">
             <h3><ins>Etap</ins></h3>
             <div *ngIf="formEtap.value as etap" class="resumen_etap">
-              <p>
-                <strong>Nombre Completo Tae:</strong><span>{{ etap.nombreCompleto }}</span>
-              </p>
-              <p>
-                <strong>Email:</strong><span>{{ etap.emailEtap }}</span>
-              </p>
-              <p>
-                <strong>Diagnositico:</strong><span>{{ etap.archivoDiagnostico }}</span>
-              </p>
+              <h3 *ngIf="!etap || !etap.seguimientoEtap || etap.nombreCompleto.length < 1; else etapData">Sin Seguimiento</h3>
+              <ng-template #etapData>
+                <p>
+                  <strong>Nombre Completo Tae:</strong><span>{{ etap.nombreCompleto }}</span>
+                </p>
+                <p>
+                  <strong>Email:</strong><span>{{ etap.emailEtap }}</span>
+                </p>
+                <p>
+                  <strong>Diagnositico:</strong><span>{{ etap.archivoDiagnostico }}</span>
+                </p>
+              </ng-template>
             </div>
           </div>
         </div>

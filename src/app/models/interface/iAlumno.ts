@@ -1,9 +1,11 @@
 import { IAdulto } from './iAdulto';
+import { IComision } from './iComision';
 
 export interface IAlumno {
   _id: string;
   identificador?: number; // Numero secuencial empezando en 100
   adultos: IAdulto[];
+  comisiones: IComision[];
   tipoDni: string;
   dni: string;
   nombreCompleto: string;

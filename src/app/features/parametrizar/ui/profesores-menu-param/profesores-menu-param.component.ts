@@ -7,12 +7,12 @@ import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 })
 export class ProfesoresMenuParamComponent implements OnInit {
     @Input() cargando: boolean;
-    @Output() retAgregarAsignatura = new EventEmitter<boolean>();
+    @Output() retAgregarProfesor = new EventEmitter<boolean>();
     constructor() {}
   
     ngOnInit(): void {}
-    agregarAsignatura() {
-      this.retAgregarAsignatura.emit(true);
+    agregarProfesor() {
+      this.retAgregarProfesor.emit(true);
     }
 
 }

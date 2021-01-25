@@ -8,6 +8,10 @@ import { AsignaturasAgregarComponent } from './containers/asignaturas-agregar/as
 import { AsignaturasEditarComponent } from './containers/asignaturas-editar/asignaturas-editar.component';
 import { AsignaturasVerComponent } from './containers/asignaturas-ver/asignaturas-ver.component';
 import { AsignaturasComponent } from './containers/asignaturas/asignaturas.component';
+import { ComisionesAgregarComponent } from './containers/comisiones-agregar/comisiones-agregar.component';
+import { ComisionesEditarComponent } from './containers/comisiones-editar/comisiones-editar.component';
+import { ComisionesVerComponent } from './containers/comisiones-ver/comisiones-ver.component';
+import { ComisionesComponent } from './containers/comisiones/comisiones.component';
 import { ProfesoresAgregarComponent } from './containers/profesores-agregar/profesores-agregar.component';
 import { ProfesoresEditarComponent } from './containers/profesores-editar/profesores-editar.component';
 import { ProfesoresVerComponent } from './containers/profesores-ver/profesores-ver.component';
@@ -73,6 +77,26 @@ const routes: Routes = [
     {
         path: "profesores-ver/:id",
         component: ProfesoresVerComponent,
+        //  DEBE estar autenticados
+    }, 
+    {
+        path: "comisiones",
+        component: ComisionesComponent,
+        //  DEBE estar autenticados
+    },
+    {
+        path: "comisiones-agregar",
+        component: ComisionesAgregarComponent,
+        //  DEBE estar autenticados
+    },
+    {
+        path: "comisiones-editar/:id",
+        component: ComisionesEditarComponent,
+        //  DEBE estar autenticados
+    },
+    {
+        path: "comisiones-ver/:id",
+        component:ComisionesVerComponent,
         //  DEBE estar autenticados
     },
 ];
