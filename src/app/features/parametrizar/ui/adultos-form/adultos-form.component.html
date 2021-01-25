@@ -1,0 +1,45 @@
+<h1>Agregar Padre/Madre/Tutores</h1>
+<form [formGroup]="formAdulto" (ngSubmit)="agregarAdulto()" fxLayout="column">
+  <div fxLayout="row wrap" fxLayoutAlign="space-between start">
+    <!-- tipo adulto ============================= -->
+    <mat-form-field appearance="outline" fxFlex.xs="100" fxFlex.gt-xs="45">
+      <mat-label class="lbl">Tipo de Adulto</mat-label>
+      <mat-select formControlName="tipoAdulto">
+        <mat-option value="TUTOR">TUTOR</mat-option>
+        <mat-option value="PADRE">PADRE </mat-option>
+        <mat-option value="MADRE">MADRE </mat-option>
+      </mat-select>
+      <mat-error *ngIf="formAdulto.controls.tipoAdulto.hasError('required')"> Este campo es requerido. </mat-error>
+    </mat-form-field>
+    <!-- nombre completo ============================= -->
+    <mat-form-field appearance="outline" fxFlex.xs="100" fxFlex.gt-xs="45">
+      <mat-label class="lbl">Nombre Completo</mat-label>
+      <input matInput type="text" formControlName="nombreCompleto" minlength="4" maxlength="50" autocomplete="off" />
+      <mat-error *ngIf="formAdulto.controls.nombreCompleto.hasError('required')"> Este campo es requerido. </mat-error>
+    </mat-form-field>
+    <!-- telefono ============================= -->
+    <mat-form-field appearance="outline" fxFlex.xs="100" fxFlex.gt-xs="45">
+      <mat-label class="lbl"> Teléfono </mat-label>
+      <input matInput type="number" formControlName="telefono" minlength="4" maxlength="50" autocomplete="off" />
+      <mat-error *ngIf="formAdulto.controls.telefono.hasError('required')"> Este campo es requerido. </mat-error>
+    </mat-form-field>
+    <!-- celular ============================= -->
+    <mat-form-field appearance="outline" fxFlex.xs="100" fxFlex.gt-xs="45">
+      <mat-label class="lbl"> Celular </mat-label>
+      <input matInput type="number" formControlName="celular" minlength="4" maxlength="50" autocomplete="off" />
+      <mat-error *ngIf="formAdulto.controls.celular.hasError('required')"> Este campo es requerido. </mat-error>
+    </mat-form-field>
+    <!-- email ============================= -->
+    <mat-form-field appearance="outline" fxFlex.xs="100" fxFlex.gt-xs="45">
+      <mat-label class="lbl"> Email </mat-label>
+      <input matInput type="email" formControlName="email" minlength="4" maxlength="50" autocomplete="off" />
+      <mat-error *ngIf="formAdulto.controls.email.hasError('email') && !formAdulto.controls.email.hasError('required')">
+        Email inválido
+      </mat-error>
+      <mat-error *ngIf="formAdulto.controls.email.hasError('required')"> Este campo es requerido. </mat-error>
+    </mat-form-field>
+  </div>
+  <div fxLayout="row" fxLayoutAlign="center start">
+    <button mat-raised-button color="accent" type="submit">Agregar {{ formAdulto.controls.tipoAdulto.value }}</button>
+  </div>
+</form>

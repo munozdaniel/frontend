@@ -8,6 +8,7 @@ import { IAlumno } from 'app/models/interface/iAlumno';
 import { IComision } from 'app/models/interface/iComision';
 import { CONFIG_PROVIDER } from 'app/shared/config.provider';
 import Swal from 'sweetalert2';
+import { AdultosFormComponent } from '../adultos-form/adultos-form.component';
 import { ComisionesFormComponent } from '../comisiones-form/comisiones-form.component';
 
 @Component({
@@ -25,8 +26,6 @@ export class AlumnosFormComponent implements OnInit, OnChanges {
   //
   formDatosPersonales: FormGroup;
   formEtap: FormGroup;
-  formAdulto: FormGroup;
-  formComision: FormGroup;
   nacionalidades = NACIONALIDADES;
 
   adultos: IAdulto[] = [];
@@ -39,8 +38,6 @@ export class AlumnosFormComponent implements OnInit, OnChanges {
       this.formDatosPersonales.reset();
       this.adultos = [];
       this.formEtap.reset();
-      this.formAdulto.reset();
-      this.formComision.reset();
     }
     if (changes.alumno && changes.alumno.currentValue) {
       this.setFormularios();
@@ -77,20 +74,6 @@ export class AlumnosFormComponent implements OnInit, OnChanges {
       archivoDiagnostico: [null, [Validators.required]],
     });
     this.formEtap.disable();
-    this.formAdulto = this._fb.group({
-      tipoAdulto: [null, [Validators.required]],
-      nombreCompleto: [null, [Validators.required]],
-      telefono: [null, []],
-      celular: [null, []],
-      email: [null, [Validators.required, Validators.email]],
-    });
-    this.formComision = this._fb.group({
-      comision: [null, [Validators.required]],
-      cicloLectivo: [null, [Validators.required]],
-      curso: [null, [Validators.required]],
-      division: [null, [Validators.required]],
-      condicion: [null, [Validators.required]],
-    });
   }
   setFormularios() {
     if (!this.formDatosPersonales && !this.formEtap) {
@@ -115,14 +98,18 @@ export class AlumnosFormComponent implements OnInit, OnChanges {
       this.formEtap.disable();
     }
   }
-  agregarAdulto() {
-    if (this.formAdulto.valid) {
-      const adulto: IAdulto = { ...this.formAdulto.value, activo: true, index: this.adultos.length + 1 };
-      this.adultos.push(adulto);
-      this.formAdulto.reset();
-    }
+  abrirModalAdulto() {
+    const dialogRef = this._dialog.open(AdultosFormComponent, {
+      data: { esModal: true },
+      width: '50%',
+    });
+
+    dialogRef.afterClosed().subscribe(({ adulto }: any) => {
+      adulto.index = this.adultos.length + 1;
+      this.adultos = [...this.adultos, adulto];
+    });
   }
-  quitarAdulto(adulto: IAdulto) {
+  setEliminarAdulto(adulto: IAdulto) {
     console.log('adulto', adulto);
     const index = this.adultos.findIndex((x) => x.index === adulto.index);
     console.log('index', index);

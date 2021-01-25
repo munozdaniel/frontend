@@ -33,6 +33,8 @@ import { ComisionesMenuParamComponent } from './ui/comisiones-menu-param/comisio
 import { ComisionesTablaParamComponent } from './ui/comisiones-tabla-param/comisiones-tabla-param.component';
 import { ComisionesFormComponent } from './ui/comisiones-form/comisiones-form.component';
 import { AlumnosVerUiComponent } from './ui/alumnos-ver-ui/alumnos-ver-ui.component';
+import { AdultosFormComponent } from './ui/adultos-form/adultos-form.component';
+import { AdultosTablaParamComponent } from './ui/adultos-table-param/adultos-tabla-param.component';
 
 @NgModule({
   declarations: [
@@ -44,9 +46,32 @@ import { AlumnosVerUiComponent } from './ui/alumnos-ver-ui/alumnos-ver-ui.compon
     AlumnosEditarComponent,
     AlumnosAgregarComponent,
     AsignaturasAgregarComponent,
-    AsignaturasEditarComponent,AlumnosVerComponent, AsignaturasTablaParamComponent, AsignaturasMenuParamComponent, AsignaturasFormComponent, AsignaturasVerComponent, ProfesoresComponent, ProfesoresAgregarComponent, ProfesoresEditarComponent, ProfesoresVerComponent, ProfesoresFormComponent, ProfesoresTablaParamComponent, ProfesoresMenuParamComponent, AlumnosComisionesComponent, ComisionesComponent, ComisionesAgregarComponent, ComisionesEditarComponent, ComisionesVerComponent, ComisionesMenuParamComponent, ComisionesTablaParamComponent, ComisionesFormComponent, AlumnosVerUiComponent
+    AsignaturasEditarComponent,
+    AlumnosVerComponent,
+    AsignaturasTablaParamComponent,
+    AsignaturasMenuParamComponent,
+    AsignaturasFormComponent,
+    AsignaturasVerComponent,
+    ProfesoresComponent,
+    ProfesoresAgregarComponent,
+    ProfesoresEditarComponent,
+    ProfesoresVerComponent,
+    ProfesoresFormComponent,
+    ProfesoresTablaParamComponent,
+    ProfesoresMenuParamComponent,
+    AlumnosComisionesComponent,
+    ComisionesComponent,
+    ComisionesAgregarComponent,
+    ComisionesEditarComponent,
+    ComisionesVerComponent,
+    ComisionesMenuParamComponent,
+    ComisionesTablaParamComponent,
+    ComisionesFormComponent,
+    AlumnosVerUiComponent,
+    AdultosFormComponent,
+    AdultosTablaParamComponent,
   ],
-  entryComponents:[ComisionesFormComponent],
+  entryComponents: [ComisionesFormComponent, AdultosFormComponent],
   imports: [CommonModule, ParametrizarRoutingModule, SharedModule, DesignSharedModule],
 })
 export class ParametrizarModule {}

@@ -272,79 +272,19 @@
         <button mat-raised-button matStepperPrevious color="warn">Volver</button>
         <button mat-raised-button matStepperNext color="accent">Siguiente</button>
       </div>
-      <div fxLayout="row" fxLayoutAlign="space-between start" class="w-100-p">
-        <div *ngIf="soloLectura" fxHide.xs fxFlex.gt-xs="45"></div>
-        <form
-          *ngIf="!soloLectura"
-          [formGroup]="formAdulto"
-          (ngSubmit)="agregarAdulto()"
-          fxFlex.xs="100"
-          fxFlex.gt-xs="45"
-          fxLayout="column"
-        >
-          <p class="text_red">Ingrese al menos un registro</p>
-          <!-- tipo adulto ============================= -->
-          <mat-form-field appearance="outline">
-            <mat-label class="lbl">Tipo de Adulto</mat-label>
-            <mat-select formControlName="tipoAdulto">
-              <mat-option value="TUTOR">TUTOR</mat-option>
-              <mat-option value="PADRE">PADRE </mat-option>
-              <mat-option value="MADRE">MADRE </mat-option>
-            </mat-select>
-            <mat-error *ngIf="formAdulto.controls.tipoAdulto.hasError('required')"> Este campo es requerido. </mat-error>
-          </mat-form-field>
-          <!-- nombre completo ============================= -->
-          <mat-form-field appearance="outline">
-            <mat-label class="lbl">Nombre Completo</mat-label>
-            <input matInput type="text" formControlName="nombreCompleto" minlength="4" maxlength="50" autocomplete="off" />
-            <mat-error *ngIf="formAdulto.controls.nombreCompleto.hasError('required')"> Este campo es requerido. </mat-error>
-          </mat-form-field>
-          <!-- telefono ============================= -->
-          <mat-form-field appearance="outline">
-            <mat-label class="lbl"> Teléfono </mat-label>
-            <input matInput type="number" formControlName="telefono" minlength="4" maxlength="50" autocomplete="off" />
-            <mat-error *ngIf="formAdulto.controls.telefono.hasError('required')"> Este campo es requerido. </mat-error>
-          </mat-form-field>
-          <!-- celular ============================= -->
-          <mat-form-field appearance="outline">
-            <mat-label class="lbl"> Celular </mat-label>
-            <input matInput type="number" formControlName="celular" minlength="4" maxlength="50" autocomplete="off" />
-            <mat-error *ngIf="formAdulto.controls.celular.hasError('required')"> Este campo es requerido. </mat-error>
-          </mat-form-field>
-          <!-- email ============================= -->
-          <mat-form-field appearance="outline">
-            <mat-label class="lbl"> Email </mat-label>
-            <input matInput type="email" formControlName="email" minlength="4" maxlength="50" autocomplete="off" />
-            <mat-error *ngIf="formAdulto.controls.email.hasError('email') && !formAdulto.controls.email.hasError('required')">
-              Email inválido
-            </mat-error>
-            <mat-error *ngIf="formAdulto.controls.email.hasError('required')"> Este campo es requerido. </mat-error>
-          </mat-form-field>
-          <button mat-raised-button color="accent" type="submit">Agregar {{ formAdulto.controls.tipoAdulto.value }}</button>
-        </form>
-        <div fxLayout="column" fxFlex.xs="100" fxFlex.gt-xs="45">
-          <h2>Padre/Madre/Tutores asignados:</h2>
-
-          <p *ngIf="adultos || adultos.length < 1">No se ha ingresado ningún registro</p>
-          <mat-list>
-            <mat-list-item *ngFor="let adulto of adultos" class="mb-24">
-              <div fxLayout="row" fxLayoutAlign="space-between start" class="w-100-p">
-                <div fxLayout="column">
-                  <strong>{{ adulto.index }}. {{ adulto.nombreCompleto }}</strong>
-                  <small
-                    ><span>Telefono: {{ adulto.telefono ? adulto.telefono : 'NO REGISTRADO' }}</span> -
-                    <span>Celular: {{ adulto.celular ? adulto.celular : 'NO REGISTRADO' }}</span></small
-                  >
-                  <small class="fg--red"> {{ adulto.tipoAdulto }}</small>
-                </div>
-                <button *ngIf="soloLectura" mat-icon-button color="warn" (click)="quitarAdulto(adulto)">
-                  <mat-icon>delete_forever</mat-icon>
-                </button>
-              </div>
-            </mat-list-item>
-          </mat-list>
+      <div fxLayout="row" fxLayoutAlign="center start" class="w-100-p">
+        <div fxLayout="column" fxFlex.xs="100" fxFlex.gt-xs="80">
+          <h2 fxLayout="row" fxLayoutAlign="space-between center">
+            Padre/Madre/Tutores asignados <span>{{ adultos?.length }}</span>
+          </h2>
+          <div class="mb-12">
+            <button mat-raised-button color="primary" type="button" (click)="abrirModalAdulto()">Agregar Adulto</button>
+          </div>
+          <p *ngIf="!adultos || adultos.length < 1">No se ha ingresado ningún registro</p>
+          <app-adultos-tabla-param [adultos]="adultos" (retEliminarAdulto)="setEliminarAdulto($event)" class="w-100-p"></app-adultos-tabla-param>
         </div>
       </div>
+      
       <div class="w-100-p mt-12" fxLayout="row" fxLayoutAlign="space-between start">
         <button mat-raised-button matStepperPrevious color="warn">Volver</button>
         <button mat-raised-button matStepperNext color="accent">Siguiente</button>
@@ -390,7 +330,7 @@
         <button mat-raised-button matStepperNext color="accent">Siguiente</button>
       </div>
     </mat-step>
-    <!-- 4. PASO ADULTOS ==================================== -->
+    <!-- 4. PASO COMISIONES ==================================== -->
     <mat-step label="Comisiones" [optional]="true">
       <div class="w-100-p mb-12" fxLayout="row" fxLayoutAlign="space-between start">
         <button mat-raised-button matStepperPrevious color="warn">Volver</button>
