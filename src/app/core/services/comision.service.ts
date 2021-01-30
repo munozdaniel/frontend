@@ -1,5 +1,6 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { IAlumno } from 'app/models/interface/iAlumno';
 import { IComision } from 'app/models/interface/iComision';
 import { IQueryPag } from 'app/models/interface/iQueryPag';
 import { environment } from 'environments/environment';
@@ -60,5 +61,11 @@ export class ComisionService {
     const url = this.url + query;
 
     return this.http.put<any>(url, { activo });
+  }
+  obtenerFichaAlumnos(cicloLectivo: number, curso: number, division: number):Observable<IComision[]> {
+    const query = `comisiones/ficha-alumnos`;
+    const url = this.url + query;
+
+    return this.http.post<any>(url, { cicloLectivo, curso, division });
   }
 }

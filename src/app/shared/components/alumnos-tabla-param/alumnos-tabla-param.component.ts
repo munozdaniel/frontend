@@ -12,6 +12,8 @@ import { IPaginado } from 'app/models/interface/iPaginado';
   animations: designAnimations,
 })
 export class AlumnosTablaParamComponent implements OnInit, OnChanges {
+  @Input() ficha?: boolean;
+  @Input() administrador?: boolean;
   @Input() cargando: boolean;
   // ALUMNOS ________________________________
   dataSource: MatTableDataSource<any> = new MatTableDataSource([]);
@@ -24,9 +26,10 @@ export class AlumnosTablaParamComponent implements OnInit, OnChanges {
   columnas: string[] = ['alumnoNro', 'nombre', 'dni', 'seguimientoEtap', 'opciones'];
   // Input
   @Input() alumnos: IAlumno[];
-  
+
   // Output
   @Output() retEliminarAlumno = new EventEmitter<IAlumno>();
+  @Output() retFichaPersonal = new EventEmitter<IAlumno>();
   constructor(private _router: Router) {}
 
   ngOnInit(): void {}
@@ -50,5 +53,7 @@ export class AlumnosTablaParamComponent implements OnInit, OnChanges {
   eliminar(row: IAlumno) {
     this.retEliminarAlumno.emit(row);
   }
- 
+  fichaPersonal(alumno: IAlumno) {
+    this.retFichaPersonal.emit(alumno);
+  }
 }

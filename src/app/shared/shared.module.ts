@@ -10,6 +10,7 @@ import { EmptyDataComponent } from './components/empty-data/empty-data.component
 import { VolverComponent } from './volver/volver.component';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { EmailUnverifiedComponent } from './components/email-unverified/email-unverified.component';
+import { AlumnosTablaParamComponent } from './components/alumnos-tabla-param/alumnos-tabla-param.component';
 
 
 @NgModule({
@@ -33,7 +34,8 @@ import { EmailUnverifiedComponent } from './components/email-unverified/email-un
     GhostsComponent,
     EmptyDataComponent,
     VolverComponent,
-    EmailUnverifiedComponent
+    EmailUnverifiedComponent,
+    AlumnosTablaParamComponent
   ],
   declarations: [
     Error401Component,
@@ -43,6 +45,7 @@ import { EmailUnverifiedComponent } from './components/email-unverified/email-un
     EmptyDataComponent,
     VolverComponent,
     EmailUnverifiedComponent,
+    AlumnosTablaParamComponent
   ],
 })
 export class SharedModule {}
