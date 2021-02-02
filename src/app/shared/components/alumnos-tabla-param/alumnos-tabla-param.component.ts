@@ -2,6 +2,7 @@ import { Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChange
 import { MatTableDataSource, MatSort, MatPaginator } from '@angular/material';
 import { Router } from '@angular/router';
 import { designAnimations } from '@design/animations';
+import { ALUMNO_OPERACION } from 'app/models/constants/alumno-operacion.enum';
 import { IAlumno } from 'app/models/interface/iAlumno';
 import { IPaginado } from 'app/models/interface/iPaginado';
 
@@ -12,8 +13,8 @@ import { IPaginado } from 'app/models/interface/iPaginado';
   animations: designAnimations,
 })
 export class AlumnosTablaParamComponent implements OnInit, OnChanges {
-  @Input() ficha?: boolean;
-  @Input() administrador?: boolean;
+  alumnoOperacion = ALUMNO_OPERACION;
+  @Input() operacion: ALUMNO_OPERACION;
   @Input() cargando: boolean;
   // ALUMNOS ________________________________
   dataSource: MatTableDataSource<any> = new MatTableDataSource([]);

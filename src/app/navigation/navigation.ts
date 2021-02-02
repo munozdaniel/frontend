@@ -42,19 +42,13 @@ export const navigation: DesignNavigation[] = [
         url: '/taller/ficha-alumno',
       },
       {
-        id: 'taller_plantilla',
-        title: 'Plantillas',
+        id: 'taller_seguimiento',
+        title: 'Seguimiento de Alumnos',
         type: 'item',
         icon: 'users',
-        url: '/taller/plantilla',
+        url: '/taller/seguimiento-alumnos',
       },
-      {
-        id: 'taller_calificacion',
-        title: 'Calificaciones ',
-        type: 'item',
-        icon: 'users',
-        url: '/taller/calificacion',
-      },
+      
     ],
   },
   {

@@ -1,14 +1,19 @@
 export interface ISeguimientoAlumno {
-  _id?: number;
-  id_alumno: number;
+  _id?: string;
+  seguimientoAlumnoNro: number;
+  alumnoId: string;
+  planillaTallerId: string;
   fecha: string;
   tipoSeguimiento: string;
-  observacion: string;
   cicloLectivo: number;
-  idPlanillaDeTaller: number;
-  resuelto: string;
+  resuelto: boolean;
+  observacion: string;
   observacion2: string;
   observacionJefe: string;
+
+  fechaCreacion: Date;
+  fechaModificacion?: Date;
+  activo: boolean;
 }
 // original
 // _id: number;

@@ -7,6 +7,8 @@ import { Observable } from 'rxjs';
 import { finalize, tap } from 'rxjs/operators';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { IFichaAlumnoParam } from 'app/models/interface/iFichaAlumnoParam';
+import { ALUMNO_OPERACION } from 'app/models/constants/alumno-operacion.enum';
+import Swal from 'sweetalert2';
 
 @UntilDestroy()
 @Component({
@@ -19,6 +21,7 @@ export class FichaAlumnosComponent implements OnInit {
   titulo = 'Buscar fichas de alumnos';
   cargando = false;
   alumnos: IAlumno[];
+  alumnoOperacion = ALUMNO_OPERACION;
   constructor(private _alumnoService: AlumnoService, private _designProgressBar: DesignProgressBarService) {}
 
   ngOnInit(): void {}
@@ -38,6 +41,12 @@ export class FichaAlumnosComponent implements OnInit {
           (error) => {
             this.cargando = false;
             console.log('[ERROR]', error);
+            Swal.fire({
+              title: 'Oops! Ocurrió un error',
+              html:
+                'No se pudieron recuperar los registros de la base de datos. <br> Si el problema persiste comuniquesé con el soporte técnico.',
+              icon: 'error',
+            });
           }
         );
     }

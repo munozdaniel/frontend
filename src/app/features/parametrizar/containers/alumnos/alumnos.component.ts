@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { AlumnoService } from 'app/core/services/alumno.service';
+import { ALUMNO_OPERACION } from 'app/models/constants/alumno-operacion.enum';
 import { ALUMNO_ELIMINADO_SUCCESS, ERROR_EJECUTAR_API, OPERACION_INTERRUMPIDA } from 'app/models/constants/respuestas.const';
 import { IAlumno } from 'app/models/interface/iAlumno';
 import { of } from 'rxjs';
@@ -14,7 +15,7 @@ import Swal from 'sweetalert2';
     <div class="w-100-p p-24" fxLayout="column">
       <app-alumnos-menu-param [cargando]="cargando" (retAgregarAlumno)="setAgregarAlumno($event)"> </app-alumnos-menu-param>
       <app-alumnos-tabla-param
-        [administrador]="true"
+        [operacion]="alumnoOperacion.ADMINISTRADOR"
         [cargando]="cargando"
         [alumnos]="alumnos"
         (retEliminarAlumno)="setEliminarAlumno($event)"
@@ -24,6 +25,7 @@ import Swal from 'sweetalert2';
   styles: [],
 })
 export class AlumnosComponent implements OnInit {
+  alumnoOperacion = ALUMNO_OPERACION;
   alumnos: IAlumno[] = [];
   // alumnos$: Observable<IAlumno[]>;
   cargando = false;

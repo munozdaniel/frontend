@@ -11,18 +11,20 @@ import { VolverComponent } from './volver/volver.component';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { EmailUnverifiedComponent } from './components/email-unverified/email-unverified.component';
 import { AlumnosTablaParamComponent } from './components/alumnos-tabla-param/alumnos-tabla-param.component';
-
+import { FormCicloLectivoComponent } from './components/form-ciclo-lectivo/form-ciclo-lectivo.component';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 @NgModule({
   imports: [
     CommonModule,
     RouterModule,
     MaterialModule,
+    FormsModule,
+    ReactiveFormsModule,
     FlexLayoutModule.withConfig({
       useColumnBasisZero: false,
       printWithBreakpoints: ['md', 'lt-lg', 'lt-xl', 'gt-sm', 'gt-xs'],
     }),
-
   ],
   providers: [],
   entryComponents: [],
@@ -35,7 +37,8 @@ import { AlumnosTablaParamComponent } from './components/alumnos-tabla-param/alu
     EmptyDataComponent,
     VolverComponent,
     EmailUnverifiedComponent,
-    AlumnosTablaParamComponent
+    AlumnosTablaParamComponent,
+    FormCicloLectivoComponent,
   ],
   declarations: [
     Error401Component,
@@ -45,7 +48,8 @@ import { AlumnosTablaParamComponent } from './components/alumnos-tabla-param/alu
     EmptyDataComponent,
     VolverComponent,
     EmailUnverifiedComponent,
-    AlumnosTablaParamComponent
+    AlumnosTablaParamComponent,
+    FormCicloLectivoComponent,
   ],
 })
 export class SharedModule {}
