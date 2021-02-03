@@ -1,9 +1,13 @@
+import { IAlumno } from './iAlumno';
+import { IPlanillaTaller } from './iPlanillaTaller';
+
 export interface ISeguimientoAlumno {
   _id?: string;
+  id_seguimiento: number; // para migrar
   seguimientoAlumnoNro: number;
-  alumnoId: string;
-  planillaTallerId: string;
-  fecha: string;
+  alumno: IAlumno;
+  planillaTaller: IPlanillaTaller;
+  fecha: Date;
   tipoSeguimiento: string;
   cicloLectivo: number;
   resuelto: boolean;

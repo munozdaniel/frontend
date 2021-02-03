@@ -17,7 +17,7 @@ export class TipoSeguimientoFormComponent implements OnInit {
 
   ngOnInit(): void {
     this.form = this._fb.group({
-      tipoSeguimiento: [TipoSeguimiento[0], [Validators.required]],
+      tipoSeguimiento: [TipoSeguimiento[0].valor, [Validators.required]],
     });
   }
   enviarTipoSegumiento() {

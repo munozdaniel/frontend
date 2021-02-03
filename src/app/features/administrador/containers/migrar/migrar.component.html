@@ -1,0 +1,7 @@
+<div fxLayout="column">
+    <h1>Migrar datos</h1>
+    <hr>
+    <div *ngFor="let item of migradores">
+        <p  [routerLink]="item.url">{{item.nombre}}</p>
+    </div>
+</div>

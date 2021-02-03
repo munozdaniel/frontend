@@ -62,7 +62,7 @@ export class SeguimientoAlumnoService {
     return this.http.put<any>(url, { activo });
   }
   //
-  buscarAlumnosPorSeguimiento(resuelto?: boolean): Observable<ISeguimientoAlumno> {
+  buscarAlumnosPorSeguimiento(resuelto?: boolean): Observable<ISeguimientoAlumno[]> {
     const query = `seguimiento-alumnos/resueltos`;
     const url = this.url + query;
 
