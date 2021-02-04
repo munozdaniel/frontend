@@ -48,7 +48,13 @@ export const navigation: DesignNavigation[] = [
         icon: 'users',
         url: '/taller/seguimiento-alumnos',
       },
-      
+      {
+        id: 'taller_planilla',
+        title: 'Planillas de Taller',
+        type: 'item',
+        icon: 'users',
+        url: '/taller/planillas',
+      },
     ],
   },
   {

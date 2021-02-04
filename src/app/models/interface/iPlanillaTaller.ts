@@ -1,14 +1,20 @@
+import { IAsignatura } from './iAsignatura';
+import { IComision } from './iComision';
+import { IProfesor } from './iProfesor';
+
 export interface IPlanillaTaller {
   _id: string;
-  // planillaTallerId: string;
-  asignaturaId: string;
-  profesorId: number;
-  curso: number;
-  division: number;
-  comision: string;
-  cicloLectivo: number;
-  fechaInicio: string;
+  planillaTallerNro: number;
+  planillaTallerId: number; // para migrar
+  asignaturaId: IAsignatura;
+  profesorId: IProfesor;
+  comision: IComision;
+  fechaInicio: Date;
+  fechaFinalizacion: Date;
   observacion: string;
-  fechaFinalizacion: string;
   bimestre: string;
+
+  fechaCreacion?: Date;
+  fechaModificacion?: Date;
+  activo: boolean;
 }

@@ -11,6 +11,8 @@ import { SeguimientoAlumnosTablaComponent } from './ui/seguimiento-alumnos-tabla
 import { SeguimientoAgregarComponent } from './containers/seguimiento-agregar/seguimiento-agregar.component';
 import { SeguimientoAlumnoFormComponent } from './ui/seguimiento-alumno-form/seguimiento-alumno-form.component';
 import { SeguimientoBusquedaAlumnoComponent } from './ui/seguimiento-busqueda-alumno/seguimiento-busqueda-alumno.component';
+import { PlanillasComponent } from './containers/planillas/planillas.component';
+import { PlanillasTablaComponent } from './ui/planillas-tabla/planillas-tabla.component';
 
 @NgModule({
   declarations: [
@@ -22,6 +24,8 @@ import { SeguimientoBusquedaAlumnoComponent } from './ui/seguimiento-busqueda-al
     SeguimientoAgregarComponent,
     SeguimientoAlumnoFormComponent,
     SeguimientoBusquedaAlumnoComponent,
+    PlanillasComponent,
+    PlanillasTablaComponent,
   ],
   imports: [CommonModule, TallerRoutingModule, SharedModule, DesignSharedModule],
 })

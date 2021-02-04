@@ -3,7 +3,8 @@ import { Injectable } from '@angular/core';
 import { IPlanillaTaller } from 'app/models/interface/iPlanillaTaller';
 import { IQueryPag } from 'app/models/interface/iQueryPag';
 import { environment } from 'environments/environment';
-import { Observable } from 'rxjs';
+import { BehaviorSubject, Observable, Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root',
@@ -11,7 +12,18 @@ import { Observable } from 'rxjs';
 export class PlanillaTallerService {
   protected url = environment.apiURI;
   constructor(private http: HttpClient) {}
-
+  obtenerPlanillaTalleresPaginado(filter = '', sortOrder = 'asc', pageNumber = 0, pageSize = 3): Observable<any> {
+    const query = `planilla-taller/paginar`;
+    const url = this.url + query;
+    return this.http.get(url, {
+      params: new HttpParams()
+        //   .set('courseId', courseId.toString())
+        .set('filter', filter)
+        .set('sortOrder', sortOrder)
+        .set('pageNumber', pageNumber.toString())
+        .set('pageSize', pageSize.toString()),
+    });
+  }
   obtenerPlanillaTallerPorId(PlanillaTallerId: string): Observable<IPlanillaTaller> {
     const query = `planilla-taller/${PlanillaTallerId}`;
     const url = this.url + query;

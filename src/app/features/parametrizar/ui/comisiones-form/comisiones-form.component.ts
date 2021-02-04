@@ -73,9 +73,6 @@ export class ComisionesFormComponent implements OnInit {
       this.form.disable();
     }
   }
-  test() {
-    this.comision = {comisionNro:1, activo: true, cicloLectivo: 2020, comision: 'C', condicion: 'REGULAR', curso: 1, division: 1 };
-  }
   setDatos() {
     if (!this.form) {
       setTimeout(() => {
