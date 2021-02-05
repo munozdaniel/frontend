@@ -16,18 +16,18 @@ export class PlanillaTallerDataSource implements DataSource<IPlanillaTaller> {
 
   constructor(private coursesService: PlanillaTallerService) {}
 
-  loadPlanillaTaller(filter: string, sortDirection: string, pageIndex: number, pageSize: number) {
+  loadPlanillaTaller(filter: string, sortField: string, sortDirection: string, pageIndex: number, pageSize: number) {
     this.cargandoSubject.next(true);
 
     this.coursesService
-      .obtenerPlanillaTalleresPaginado(filter, sortDirection, pageIndex, pageSize)
+      .obtenerPlanillaTalleresPaginado(filter, sortField, sortDirection, pageIndex, pageSize)
       .pipe(
         catchError(() => of([])),
         finalize(() => this.cargandoSubject.next(false)),
         tap((datos) => console.log('tap 2', datos)),
-        tap((datos) => this.totalSubject.next(datos.total))
+        tap((datos) => this.totalSubject.next(datos ? datos.totalDocs : 0))
       )
-      .subscribe((planillaTaller) => this.planillaTallerSubject.next(planillaTaller.docs));
+      .subscribe((planillaTaller) => this.planillaTallerSubject.next(planillaTaller ? planillaTaller.docs : []));
   }
 
   connect(collectionViewer: CollectionViewer): Observable<IPlanillaTaller[]> {

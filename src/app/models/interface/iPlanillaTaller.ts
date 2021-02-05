@@ -3,12 +3,16 @@ import { IComision } from './iComision';
 import { IProfesor } from './iProfesor';
 
 export interface IPlanillaTaller {
-  _id: string;
+  _id?: string;
   planillaTallerNro: number;
   planillaTallerId: number; // para migrar
-  asignaturaId: IAsignatura;
-  profesorId: IProfesor;
+  asignatura: IAsignatura;
+  profesor: IProfesor;
   comision: IComision;
+  // curso: number;
+  // division: number;
+  // comision: string;
+  // cicloLectivo: number;
   fechaInicio: Date;
   fechaFinalizacion: Date;
   observacion: string;

@@ -4,10 +4,11 @@ export interface IPaginado {
   //   pageSize: number;
   //   length: number;
   // Nueva paginacion
-  currentPage?: any;
-  pageSize?: any;
+  currentPage?: number; // number
+  pageSize?: number; // number
   //   orderBy?: any;
-  sortBy?: any;
-  search?: any;
+  sortField: string;
+  sortBy: string; //{nombre:valor}
+  search: string; // string
   //   list?: any;
 }

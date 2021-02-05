@@ -12,13 +12,15 @@ import { takeUntil } from 'rxjs/operators';
 export class PlanillaTallerService {
   protected url = environment.apiURI;
   constructor(private http: HttpClient) {}
-  obtenerPlanillaTalleresPaginado(filter = '', sortOrder = 'asc', pageNumber = 0, pageSize = 3): Observable<any> {
+  obtenerPlanillaTalleresPaginado(filter = '', sortField = '', sortOrder = 'asc', pageNumber = 0, pageSize = 3): Observable<any> {
     const query = `planilla-taller/paginar`;
     const url = this.url + query;
+    console.log('>>>', filter, sortField, sortOrder, pageNumber, pageSize);
     return this.http.get(url, {
       params: new HttpParams()
         //   .set('courseId', courseId.toString())
         .set('filter', filter)
+        .set('sortField', sortField)
         .set('sortOrder', sortOrder)
         .set('pageNumber', pageNumber.toString())
         .set('pageSize', pageSize.toString()),

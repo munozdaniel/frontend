@@ -44,7 +44,7 @@ export class PlanillasComponent implements OnInit {
 
   ngOnInit(): void {
     // Carga inicial
-    this.dataSource.loadPlanillaTaller('', 'asc', 1, 3);
+    this.dataSource.loadPlanillaTaller('', 'planillaTallerNro', 'desc', 1, 3);
   }
   redireccionar() {
     this._router.navigate(['taller/planillas-agregar']);
@@ -53,8 +53,8 @@ export class PlanillasComponent implements OnInit {
   setEliminarPlanilla(evento: IPlanillaTaller) {}
   setPaginacion(evento: IPaginado) {
     if (evento) {
-      const { currentPage, pageSize, sortBy, search } = { ...evento };
-      this.dataSource.loadPlanillaTaller(search, sortBy, currentPage, pageSize);
+      const { currentPage, pageSize, sortBy, search, sortField } = { ...evento };
+      this.dataSource.loadPlanillaTaller(search, sortField, sortBy, currentPage, pageSize);
     }
   }
 }
