@@ -87,4 +87,5 @@ export class PlanillasTablaComponent implements AfterViewInit, OnInit, OnChanges
       pageSize: this.paginator.pageSize,
     });
   }
+  
 }

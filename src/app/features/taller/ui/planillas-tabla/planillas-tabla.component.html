@@ -25,7 +25,10 @@
     <!-- -->
     <ng-container matColumnDef="fechaInicio">
       <mat-header-cell *matHeaderCellDef mat-sort-header> Fecha Inicio </mat-header-cell>
-      <mat-cell *matCellDef="let element">{{ element.fechaInicio | date: 'dd/MM/yyyy' }} </mat-cell>
+      <mat-cell *matCellDef="let element">
+        <!-- {{ element.fechaInicio | date: 'dd/MM/yyyy' }} -->
+        {{ element.fechaInicioString }}
+      </mat-cell>
     </ng-container>
 
     <!-- -->
@@ -59,7 +62,7 @@
     </ng-container>
     <!-- -->
     <ng-container matColumnDef="comisioncompleta">
-      <mat-header-cell *matHeaderCellDef> Curso/Com./Div. </mat-header-cell>
+      <mat-header-cell *matHeaderCellDef mat-sort-header> Curso/Com./Div. </mat-header-cell>
       <mat-cell *matCellDef="let element">
         <div class="comision" fxLayout="row" fxLayoutAlign="space-between start">
           <span matTooltip="CURSO">0{{ element.comision.curso }}</span>
