@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
+import { designAnimations } from '@design/animations';
 import { AsignaturaService } from 'app/core/services/asignatura.service';
 import { IAsignatura } from 'app/models/interface/iAsignatura';
 import { Observable } from 'rxjs';
@@ -9,10 +10,21 @@ import { finalize } from 'rxjs/operators';
   selector: 'app-asignaturas-ver',
   template: `
     <button-volver></button-volver>
-    <div *ngIf="asignatura$ | async as asignatura; else cargandoAsignatura" fxLayout="column" class="w-100-p p-12 mt-16">
+    <!-- <div *ngIf="asignatura$ | async as asignatura; else cargandoAsignatura" fxLayout="column" class="w-100-p p-12 mt-16">
       <div fxLayout="row" fxLayoutAlign="space-between start">
         <h1>Ver Asignatura</h1>
         <button mat-raised-button color="primary" [disabled]="!asignatura" (click)="habilitarEdicion()">Habilitar Edición</button>
+      </div> -->
+    <div *ngIf="asignatura$ | async as asignatura; else cargandoAsignatura" fxLayout="column" fxLayoutGap="20px" class="w-100-p p-12 mt-40">
+      <div fxLayout="column" class="mat-card mat-elevation-z4 p-24 ">
+        <div fxLayout fxLayoutAlign="start center" class="w-100-p mb-12" style="border-bottom: 2px solid #80808057">
+          <h1 [@animate]="{ value: '*', params: { x: '50px' } }" class="px-12">{{ titulo }}</h1>
+          <mat-spinner *ngIf="cargando" matSuffix class="ml-10" diameter="20"></mat-spinner>
+        </div>
+        <div fxLayout="row" fxLayoutAlign="space-between baseline">
+          <div fxLayout fxLayoutAlign="end center" fxFlex="25"></div>
+          <button mat-raised-button color="primary" [disabled]="!asignatura" (click)="habilitarEdicion()">Habilitar Edición</button>
+        </div>
       </div>
       <app-asignaturas-form
         [soloLectura]="true"
@@ -29,8 +41,10 @@ import { finalize } from 'rxjs/operators';
     >
   `,
   styles: [],
+  animations: [designAnimations],
 })
 export class AsignaturasVerComponent implements OnInit {
+  titulo = 'Detalle Asignatura';
   cargando = false;
   resetear = false;
   asignatura$: Observable<IAsignatura>;
