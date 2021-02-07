@@ -1,6 +1,6 @@
 export interface IProfesor {
   _id: string;
-  profesorNro:string;
+  profesorNro: string;
   nombreCompleto: string;
   telefono?: string;
   celular?: string;
@@ -12,3 +12,7 @@ export interface IProfesor {
   fechaModificacion?: Date;
   activo: boolean;
 }
+export const PROFESOR_KEY = {
+  campoNombre: 'nombreCompleto',
+  campoId: '_id',
+};

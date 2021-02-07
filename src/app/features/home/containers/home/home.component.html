@@ -1,0 +1,94 @@
+<div class="contenedor">
+  <div
+    fxLayout="column"
+    fxLayout.gt-md="column"
+    fxLayoutAlign.xs="start start"
+    fxLayoutAlign.gt-md="start center"
+    class="seccion primera_seccion p-24 w-100-p"
+  >
+    <div class="bar_image"></div>
+    <!-- Titulo -->
+    <div *ngIf="authService.user$ | async as usuario; else cargando" class="barra_titulos" fxLayout="column">
+      <h1>Sistema Administrativo Escolar</h1>
+      {{ usuario | json }}
+      <mat-chip-list>
+        <mat-chip style="background-color: #0116292e; color: rgb(245 245 245)"
+          ><mat-icon class="mr-4">account_circle</mat-icon> <span>{{ usuario.nickname }}</span></mat-chip
+        >
+        <mat-chip style="background-color: #0116292e; color: rgb(245 245 245)"
+          ><mat-icon class="mr-5">stars</mat-icon><span>ROL ADMINISTRADOR</span>
+        </mat-chip>
+      </mat-chip-list>
+    </div>
+    <ng-template #cargando>
+      <div class="barra_titulos" fxLayout="column">
+        <div fxLayout="row" fxLayoutAlign="start baseline">
+          <h1 [@animate]="{ value: '*', params: { x: '50px' } }">Sistema Administrativo Escolar</h1>
+          <mat-spinner *ngIf="cargando" matSuffix class="ml-10" diameter="20"></mat-spinner>
+        </div>
+      </div>
+    </ng-template>
+  </div>
+  <div class="separador"></div>
+  <div class="seccion segunda_seccion p-24 w-100-p">
+    <h2>Funciones agregadas</h2>
+    <div fxLayout="row wrap" fxLayoutAlign="space-around start" class="w-100-p">
+      <mat-card class="m-24 mat-card primera_card card_funciones" fxFlex.xs="100" fxFlex.gt-xs="45">
+        <!---->
+        <img
+          alt=""
+          class="feature-card-image ng-star-inserted"
+          src="https://www.gstatic.com/mobilesdk/160505_mobilesdk/discoverycards/2x/auth.png"
+        />
+
+        <!---->
+        <div class="feature-card-header">
+          <div class="feature-card-title">Parametrización</div>
+          <div class="feature-card-subtitle">Administra los registros de los alumnos, profesores y asignaturas</div>
+        </div>
+      </mat-card>
+      <mat-card class="m-24 mat-card segunda_card card_funciones" fxFlex.xs="100" fxFlex.gt-xs="45">
+        <!---->
+        <img
+          alt=""
+          class="feature-card-image ng-star-inserted"
+          src="https://www.gstatic.com/mobilesdk/200429_mobilesdk/cloud_firestore2x.png"
+        />
+
+        <!---->
+        <div class="feature-card-header">
+          <div class="feature-card-title">Taller</div>
+          <div class="feature-card-subtitle">Realiza un seguimiento de los alumnos, verifica las planillas del taller, etc</div>
+        </div>
+      </mat-card>
+      <mat-card class="m-24 mat-card tercera_card card_funciones" fxFlex.xs="100" fxFlex.gt-xs="45">
+        <!---->
+        <img
+          alt=""
+          class="feature-card-image ng-star-inserted"
+          src="https://www.gstatic.com/mobilesdk/160921_mobilesdk/discoverycards/2x/cloudmessaging.png"
+        />
+
+        <!---->
+        <div class="feature-card-header">
+          <div class="feature-card-title">Informes</div>
+          <div class="feature-card-subtitle">Genera informes en pdf sobre los datos almacenados</div>
+        </div>
+      </mat-card>
+      <mat-card class="m-24 mat-card cuarta_card card_funciones" fxFlex.xs="100" fxFlex.gt-xs="45">
+        <!---->
+        <img
+          alt=""
+          class="feature-card-image ng-star-inserted"
+          src="https://www.gstatic.com/mobilesdk/180326_mobilesdk/discoverycards/experiments.png"
+        />
+
+        <!---->
+        <div class="feature-card-header">
+          <div class="feature-card-title">Configuración</div>
+          <div class="feature-card-subtitle">Administra tu cuenta de usuario</div>
+        </div>
+      </mat-card>
+    </div>
+  </div>
+</div>

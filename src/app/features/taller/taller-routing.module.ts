@@ -1,6 +1,8 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import { FichaAlumnosComponent } from './containers/ficha-alumnos/ficha-alumnos.component';
+import { PlanillaAgregarComponent } from './containers/planilla-agregar/planilla-agregar.component';
+import { PlanillaEditarComponent } from './containers/planilla-editar/planilla-editar.component';
 import { PlanillasComponent } from './containers/planillas/planillas.component';
 import { SeguimientoAgregarComponent } from './containers/seguimiento-agregar/seguimiento-agregar.component';
 import { SeguimientoAlumnosComponent } from './containers/seguimiento-alumnos/seguimiento-alumnos.component';
@@ -29,12 +31,12 @@ const routes: Routes = [
   },
   {
     path: 'planillas-agregar',
-    component: PlanillasComponent,
+    component: PlanillaAgregarComponent,
     //  DEBE estar autenticados
   },
   {
     path: 'planillas-editar/:id',
-    component: PlanillasComponent,
+    component: PlanillaEditarComponent,
     //  DEBE estar autenticados
   },
 ];

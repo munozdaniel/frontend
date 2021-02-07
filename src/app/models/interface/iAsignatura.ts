@@ -1,6 +1,6 @@
 export interface IAsignatura {
   _id: string;
-  asignaturaNro:number;
+  asignaturaNro: number;
   detalle: string;
   tipoAsignatura: string;
   tipoCiclo: string;
@@ -14,3 +14,7 @@ export interface IAsignatura {
   fechaModificacion?: Date;
   activo: boolean;
 }
+export const ASIGNATURA_KEY = {
+  campoNombre: 'detalle',
+  campoId: '_id',
+};

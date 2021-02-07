@@ -13,6 +13,7 @@ import { EmailUnverifiedComponent } from './components/email-unverified/email-un
 import { AlumnosTablaParamComponent } from './components/alumnos-tabla-param/alumnos-tabla-param.component';
 import { FormCicloLectivoComponent } from './components/form-ciclo-lectivo/form-ciclo-lectivo.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { InputAutocompleteComponent } from './components/input-autocomplete/input-autocomplete.component';
 
 @NgModule({
   imports: [
@@ -39,6 +40,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
     EmailUnverifiedComponent,
     AlumnosTablaParamComponent,
     FormCicloLectivoComponent,
+    InputAutocompleteComponent,
   ],
   declarations: [
     Error401Component,
@@ -50,6 +52,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
     EmailUnverifiedComponent,
     AlumnosTablaParamComponent,
     FormCicloLectivoComponent,
+    InputAutocompleteComponent,
   ],
 })
 export class SharedModule {}

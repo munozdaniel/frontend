@@ -12,7 +12,7 @@ import { Observable } from 'rxjs';
 export class ComisionService {
   protected url = environment.apiURI;
   constructor(private http: HttpClient) {}
-  
+
   obtenerComisionPorId(comisionId: string): Observable<IComision> {
     const query = `comisiones/${comisionId}`;
     const url = this.url + query;
@@ -31,41 +31,41 @@ export class ComisionService {
 
     return this.http.get<any>(url);
   }
-  agregarComision(asignatura: IComision): Observable<IComision> {
+  agregarComision(comision: IComision): Observable<IComision> {
     const query = `comisiones`;
     const url = this.url + query;
 
-    return this.http.put<any>(url, asignatura);
+    return this.http.put<any>(url, comision);
   }
 
-  actualizarComision(asignaturaId: string, asignatura: IComision): Observable<any> {
-    const query = `comisiones/${asignaturaId}`;
+  actualizarComision(comisionId: string, comision: IComision): Observable<any> {
+    const query = `comisiones/${comisionId}`;
     const url = this.url + query;
 
-    return this.http.patch<any>(url, asignatura);
+    return this.http.patch<any>(url, comision);
   }
-  eliminarComision(asignaturaId: string): Observable<any> {
-    const query = `comisiones/${asignaturaId}`;
+  eliminarComision(comisionId: string): Observable<any> {
+    const query = `comisiones/${comisionId}`;
     const url = this.url + query;
 
     return this.http.delete<any>(url);
   }
-  deshabilitarComision(asignaturaId: string, activo: boolean): Observable<any> {
-    const query = `comisiones/deshabilitar/${asignaturaId}`;
+  deshabilitarComision(comisionId: string, activo: boolean): Observable<any> {
+    const query = `comisiones/deshabilitar/${comisionId}`;
     const url = this.url + query;
 
     return this.http.put<any>(url, { activo });
   }
-  habilitarComision(asignaturaId: string, activo: boolean): Observable<any> {
-    const query = `comisiones/habilitar/${asignaturaId}`;
+  habilitarComision(comisionId: string, activo: boolean): Observable<any> {
+    const query = `comisiones/habilitar/${comisionId}`;
     const url = this.url + query;
 
     return this.http.put<any>(url, { activo });
   }
-  obtenerFichaAlumnos(cicloLectivo: number, curso: number, division: number):Observable<IComision[]> {
-    const query = `comisiones/ficha-alumnos`;
+  obtenerComisionPorParametros(comision: IComision): Observable<IComision> {
+    const query = `comisiones/parametros`;
     const url = this.url + query;
 
-    return this.http.post<any>(url, { cicloLectivo, curso, division });
+    return this.http.post<any>(url, { comision });
   }
 }

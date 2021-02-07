@@ -1,6 +1,6 @@
 export interface IComision {
-  _id: string;
-  comisionNro: number;
+  _id?: string;
+  comisionNro?: number;
   comision: string;
   alumnoId?: string;
   cicloLectivo: number;

@@ -1,21 +1,20 @@
-import { Component, OnInit } from "@angular/core";
-import { Title } from "@angular/platform-browser";
-import { AuthService } from "@auth0/auth0-angular";
+import { Component, OnInit } from '@angular/core';
+import { Title } from '@angular/platform-browser';
+import { AuthService } from '@auth0/auth0-angular';
+import { designAnimations } from '@design/animations';
 
 @Component({
-    selector: "app-home",
-    template: `
-        <p>home works!</p>
-        <div *ngIf="authService.user$ | async as usuario">{{ usuario | json }}</div>
-    `,
-    styles: [],
+  selector: 'app-home',
+  templateUrl: './home.component.html',
+  styleUrls: ['./home.component.scss'],
+  animations: [designAnimations],
 })
 export class HomeComponent implements OnInit {
-    pageTitle = "Página de Inicio";
+  pageTitle = 'Página de Inicio';
 
-    constructor(private title: Title, public authService: AuthService) {}
+  constructor(private title: Title, public authService: AuthService) {}
 
-    ngOnInit() {
-        this.title.setTitle(this.pageTitle);
-    }
+  ngOnInit() {
+    this.title.setTitle(this.pageTitle);
+  }
 }

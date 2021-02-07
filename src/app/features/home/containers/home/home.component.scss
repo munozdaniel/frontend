@@ -1,0 +1,84 @@
+.contenedor {
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+  min-width: 340px;
+}
+.seccion {
+  min-height: auto;
+  padding: 0;
+  display: block;
+  position: relative;
+}
+.primera_seccion {
+  color: white;
+  background: rgb(26, 115, 232);
+  background: linear-gradient(90deg, rgba(26, 115, 232, 1) 0%, rgba(0, 147, 252, 1) 100%);
+}
+.primera_seccion > .bar_image {
+  background-image: url('assets/home/banner1.png');
+  background-position-x: 37%;
+  position: absolute;
+  width: 100%;
+  right: 0;
+  bottom: 0;
+  top: -48px;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: auto 100%;
+}
+.barra_titulos {
+  min-height: 536px;
+  padding-left: 0;
+}
+.card_funciones {
+  padding: 0 !important;
+  cursor: pointer;
+  animation: all 0.5 ease;
+  opacity: 0.9;
+}
+.card_funciones:hover {
+  opacity: 1;
+  -webkit-transform: scale(1.1);
+  -ms-transform: scale(1.1);
+  transform: scale(1.1);
+  -moz-transition: 0.2s ease-out;
+  -ms-transition: 0.2s ease-out;
+  -o-transition: 0.2s ease-out;
+  -webkit-transition: 0.2s ease-out;
+  transition: 0.2s ease-out;
+}
+.primera_card {
+  background: #ab60b8 !important;
+}
+.segunda_card {
+  background: #ef6c00 !important;
+}
+.tercera_card {
+  background: #1e87da !important;
+}
+.cuarta_card {
+  background: #515ea8 !important;
+}
+.feature-card-image {
+  border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+  width: 100%;
+  height: auto;
+}
+.feature-card-header {
+  color: rgba(255, 255, 255, 0.7);
+  padding: 16px 20px 20px;
+  text-shadow: 1px 1px rgb(0 0 0 / 10%);
+}
+.feature-card-header .feature-card-title {
+  color: #fff;
+  font-size: 20px;
+  line-height: 28px;
+  font-weight: 500;
+  margin-bottom: 8px;
+}
+.feature-card-header .feature-card-subtitle {
+  color: #fff;
+  font-size: 13px;
+  line-height: 20px;
+}

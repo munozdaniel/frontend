@@ -13,6 +13,9 @@ import { SeguimientoAlumnoFormComponent } from './ui/seguimiento-alumno-form/seg
 import { SeguimientoBusquedaAlumnoComponent } from './ui/seguimiento-busqueda-alumno/seguimiento-busqueda-alumno.component';
 import { PlanillasComponent } from './containers/planillas/planillas.component';
 import { PlanillasTablaComponent } from './ui/planillas-tabla/planillas-tabla.component';
+import { PlanillaAgregarComponent } from './containers/planilla-agregar/planilla-agregar.component';
+import { PlanillaFormComponent } from './ui/planilla-form/planilla-form.component';
+import { PlanillaEditarComponent } from './containers/planilla-editar/planilla-editar.component';
 
 @NgModule({
   declarations: [
@@ -26,6 +29,9 @@ import { PlanillasTablaComponent } from './ui/planillas-tabla/planillas-tabla.co
     SeguimientoBusquedaAlumnoComponent,
     PlanillasComponent,
     PlanillasTablaComponent,
+    PlanillaAgregarComponent,
+    PlanillaFormComponent,
+    PlanillaEditarComponent,
   ],
   imports: [CommonModule, TallerRoutingModule, SharedModule, DesignSharedModule],
 })
