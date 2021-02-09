@@ -1,13 +1,13 @@
-<form [formGroup]="form" fxLayout="row" fxLayoutGap="20px" fxLayoutAlign="end baseline" class="w-100-p" (ngSubmit)="enviarTipoSegumiento()">
+<form [formGroup]="form" fxLayout="row wrap" fxLayoutAlign="space-between baseline" class="w-100-p" (ngSubmit)="enviarTipoSegumiento()">
   <!-- tipoSeguimiento ============================= -->
-  <mat-form-field appearance="outline" fxFlex="100" class="w-100-p" >
+  <mat-form-field appearance="outline" fxFlex.gt-xs="65" fxFlex.xs="100">
     <mat-label class="lbl">Tipo Seguimiento</mat-label>
     <mat-select formControlName="tipoSeguimiento">
       <mat-option *ngFor="let tipo of tiposSegumientos" [value]="tipo.valor">{{ tipo.nombre }}</mat-option>
     </mat-select>
     <mat-error *ngIf="form.controls.tipoSeguimiento.hasError('required')"> Este campo es requerido. </mat-error>
   </mat-form-field>
-  <div fxLayout="row" fxLayoutAlign="center start">
-    <button mat-raised-button color="accent"><mat-icon>search</mat-icon> Buscar</button>
+  <div fxLayout="row" fxLayoutAlign="center start" fxFlex.gt-xs="30" fxFlex.xs="100">
+    <button mat-raised-button color="accent" class="w-100-p"><mat-icon>search</mat-icon> Buscar</button>
   </div>
 </form>

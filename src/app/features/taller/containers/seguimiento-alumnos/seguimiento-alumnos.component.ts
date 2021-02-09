@@ -19,15 +19,17 @@ import Swal from 'sweetalert2';
           <h1 [@animate]="{ value: '*', params: { x: '50px' } }" class="px-12">{{ titulo }}</h1>
           <mat-spinner *ngIf="cargando" matSuffix class="ml-10" diameter="20"></mat-spinner>
         </div>
-        <div fxLayout="row wrap" fxLayoutAlign="space-between baseline">
-          <div fxLayout fxLayoutAlign="end center" fxFlex.gt-xs="25" fxFlex.xs="100">
+        <div fxLayout="row wrap" fxLayoutAlign="space-between baseline" style="gap:20px">
+          <div fxLayout fxLayoutAlign.xs="start center" fxLayoutAlign.gt-xs="end center" fxFlex.gt-xs="35" fxFlex.xs="100">
             <app-tipo-seguimiento-form
               [cargando]="cargando"
               (retTipoSeguimiento)="setTipoSeguimiento($event)"
               class="w-100-p"
             ></app-tipo-seguimiento-form>
           </div>
-          <button mat-raised-button color="primary" (click)="redireccionar()"><mat-icon>add</mat-icon>Agregar Seguimiento</button>
+          <button mat-raised-button color="primary" fxFlex.gt-xs="35" fxFlex.xs="100" (click)="redireccionar()">
+            <mat-icon>add</mat-icon>Agregar Seguimiento
+          </button>
         </div>
       </div>
       <!--  -->
