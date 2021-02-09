@@ -8,7 +8,7 @@
       </div>
       <!-- 1. PASO DATOS PERSONALES ==================================== -->
       <form [formGroup]="formDatosPersonales" fxLayout="column">
-        <div class="w-100-p" fxLayout="row" fxLayoutAlign="space-between start">
+        <div class="w-100-p" fxLayout="row wrap" fxLayoutAlign="space-between start">
           <div fxFlex.gt-xs="42" fxFlex.xs="100" fxLayout="column">
             <div fxFlex="100" fxLayout="row" fxLayoutAlign="space-between start">
               <!-- TipoDni ============================= -->
@@ -268,7 +268,7 @@
     </mat-step>
     <!-- 2. PASO ADULTOS ==================================== -->
     <mat-step label="Padre/Madre/Tutor">
-      <div class="w-100-p mb-12" fxLayout="row" fxLayoutAlign="space-between start">
+      <div class="w-100-p mb-12" fxLayout="row wrap" fxLayoutAlign="space-between start">
         <button mat-raised-button matStepperPrevious color="warn">Volver</button>
         <button mat-raised-button matStepperNext color="accent">Siguiente</button>
       </div>
@@ -289,7 +289,7 @@
         </div>
       </div>
 
-      <div class="w-100-p mt-12" fxLayout="row" fxLayoutAlign="space-between start">
+      <div class="w-100-p mt-12" fxLayout="row  wrap" fxLayoutAlign="space-between start">
         <button mat-raised-button matStepperPrevious color="warn">Volver</button>
         <button mat-raised-button matStepperNext color="accent">Siguiente</button>
       </div>

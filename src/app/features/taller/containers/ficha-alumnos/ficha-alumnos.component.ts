@@ -9,6 +9,7 @@ import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { IFichaAlumnoParam } from 'app/models/interface/iFichaAlumnoParam';
 import { ALUMNO_OPERACION } from 'app/models/constants/alumno-operacion.enum';
 import Swal from 'sweetalert2';
+import { ToastService } from 'app/core/services/general/toast.service';
 
 @UntilDestroy()
 @Component({
@@ -22,7 +23,11 @@ export class FichaAlumnosComponent implements OnInit {
   cargando = false;
   alumnos: IAlumno[];
   alumnoOperacion = ALUMNO_OPERACION;
-  constructor(private _alumnoService: AlumnoService, private _designProgressBar: DesignProgressBarService) {}
+  constructor(
+    private _toastService: ToastService,
+    private _alumnoService: AlumnoService,
+    private _designProgressBar: DesignProgressBarService
+  ) {}
 
   ngOnInit(): void {}
   setParametrosBusqueda(evento: IFichaAlumnoParam) {
@@ -36,6 +41,9 @@ export class FichaAlumnosComponent implements OnInit {
           (alumnos) => {
             console.log('Datos', alumnos);
             this.alumnos = alumnos;
+            if (alumnos.length < 1) {
+              this._toastService.sinRegistros();
+            }
             this.cargando = false;
           },
           (error) => {

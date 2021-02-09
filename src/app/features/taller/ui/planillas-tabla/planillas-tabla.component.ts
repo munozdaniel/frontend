@@ -48,6 +48,7 @@ export class PlanillasTablaComponent implements AfterViewInit, OnInit, OnChanges
   @ViewChild(MatSort) sort: MatSort;
   @ViewChild('input') input: ElementRef;
   total = 0;
+  pageSize = 5;
   constructor(private route: ActivatedRoute) {}
   ngAfterViewInit() {
     // server-side search
@@ -56,13 +57,13 @@ export class PlanillasTablaComponent implements AfterViewInit, OnInit, OnChanges
         debounceTime(150),
         distinctUntilChanged(),
         tap(() => {
-          this.paginator.pageIndex = 1;
+          this.paginator.pageIndex = 0;
           this.cargarDatos();
         })
       )
       .subscribe();
     // reset the paginator after sorting
-    this.sort.sortChange.subscribe(() => (this.paginator.pageIndex = 1));
+    this.sort.sortChange.subscribe(() => (this.paginator.pageIndex = 0));
     //
     merge(this.sort.sortChange, this.paginator.page)
       .pipe(tap(() => this.cargarDatos()))
@@ -87,5 +88,4 @@ export class PlanillasTablaComponent implements AfterViewInit, OnInit, OnChanges
       pageSize: this.paginator.pageSize,
     });
   }
-  
 }
