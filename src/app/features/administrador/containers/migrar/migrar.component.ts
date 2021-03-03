@@ -11,12 +11,14 @@ import { ProfesorService } from 'app/core/services/profesor.service';
   styleUrls: ['./migrar.component.scss'],
 })
 export class MigrarComponent implements OnInit {
+  titulo = 'Migrar Datos';
+  cargando = false;
   migradores = [
-    { nombre: 'Migrar Comisiones', valor: 1 },
-    { nombre: 'Migrar Alumnos', valor: 2 },
-    { nombre: 'Migrar Asignaturas', valor: 3 },
-    { nombre: 'Migrar Profesores', valor: 4 },
-    { nombre: 'Migrar Planilla Taller', valor: 4 },
+    { nombre: 'Migrar Comisiones', valor: 1, url: '' },
+    { nombre: 'Migrar Alumnos', valor: 2, url: '' },
+    { nombre: 'Migrar Asignaturas', valor: 3, url: '' },
+    { nombre: 'Migrar Profesores', valor: 4, url: '' },
+    { nombre: 'Migrar Planilla Taller', valor: 4, url: '' },
   ];
   constructor(
     private _comisionService: ComisionService,

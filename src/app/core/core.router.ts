@@ -35,6 +35,11 @@ const routes = [
     loadChildren: () => import('../features/informes/informes.module').then((m) => m.InformesModule),
     canActivate: [AuthGuard],
   },
+  {
+    path: 'administrador',
+    loadChildren: () => import('../features/administrador/administrador.module').then((m) => m.AdministradorModule),
+    canActivate: [AuthGuard],
+  },
   // {
   //     path: "administrar",
   //     loadChildren: () =>

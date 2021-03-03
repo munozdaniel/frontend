@@ -121,6 +121,7 @@ export class DesignThemeOptionsComponent implements OnInit, OnDestroy {
     });
 
     // En tiempo de ejecucion. TODO: Verificar permisos
+    // MENU ADMINISTRADOR EJECUCION
     const customFunctionNavItem = {
       id: 'custom-function',
       title: 'Administrar',
@@ -131,21 +132,28 @@ export class DesignThemeOptionsComponent implements OnInit, OnDestroy {
           title: 'Migrador',
           type: 'item',
           icon: 'users',
-          url: '/migrar',
+          url: '/administrador/migrar',
         },
         {
           id: 'usuarios',
           title: 'Usuarios',
           type: 'item',
           icon: 'users',
-          url: '/usuarios',
+          url: '/administrador/usuarios',
+        },
+        {
+          id: 'ciclo-lectivo',
+          title: 'Ciclo Lectivo',
+          type: 'item',
+          icon: 'users',
+          url: '/administrador/ciclo-lectivo',
         },
         {
           id: 'micuenta',
           title: 'Mi Cuenta',
           type: 'item',
           icon: 'account',
-          url: '/mi-cuenta',
+          url: '/administrador/mi-cuenta',
         },
         {
           id: 'customize',
