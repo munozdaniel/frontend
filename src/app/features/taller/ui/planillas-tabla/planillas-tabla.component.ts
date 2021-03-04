@@ -13,20 +13,16 @@ import {
 import { MatTableDataSource, MatSort, MatPaginator, PageEvent } from '@angular/material';
 import { ActivatedRoute } from '@angular/router';
 import { designAnimations } from '@design/animations';
-import { PlanillaTallerDataSource } from 'app/core/services/paginacion/planilla-taller.datasource';
-import { IPaginado } from 'app/models/interface/iPaginado';
 import { IPlanillaTaller } from 'app/models/interface/iPlanillaTaller';
-import { merge, fromEvent } from 'rxjs';
-import { debounceTime, distinctUntilChanged, first, tap } from 'rxjs/operators';
 @Component({
   selector: 'app-planillas-tabla',
   templateUrl: './planillas-tabla.component.html',
   styleUrls: ['./planillas-tabla.component.scss'],
   animations: [designAnimations],
 })
-export class PlanillasTablaComponent implements AfterViewInit, OnInit, OnChanges {
+export class PlanillasTablaComponent implements OnInit, OnChanges {
+  @Input() planillas: IPlanillaTaller[];
   @Input() cargando: boolean;
-  @Output() retPaginacion = new EventEmitter<IPaginado>();
   columnas = [
     'planillaTallerNro',
     'cicloLectivo',
@@ -42,50 +38,31 @@ export class PlanillasTablaComponent implements AfterViewInit, OnInit, OnChanges
     'observacion',
     'opciones',
   ];
-  @Input() dataSource: PlanillaTallerDataSource;
+
   planillaTaller: IPlanillaTaller;
-  @ViewChild(MatPaginator) paginator: MatPaginator;
-  @ViewChild(MatSort) sort: MatSort;
-  @ViewChild('input') input: ElementRef;
+  dataSource: MatTableDataSource<any> = new MatTableDataSource([]);
+  @ViewChild('sort') set setSort(sort: MatSort) {
+    this.dataSource.sort = sort;
+  }
+  @ViewChild('paginator') set setPaginator(paginator: MatPaginator) {
+    this.dataSource.paginator = paginator;
+  }
   total = 0;
   pageSize = 5;
   constructor(private route: ActivatedRoute) {}
-  ngAfterViewInit() {
-    // server-side search
-    fromEvent(this.input.nativeElement, 'keyup')
-      .pipe(
-        debounceTime(150),
-        distinctUntilChanged(),
-        tap(() => {
-          this.paginator.pageIndex = 0;
-          this.cargarDatos();
-        })
-      )
-      .subscribe();
-    // reset the paginator after sorting
-    this.sort.sortChange.subscribe(() => (this.paginator.pageIndex = 0));
-    //
-    merge(this.sort.sortChange, this.paginator.page)
-      .pipe(tap(() => this.cargarDatos()))
-      .subscribe();
-  }
+
   ngOnChanges(changes: SimpleChanges): void {
-    if (changes.dataSource && changes.dataSource.currentValue) {
-      console.log('ENTRA ');
-      this.dataSource.total$.subscribe((datos) => (this.total = datos));
+    if (changes.planillas && changes.planillas.currentValue) {
+      console.log('ENTRA ', this.planillas);
+      this.dataSource.data = this.planillas;
     }
   }
 
   ngOnInit(): void {}
-  cargarDatos() {
-    console.log('this.sort.direction', this.sort);
-    const campo = this.sort.active;
-    this.retPaginacion.emit({
-      search: this.input.nativeElement.value,
-      sortField: campo,
-      sortBy: this.sort.direction,
-      currentPage: this.paginator.pageIndex + 1,
-      pageSize: this.paginator.pageSize,
-    });
+  filtroRapido(filterValue: string) {
+    this.dataSource.filter = filterValue.trim().toLowerCase();
+    if (this.dataSource.paginator) {
+      this.dataSource.paginator.firstPage();
+    }
   }
 }

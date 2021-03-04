@@ -23,7 +23,7 @@ export class FormCicloLectivoComponent implements OnInit {
 
   ngOnInit(): void {
     this.form = this._fb.group({
-      cicloLectivo: [null, Validators.required],
+      cicloLectivo: [moment().year(), Validators.required],
     });
   }
 

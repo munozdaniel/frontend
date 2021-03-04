@@ -22,7 +22,7 @@ export class AsignaturasFormComponent implements OnInit, OnChanges {
     'Formacion Cientifico - Tecnologica',
     'Formacion Tecnica - Especifica',
   ];
-  ciclos = ['1ERO BASICO', '1ERO SUPERIOR', '2DO BASICO', '2DO SUPERIOR', '3RO SUPERIOR', '4TO SUPERIOR'];
+  ciclos = ['1RO BASICO', '1RO SUPERIOR', '2DO BASICO', '2DO SUPERIOR', '3RO SUPERIOR', '4TO SUPERIOR'];
   tiposAsignatura = ['Materia', 'Taller'];
   form: FormGroup;
   constructor(private _fb: FormBuilder) {}
@@ -40,7 +40,7 @@ export class AsignaturasFormComponent implements OnInit, OnChanges {
       detalle: [null, [Validators.required, Validators.minLength(4), Validators.maxLength(50)]],
       tipoAsignatura: [null, [Validators.required]],
       tipoCiclo: [null, [Validators.required]],
-      curso: [null, [Validators.required, Validators.min(1),   Validators.max(6)]],
+      curso: [null, [Validators.required, Validators.min(1), Validators.max(6)]],
       horasCatedraAnuales: [null, [Validators.required]],
       horasCatedraSemanales: [null, [Validators.required]],
       tipoFormacion: [null, [Validators.required]],
@@ -54,8 +54,9 @@ export class AsignaturasFormComponent implements OnInit, OnChanges {
       }, 1000);
       return;
     }
-
+    console.log('this.asignatura', this.asignatura);
     this.form.patchValue(this.asignatura);
+    // this.form.controls.tipoFormacion.setValue(this.asignatura.tipoFormacion);
     this.form.controls.curso.setValue(this.asignatura.curso.toString());
     if (this.soloLectura) {
       this.form.disable();

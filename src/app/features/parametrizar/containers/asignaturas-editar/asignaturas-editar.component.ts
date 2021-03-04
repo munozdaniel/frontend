@@ -1,12 +1,13 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { designAnimations } from '@design/animations';
+import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { AsignaturaService } from 'app/core/services/asignatura.service';
 import { IAsignatura } from 'app/models/interface/iAsignatura';
 import { Observable, of } from 'rxjs';
 import { finalize, catchError } from 'rxjs/operators';
 import Swal from 'sweetalert2';
-
+@UntilDestroy()
 @Component({
   selector: 'app-asignaturas-editar',
   template: `
@@ -22,7 +23,7 @@ import Swal from 'sweetalert2';
         </div>
       </div>
       <app-asignaturas-form
-        [asignatura]="asignatura$ | async"
+        [asignatura]="asignatura"
         [resetear]="resetear"
         [cargando]="cargando"
         (retDatosForm)="setDatosForm($event)"
@@ -36,7 +37,7 @@ export class AsignaturasEditarComponent implements OnInit {
   titulo = 'Editar Asignatura';
   cargando = true;
   resetear = false;
-  asignatura$: Observable<IAsignatura>;
+  asignatura: IAsignatura;
   asignaturaId: string;
   constructor(private _asignaturaService: AsignaturaService, private _activeRoute: ActivatedRoute) {}
 
@@ -47,8 +48,25 @@ export class AsignaturasEditarComponent implements OnInit {
     this._activeRoute.params.subscribe((params) => {
       this.asignaturaId = params['id'];
       console.log(' this.asignaturaId', this.asignaturaId);
-      this.asignatura$ = this._asignaturaService.obtenerAsignaturaPorId(this.asignaturaId).pipe(finalize(() => (this.cargando = false)));
+      console.log(' this.asignaturaId', this.asignaturaId);
+      this.obtenerAsignaturaPorId();
     });
+  }
+  obtenerAsignaturaPorId() {
+    this.cargando = true;
+    this._asignaturaService
+      .obtenerAsignaturaPorId(this.asignaturaId)
+      .pipe(untilDestroyed(this))
+      .subscribe(
+        (datos) => {
+          this.asignatura = datos;
+          this.cargando = false;
+        },
+        (error) => {
+          this.cargando = false;
+          console.log('[ERROR]', error);
+        }
+      );
   }
   setDatosForm(evento: IAsignatura) {
     console.log('setDatosForm', evento);

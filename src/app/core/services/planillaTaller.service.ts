@@ -82,4 +82,11 @@ export class PlanillaTallerService {
 
     return this.http.post<any>(url, { resuelto });
   }
+  //
+  obtenerPlanillaTalleresPorCiclo(cicloLectivo: number): Observable<IPlanillaTaller[]> {
+    const query = `planilla-taller/ciclo/${cicloLectivo}`;
+    const url = this.url + query;
+
+    return this.http.get<any>(url);
+  }
 }

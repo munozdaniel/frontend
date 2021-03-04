@@ -1,11 +1,11 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { designAnimations } from '@design/animations';
-import { PlanillaTallerDataSource } from 'app/core/services/paginacion/planilla-taller.datasource';
+import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { PlanillaTallerService } from 'app/core/services/planillaTaller.service';
-import { IPaginado } from 'app/models/interface/iPaginado';
 import { IPlanillaTaller } from 'app/models/interface/iPlanillaTaller';
-
+import * as moment from 'moment';
+@UntilDestroy()
 @Component({
   selector: 'app-planillas',
   template: `
@@ -16,45 +16,57 @@ import { IPlanillaTaller } from 'app/models/interface/iPlanillaTaller';
           <mat-spinner *ngIf="cargando" matSuffix class="ml-10" diameter="20"></mat-spinner>
         </div>
         <div fxLayout="row" fxLayoutAlign="space-between baseline">
-          <div fxLayout fxLayoutAlign="end center" fxFlex="25"></div>
+          <app-form-ciclo-lectivo fxFlex="40" (retParametrosBusqueda)="setParametrosBusqueda($event)"></app-form-ciclo-lectivo>
           <button mat-raised-button color="primary" (click)="redireccionar()"><mat-icon>add</mat-icon>Agregar Planilla</button>
         </div>
       </div>
       <!--  -->
       <app-planillas-tabla
         [cargando]="cargando"
-        [dataSource]="dataSource"
+        [planillas]="planillas"
         (retEditarPlanilla)="setEditarPlanilla($event)"
         (retEliminarPlanilla)="setEliminarPlanilla($event)"
-        (retPaginacion)="setPaginacion($event)"
       ></app-planillas-tabla>
     </div>
   `,
   styles: [],
   animations: [designAnimations],
 })
-export class PlanillasComponent implements OnInit {
+export class PlanillasComponent implements OnInit, OnDestroy {
   cargando = false;
   titulo = 'Planillas de Taller';
-  planillas: IPlanillaTaller;
-  dataSource: PlanillaTallerDataSource;
-  constructor(private _router: Router, private _planillaTallerService: PlanillaTallerService) {
-    this.dataSource = new PlanillaTallerDataSource(this._planillaTallerService);
-  }
+  planillas: IPlanillaTaller[];
+  cicloActual: number;
+  constructor(private _router: Router, private _planillaTallerService: PlanillaTallerService) {}
+  ngOnDestroy(): void {}
 
   ngOnInit(): void {
     // Carga inicial
-    this.dataSource.loadPlanillaTaller('', 'planillaTallerNro', 'desc', 1, 3);
+    this.cicloActual = moment().year();
+    this.recuperarPlanillasPorCiclo(2019);
+  }
+  recuperarPlanillasPorCiclo(cicloLectivo: number) {
+    console.log('cicloLectivo', cicloLectivo);
+    this._planillaTallerService
+      //   .obtenerPlanillaTalleresPorCiclo( this.cicloActual)
+      .obtenerPlanillaTalleresPorCiclo(cicloLectivo)
+      .pipe(untilDestroyed(this))
+      .subscribe(
+        (datos) => {
+          console.log('datos', datos);
+          this.planillas = [...datos];
+        },
+        (error) => {
+          console.log('[ERROR]', error);
+        }
+      );
+  }
+  setParametrosBusqueda({ cicloLectivo }) {
+    this.recuperarPlanillasPorCiclo(cicloLectivo);
   }
   redireccionar() {
     this._router.navigate(['taller/planillas-agregar']);
   }
   setEditarPlanilla(evento: IPlanillaTaller) {}
   setEliminarPlanilla(evento: IPlanillaTaller) {}
-  setPaginacion(evento: IPaginado) {
-    if (evento) {
-      const { currentPage, pageSize, sortBy, search, sortField } = { ...evento };
-      this.dataSource.loadPlanillaTaller(search, sortField, sortBy, currentPage, pageSize);
-    }
-  }
 }

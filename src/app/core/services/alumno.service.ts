@@ -12,6 +12,12 @@ import { Observable } from 'rxjs';
 export class AlumnoService {
   protected url = environment.apiURI;
   constructor(private http: HttpClient) {}
+  migrar() {
+    const query = `alumnos/migrar`;
+    const url = this.url + query;
+
+    return this.http.get<any>(url);
+  }
   findAlumnos(filter = '', sortOrder = 'asc', pageNumber = 0, pageSize = 3): Observable<IAlumno[]> {
     return this.http.get<any>('alumnos/paginado2', {
       params: new HttpParams()
@@ -55,12 +61,7 @@ export class AlumnoService {
 
     return this.http.get<any>(url);
   }
-  obtenerAlumnos(): Observable<IAlumno[]> {
-    const query = `alumnos/habilitados`;
-    const url = this.url + query;
 
-    return this.http.get<any>(url);
-  }
   agregarAlumno(alumno: IAlumno): Observable<IAlumno> {
     const query = `alumnos`;
     const url = this.url + query;
@@ -92,5 +93,16 @@ export class AlumnoService {
 
     return this.http.post<any>(url, { cicloLectivo, curso, division });
   }
- 
+  eliminarColeccion(): Observable<any> {
+    const query = `alumnos/eliminar-coleccion`;
+    const url = this.url + query;
+
+    return this.http.get<any>(url);
+  }
+  obtenerAlumnos(): Observable<IAlumno[]> {
+    const query = `alumnos/todos`;
+    const url = this.url + query;
+
+    return this.http.get<any>(url);
+  }
 }

@@ -1,15 +1,31 @@
 <div fxLayout="column" class="w-100-p">
-  <div [@animate]="{ value: '*', params: { delay: '50ms', scale: '0.2' } }" class="mt-20 p-0" fxLayoutAlign="center center" fxLayout="row">
+  <div
+    *ngIf="planillas && planillas.length > 0"
+    [@animate]="{ value: '*', params: { delay: '50ms', scale: '0.2' } }"
+    class="mt-20 p-0"
+    fxLayoutAlign="center center"
+    fxLayout="row"
+  >
     <mat-form-field appearance="outline" color="accent" class="w-40-p">
       <mat-label>Búsqueda Rápida</mat-label>
-      <input matInput #input />
+      <input matInput users (keyup)="filtroRapido($event.target.value)" [disabled]="dataSource.data.length == 0" />
       <mat-icon matSuffix>search</mat-icon>
     </mat-form-field>
   </div>
-  <!-- matSortActive="seguimientoAlumnoNro"
-    matSortDirection="asc"
-    matSortDisableClear -->
-  <mat-progress-bar *ngIf="dataSource.cargando$ | async as cargando" mode="indeterminate" class="w-100-p"></mat-progress-bar>
+  <!-- 
+      activo: true
+asignatura: "603fd97d15c3254a3863555c"
+bimestre: "4to Bimestre"
+curso: {cicloLectivo: {…}}
+fechaCreacion: "2021-03-03T21:32:04.469Z"
+fechaFinalizacion: "2020-12-11T03:00:00.000Z"
+fechaInicio: "2020-10-19T03:00:00.000Z"
+observacion: ""
+planillaTallerId: 370
+planillaTallerNro: 455
+profesor: "6021bb72c18fc750b87b0a12"
+   -->
+  <mat-progress-bar *ngIf="cargando" mode="indeterminate" class="w-100-p"></mat-progress-bar>
   <mat-table matSort [dataSource]="dataSource" class="mat-elevation-z4">
     <!-- -->
     <ng-container matColumnDef="planillaTallerNro">
@@ -20,14 +36,14 @@
     <!-- -->
     <ng-container matColumnDef="cicloLectivo">
       <mat-header-cell *matHeaderCellDef mat-sort-header> Ciclo </mat-header-cell>
-      <mat-cell *matCellDef="let element">{{ element.comision.cicloLectivo }} </mat-cell>
+      <mat-cell *matCellDef="let element">{{ element.curso.cicloLectivo.anio }} </mat-cell>
     </ng-container>
     <!-- -->
     <ng-container matColumnDef="fechaInicio">
       <mat-header-cell *matHeaderCellDef mat-sort-header> Fecha Inicio </mat-header-cell>
       <mat-cell *matCellDef="let element">
         <!-- {{ element.fechaInicio | date: 'dd/MM/yyyy' }} -->
-        {{ element.fechaInicioString }}
+        {{ element.fechaInicio | date: 'dd/MM/yyyy' }}
       </mat-cell>
     </ng-container>
 
@@ -46,30 +62,30 @@
     <!-- -->
     <ng-container matColumnDef="curso">
       <mat-header-cell *matHeaderCellDef> Curso </mat-header-cell>
-      <mat-cell *matCellDef="let element">{{ element.comision.curso }}</mat-cell>
+      <mat-cell *matCellDef="let element">{{ element.curso.curso }}</mat-cell>
     </ng-container>
 
     <!-- -->
     <ng-container matColumnDef="div">
       <mat-header-cell *matHeaderCellDef> Div </mat-header-cell>
-      <mat-cell *matCellDef="let element"> {{ element.comision.division }} </mat-cell>
+      <mat-cell *matCellDef="let element"> {{ element.curso.division }} </mat-cell>
     </ng-container>
 
     <!-- -->
     <ng-container matColumnDef="comision">
       <mat-header-cell *matHeaderCellDef> Comisión </mat-header-cell>
-      <mat-cell *matCellDef="let element"> {{ element.comision.comision }}</mat-cell>
+      <mat-cell *matCellDef="let element"> {{ element.curso.comision }}</mat-cell>
     </ng-container>
     <!-- -->
     <ng-container matColumnDef="comisioncompleta">
       <mat-header-cell *matHeaderCellDef mat-sort-header> Curso/Com./Div. </mat-header-cell>
       <mat-cell *matCellDef="let element">
         <div class="comision" fxLayout="row" fxLayoutAlign="space-between start">
-          <span matTooltip="CURSO">0{{ element.comision.curso }}</span>
+          <span matTooltip="CURSO">0{{ element.curso.curso }}</span>
           <strong>/</strong>
-          <span matTooltip="COMISION">{{ element.comision.comision }}</span>
+          <span matTooltip="COMISION">{{ element.curso.comision }}</span>
           <strong>/</strong>
-          <span matTooltip="DIVISION">0{{ element.comision.division }}</span>
+          <span matTooltip="DIVISION">0{{ element.curso.division }}</span>
         </div>
       </mat-cell>
     </ng-container>
@@ -104,14 +120,14 @@
     <mat-header-row *matHeaderRowDef="columnas"></mat-header-row>
     <mat-row *matRowDef="let row; columns: columnas"></mat-row>
   </mat-table>
-  <app-empty-data *ngIf="!total || total < 1"></app-empty-data>
+  <app-empty-data *ngIf="!planillas || planillas.length < 1"></app-empty-data>
 
   <!-- Paginado -------------------------------------------------- -->
-  <!-- <mat-paginator class="border-paginador paginator mat-elevation-z2" #paginator [pageSize]="5" [pageSizeOptions]="[5, 10, 25, 100]">
-    </mat-paginator> -->
+  <mat-paginator class="border-paginador paginator mat-elevation-z2" #paginator [pageSize]="5" [pageSizeOptions]="[5, 10, 25, 100]">
+  </mat-paginator>
   <!-- PAGINADOR -->
   <!-- planillaTaller?.lessonsCount -->
-  <mat-paginator class="mat-elevation-z4" [length]="total" [pageSize]="pageSize" [pageSizeOptions]="[5, 10, 50, 100]"></mat-paginator>
+  <!-- <mat-paginator class="mat-elevation-z4" [length]="total" [pageSize]="pageSize" [pageSizeOptions]="[5, 10, 50, 100]"></mat-paginator> -->
   <!-- <mat-paginator
           #paginator
           class="border-paginador paginator mat-elevation-z2"
