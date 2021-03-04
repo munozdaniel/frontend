@@ -1,0 +1,70 @@
+<div *ngIf="planillaTaller" fxLayout="column" fxLayoutGap="10px">
+  <h2 fxLayout="row" fxLayoutGap="10px">
+    <strong>Año Lectivo </strong><span>{{ planillaTaller.curso?.cicloLectivo[0].anio }}</span>
+  </h2>
+  <!--  -->
+  <div fxLayout.xs="column" fxLayout.gt-xs="row wrap" fxLayoutAlign="start baseline" fxLayoutGap.xs="20px">
+    <div fxLayout="row wrap" fxLayoutAlign="start center" fxLayoutGap="10px" fxFlex.gt-xs="30" fxFlex.xs="100">
+      <mat-icon fxHide.xs="true">calendar_today</mat-icon>
+      <h3 fxLayout="row" fxLayoutGap="10px">
+        <strong>Fecha de Inicio:</strong><span>{{ planillaTaller.fechaInicio | date: 'dd/MM/yyyy' }}</span>
+      </h3>
+    </div>
+    <div fxLayout="row wrap" fxLayoutAlign="start center" fxLayoutGap="10px" fxFlex.gt-xs="30" fxFlex.xs="100">
+      <mat-icon fxHide.xs="true">calendar_today</mat-icon>
+      <h3 fxLayout="row" fxLayoutGap="10px">
+        <strong>Fecha de Finalización:</strong><span>{{ planillaTaller.fechaFinalizacion | date: 'dd/MM/yyyy' }}</span>
+      </h3>
+    </div>
+  </div>
+  <!--  -->
+  <div class="p-24 border">
+    <h2 fxLayout="row" fxLayoutGap="10px">
+      <strong>CURSO </strong>
+    </h2>
+    <div fxLayout="row wrap" fxLayoutAlign="start center">
+      <h3 fxLayout="row" fxLayoutGap="10px" fxFlex.xs="100" fxFlex.gt-xs="30">
+        <strong>Curso:</strong><span>{{ planillaTaller.curso.curso }}</span>
+      </h3>
+      <h3 fxLayout="row" fxLayoutGap="10px" fxFlex.xs="100" fxFlex.gt-xs="30">
+        <strong>División:</strong><span>{{ planillaTaller.curso.division }}</span>
+      </h3>
+      <h3 *ngIf="planillaTaller.curso.comision" fxLayout="row" fxLayoutGap="10px" fxFlex.xs="100" fxFlex.gt-xs="30">
+        <strong>Comisión:</strong><span>{{ planillaTaller.curso.comision }}</span>
+      </h3>
+    </div>
+  </div>
+  <!--  -->
+  <div class="p-24 border">
+    <h2 fxLayout="row" fxLayoutGap="10px">
+      <strong>ASIGNATURA </strong>
+    </h2>
+    <div fxLayout="row wrap" fxLayoutAlign="start center">
+      <h3 fxLayout.xs="column" fxLayout.gt-xs="row" fxLayoutGap="10px" fxFlex.xs="100" fxFlex.gt-xs="40">
+        <strong>Descripción:</strong><span>{{ planillaTaller.asignatura.detalle }}</span>
+      </h3>
+      <h3 fxLayout.xs="column" fxLayout.gt-xs="row" fxLayoutGap="10px" fxFlex.xs="100" fxFlex.gt-xs="40">
+        <strong>Tipo:</strong><span>{{ planillaTaller.asignatura.tipoAsignatura }}</span>
+      </h3>
+    </div>
+    <div fxLayout="row wrap" fxLayoutAlign="start center">
+      <h3 fxLayout.xs="column" fxLayout.gt-xs="row" fxLayoutGap="10px" fxFlex.xs="100" fxFlex.gt-xs="40">
+        <strong>Ciclo:</strong><span>{{ planillaTaller.asignatura.tipoCiclo }}</span>
+      </h3>
+      <h3 fxLayout.xs="column" fxLayout.gt-xs="row" fxLayoutGap="10px" fxFlex.xs="100" fxFlex.gt-xs="40">
+        <strong>Formación:</strong><span>{{ planillaTaller.asignatura.tipoFormacion }}</span>
+      </h3>
+    </div>
+  </div>
+  <!--  -->
+  <div class="p-24 border">
+    <h2 fxLayout="row" fxLayoutGap="10px">
+      <strong>PROFESOR </strong>
+    </h2>
+    <div fxLayout="row wrap" fxLayoutAlign="space-between center">
+      <h3 fxLayout.xs="column" fxLayout.gt-xs="row" fxLayoutGap="10px" fxFlex.xs="100" fxFlex.gt-xs="50">
+        <strong>Nombre Completo:</strong><span>{{ planillaTaller.profesor.nombreCompleto }}</span>
+      </h3>
+    </div>
+  </div>
+</div>

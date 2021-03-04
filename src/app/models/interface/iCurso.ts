@@ -9,7 +9,6 @@ export interface ICurso {
   //   cicloLectivo:number;
   cicloLectivo: ICicloLectivo[];
   division: number;
-  // condicion:string;
 
   fechaCreacion?: Date;
   fechaModificacion?: Date;

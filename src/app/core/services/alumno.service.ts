@@ -105,4 +105,10 @@ export class AlumnoService {
 
     return this.http.get<any>(url);
   }
+  obtenerAlumnosPorCurso(curso: number, division: number, comision: string): Observable<IAlumno[]> {
+    const query = `alumnos/por-curso`;
+    const url = this.url + query;
+
+    return this.http.post<any>(url, { curso, division, comision });
+  }
 }

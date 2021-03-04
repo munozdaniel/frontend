@@ -2,7 +2,9 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { designAnimations } from '@design/animations';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
+import { AlumnoService } from 'app/core/services/alumno.service';
 import { PlanillaTallerService } from 'app/core/services/planillaTaller.service';
+import { IAlumno } from 'app/models/interface/iAlumno';
 import { IPlanillaTaller } from 'app/models/interface/iPlanillaTaller';
 @UntilDestroy()
 @Component({
@@ -15,77 +17,18 @@ import { IPlanillaTaller } from 'app/models/interface/iPlanillaTaller';
           <h1 [@animate]="{ value: '*', params: { x: '50px' } }" class="px-12">{{ titulo }}</h1>
           <mat-spinner *ngIf="cargando" matSuffix class="ml-10" diameter="20"></mat-spinner>
         </div>
-
-        <div *ngIf="planillaTaller" fxLayout="column" fxLayoutGap="10px">
-          <h2 fxLayout="row" fxLayoutGap="10px">
-            <strong>Año Lectivo </strong><span>{{ planillaTaller.curso?.cicloLectivo[0].anio }}</span>
-          </h2>
-          <!--  -->
-          <div fxLayout.xs="column" fxLayout.gt-xs="row wrap" fxLayoutAlign="start baseline" fxLayoutGap.xs="20px">
-            <div fxLayout="row wrap" fxLayoutAlign="start center" fxLayoutGap="10px" fxFlex.gt-xs="30" fxFlex.xs="100">
-              <mat-icon fxHide.xs="true">calendar_today</mat-icon>
-              <h3 fxLayout="row" fxLayoutGap="10px">
-                <strong>Fecha de Inicio:</strong><span>{{ planillaTaller.fechaInicio | date: 'dd/MM/yyyy' }}</span>
-              </h3>
-            </div>
-            <div fxLayout="row wrap" fxLayoutAlign="start center" fxLayoutGap="10px" fxFlex.gt-xs="30" fxFlex.xs="100">
-              <mat-icon fxHide.xs="true">calendar_today</mat-icon>
-              <h3 fxLayout="row" fxLayoutGap="10px">
-                <strong>Fecha de Finalización:</strong><span>{{ planillaTaller.fechaFinalizacion | date: 'dd/MM/yyyy' }}</span>
-              </h3>
-            </div>
-          </div>
-          <!--  -->
-          <div class="p-24 border">
-            <h2 fxLayout="row" fxLayoutGap="10px">
-              <strong>CURSO </strong>
-            </h2>
-            <div fxLayout="row wrap" fxLayoutAlign="start center">
-              <h3 fxLayout="row" fxLayoutGap="10px" fxFlex.xs="100" fxFlex.gt-xs="30">
-                <strong>Curso:</strong><span>{{ planillaTaller.curso.curso }}</span>
-              </h3>
-              <h3 fxLayout="row" fxLayoutGap="10px" fxFlex.xs="100" fxFlex.gt-xs="30">
-                <strong>División:</strong><span>{{ planillaTaller.curso.division }}</span>
-              </h3>
-              <h3 *ngIf="planillaTaller.curso.comision" fxLayout="row" fxLayoutGap="10px" fxFlex.xs="100" fxFlex.gt-xs="30">
-                <strong>Comisión:</strong><span>{{ planillaTaller.curso.comision }}</span>
-              </h3>
-            </div>
-          </div>
-          <!--  -->
-          <div class="p-24 border">
-            <h2 fxLayout="row" fxLayoutGap="10px">
-              <strong>ASIGNATURA </strong>
-            </h2>
-            <div fxLayout="row wrap" fxLayoutAlign="start center">
-              <h3 fxLayout.xs="column" fxLayout.gt-xs="row" fxLayoutGap="10px" fxFlex.xs="100" fxFlex.gt-xs="40">
-                <strong>Descripción:</strong><span>{{ planillaTaller.asignatura.detalle }}</span>
-              </h3>
-              <h3 fxLayout.xs="column" fxLayout.gt-xs="row" fxLayoutGap="10px" fxFlex.xs="100" fxFlex.gt-xs="40">
-                <strong>Tipo:</strong><span>{{ planillaTaller.asignatura.tipoAsignatura }}</span>
-              </h3>
-            </div>
-            <div fxLayout="row wrap" fxLayoutAlign="start center">
-              <h3 fxLayout.xs="column" fxLayout.gt-xs="row" fxLayoutGap="10px" fxFlex.xs="100" fxFlex.gt-xs="40">
-                <strong>Ciclo:</strong><span>{{ planillaTaller.asignatura.tipoCiclo }}</span>
-              </h3>
-              <h3 fxLayout.xs="column" fxLayout.gt-xs="row" fxLayoutGap="10px" fxFlex.xs="100" fxFlex.gt-xs="40">
-                <strong>Formación:</strong><span>{{ planillaTaller.asignatura.tipoFormacion }}</span>
-              </h3>
-            </div>
-          </div>
-          <!--  -->
-          <div class="p-24 border">
-            <h2 fxLayout="row" fxLayoutGap="10px">
-              <strong>PROFESOR </strong>
-            </h2>
-            <div fxLayout="row wrap" fxLayoutAlign="space-between center">
-              <h3 fxLayout.xs="column" fxLayout.gt-xs="row" fxLayoutGap="10px" fxFlex.xs="100" fxFlex.gt-xs="50">
-                <strong>Nombre Completo:</strong><span>{{ planillaTaller.profesor.nombreCompleto }}</span>
-              </h3>
-            </div>
-          </div>
-        </div>
+        <mat-tab-group (selectedTabChange)="controlTabs($event)">
+          <mat-tab label="General">
+            <app-planilla-detalle [planillaTaller]="planillaTaller"></app-planilla-detalle>
+          </mat-tab>
+          <mat-tab label="Asistencias">
+            <app-planilla-detalle-asistencias [cargandoAlumnos]="cargandoAlumnos" [alumnos]="alumnos"></app-planilla-detalle-asistencias
+          ></mat-tab>
+          <mat-tab label="Calificaciones"> </mat-tab>
+          <mat-tab label="Libro de Temas"> Content 3 </mat-tab>
+          <mat-tab label="Seguimiento de Alumnos"> Content 3 </mat-tab>
+          <mat-tab label="Informes"> Content 3 </mat-tab>
+        </mat-tab-group>
       </div>
     </div>
   `,
@@ -95,10 +38,16 @@ import { IPlanillaTaller } from 'app/models/interface/iPlanillaTaller';
 export class PlanillaVerComponent implements OnInit {
   titulo = 'Planilla';
   cargando = false;
+  cargandoAlumnos = false;
   planillaId: string;
   ciclo: number;
   planillaTaller: IPlanillaTaller;
-  constructor(private _activeRoute: ActivatedRoute, private _planillaTallerService: PlanillaTallerService) {}
+  alumnos: IAlumno[];
+  constructor(
+    private _activeRoute: ActivatedRoute,
+    private _alumnoService: AlumnoService,
+    private _planillaTallerService: PlanillaTallerService
+  ) {}
 
   ngOnInit(): void {
     this._activeRoute.params.subscribe((params) => {
@@ -112,6 +61,7 @@ export class PlanillaVerComponent implements OnInit {
           (datos) => {
             console.log('datos', datos);
             this.planillaTaller = datos;
+            this.obtenerAlumnosPorCurso();
             this.cargando = false;
           },
           (error) => {
@@ -120,5 +70,52 @@ export class PlanillaVerComponent implements OnInit {
           }
         );
     });
+  }
+  obtenerAlumnosPorCurso() {
+    this.cargandoAlumnos = true;
+    const { curso, comision, division } = this.planillaTaller.curso;
+    this._alumnoService
+      .obtenerAlumnosPorCurso(curso, division, comision)
+      .pipe(untilDestroyed(this))
+      .subscribe(
+        (datos) => {
+          console.log('datos', datos);
+          this.alumnos = datos;
+          this.cargandoAlumnos = false;
+        },
+        (error) => {
+          this.cargandoAlumnos = false;
+          console.log('[ERROR]', error);
+        }
+      );
+  }
+  controlTabs(evento) {
+    console.log('controlTabs', evento);
+    switch (evento.index) {
+      case 0:
+        console.log('GENERAL');
+        break;
+      case 1:
+        console.log('ASISTENCIAS');
+        if (!this.alumnos) {
+          //   this.recuperarAsistenciasPorCurso();
+        }
+        break;
+      case 2:
+        console.log('CALIFICACIONES');
+        break;
+      case 3:
+        console.log('LIBRO DE TEMAS');
+        break;
+      case 4:
+        console.log('SEGUIMIENTO DE ALUMNOS');
+        break;
+      case 5:
+        console.log('INFORMES');
+        break;
+
+      default:
+        break;
+    }
   }
 }
