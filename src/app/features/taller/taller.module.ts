@@ -16,6 +16,9 @@ import { PlanillasTablaComponent } from './ui/planillas-tabla/planillas-tabla.co
 import { PlanillaAgregarComponent } from './containers/planilla-agregar/planilla-agregar.component';
 import { PlanillaFormComponent } from './ui/planilla-form/planilla-form.component';
 import { PlanillaEditarComponent } from './containers/planilla-editar/planilla-editar.component';
+import { PlanillaStepperComponent } from './ui/planilla-stepper/planilla-stepper.component';
+import { PlanillaTallerTabsComponent } from './ui/planilla-taller-tabs/planilla-taller-tabs.component';
+import { PlanillaVerComponent } from './containers/planilla-ver/planilla-ver.component';
 
 @NgModule({
   declarations: [
@@ -32,6 +35,9 @@ import { PlanillaEditarComponent } from './containers/planilla-editar/planilla-e
     PlanillaAgregarComponent,
     PlanillaFormComponent,
     PlanillaEditarComponent,
+    PlanillaStepperComponent,
+    PlanillaTallerTabsComponent,
+    PlanillaVerComponent,
   ],
   imports: [CommonModule, TallerRoutingModule, SharedModule, DesignSharedModule],
 })

@@ -1,68 +1,71 @@
 // Import Design core library
-@import "@design/scss/core";
+@import '@design/scss/core';
 
 // Import app.theme.scss
-@import "app/app.theme";
+@import 'app/app.theme';
 
+.mt-50 {
+  margin-top: 50px;
+}
 
 .mat-form-field-appearance-outline .mat-form-field-flex {
-    // Force all inputs to have the same height.
-    // Otherwise mat-select are doing their own thing and gain extra-height
-    // https://github.com/angular/material2/issues/13198
-    height: 3.2em;
-  
-    // mat-select
-    // {
-    // 	margin-top: -3.5em;
-    // }
-  }
-  .mat-form-field-appearance-outline .mat-form-field-infix {
-    padding: 0.3em 0 1em 0;
-  }
-  .mat-form-field-appearance-outline .mat-form-field-label {
-    top: 1.5em;
-  }
-  .mat-form-field-appearance-outline.mat-form-field-can-float.mat-form-field-should-float .mat-form-field-label,
-  .mat-form-field-appearance-outline.mat-form-field-can-float .mat-input-server:focus + .mat-form-field-label-wrapper .mat-form-field-label {
-    transform: translateY(-1.39375em) scale(0.75);
-    width: 133.3333333333%;
-  }
-  .bg-white .mat-form-field-appearance-outline .mat-form-field-flex {
-    background-color: white;
-  }
-  .mat-form-field-appearance-fill .mat-form-field-flex {
-    border-radius: 4px !important;
-    padding: 0.75em 0.75em 0.4em 0.75em;
-  }
-  .mat-form-field-appearance-fill .mat-form-field-flex {
-    background-color: transparent !important;
-    border: 1px solid rgb(209, 209, 209) !important;
-  }
-  .text_red{
-      color:red;
-  }
-  .swal2-title {
-    font-size: 1.64em !important;
-  }
-  .swal2-popup {
-    width: 42em !important;
-  }
-  .swal2-styled.swal2-confirm,
-  .swal2-styled.swal2-cancel {
-    font-size: 1.625em !important;
-  }
-  .swal2-content {
-    font-size: 1.8em !important;
-  }
-  .swal2-timer-progress-bar {
-    background: rgb(255 255 255 / 50%);
-  }
-  .mt-16{
-      margin-top:16px;
-  }
-  .row_deshabilitado {
-    background: #f86f6fc4 !important;
-  }
-  .icono_verde{
-      color:rgb(5, 175, 5);
-  }
+  // Force all inputs to have the same height.
+  // Otherwise mat-select are doing their own thing and gain extra-height
+  // https://github.com/angular/material2/issues/13198
+  height: 3.2em;
+
+  // mat-select
+  // {
+  // 	margin-top: -3.5em;
+  // }
+}
+.mat-form-field-appearance-outline .mat-form-field-infix {
+  padding: 0.3em 0 1em 0;
+}
+.mat-form-field-appearance-outline .mat-form-field-label {
+  top: 1.5em;
+}
+.mat-form-field-appearance-outline.mat-form-field-can-float.mat-form-field-should-float .mat-form-field-label,
+.mat-form-field-appearance-outline.mat-form-field-can-float .mat-input-server:focus + .mat-form-field-label-wrapper .mat-form-field-label {
+  transform: translateY(-1.39375em) scale(0.75);
+  width: 133.3333333333%;
+}
+.bg-white .mat-form-field-appearance-outline .mat-form-field-flex {
+  background-color: white;
+}
+.mat-form-field-appearance-fill .mat-form-field-flex {
+  border-radius: 4px !important;
+  padding: 0.75em 0.75em 0.4em 0.75em;
+}
+.mat-form-field-appearance-fill .mat-form-field-flex {
+  background-color: transparent !important;
+  border: 1px solid rgb(209, 209, 209) !important;
+}
+.text_red {
+  color: red;
+}
+.swal2-title {
+  font-size: 1.64em !important;
+}
+.swal2-popup {
+  width: 42em !important;
+}
+.swal2-styled.swal2-confirm,
+.swal2-styled.swal2-cancel {
+  font-size: 1.625em !important;
+}
+.swal2-content {
+  font-size: 1.8em !important;
+}
+.swal2-timer-progress-bar {
+  background: rgb(255 255 255 / 50%);
+}
+.mt-16 {
+  margin-top: 16px;
+}
+.row_deshabilitado {
+  background: #f86f6fc4 !important;
+}
+.icono_verde {
+  color: rgb(5, 175, 5);
+}

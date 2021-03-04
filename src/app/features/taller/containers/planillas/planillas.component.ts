@@ -15,9 +15,16 @@ import * as moment from 'moment';
           <h1 [@animate]="{ value: '*', params: { x: '50px' } }" class="px-12">{{ titulo }}</h1>
           <mat-spinner *ngIf="cargando" matSuffix class="ml-10" diameter="20"></mat-spinner>
         </div>
-        <div fxLayout="row" fxLayoutAlign="space-between baseline">
-          <app-form-ciclo-lectivo fxFlex="40" (retParametrosBusqueda)="setParametrosBusqueda($event)"></app-form-ciclo-lectivo>
-          <button mat-raised-button color="primary" (click)="redireccionar()"><mat-icon>add</mat-icon>Agregar Planilla</button>
+        <div fxLayout.xs="column" fxLayout.gt-xs="row wrap" fxLayoutAlign="space-between baseline" fxLayoutGap.xs="20px">
+          <app-form-ciclo-lectivo
+            fxFlex.gt-xs="40"
+            fxFlex.xs="100"
+            class="w-100-p"
+            (retParametrosBusqueda)="setParametrosBusqueda($event)"
+          ></app-form-ciclo-lectivo>
+          <button mat-raised-button fxFlex.gt-xs="40" fxFlex.xs="100" color="primary" (click)="redireccionar()" class="w-100-p">
+            <mat-icon>add</mat-icon>Agregar Planilla
+          </button>
         </div>
       </div>
       <!--  -->
