@@ -67,7 +67,7 @@ export class PlanillaAgregarComponent implements OnInit {
         bimestre: evento.bimestre,
         asignatura: evento.asignatura,
         profesor: evento.profesor,
-        comision: '', //setear
+        curso: evento.curso, //setear
         activo: true,
       };
       const comision: IComision = {
@@ -79,23 +79,23 @@ export class PlanillaAgregarComponent implements OnInit {
       };
       console.log('planilla', planilla);
       console.log('comision', comision);
-      this._comisionService.obtenerComisionPorParametros(comision).subscribe(
-        (unaComision: IComision) => {
-          if (!unaComision) {
-            Swal.fire({
-              title: 'Oops! Ocurrió un error',
-              text: 'Hubo un problema en el servidor. Si el problema persiste comuniquese con el soporte técnico.',
-              icon: 'error',
-            });
-          } else {
-            planilla.comision = unaComision._id;
-            this.guardarPlanillaTaller(planilla);
-          }
-        },
-        (error) => {
-          console.log('[ERROR]', error);
-        }
-      );
+      //   this._comisionService.obtenerComisionPorParametros(comision).subscribe(
+      //     (unaComision: IComision) => {
+      //       if (!unaComision) {
+      //         Swal.fire({
+      //           title: 'Oops! Ocurrió un error',
+      //           text: 'Hubo un problema en el servidor. Si el problema persiste comuniquese con el soporte técnico.',
+      //           icon: 'error',
+      //         });
+      //       } else {
+      //         planilla.curso = unaComision._id;
+      //         this.guardarPlanillaTaller(planilla);
+      //       }
+      //     },
+      //     (error) => {
+      //       console.log('[ERROR]', error);
+      //     }
+      //   );
     }
   }
 
@@ -143,19 +143,5 @@ export class PlanillaAgregarComponent implements OnInit {
         }
       }
     });
-  }
-  test() {
-    const planilla: IPlanillaTaller = {
-      activo: true,
-      fechaInicio: new Date('2021-02-01T03:00:00.000Z'),
-      fechaFinalizacion: new Date('2021-02-06T03:00:00.000Z'),
-      observacion: '2',
-      bimestre: '1er Bimestre',
-      asignatura: '60162070d3870614fcffe3fe',
-      profesor: '6019a5a4f64f11213865e1ba',
-      comision: '601ef5f6cc045b07086f0c91',
-      fechaCreacion: new Date('2021-02-06T20:03:04.373Z'),
-    };
-    this.guardarPlanillaTaller(planilla);
   }
 }

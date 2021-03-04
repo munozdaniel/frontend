@@ -111,10 +111,12 @@ export class PlanillasTablaComponent implements OnInit, OnChanges {
     }
   }
   editarPlanillaDetalle(planilla: IPlanillaTaller) {
-    this._router.navigate([`taller/planilla-editar/${planilla._id}`]);
+    const anio = (planilla.curso.cicloLectivo as any).anio;
+    this._router.navigate([`taller/planilla-editar/${planilla._id}/${anio}`]);
   }
   verPlanillaDetalle(planilla: IPlanillaTaller) {
-    this._router.navigate([`taller/planilla-ver/${planilla._id}`]);
+    const anio = (planilla.curso.cicloLectivo as any).anio;
+    this._router.navigate([`taller/planilla-ver/${planilla._id}/${anio}`]);
   }
   tomarAsistencia(planilla: IPlanillaTaller) {
     this._router.navigate([`taller/asistencia/${planilla._id}`]);

@@ -41,7 +41,7 @@ const routes: Routes = [
     //  DEBE estar autenticados
   },
   {
-    path: 'planilla-ver/:id',
+    path: 'planilla-ver/:id/:ciclo',
     component: PlanillaVerComponent,
     //  DEBE estar autenticados
   },

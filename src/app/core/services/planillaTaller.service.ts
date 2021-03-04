@@ -32,6 +32,12 @@ export class PlanillaTallerService {
 
     return this.http.get<any>(url);
   }
+  obtenerPlanillaTallerPorIdCiclo(planillaTallerId: string, ciclo: number): Observable<IPlanillaTaller> {
+    const query = `planilla-taller/${planillaTallerId}/${ciclo}`;
+    const url = this.url + query;
+
+    return this.http.get<any>(url);
+  }
   obtenerPlanillaTalleres(): Observable<IPlanillaTaller[]> {
     const query = `planilla-taller`;
     const url = this.url + query;
