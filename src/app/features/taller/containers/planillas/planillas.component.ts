@@ -2,6 +2,7 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { designAnimations } from '@design/animations';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
+import { CicloLectivoService } from 'app/core/services/ciclo-lectivo.service';
 import { PlanillaTallerService } from 'app/core/services/planillaTaller.service';
 import { IPlanillaTaller } from 'app/models/interface/iPlanillaTaller';
 import * as moment from 'moment';
@@ -20,6 +21,7 @@ import * as moment from 'moment';
             fxFlex.gt-xs="40"
             fxFlex.xs="100"
             class="w-100-p"
+            [cicloLectivo]="cicloActual"
             (retParametrosBusqueda)="setParametrosBusqueda($event)"
           ></app-form-ciclo-lectivo>
           <button mat-raised-button fxFlex.gt-xs="40" fxFlex.xs="100" color="primary" (click)="redireccionar()" class="w-100-p">
@@ -44,13 +46,17 @@ export class PlanillasComponent implements OnInit, OnDestroy {
   titulo = 'Planillas de Taller';
   planillas: IPlanillaTaller[];
   cicloActual: number;
-  constructor(private _router: Router, private _planillaTallerService: PlanillaTallerService) {}
+  constructor(
+    private _cicloLectivoService: CicloLectivoService,
+    private _router: Router,
+    private _planillaTallerService: PlanillaTallerService
+  ) {}
   ngOnDestroy(): void {}
 
   ngOnInit(): void {
     // Carga inicial
-    this.cicloActual = moment().year();
-    this.recuperarPlanillasPorCiclo(2019);
+    this.cicloActual = this.cicloActual ? this.cicloActual : moment().year();
+    this.recuperarPlanillasPorCiclo(this.cicloActual);
   }
   recuperarPlanillasPorCiclo(cicloLectivo: number) {
     console.log('cicloLectivo', cicloLectivo);
@@ -68,6 +74,7 @@ export class PlanillasComponent implements OnInit, OnDestroy {
         }
       );
   }
+
   setParametrosBusqueda({ cicloLectivo }) {
     this.recuperarPlanillasPorCiclo(cicloLectivo);
   }

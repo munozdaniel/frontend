@@ -26,7 +26,7 @@ planillaTallerNro: 455
 profesor: "6021bb72c18fc750b87b0a12"
    -->
   <mat-progress-bar *ngIf="cargando" mode="indeterminate" class="w-100-p"></mat-progress-bar>
-  <table mat-table matSort [dataSource]="dataSource" class="mat-elevation-z4" multiTemplateDataRows>
+  <table #sort="matSort" mat-table matSort [dataSource]="dataSource" class="mat-elevation-z4" multiTemplateDataRows>
     <!-- -->
 
     <ng-container matColumnDef="planillaTallerNro">
@@ -42,7 +42,7 @@ profesor: "6021bb72c18fc750b87b0a12"
       <th mat-header-cell *matHeaderCellDef mat-sort-header>Ciclo</th>
       <td mat-cell *matCellDef="let row">
         <div fxLayout="row" fxLayoutAlign="center center">
-          {{ row.curso.cicloLectivo.anio }}
+          {{ row.cicloLectivo.anio }}
         </div>
       </td>
     </ng-container>
@@ -83,14 +83,14 @@ profesor: "6021bb72c18fc750b87b0a12"
     <!-- -->
 
     <ng-container matColumnDef="comisioncompleta">
-      <th mat-header-cell *matHeaderCellDef mat-sort-header>Curso/Com./Div.</th>
+      <th mat-header-cell *matHeaderCellDef mat-sort-header>Curso/Div./Com.</th>
       <td mat-cell *matCellDef="let row">
         <div class="comision" fxLayout="row" fxLayoutAlign="start start">
           <span matTooltip="CURSO">0{{ row.curso.curso }}</span>
           <strong>/</strong>
-          <span matTooltip="COMISION">{{ row.curso.comision }}</span>
-          <strong>/</strong>
           <span matTooltip="DIVISION">0{{ row.curso.division }}</span>
+          <strong *ngIf="row.curso.comision">/</strong>
+          <span *ngIf="row.curso.comision" matTooltip="COMISION">{{ row.curso.comision }}</span>
         </div>
       </td>
     </ng-container>

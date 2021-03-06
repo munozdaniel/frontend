@@ -68,6 +68,7 @@ export class PlanillaAgregarComponent implements OnInit {
         asignatura: evento.asignatura,
         profesor: evento.profesor,
         curso: evento.curso, //setear
+        cicloLectivo: evento.cicloLectivo,
         activo: true,
       };
       const comision: IComision = {

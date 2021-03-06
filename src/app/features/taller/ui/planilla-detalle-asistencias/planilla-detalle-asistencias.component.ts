@@ -1,4 +1,4 @@
-import { Component, Input, OnChanges, OnInit, SimpleChanges, ViewChild } from '@angular/core';
+import { Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges, ViewChild } from '@angular/core';
 import { MatTableDataSource, MatSort, MatPaginator } from '@angular/material';
 import { designAnimations } from '@design/animations';
 import { IAlumno } from 'app/models/interface/iAlumno';
@@ -33,14 +33,14 @@ export class PlanillaDetalleAsistenciasComponent implements OnInit, OnChanges {
     this.dataSourceAsistencia.paginator = paginator;
   }
   columnasAsistencia = ['fecha', 'presente', 'llegoTarde'];
-
+  @Output() retBuscarAsistenciaPorAlumno = new EventEmitter<IAlumno>();
   constructor() {}
   ngOnChanges(changes: SimpleChanges): void {
     if (changes.alumnos && changes.alumnos.currentValue) {
       this.dataSource.data = this.alumnos;
     }
-    if (changes.asistencia && changes.asistencia.currentValue) {
-      this.dataSourceAsistencia.data = this.alumnos;
+    if (changes.asistencias && changes.asistencias.currentValue) {
+      this.dataSourceAsistencia.data = this.asistencias;
     }
   }
 
@@ -56,5 +56,10 @@ export class PlanillaDetalleAsistenciasComponent implements OnInit, OnChanges {
     if (this.dataSourceAsistencia.paginator) {
       this.dataSourceAsistencia.paginator.firstPage();
     }
+  }
+  buscarAsistenciasPorAlumno(alumno: IAlumno) {
+    this.dataSource.data.forEach((x) => (x.selected = false));
+    alumno.selected = true;
+    this.retBuscarAsistenciaPorAlumno.emit(alumno);
   }
 }

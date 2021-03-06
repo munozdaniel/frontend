@@ -7,7 +7,7 @@ export interface ICurso {
   comision: string;
   alumnoId?: string;
   //   cicloLectivo:number;
-  cicloLectivo: ICicloLectivo[];
+  //   cicloLectivo: ICicloLectivo[];
   division: number;
 
   fechaCreacion?: Date;

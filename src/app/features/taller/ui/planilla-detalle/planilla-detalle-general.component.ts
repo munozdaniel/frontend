@@ -2,11 +2,11 @@ import { Component, Input, OnInit } from '@angular/core';
 import { IPlanillaTaller } from 'app/models/interface/iPlanillaTaller';
 
 @Component({
-  selector: 'app-planilla-detalle',
-  templateUrl: './planilla-detalle.component.html',
-  styleUrls: ['./planilla-detalle.component.scss'],
+  selector: 'app-planilla-detalle-general',
+  templateUrl: './planilla-detalle-general.component.html',
+  styleUrls: ['./planilla-detalle-general.component.scss'],
 })
-export class PlanillaDetalleComponent implements OnInit {
+export class PlanillaDetalleGeneralComponent implements OnInit {
   @Input() planillaTaller: IPlanillaTaller;
   constructor() {}
 

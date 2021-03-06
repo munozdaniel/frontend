@@ -19,8 +19,8 @@ import { PlanillaEditarComponent } from './containers/planilla-editar/planilla-e
 import { PlanillaStepperComponent } from './ui/planilla-stepper/planilla-stepper.component';
 import { PlanillaTallerTabsComponent } from './ui/planilla-taller-tabs/planilla-taller-tabs.component';
 import { PlanillaVerComponent } from './containers/planilla-ver/planilla-ver.component';
-import { PlanillaDetalleComponent } from './ui/planilla-detalle/planilla-detalle.component';
 import { PlanillaDetalleAsistenciasComponent } from './ui/planilla-detalle-asistencias/planilla-detalle-asistencias.component';
+import { PlanillaDetalleGeneralComponent } from './ui/planilla-detalle/planilla-detalle-general.component';
 
 @NgModule({
   declarations: [
@@ -40,7 +40,7 @@ import { PlanillaDetalleAsistenciasComponent } from './ui/planilla-detalle-asist
     PlanillaStepperComponent,
     PlanillaTallerTabsComponent,
     PlanillaVerComponent,
-    PlanillaDetalleComponent,
+    PlanillaDetalleGeneralComponent,
     PlanillaDetalleAsistenciasComponent,
   ],
   imports: [CommonModule, TallerRoutingModule, SharedModule, DesignSharedModule],

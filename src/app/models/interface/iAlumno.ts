@@ -36,4 +36,6 @@ export interface IAlumno {
   fechaCreacion: Date;
   fechaModificacion?: Date;
   activo: boolean;
+  // Ejecucion
+  selected?: boolean;
 }

@@ -17,6 +17,7 @@ import { MatTableDataSource, MatSort, MatPaginator, PageEvent } from '@angular/m
 import { ActivatedRoute, Router } from '@angular/router';
 import { designAnimations } from '@design/animations';
 import { IPlanillaTaller } from 'app/models/interface/iPlanillaTaller';
+import * as moment from 'moment';
 @Component({
   selector: 'app-planillas-tabla',
   templateUrl: './planillas-tabla.component.html',
@@ -100,10 +101,67 @@ export class PlanillasTablaComponent implements OnInit, OnChanges {
     if (changes.planillas && changes.planillas.currentValue) {
       console.log('ENTRA ', this.planillas);
       this.dataSource.data = this.planillas;
+      this.customSearchSortTable();
     }
   }
 
   ngOnInit(): void {}
+  customSearchSortTable() {
+    // Personalizar funcion busqueda en la tabla detalle
+    this.dataSource.filterPredicate = (data: IPlanillaTaller, filters: string) => {
+      const matchFilter = [];
+      const filterArray = filters.split(',');
+      const columns = [
+        data.planillaTallerNro,
+        moment(data.fechaInicio, 'YYYY-MM-DDTHH:mm:ss').format('DD/MM/YYYY HH:mm:ss').toString(), // 2021-03-02T15:21:12
+        data.bimestre,
+        data.asignatura.detalle,
+        '0' + data.curso.curso + ' / 0' + data.curso.division + ' / ' + data.curso.comision,
+        data.profesor.nombreCompleto,
+        data.observacion,
+        data.cicloLectivo.anio,
+      ];
+
+      filterArray.forEach((filter) => {
+        const customFilter = [];
+        columns.forEach((column) => {
+          if (column) {
+            customFilter.push(column.toString().toLowerCase().includes(filter));
+          }
+        });
+        matchFilter.push(customFilter.some(Boolean)); // OR
+      });
+      return matchFilter.every(Boolean); // AND
+    };
+    // Personalizar Sort
+    //     planillaTallerNro
+    // cicloLectivo
+    // fechaInicio
+    // bimestre
+    // asignatura
+    // comisioncompleta
+    // profesor
+    // observacion
+    // opciones
+    this.dataSource.sortingDataAccessor = (item: IPlanillaTaller, property) => {
+      switch (property) {
+        case 'planillaTallerNro':
+          return item.planillaTallerNro.toString();
+        case 'cicloLectivo':
+          return item.cicloLectivo[0].anio;
+        case 'fechaInicio':
+          return moment(item.fechaInicio, 'YYYY-MM-DDTHH:mm:ss').format('DD/MM/YYYY HH:mm:ss').toString();
+        case 'asignatura':
+          return item.asignatura.detalle;
+        case 'comisioncompleta':
+          return '0' + item.curso.curso + ' / 0' + item.curso.division + ' / ' + item.curso.comision;
+        case 'profesor':
+          return item.profesor.nombreCompleto;
+        default:
+          return item[property];
+      }
+    };
+  }
   filtroRapido(filterValue: string) {
     this.dataSource.filter = filterValue.trim().toLowerCase();
     if (this.dataSource.paginator) {
@@ -111,11 +169,11 @@ export class PlanillasTablaComponent implements OnInit, OnChanges {
     }
   }
   editarPlanillaDetalle(planilla: IPlanillaTaller) {
-    const anio = (planilla.curso.cicloLectivo as any).anio;
+    const anio = (planilla.cicloLectivo as any).anio;
     this._router.navigate([`taller/planilla-editar/${planilla._id}/${anio}`]);
   }
   verPlanillaDetalle(planilla: IPlanillaTaller) {
-    const anio = (planilla.curso.cicloLectivo as any).anio;
+    const anio = (planilla.cicloLectivo as any).anio;
     this._router.navigate([`taller/planilla-ver/${planilla._id}/${anio}`]);
   }
   tomarAsistencia(planilla: IPlanillaTaller) {

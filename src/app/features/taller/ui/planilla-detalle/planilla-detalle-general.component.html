@@ -1,6 +1,6 @@
 <div *ngIf="planillaTaller" fxLayout="column" fxLayoutGap="10px">
   <h2 fxLayout="row" fxLayoutGap="10px">
-    <strong>Año Lectivo </strong><span>{{ planillaTaller.curso?.cicloLectivo[0].anio }}</span>
+    <strong>Año Lectivo </strong><span>{{ planillaTaller.cicloLectivo.anio }}</span>
   </h2>
   <!--  -->
   <div fxLayout.xs="column" fxLayout.gt-xs="row wrap" fxLayoutAlign="start baseline" fxLayoutGap.xs="20px">

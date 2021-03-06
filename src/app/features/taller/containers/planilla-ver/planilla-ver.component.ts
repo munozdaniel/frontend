@@ -3,8 +3,10 @@ import { ActivatedRoute } from '@angular/router';
 import { designAnimations } from '@design/animations';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { AlumnoService } from 'app/core/services/alumno.service';
+import { AsistenciaService } from 'app/core/services/asistencia.service';
 import { PlanillaTallerService } from 'app/core/services/planillaTaller.service';
 import { IAlumno } from 'app/models/interface/iAlumno';
+import { IAsistencia } from 'app/models/interface/iAsistencia';
 import { IPlanillaTaller } from 'app/models/interface/iPlanillaTaller';
 @UntilDestroy()
 @Component({
@@ -19,10 +21,15 @@ import { IPlanillaTaller } from 'app/models/interface/iPlanillaTaller';
         </div>
         <mat-tab-group (selectedTabChange)="controlTabs($event)">
           <mat-tab label="General">
-            <app-planilla-detalle [planillaTaller]="planillaTaller"></app-planilla-detalle>
+            <app-planilla-detalle-general [planillaTaller]="planillaTaller"></app-planilla-detalle-general>
           </mat-tab>
           <mat-tab label="Asistencias">
-            <app-planilla-detalle-asistencias [cargandoAlumnos]="cargandoAlumnos" [alumnos]="alumnos"></app-planilla-detalle-asistencias
+            <app-planilla-detalle-asistencias
+              [cargandoAlumnos]="cargandoAlumnos"
+              [alumnos]="alumnos"
+              [asistencias]="asistencias"
+              (retBuscarAsistenciaPorAlumno)="setBuscarAsistenciaPorAlumno($event)"
+            ></app-planilla-detalle-asistencias
           ></mat-tab>
           <mat-tab label="Calificaciones"> </mat-tab>
           <mat-tab label="Libro de Temas"> Content 3 </mat-tab>
@@ -43,9 +50,11 @@ export class PlanillaVerComponent implements OnInit {
   ciclo: number;
   planillaTaller: IPlanillaTaller;
   alumnos: IAlumno[];
+  asistencias: IAsistencia[];
   constructor(
     private _activeRoute: ActivatedRoute,
     private _alumnoService: AlumnoService,
+    private _asistenciaService: AsistenciaService,
     private _planillaTallerService: PlanillaTallerService
   ) {}
 
@@ -94,28 +103,48 @@ export class PlanillaVerComponent implements OnInit {
     switch (evento.index) {
       case 0:
         console.log('GENERAL');
+        this.titulo = 'Planilla de Taller';
         break;
       case 1:
         console.log('ASISTENCIAS');
+        this.titulo = 'Asistencias del Alumno';
         if (!this.alumnos) {
           //   this.recuperarAsistenciasPorCurso();
         }
         break;
       case 2:
+        this.titulo = 'Calificaciones del Alumno';
         console.log('CALIFICACIONES');
         break;
       case 3:
+        this.titulo = 'Libro de Temas del Profesor';
         console.log('LIBRO DE TEMAS');
         break;
       case 4:
+        this.titulo = 'Seguimiento del Alumno';
         console.log('SEGUIMIENTO DE ALUMNOS');
         break;
       case 5:
+        this.titulo = 'Informes';
         console.log('INFORMES');
         break;
 
       default:
         break;
     }
+  }
+  setBuscarAsistenciaPorAlumno(alumno: IAlumno) {
+    this._asistenciaService
+      .obtenerAsistenciasPorAlumnoId(alumno._id)
+      .pipe(untilDestroyed(this))
+      .subscribe(
+        (datos) => {
+          console.log('obtenerAsistenciasPorAlumnoId', datos);
+          this.asistencias = [...datos];
+        },
+        (error) => {
+          console.log('[ERROR]', error);
+        }
+      );
   }
 }

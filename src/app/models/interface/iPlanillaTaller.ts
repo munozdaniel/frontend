@@ -1,4 +1,5 @@
 import { IAsignatura } from './iAsignatura';
+import { ICicloLectivo } from './iCicloLectivo';
 import { ICurso } from './iCurso';
 import { IProfesor } from './iProfesor';
 
@@ -12,7 +13,7 @@ export interface IPlanillaTaller {
   // curso: number;
   // division: number;
   // comision: string;
-  // cicloLectivo: number;
+  cicloLectivo: ICicloLectivo;
   fechaInicio: Date;
   fechaFinalizacion: Date;
   observacion?: string;
