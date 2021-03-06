@@ -23,14 +23,17 @@
       <strong>CURSO </strong>
     </h2>
     <div fxLayout="row wrap" fxLayoutAlign="start center">
-      <h3 fxLayout="row" fxLayoutGap="10px" fxFlex.xs="100" fxFlex.gt-xs="30">
+      <h3 fxLayout="row" fxLayoutGap="10px" fxFlex.xs="100" fxFlex.gt-xs="25">
         <strong>Curso:</strong><span>{{ planillaTaller.curso.curso }}</span>
       </h3>
-      <h3 fxLayout="row" fxLayoutGap="10px" fxFlex.xs="100" fxFlex.gt-xs="30">
+      <h3 fxLayout="row" fxLayoutGap="10px" fxFlex.xs="100" fxFlex.gt-xs="25">
         <strong>División:</strong><span>{{ planillaTaller.curso.division }}</span>
       </h3>
-      <h3 *ngIf="planillaTaller.curso.comision" fxLayout="row" fxLayoutGap="10px" fxFlex.xs="100" fxFlex.gt-xs="30">
+      <h3 *ngIf="planillaTaller.curso.comision" fxLayout="row" fxLayoutGap="10px" fxFlex.xs="100" fxFlex.gt-xs="25">
         <strong>Comisión:</strong><span>{{ planillaTaller.curso.comision }}</span>
+      </h3>
+      <h3 *ngIf="planillaTaller.curso.comision" fxLayout="row" fxLayoutGap="10px" fxFlex.xs="100" fxFlex.gt-xs="25">
+        <strong>Bimestre:</strong><span>{{ planillaTaller.bimestre }}</span>
       </h3>
     </div>
   </div>

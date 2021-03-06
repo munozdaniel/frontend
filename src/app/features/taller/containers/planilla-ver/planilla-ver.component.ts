@@ -4,9 +4,11 @@ import { designAnimations } from '@design/animations';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { AlumnoService } from 'app/core/services/alumno.service';
 import { AsistenciaService } from 'app/core/services/asistencia.service';
+import { CalificacionService } from 'app/core/services/calificacion.service';
 import { PlanillaTallerService } from 'app/core/services/planillaTaller.service';
 import { IAlumno } from 'app/models/interface/iAlumno';
 import { IAsistencia } from 'app/models/interface/iAsistencia';
+import { ICalificacion } from 'app/models/interface/iCalificacion';
 import { IPlanillaTaller } from 'app/models/interface/iPlanillaTaller';
 @UntilDestroy()
 @Component({
@@ -32,7 +34,15 @@ import { IPlanillaTaller } from 'app/models/interface/iPlanillaTaller';
               (retBuscarAsistenciaPorAlumno)="setBuscarAsistenciaPorAlumno($event)"
             ></app-planilla-detalle-asistencias
           ></mat-tab>
-          <mat-tab label="Calificaciones"> </mat-tab>
+          <mat-tab label="Calificaciones">
+            <app-planilla-detalle-calificaciones
+              [cargandoCalificaciones]="cargandoCalificaciones"
+              [cargandoAlumnos]="cargandoAlumnos"
+              [alumnos]="alumnos"
+              [calificaciones]="calificaciones"
+              (retBuscarCalificacionesPorAlumno)="setBuscarCalificacionesPorAlumno($event)"
+            ></app-planilla-detalle-calificaciones>
+          </mat-tab>
           <mat-tab label="Libro de Temas"> Content 3 </mat-tab>
           <mat-tab label="Seguimiento de Alumnos"> Content 3 </mat-tab>
           <mat-tab label="Informes"> Content 3 </mat-tab>
@@ -51,13 +61,19 @@ export class PlanillaVerComponent implements OnInit {
   ciclo: number;
   planillaTaller: IPlanillaTaller;
   alumnos: IAlumno[];
+  //   Asistencias
   asistencias: IAsistencia[];
   cargandoAsistencias: boolean;
-
+  //   Calificaciones
+  cargandoCalificaciones: boolean;
+  calificaciones: ICalificacion[];
+  // Alumno
+  alumnoSeleccionado: IAlumno;
   constructor(
     private _activeRoute: ActivatedRoute,
     private _alumnoService: AlumnoService,
     private _asistenciaService: AsistenciaService,
+    private _calificacionService: CalificacionService,
     private _planillaTallerService: PlanillaTallerService
   ) {}
 
@@ -87,7 +103,7 @@ export class PlanillaVerComponent implements OnInit {
     this.cargandoAlumnos = true;
     const { curso, comision, division } = this.planillaTaller.curso;
     this._alumnoService
-      .obtenerAlumnosPorCurso(curso, division, comision)
+      .obtenerAlumnosPorCursoCiclo(curso, division, comision, this.ciclo)
       .pipe(untilDestroyed(this))
       .subscribe(
         (datos) => {
@@ -111,13 +127,23 @@ export class PlanillaVerComponent implements OnInit {
       case 1:
         console.log('ASISTENCIAS');
         this.titulo = 'Asistencias del Alumno';
-        if (!this.alumnos) {
-          //   this.recuperarAsistenciasPorCurso();
+        // Si hay asistencias entonces hay alumnoSeleccionado. Controlamos para no repetir la consulta
+        if (
+          (!this.asistencias && this.alumnoSeleccionado) ||
+          (this.asistencias && this.asistencias.length > 0 && this.alumnoSeleccionado._id !== this.asistencias[0].alumno._id)
+        ) {
+          this.setBuscarAsistenciaPorAlumno(this.alumnoSeleccionado);
         }
         break;
       case 2:
         this.titulo = 'Calificaciones del Alumno';
         console.log('CALIFICACIONES');
+        if (
+          (!this.calificaciones && this.alumnoSeleccionado) ||
+          (this.calificaciones && this.calificaciones.length > 0 && this.alumnoSeleccionado._id !== this.calificaciones[0].alumno._id)
+        ) {
+          this.setBuscarCalificacionesPorAlumno(this.alumnoSeleccionado);
+        }
         break;
       case 3:
         this.titulo = 'Libro de Temas del Profesor';
@@ -137,19 +163,38 @@ export class PlanillaVerComponent implements OnInit {
     }
   }
   setBuscarAsistenciaPorAlumno(alumno: IAlumno) {
+    console.log('1');
+    this.alumnoSeleccionado = alumno;
     this.cargandoAsistencias = true;
     this._asistenciaService
-      .obtenerAsistenciasPorAlumnoId(alumno._id)
+      .obtenerAsistenciasPorAlumnoId(alumno._id, this.planillaId)
       .pipe(untilDestroyed(this))
       .subscribe(
         (datos) => {
-          console.log('obtenerAsistenciasPorAlumnoId', datos);
           this.asistencias = [...datos];
           this.cargandoAsistencias = false;
         },
         (error) => {
           console.log('[ERROR]', error);
           this.cargandoAsistencias = false;
+        }
+      );
+  }
+  setBuscarCalificacionesPorAlumno(alumno: IAlumno) {
+    console.log('2');
+    this.alumnoSeleccionado = alumno;
+    this.cargandoCalificaciones = true;
+    this._calificacionService
+      .obtenerCalificacionesPorAlumnoId(alumno._id, this.planillaId)
+      .pipe(untilDestroyed(this))
+      .subscribe(
+        (datos) => {
+          this.calificaciones = [...datos];
+          this.cargandoCalificaciones = false;
+        },
+        (error) => {
+          console.log('[ERROR]', error);
+          this.cargandoCalificaciones = false;
         }
       );
   }

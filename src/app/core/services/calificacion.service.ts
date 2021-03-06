@@ -6,12 +6,12 @@ import { Observable } from 'rxjs';
 @Injectable({
   providedIn: 'root',
 })
-export class AsistenciaService {
+export class CalificacionService {
   protected url = environment.apiURI;
   constructor(private http: HttpClient) {}
 
-  obtenerAsistenciasPorAlumnoId(alumnoId: string, planillaId: string): Observable<any> {
-    const query = `asistencia/por-alumno/${alumnoId}`;
+  obtenerCalificacionesPorAlumnoId(alumnoId: string, planillaId: string): Observable<any> {
+    const query = `calificacion/por-alumno/${alumnoId}`;
     const url = this.url + query;
 
     return this.http.post<any>(url, { planillaId });

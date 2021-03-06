@@ -1,0 +1,178 @@
+<div fxLayout="column" class="mat-card mat-elevation-z4 p-24">
+  <div fxLayout.xs="column" fxLayout.gt.xs="row" fxLayoutAlign.gt-xs="space-between start">
+    <!-- ================================================ -->
+    <!-- CALIFICACIONES ================================================ -->
+    <!-- ================================================ -->
+    <div *ngIf="!cargandoAlumnos" fxLayout="column" class="w-100-p" fxFlex.xs="100" fxFlex.gt-xs="45">
+      <div
+        *ngIf="alumnos && alumnos.length > 0"
+        [@animate]="{ value: '*', params: { delay: '50ms', scale: '0.2' } }"
+        class="mt-20 p-0"
+        fxLayoutAlign="center center"
+        fxLayout="row"
+      >
+        <mat-form-field appearance="outline" color="accent" class="w-40-p">
+          <mat-label>Búsqueda Rápida</mat-label>
+          <input matInput users (keyup)="filtroRapido($event.target.value)" [disabled]="dataSource.data.length == 0" />
+          <mat-icon matSuffix>search</mat-icon>
+        </mat-form-field>
+      </div>
+      <table
+        mat-table
+        matSort
+        #sort="matSort"
+        [dataSource]="dataSource"
+        class="borde-tabla mat-elevation-z4 w-100-p"
+        [class.mt-20]="!alumnos || alumnos.length < 1"
+      >
+        <!-- 'nombreCompleto', 'seguimientoEtap' -->
+        <ng-container matColumnDef="nombreCompleto">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>Nombre</th>
+          <td mat-cell *matCellDef="let row">
+            <span
+              [ngClass]="{
+                row_seleccionada: row.selected
+              }"
+            >
+              {{ row.nombreCompleto }}
+            </span>
+          </td>
+        </ng-container>
+        <ng-container matColumnDef="seguimientoEtap">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>ETAP</th>
+          <td mat-cell *matCellDef="let row">
+            <h4
+              [ngClass]="{
+                row_seleccionada: row.selected
+              }"
+            >
+              {{ row.seguimientoEtap ? 'SI' : 'NO' }}
+            </h4>
+          </td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="columnas"></tr>
+        <tr
+          mat-row
+          *matRowDef="let row; columns: columnas"
+          [class.selected]="row.selected"
+          [ngClass]="{
+            hovered: row.hovered,
+            highlighted: row.highlighted
+          }"
+          (mouseover)="row.hovered = true"
+          (mouseout)="row.hovered = false"
+          (click)="buscarCalificacionesPorAlumno(row)"
+        ></tr>
+      </table>
+      <app-empty-data *ngIf="!alumnos || alumnos.length < 1"></app-empty-data>
+      <!-- Paginado -------------------------------------------------- -->
+      <mat-paginator class="border-paginador paginator mat-elevation-z2" #paginator [pageSize]="5" [pageSizeOptions]="[5, 10, 25, 100]">
+      </mat-paginator>
+    </div>
+    <!-- ================================================ -->
+    <!-- CALIFICACIONES VACIAS ================================================ -->
+    <!-- ================================================ -->
+    <div
+      *ngIf="!calificaciones"
+      fxLayout="column"
+      fxLayoutAlign="center center"
+      class="w-100-p text-center border p-24"
+      fxFlex.xs="100"
+      fxFlex.gt-xs="45"
+      style="height: 50vh; margin-top: 90px"
+    >
+      <h3><strong>Seleccione un alumno para ver las calificaciones</strong></h3>
+    </div>
+
+    <!-- ================================================ -->
+    <!-- CALIFICACIONES ================================================ -->
+    <!-- ================================================ -->
+    <div
+      *ngIf="calificaciones"
+      fxLayout="column"
+      class="w-100-p"
+      fxFlex.xs="100"
+      fxFlex.gt-xs="45"
+      [class.mt-100]="calificaciones.length < 1"
+    >
+      <div
+        *ngIf="calificaciones && calificaciones.length > 0"
+        [@animate]="{ value: '*', params: { delay: '50ms', scale: '0.2' } }"
+        class="mt-20 p-0"
+        fxLayoutAlign="center center"
+        fxLayout="row"
+      >
+        <mat-form-field appearance="outline" color="accent" class="w-40-p">
+          <mat-label>Búsqueda Rápida</mat-label>
+          <input matInput users (keyup)="filtroRapidoCalificacion($event.target.value)" [disabled]="dataSource.data.length == 0" />
+          <mat-icon matSuffix>search</mat-icon>
+        </mat-form-field>
+      </div>
+      <table
+        mat-table
+        matSort
+        #sortCalificacion="matSort"
+        [dataSource]="dataSourceCalificacion"
+        class="borde-tabla mat-elevation-z4 w-100-p"
+      >
+        <!-- 'formaExamen', 'tipoExamen', 'promedia', 'promedioGeneral' -->
+        <ng-container matColumnDef="formaExamen">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>Examen</th>
+          <td mat-cell *matCellDef="let row">
+            {{ row.formaExamen }}
+          </td>
+        </ng-container>
+        <ng-container matColumnDef="tipoExamen">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>Tipo</th>
+          <td mat-cell *matCellDef="let row">
+            <h4>{{ row.tipoExamen }}</h4>
+          </td>
+        </ng-container>
+        <ng-container matColumnDef="promedia">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>Prom</th>
+          <td mat-cell *matCellDef="let row">
+            <h4>{{ row.promedia ? 'SI' : 'NO' }}</h4>
+          </td>
+        </ng-container>
+        <ng-container matColumnDef="promedioGeneral">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>Calif.</th>
+          <td mat-cell *matCellDef="let row">
+            <h4>{{ row.promedioGeneral }}</h4>
+          </td>
+        </ng-container>
+        <tr mat-header-row *matHeaderRowDef="columnasCalificacion"></tr>
+        <tr
+          mat-row
+          *matRowDef="let row; columns: columnasCalificacion"
+          [class.selected]="row.selected"
+          [ngClass]="{
+            hovered: row.hovered,
+            highlighted: row.highlighted
+          }"
+          (mouseover)="row.hovered = true"
+          (mouseout)="row.hovered = false"
+        ></tr>
+      </table>
+      <div
+        fxLayout="row"
+        fxLayoutGap="10px"
+        fxLayoutAlign="center center"
+        *ngIf="cargandoCalificaciones && (!calificaciones || calificaciones.length < 1)"
+        class="mat-card p-24 text-center"
+      >
+        <mat-spinner matSuffix class="ml-10" diameter="20"></mat-spinner>
+        <p>Cargando...</p>
+      </div>
+      <app-empty-data *ngIf="!cargandoCalificaciones && (!calificaciones || calificaciones.length < 1)"></app-empty-data>
+      <!-- Paginado -------------------------------------------------- -->
+      <mat-paginator
+        class="border-paginador paginator mat-elevation-z2"
+        #paginatorCalificacion
+        [pageSize]="5"
+        [pageSizeOptions]="[5, 10, 25, 100]"
+      >
+      </mat-paginator>
+    </div>
+  </div>
+</div>
