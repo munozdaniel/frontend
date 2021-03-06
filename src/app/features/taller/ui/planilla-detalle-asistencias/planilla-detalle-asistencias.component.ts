@@ -11,6 +11,7 @@ import { IAsistencia } from 'app/models/interface/IAsistencia';
   animations: [designAnimations],
 })
 export class PlanillaDetalleAsistenciasComponent implements OnInit, OnChanges {
+  @Input() cargandoAsistencias: boolean;
   @Input() cargandoAlumnos: boolean;
   @Input() alumnos: IAlumno[];
   @Input() asistencias: IAsistencia[];
@@ -58,8 +59,11 @@ export class PlanillaDetalleAsistenciasComponent implements OnInit, OnChanges {
     }
   }
   buscarAsistenciasPorAlumno(alumno: IAlumno) {
+    this.cargandoAsistencias = true;
     this.dataSource.data.forEach((x) => (x.selected = false));
     alumno.selected = true;
+    this.asistencias = [];
+    this.dataSourceAsistencia.data = [];
     this.retBuscarAsistenciaPorAlumno.emit(alumno);
   }
 }

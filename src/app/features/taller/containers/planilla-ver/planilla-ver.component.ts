@@ -25,6 +25,7 @@ import { IPlanillaTaller } from 'app/models/interface/iPlanillaTaller';
           </mat-tab>
           <mat-tab label="Asistencias">
             <app-planilla-detalle-asistencias
+              [cargandoAsistencias]="cargandoAsistencias"
               [cargandoAlumnos]="cargandoAlumnos"
               [alumnos]="alumnos"
               [asistencias]="asistencias"
@@ -51,6 +52,8 @@ export class PlanillaVerComponent implements OnInit {
   planillaTaller: IPlanillaTaller;
   alumnos: IAlumno[];
   asistencias: IAsistencia[];
+  cargandoAsistencias: boolean;
+
   constructor(
     private _activeRoute: ActivatedRoute,
     private _alumnoService: AlumnoService,
@@ -134,6 +137,7 @@ export class PlanillaVerComponent implements OnInit {
     }
   }
   setBuscarAsistenciaPorAlumno(alumno: IAlumno) {
+    this.cargandoAsistencias = true;
     this._asistenciaService
       .obtenerAsistenciasPorAlumnoId(alumno._id)
       .pipe(untilDestroyed(this))
@@ -141,9 +145,11 @@ export class PlanillaVerComponent implements OnInit {
         (datos) => {
           console.log('obtenerAsistenciasPorAlumnoId', datos);
           this.asistencias = [...datos];
+          this.cargandoAsistencias = false;
         },
         (error) => {
           console.log('[ERROR]', error);
+          this.cargandoAsistencias = false;
         }
       );
   }
