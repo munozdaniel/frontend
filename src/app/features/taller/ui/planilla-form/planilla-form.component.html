@@ -1,4 +1,4 @@
-<div class="mat-elevation-z4 mat-card p-12">
+<div class="mat-elevation-z4 mat-card p-24">
   <mat-progress-bar *ngIf="cargandoProfesores || cargandoAsignaturas" mode="indeterminate"></mat-progress-bar>
 
   <form [formGroup]="form" fxLayout="column" (ngSubmit)="guardar()">
@@ -15,7 +15,7 @@
         <!-- FechaInicio ============================= -->
         <mat-form-field appearance="outline">
           <mat-label>Fecha de Inicio</mat-label>
-          <input matInput [matDatepicker]="picker" formControlName="fechaInicio" />
+          <input autocomplete="off" matInput [matDatepicker]="picker" formControlName="fechaInicio" />
           <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
           <mat-datepicker #picker></mat-datepicker>
           <mat-error *ngIf="form.controls.fechaInicio.hasError('required')"> Este campo es requerido. </mat-error>
@@ -23,11 +23,12 @@
         <!-- FechaFinal ============================= -->
         <mat-form-field appearance="outline">
           <mat-label>Fecha de Fin</mat-label>
-          <input matInput [matDatepicker]="pickerFinal" formControlName="fechaFinalizacion" />
+          <input autocomplete="off" matInput [matDatepicker]="pickerFinal" formControlName="fechaFinalizacion" />
           <mat-datepicker-toggle matSuffix [for]="pickerFinal"></mat-datepicker-toggle>
           <mat-datepicker #pickerFinal></mat-datepicker>
           <mat-error *ngIf="form.controls.fechaFinalizacion.hasError('required')"> Este campo es requerido. </mat-error>
         </mat-form-field>
+
         <!-- Asignatura ============================= -->
         <div fxFlex="60">
           <input-autocomplete
@@ -112,13 +113,28 @@
         <!-- Observacion ============================= -->
         <mat-form-field appearance="outline" fxFlex.gt-xs="45" fxFlex.xs="100">
           <mat-label class="lbl">Observación</mat-label>
-          <input matInput type="number" min="0" formControlName="observacion" autocomplete="off" />
+          <input matInput type="text" formControlName="observacion" autocomplete="off" minlength="5" maxlength="150" />
           <mat-error *ngIf="form.controls.observacion.hasError('required')"> Este campo es requerido. </mat-error>
+          <mat-error
+            *ngIf="
+              !form.controls.observacion.hasError('required') &&
+              (form.controls.observacion.hasError('minlength') || form.controls.observacion.hasError('maxlength'))
+            "
+          >
+            Ingrese entre 5 y 150 caracteres
+          </mat-error>
         </mat-form-field>
       </div>
     </div>
-    <div fxLayout="row" fxLayoutAlign="center start">
-      <button [disabled]="cargando" mat-raised-button color="accent">Guardar Comision</button>
+    <div fxLayout="column">
+      <div fxLayout="row" fxLayoutAlign="center start">
+        <button [disabled]="cargando || form.invalid" mat-raised-button color="accent" type="submit">Guardar Comision</button>
+      </div>
+      <div fxLayout="row" fxLayoutAlign="center start">
+        <mat-error *ngIf="form.errors?.desdeMenorHasta" style="font-size: smaller">
+          * La fecha inicial no puede ser mayor a la final
+        </mat-error>
+      </div>
     </div>
   </form>
 </div>

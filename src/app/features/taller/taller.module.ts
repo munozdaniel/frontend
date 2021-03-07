@@ -17,7 +17,6 @@ import { PlanillaAgregarComponent } from './containers/planilla-agregar/planilla
 import { PlanillaFormComponent } from './ui/planilla-form/planilla-form.component';
 import { PlanillaEditarComponent } from './containers/planilla-editar/planilla-editar.component';
 import { PlanillaStepperComponent } from './ui/planilla-stepper/planilla-stepper.component';
-import { PlanillaTallerTabsComponent } from './ui/planilla-taller-tabs/planilla-taller-tabs.component';
 import { PlanillaVerComponent } from './containers/planilla-ver/planilla-ver.component';
 import { PlanillaDetalleAsistenciasComponent } from './ui/planilla-detalle-asistencias/planilla-detalle-asistencias.component';
 import { PlanillaDetalleGeneralComponent } from './ui/planilla-detalle/planilla-detalle-general.component';
@@ -44,7 +43,6 @@ import { PlanillaDetalleInformesComponent } from './ui/planilla-detalle-informes
     PlanillaFormComponent,
     PlanillaEditarComponent,
     PlanillaStepperComponent,
-    PlanillaTallerTabsComponent,
     PlanillaVerComponent,
     PlanillaDetalleGeneralComponent,
     PlanillaDetalleAsistenciasComponent,

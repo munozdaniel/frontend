@@ -1,5 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { ICicloLectivo } from 'app/models/interface/iCicloLectivo';
 import { environment } from 'environments/environment';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { shareReplay } from 'rxjs/operators';
@@ -15,5 +16,11 @@ export class CicloLectivoService {
 
   setCicloLectivo(cicloLectivo: number) {
     this.cicloLectivoSubject.next(cicloLectivo);
+  }
+  obtenerCiclosLectivos(): Observable<ICicloLectivo[]> {
+    const query = `ciclolectivos`;
+    const url = this.url + query;
+
+    return this.http.get<any>(url);
   }
 }

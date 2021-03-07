@@ -8,6 +8,7 @@ import { PlanillaTallerService } from 'app/core/services/planillaTaller.service'
 import { ProfesorService } from 'app/core/services/profesor.service';
 import { IAsignatura } from 'app/models/interface/iAsignatura';
 import { IComision } from 'app/models/interface/iComision';
+import { ICurso } from 'app/models/interface/iCurso';
 import { IPlanillaTaller } from 'app/models/interface/iPlanillaTaller';
 import { IProfesor } from 'app/models/interface/iProfesor';
 import * as moment from 'moment';
@@ -60,26 +61,24 @@ export class PlanillaAgregarComponent implements OnInit {
   }
   setPlanilla(evento) {
     if (evento) {
-      const planilla: IPlanillaTaller = {
+      const planilla: any = {
         fechaInicio: evento.fechaInicio,
         fechaFinalizacion: evento.fechaFinalizacion,
         observacion: evento.observacion,
         bimestre: evento.bimestre,
-        asignatura: evento.asignatura,
         profesor: evento.profesor,
-        curso: evento.curso, //setear
-        cicloLectivo: evento.cicloLectivo,
+        asignatura: evento.asignatura,
+        curso: evento.curso, // set en el back
+        cicloLectivo: evento.cicloLectivo, // set en el back
         activo: true,
       };
-      const comision: IComision = {
-        activo: true,
-        curso: evento.curso,
-        division: evento.division,
-        comision: evento.comision,
-        cicloLectivo: evento.cicloLectivo,
-      };
+      //   const curso: ICurso = {
+      //     activo: true,
+      //     curso: evento.curso,
+      //     division: evento.division,
+      //     comision: evento.comision,
+      //   };
       console.log('planilla', planilla);
-      console.log('comision', comision);
       //   this._comisionService.obtenerComisionPorParametros(comision).subscribe(
       //     (unaComision: IComision) => {
       //       if (!unaComision) {
@@ -97,10 +96,11 @@ export class PlanillaAgregarComponent implements OnInit {
       //       console.log('[ERROR]', error);
       //     }
       //   );
+      this.guardarPlanillaTaller(planilla);
     }
   }
 
-  guardarPlanillaTaller(planilla: IPlanillaTaller) {
+  guardarPlanillaTaller(planilla: any) {
     Swal.fire({
       title: '¿Está seguro de continuar?',
       html: 'Está a punto de guardar una nueva planilla de taller.',

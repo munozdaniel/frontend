@@ -1,6 +1,7 @@
 import { EventEmitter, Component, Input, OnInit, Output, OnChanges, SimpleChanges } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { untilDestroyed } from '@ngneat/until-destroy';
+import { ValidationService } from 'app/core/services/general/validation.services';
 import { ASIGNATURA_KEY, IAsignatura } from 'app/models/interface/iAsignatura';
 import { IPlanillaTaller } from 'app/models/interface/iPlanillaTaller';
 import { IProfesor, PROFESOR_KEY } from 'app/models/interface/iProfesor';
@@ -46,18 +47,23 @@ export class PlanillaFormComponent implements OnInit, OnChanges {
   }
 
   ngOnInit(): void {
-    this.form = this._fb.group({
-      cicloLectivo: [null, [Validators.required]],
-      fechaInicio: [null, [Validators.required]],
-      fechaFinalizacion: [null, [Validators.required]],
-      curso: [null, [Validators.required]],
-      comision: [null, [Validators.required]],
-      division: [null, [Validators.required]],
-      bimestre: [null, [Validators.required]],
-      asignatura: [null, [Validators.required]],
-      profesor: [null, [Validators.required]],
-      observacion: [null],
-    });
+    this.form = this._fb.group(
+      {
+        cicloLectivo: [moment().year(), [Validators.required]],
+        fechaInicio: [null, [Validators.required]],
+        fechaFinalizacion: [null, [Validators.required]],
+        curso: [null, [Validators.required]],
+        comision: [null, [Validators.required]],
+        division: [null, [Validators.required]],
+        bimestre: [null, [Validators.required]],
+        asignatura: [null, [Validators.required]],
+        profesor: [null, [Validators.required]],
+        observacion: [null, [Validators.maxLength(150), Validators.minLength(5)]],
+      },
+      {
+        validator: [ValidationService.desdeMenorHasta('fechaInicio', 'fechaFinalizacion')], // validator: ValidationService.restriccionFechaConHoras('fechaDesde', 'fechaHasta', 'horaDesde', 'horaHasta')
+      }
+    );
     const actual = moment().year();
     for (let index = 10; index > 0; index--) {
       this.anios.unshift(actual - index);

@@ -9,6 +9,16 @@
       <div fxLayout fxLayoutAlign="end center" fxFlex="25"></div>
     </div>
   </div>
+  <div fxLayout="row" class="mat-card mat-elevation-z4 p-12">
+    <p>Ingrese los datos principales de la planilla de taller para poder gestionar las calificaciones, asistencias, libro de temas, etc.</p>
+  </div>
   <!-- Test -->
-  <app-planilla-stepper [cargando]="cargando"></app-planilla-stepper>
+  <app-planilla-form
+    [cargando]="cargando"
+    [cargandoProfesores]="cargandoProfesores$ | async"
+    [cargandoAsignaturas]="cargandoAsignaturas$ | async"
+    [profesores]="profesores$ | async"
+    [asignaturas]="asignaturas$ | async"
+    (retPlanilla)="setPlanilla($event)"
+  ></app-planilla-form>
 </div>

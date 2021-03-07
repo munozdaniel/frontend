@@ -11,7 +11,7 @@
         fxLayoutAlign="center center"
         fxLayout="row"
       >
-        <mat-form-field appearance="outline" color="accent" class="w-40-p">
+        <mat-form-field appearance="outline" color="accent"  fxFlex.xs="100" fxFlex.gt-xs="45">
           <mat-label>Búsqueda Rápida</mat-label>
           <input matInput users (keyup)="filtroRapido($event.target.value)" [disabled]="dataSource.data.length == 0" />
           <mat-icon matSuffix>search</mat-icon>
@@ -103,7 +103,7 @@
         fxLayoutAlign="center center"
         fxLayout="row"
       >
-        <mat-form-field appearance="outline" color="accent" class="w-40-p">
+        <mat-form-field appearance="outline" color="accent"  fxFlex.xs="100" fxFlex.gt-xs="45">
           <mat-label>Búsqueda Rápida</mat-label>
           <input matInput users (keyup)="filtroRapidoCalificacion($event.target.value)" [disabled]="dataSource.data.length == 0" />
           <mat-icon matSuffix>search</mat-icon>

@@ -181,7 +181,7 @@ profesor: "6021bb72c18fc750b87b0a12"
         <div class="detalle_expansible" [@detailExpand]="element == expandedElement ? 'expanded' : 'collapsed'">
           <div fxLayout="column" class="p-24" style="width: 100%; color: white; background: rgb(30 33 41 / 87%)">
             <p fxFlex="row" fxLayoutAlign="start center" fxLayoutGap="10px">
-              <strong>Ciclo Lectivo: </strong><span style="color: orange">{{ element.curso.cicloLectivo.anio }}</span>
+              <strong>Ciclo Lectivo: </strong><span style="color: orange">{{ element.cicloLectivo.anio }}</span>
             </p>
             <p fxFlex="row" fxLayoutAlign="start center" fxLayoutGap="10px">
               <strong>Profesor:</strong><span>{{ element.profesor.nombreCompleto }}</span>
