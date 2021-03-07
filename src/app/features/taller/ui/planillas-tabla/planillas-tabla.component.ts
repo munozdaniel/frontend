@@ -14,7 +14,7 @@ import {
   ChangeDetectorRef,
 } from '@angular/core';
 import { MatTableDataSource, MatSort, MatPaginator, PageEvent } from '@angular/material';
-import { ActivatedRoute, Router } from '@angular/router';
+import {  Router } from '@angular/router';
 import { designAnimations } from '@design/animations';
 import { IPlanillaTaller } from 'app/models/interface/iPlanillaTaller';
 import * as moment from 'moment';

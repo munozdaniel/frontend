@@ -13,6 +13,7 @@
     </mat-form-field>
   </div>
   <table
+    multiTemplateDataRows
     mat-table
     matSort
     #sort="matSort"
@@ -24,7 +25,7 @@
     <ng-container matColumnDef="fecha">
       <th mat-header-cell *matHeaderCellDef mat-sort-header>Fecha</th>
       <td mat-cell *matCellDef="let row">
-        {{ row.fecha | date: 'dd/MM/yyyy' }}
+        <div fxLayout="row" fxLayoutAlign.xs="start start">{{ row.fecha | date: 'dd/MM/yyyy' }}</div>
       </td>
     </ng-container>
     <ng-container matColumnDef="nroClase">
@@ -52,10 +53,12 @@
     <ng-container matColumnDef="temaDelDia">
       <th mat-header-cell *matHeaderCellDef mat-sort-header>Tema del Día</th>
       <td mat-cell *matCellDef="let row">
-        <span *ngIf="row.temaDelDia">
-          {{ row.temaDelDia }}
-        </span>
-        <span *ngIf="!row.temaDelDia" class="text-red"> INCOMPLETO </span>
+        <div fxLayout="row" fxLayoutAlign.xs="end start">
+          <span *ngIf="row.temaDelDia">
+            {{ row.temaDelDia }}
+          </span>
+          <span *ngIf="!row.temaDelDia" class="text-red"> INCOMPLETO </span>
+        </div>
       </td>
     </ng-container>
     <ng-container matColumnDef="temasProximaClase">
@@ -65,6 +68,54 @@
           {{ row.temasProximaClase }}
         </span>
         <span *ngIf="!row.temasProximaClase" class="text-red"> INCOMPLETO </span>
+      </td>
+    </ng-container>
+    <ng-container matColumnDef="opciones">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header><mat-icon>settings</mat-icon></th>
+      <td mat-cell *matCellDef="let row">
+        <button mat-icon-button matTooltip="Mostrar más detalles"><mat-icon>add_circle</mat-icon></button>
+      </td>
+    </ng-container>
+    <ng-container *ngIf="isMobile" matColumnDef="expandedDetail">
+      <td mat-cell *matCellDef="let element" [attr.colspan]="columnas.length">
+        <div class="detalle_expansible" [@detailExpand]="element == expandedElement ? 'expanded' : 'collapsed'">
+          <div fxLayout="column" class="p-24" style="width: 100%; color: white; background: rgb(30 33 41 / 87%)">
+            <p fxFlex="row " fxLayoutAlign="start center" fxLayoutGap="10px">
+              <strong fxFlex.gt-xs="45" fxFlex.xs="100">Nro clase: </strong
+              ><span fxFlex.gt-xs="45" fxFlex.xs="100" style="color: orange">{{ element.nroClase }}</span>
+            </p>
+
+            <p fxLayout="row wrap" fxLayoutAlign="start center" fxLayoutGap="10px">
+              <strong fxFlex.gt-xs="45" fxFlex.xs="100">Tema del día:</strong>
+              <span fxFlex.gt-xs="45" fxFlex.xs="100" *ngIf="element.temaDelDia">
+                {{ element.temaDelDia }}
+              </span>
+              <span fxFlex.gt-xs="45" fxFlex.xs="100" *ngIf="!element.temaDelDia" class="text-red incompleto"> INCOMPLETO </span>
+            </p>
+            <p *ngIf="element.tipoDesarrollo" fxLayout="row wrap" fxLayoutAlign="start center" fxLayoutGap="10px">
+              <strong fxFlex.gt-xs="45" fxFlex.xs="100">Tipo de Desarrollo:</strong>
+              <span fxFlex.gt-xs="45" fxFlex.xs="100">{{ element.tipoDesarrollo }}</span>
+            </p>
+            <p fxLayout="row wrap" fxLayoutAlign="start center" fxLayoutGap="10px">
+              <strong fxFlex.gt-xs="45" fxFlex.xs="100">Próxima clase:</strong>
+              <span fxFlex.gt-xs="45" fxFlex.xs="100" *ngIf="!element.temasProximaClase" class="text-red incompleto"> INCOMPLETO </span>
+              <span fxFlex.gt-xs="45" fxFlex.xs="100" *ngIf="element.temasProximaClase"> {{ element.temasProximaClase }} </span>
+            </p>
+            <p fxLayout="row wrap" fxLayoutAlign="start center" fxLayoutGap="10px">
+              <strong>Unidad:</strong><span>{{ element.unidad }}</span>
+            </p>
+            <p fxLayout="row wrap" fxLayoutAlign="start center" fxLayoutGap="10px">
+              <strong fxFlex.gt-xs="45" fxFlex.xs="100">Caracter de la clase:</strong>
+              <span fxFlex.gt-xs="45" fxFlex.xs="100" *ngIf="!element.caracterClase" class="text-red incompleto"> INCOMPLETO </span>
+              <span fxFlex.gt-xs="45" fxFlex.xs="100" *ngIf="element.caracterClase"> {{ element.caracterClase }} </span>
+            </p>
+            <p fxLayout="row wrap" fxLayoutAlign="start center" fxLayoutGap="10px">
+              <strong fxFlex.gt-xs="45" fxFlex.xs="100">Obs Jefe de Taller:</strong>
+              <span fxFlex.gt-xs="45" fxFlex.xs="100" *ngIf="element.observacionJefe">{{ element.observacionJefe }}</span>
+              <span fxFlex.gt-xs="45" fxFlex.xs="100" *ngIf="!element.observacionJefe">SIN OBSERVACIÓN</span>
+            </p>
+          </div>
+        </div>
       </td>
     </ng-container>
     <tr mat-header-row *matHeaderRowDef="columnas"></tr>
@@ -78,7 +129,9 @@
       }"
       (mouseover)="row.hovered = true"
       (mouseout)="row.hovered = false"
+      (click)="expandedElement != row ? (expandedElement = row) : (expandedElement = null)"
     ></tr>
+    <tr mat-row *matRowDef="let row; columns: isMobile ? ['expandedDetail'] : []" class="fila_detalle"></tr>
   </table>
   <div
     fxLayout="row"
