@@ -68,6 +68,7 @@ import { ITema } from 'app/models/interface/iTema';
   animations: [designAnimations],
 })
 export class PlanillaVerComponent implements OnInit {
+  indiceTab = 0;
   titulo = 'Planilla';
   cargando = false;
   cargandoAlumnos = false;
@@ -141,6 +142,7 @@ export class PlanillaVerComponent implements OnInit {
   }
   controlTabs(evento) {
     console.log('controlTabs', evento);
+    this.indiceTab = evento.index;
     switch (evento.index) {
       case 0:
         console.log('GENERAL');
