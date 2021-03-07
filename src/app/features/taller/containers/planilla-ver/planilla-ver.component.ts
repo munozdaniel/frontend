@@ -6,10 +6,12 @@ import { AlumnoService } from 'app/core/services/alumno.service';
 import { AsistenciaService } from 'app/core/services/asistencia.service';
 import { CalificacionService } from 'app/core/services/calificacion.service';
 import { PlanillaTallerService } from 'app/core/services/planillaTaller.service';
+import { TemaService } from 'app/core/services/tema.service';
 import { IAlumno } from 'app/models/interface/iAlumno';
 import { IAsistencia } from 'app/models/interface/iAsistencia';
 import { ICalificacion } from 'app/models/interface/iCalificacion';
 import { IPlanillaTaller } from 'app/models/interface/iPlanillaTaller';
+import { ITema } from 'app/models/interface/iTema';
 @UntilDestroy()
 @Component({
   selector: 'app-planilla-ver',
@@ -43,7 +45,9 @@ import { IPlanillaTaller } from 'app/models/interface/iPlanillaTaller';
               (retBuscarCalificacionesPorAlumno)="setBuscarCalificacionesPorAlumno($event)"
             ></app-planilla-detalle-calificaciones>
           </mat-tab>
-          <mat-tab label="Libro de Temas"> Content 3 </mat-tab>
+          <mat-tab label="Libro de Temas">
+            <app-planilla-detalle-temas [temas]="temas" [cargandoTemas]="cargandoTemas"></app-planilla-detalle-temas>
+          </mat-tab>
           <mat-tab label="Seguimiento de Alumnos"> Content 3 </mat-tab>
           <mat-tab label="Informes"> Content 3 </mat-tab>
         </mat-tab-group>
@@ -69,9 +73,13 @@ export class PlanillaVerComponent implements OnInit {
   calificaciones: ICalificacion[];
   // Alumno
   alumnoSeleccionado: IAlumno;
+  // Temas
+  cargandoTemas: boolean;
+  temas: ITema[];
   constructor(
     private _activeRoute: ActivatedRoute,
     private _alumnoService: AlumnoService,
+    private _temaService: TemaService,
     private _asistenciaService: AsistenciaService,
     private _calificacionService: CalificacionService,
     private _planillaTallerService: PlanillaTallerService
@@ -148,6 +156,9 @@ export class PlanillaVerComponent implements OnInit {
       case 3:
         this.titulo = 'Libro de Temas del Profesor';
         console.log('LIBRO DE TEMAS');
+        if (!this.temas) {
+          this.obtenerLibroDeTemas();
+        }
         break;
       case 4:
         this.titulo = 'Seguimiento del Alumno';
@@ -162,6 +173,7 @@ export class PlanillaVerComponent implements OnInit {
         break;
     }
   }
+  //   Output Asistencias
   setBuscarAsistenciaPorAlumno(alumno: IAlumno) {
     console.log('1');
     this.alumnoSeleccionado = alumno;
@@ -180,6 +192,7 @@ export class PlanillaVerComponent implements OnInit {
         }
       );
   }
+  //   Output Calificaciones
   setBuscarCalificacionesPorAlumno(alumno: IAlumno) {
     console.log('2');
     this.alumnoSeleccionado = alumno;
@@ -195,6 +208,24 @@ export class PlanillaVerComponent implements OnInit {
         (error) => {
           console.log('[ERROR]', error);
           this.cargandoCalificaciones = false;
+        }
+      );
+  }
+  //   Temas
+  obtenerLibroDeTemas() {
+    this.cargandoTemas = true;
+    this._temaService
+      .obtenerTemaPorPlanillaTaller(this.planillaId)
+      .pipe(untilDestroyed(this))
+      .subscribe(
+        (datos) => {
+          this.temas = datos;
+          console.log('temas', this.temas);
+          this.cargandoTemas = false;
+        },
+        (error) => {
+          this.cargandoTemas = false;
+          console.log('[ERROR]', error);
         }
       );
   }

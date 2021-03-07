@@ -22,6 +22,7 @@ import { PlanillaVerComponent } from './containers/planilla-ver/planilla-ver.com
 import { PlanillaDetalleAsistenciasComponent } from './ui/planilla-detalle-asistencias/planilla-detalle-asistencias.component';
 import { PlanillaDetalleGeneralComponent } from './ui/planilla-detalle/planilla-detalle-general.component';
 import { PlanillaDetalleCalificacionesComponent } from './ui/planilla-detalle-calificaciones/planilla-detalle-calificaciones.component';
+import { PlanillaDetalleTemasComponent } from './ui/planilla-detalle-temas/planilla-detalle-temas.component';
 
 @NgModule({
   declarations: [
@@ -44,6 +45,7 @@ import { PlanillaDetalleCalificacionesComponent } from './ui/planilla-detalle-ca
     PlanillaDetalleGeneralComponent,
     PlanillaDetalleAsistenciasComponent,
     PlanillaDetalleCalificacionesComponent,
+    PlanillaDetalleTemasComponent,
   ],
   imports: [CommonModule, TallerRoutingModule, SharedModule, DesignSharedModule],
 })
