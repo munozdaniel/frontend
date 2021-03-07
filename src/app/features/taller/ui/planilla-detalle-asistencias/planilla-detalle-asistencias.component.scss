@@ -12,3 +12,22 @@ tr.selected {
 .row_seleccionada {
   color: white;
 }
+
+.presente,
+.no-tarde {
+  background: linear-gradient(-135deg, #79a569, #2c8a31);
+  color: white;
+}
+.ausente {
+  background: linear-gradient(-135deg, #d48989, #e75e5e);
+  color: white;
+}
+.tarde {
+  background: linear-gradient(-135deg, #d4a489, #d49889);
+  color: white;
+}
+
+// height: 40px;
+// padding: 0 12px 0 24px;
+// border-radius: 0 20px 20px 0;
+// margin-right: 16px;

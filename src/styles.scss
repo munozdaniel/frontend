@@ -73,3 +73,26 @@ tr.hovered {
   background-color: #c8e0fe;
   color: white;
 }
+.tiene_etap {
+  background: linear-gradient(-135deg, #1de9b6, #1dc4e9);
+  color: white;
+}
+.no_tiene_etap {
+  background: linear-gradient(-135deg, #899fd4, #a389d4);
+  color: white;
+}
+td > .nav-link-badge {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 20px;
+  height: 25px;
+  padding: 0 7px;
+  font-size: 12px;
+  font-weight: 600;
+  border-radius: 20px;
+  transition: opacity 0.2s ease-in-out 0.1s;
+  margin-left: 8px;
+  width: 45px;
+  box-shadow: 0 5px 10px 0 rgb(0 0 0 / 20%);
+}
