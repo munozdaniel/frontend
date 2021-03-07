@@ -78,7 +78,7 @@ export class PlanillaAgregarComponent implements OnInit {
       //     division: evento.division,
       //     comision: evento.comision,
       //   };
-      console.log('planilla', planilla);
+      console.log('evento', evento);
       //   this._comisionService.obtenerComisionPorParametros(comision).subscribe(
       //     (unaComision: IComision) => {
       //       if (!unaComision) {
@@ -96,7 +96,7 @@ export class PlanillaAgregarComponent implements OnInit {
       //       console.log('[ERROR]', error);
       //     }
       //   );
-      this.guardarPlanillaTaller(planilla);
+      this.guardarPlanillaTaller(evento);
     }
   }
 

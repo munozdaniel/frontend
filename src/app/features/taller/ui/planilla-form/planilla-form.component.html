@@ -2,7 +2,7 @@
   <mat-progress-bar *ngIf="cargandoProfesores || cargandoAsignaturas" mode="indeterminate"></mat-progress-bar>
 
   <form [formGroup]="form" fxLayout="column" (ngSubmit)="guardar()">
-    <div class="w-100-p" fxLayout="row" fxLayoutAlign="space-between start">
+    <div class="w-100-p" fxLayout="row wrap" fxLayoutAlign="space-between start">
       <div fxFlex.gt-xs="42" fxFlex.xs="100" fxLayout="column">
         <!-- cicloLectivo ============================= -->
         <mat-form-field appearance="outline" fxFlex.gt-xs="30" fxFlex.xs="100">
