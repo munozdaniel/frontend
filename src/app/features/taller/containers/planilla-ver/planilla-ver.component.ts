@@ -59,7 +59,7 @@ import { ITema } from 'app/models/interface/iTema';
               (retBuscarSeguimientosPorAlumno)="setBuscarSeguimientosPorAlumno($event)"
             ></app-planilla-detalle-seguimiento>
           </mat-tab>
-          <mat-tab label="Informes"> Content 3 </mat-tab>
+          <mat-tab label="Informes"> <app-planilla-detalle-informes> </app-planilla-detalle-informes> </mat-tab>
         </mat-tab-group>
       </div>
     </div>

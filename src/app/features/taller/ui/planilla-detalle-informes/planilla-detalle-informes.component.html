@@ -1,0 +1,32 @@
+<div class="w-100-p p-24">
+  <div fxLayout.xs="column" fxLayout.gt-xs="row wrap" fxLayoutAlign.gt-xs="space-between start" fxLayoutGap.xs="20px">
+    <mat-list fxFlex.xs="100" fxFlex.gt-xs="45">
+      <mat-list-item
+        matRipple
+        [matRippleCentered]="true"
+        [matRippleColor]="'#46aef163'"
+        *ngFor="let lista of listaA"
+        (click)="verInforme(lista.id)"
+        fxLayout="column"
+        class="cursor pointer  item"
+      >
+        <p>{{ lista.titulo }}</p>
+        <small>{{ lista.subtitulo }}</small>
+      </mat-list-item>
+    </mat-list>
+    <mat-list fxFlex.xs="100" fxFlex.gt-xs="45">
+      <mat-list-item
+        matRipple
+        [matRippleCentered]="true"
+        [matRippleColor]="'#46aef163'"
+        *ngFor="let lista of listaB"
+        (click)="verInforme(lista.id)"
+        fxLayout="column"
+        class="cursor pointer item"
+      >
+        <p>{{ lista.titulo }}</p>
+        <small>{{ lista.subtitulo }}</small>
+      </mat-list-item>
+    </mat-list>
+  </div>
+</div>
