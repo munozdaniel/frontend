@@ -23,6 +23,9 @@ import { PlanillaDetalleAsistenciasComponent } from './ui/planilla-detalle-asist
 import { PlanillaDetalleGeneralComponent } from './ui/planilla-detalle/planilla-detalle-general.component';
 import { PlanillaDetalleCalificacionesComponent } from './ui/planilla-detalle-calificaciones/planilla-detalle-calificaciones.component';
 import { PlanillaDetalleTemasComponent } from './ui/planilla-detalle-temas/planilla-detalle-temas.component';
+import { PlanillaDetalleSeguimientoComponent } from './ui/planilla-detalle-seguimiento/planilla-detalle-seguimiento.component';
+import { TablaAlumnosComponent } from './ui/tabla-alumnos/tabla-alumnos.component';
+import { VerSeguimientoModalComponent } from './ui/ver-seguimiento-modal/ver-seguimiento-modal.component';
 
 @NgModule({
   declarations: [
@@ -46,6 +49,9 @@ import { PlanillaDetalleTemasComponent } from './ui/planilla-detalle-temas/plani
     PlanillaDetalleAsistenciasComponent,
     PlanillaDetalleCalificacionesComponent,
     PlanillaDetalleTemasComponent,
+    PlanillaDetalleSeguimientoComponent,
+    TablaAlumnosComponent,
+    VerSeguimientoModalComponent,
   ],
   imports: [CommonModule, TallerRoutingModule, SharedModule, DesignSharedModule],
 })

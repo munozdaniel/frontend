@@ -6,11 +6,13 @@ import { AlumnoService } from 'app/core/services/alumno.service';
 import { AsistenciaService } from 'app/core/services/asistencia.service';
 import { CalificacionService } from 'app/core/services/calificacion.service';
 import { PlanillaTallerService } from 'app/core/services/planillaTaller.service';
+import { SeguimientoAlumnoService } from 'app/core/services/seguimientoAlumno.service';
 import { TemaService } from 'app/core/services/tema.service';
 import { IAlumno } from 'app/models/interface/iAlumno';
 import { IAsistencia } from 'app/models/interface/iAsistencia';
 import { ICalificacion } from 'app/models/interface/iCalificacion';
 import { IPlanillaTaller } from 'app/models/interface/iPlanillaTaller';
+import { ISeguimientoAlumno } from 'app/models/interface/iSeguimientoAlumno';
 import { ITema } from 'app/models/interface/iTema';
 @UntilDestroy()
 @Component({
@@ -48,7 +50,15 @@ import { ITema } from 'app/models/interface/iTema';
           <mat-tab label="Libro de Temas">
             <app-planilla-detalle-temas [temas]="temas" [cargandoTemas]="cargandoTemas"></app-planilla-detalle-temas>
           </mat-tab>
-          <mat-tab label="Seguimiento de Alumnos"> Content 3 </mat-tab>
+          <mat-tab label="Seguimiento de Alumnos">
+            <app-planilla-detalle-seguimiento
+              [seguimientos]="seguimientos"
+              [cargandoAlumnos]="cargandoAlumnos"
+              [alumnos]="alumnos"
+              [cargandoSeguimiento]="cargandoSeguimiento"
+              (retBuscarSeguimientosPorAlumno)="setBuscarSeguimientosPorAlumno($event)"
+            ></app-planilla-detalle-seguimiento>
+          </mat-tab>
           <mat-tab label="Informes"> Content 3 </mat-tab>
         </mat-tab-group>
       </div>
@@ -76,13 +86,17 @@ export class PlanillaVerComponent implements OnInit {
   // Temas
   cargandoTemas: boolean;
   temas: ITema[];
+  //   Seguimiento
+  seguimientos: ISeguimientoAlumno[];
+  cargandoSeguimiento: boolean;
   constructor(
     private _activeRoute: ActivatedRoute,
     private _alumnoService: AlumnoService,
     private _temaService: TemaService,
     private _asistenciaService: AsistenciaService,
     private _calificacionService: CalificacionService,
-    private _planillaTallerService: PlanillaTallerService
+    private _planillaTallerService: PlanillaTallerService,
+    private _seguimientoAlumnoService: SeguimientoAlumnoService
   ) {}
 
   ngOnInit(): void {
@@ -163,6 +177,12 @@ export class PlanillaVerComponent implements OnInit {
       case 4:
         this.titulo = 'Seguimiento del Alumno';
         console.log('SEGUIMIENTO DE ALUMNOS');
+        if (
+          (!this.seguimientos && this.alumnoSeleccionado) ||
+          (this.seguimientos && this.seguimientos.length > 0 && this.alumnoSeleccionado._id !== this.seguimientos[0].alumno._id)
+        ) {
+          this.setBuscarSeguimientosPorAlumno(this.alumnoSeleccionado);
+        }
         break;
       case 5:
         this.titulo = 'Informes';
@@ -225,6 +245,25 @@ export class PlanillaVerComponent implements OnInit {
         },
         (error) => {
           this.cargandoTemas = false;
+          console.log('[ERROR]', error);
+        }
+      );
+  }
+  //   Seguimientos
+  setBuscarSeguimientosPorAlumno(alumno: IAlumno) {
+    this.alumnoSeleccionado = alumno;
+    this.cargandoSeguimiento = true;
+    this._seguimientoAlumnoService
+      .obtenerSeguimientoAlumnoPorPlanillaCiclo(this.planillaId, alumno._id, this.ciclo)
+      .pipe(untilDestroyed(this))
+      .subscribe(
+        (datos) => {
+          this.seguimientos = datos;
+          console.log('obtenerSeguimientoAlumnoPorPlanillaCiclo', this.temas);
+          this.cargandoSeguimiento = false;
+        },
+        (error) => {
+          this.cargandoSeguimiento = false;
           console.log('[ERROR]', error);
         }
       );

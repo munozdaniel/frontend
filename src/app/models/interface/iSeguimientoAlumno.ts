@@ -1,4 +1,5 @@
 import { IAlumno } from './iAlumno';
+import { ICicloLectivo } from './iCicloLectivo';
 import { IPlanillaTaller } from './iPlanillaTaller';
 
 export interface ISeguimientoAlumno {
@@ -7,9 +8,9 @@ export interface ISeguimientoAlumno {
   seguimientoAlumnoNro: number;
   alumno: IAlumno;
   planillaTaller: IPlanillaTaller;
+  cicloLectivo: ICicloLectivo;
   fecha: Date;
   tipoSeguimiento: string;
-  cicloLectivo: number;
   resuelto: boolean;
   observacion: string;
   observacion2: string;

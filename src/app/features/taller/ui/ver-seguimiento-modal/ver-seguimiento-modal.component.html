@@ -1,0 +1,68 @@
+<h1 mat-dialog-title>Seguimiento del Alumno</h1>
+<div mat-dialog-content class="w-100-p">
+  <div fxLayout.xs="column" fxLayout.gt-xs="row" fxLayoutAlign.gt-xs="space-between start" fxLayoutGap.xs="20px">
+    |
+    <div fxFlex.xs="100" fxFlex.gt-xs="45">
+      <p>
+        <strong>Ciclo:</strong>
+        <span>{{ seguimiento.cicloLectivo.anio }}</span>
+      </p>
+      <p>
+        <strong>Alumno/a:</strong>
+        <span>{{ seguimiento.alumno.nombreCompleto }}</span>
+      </p>
+      <p>
+        <strong>Email:</strong>
+        <span>{{ seguimiento.alumno.email }}</span>
+      </p>
+      <p>
+        <strong>Telefono:</strong>
+        <span>{{ seguimiento.alumno.telefono ? seguimiento.alumno.telefono : 'SIN REGISTRAR' }}</span>
+      </p>
+      <p>
+        <strong>Celular:</strong>
+        <span>{{ seguimiento.alumno.celular ? seguimiento.alumno.celular : 'SIN REGISTRAR' }}</span>
+      </p>
+    </div>
+
+    <div *ngIf="seguimiento.alumno.seguimientoEtap" fxFlex.xs="100" fxFlex.gt-xs="45">
+      <p>
+        <strong>Nombre Completo TAE:</strong>
+        <span>{{ seguimiento.alumno.nombreCompletoTae }}</span>
+      </p>
+      <p>
+        <strong>Email TAE:</strong>
+        <span>{{ seguimiento.alumno.emailTae }}</span>
+      </p>
+      <p>
+        <strong>Diagnostico:</strong>
+        <span>{{ seguimiento.alumno.archivoDiagnostico }}</span>
+      </p>
+    </div>
+    <div fxFlex.xs="100" fxFlex.gt-xs="45">
+      <p>
+        <strong>Tipo de Seguimiento:</strong>
+        <span>{{ seguimiento.tipoSeguimiento }}</span>
+      </p>
+      <p>
+        <strong>Estado:</strong>
+        <span>{{ seguimiento.resuelto ? 'RESUELTO' : 'NO RESUELTO' }}</span>
+      </p>
+      <p>
+        <strong>Observación:</strong>
+        <span>{{ seguimiento.observacion }}</span>
+      </p>
+      <p>
+        <strong>Observación 2:</strong>
+        <span>{{ seguimiento.observacion2 }}</span>
+      </p>
+      <p>
+        <strong>Observación del Jefe de Taller:</strong>
+        <span>{{ seguimiento.observacionJefe }}</span>
+      </p>
+    </div>
+  </div>
+</div>
+<div mat-dialog-actions>
+  <button mat-button (click)="cerrar()">Cerrar</button>
+</div>

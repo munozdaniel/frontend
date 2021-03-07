@@ -68,4 +68,11 @@ export class SeguimientoAlumnoService {
 
     return this.http.post<any>(url, { resuelto });
   }
+  obtenerSeguimientoAlumnoPorPlanillaCiclo(planillaId: string, alumnoId: string, ciclo: number) {
+    console.log('buscar planillaId: string, alumnoId: string, ciclo', planillaId, alumnoId, ciclo);
+    const query = `seguimiento-alumnos/por-planilla/${planillaId}`;
+    const url = this.url + query;
+
+    return this.http.post<any>(url, { alumnoId, ciclo });
+  }
 }
