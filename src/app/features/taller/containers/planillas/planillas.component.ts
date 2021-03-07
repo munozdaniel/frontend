@@ -54,9 +54,13 @@ export class PlanillasComponent implements OnInit, OnDestroy {
   ngOnDestroy(): void {}
 
   ngOnInit(): void {
+    this._cicloLectivoService.cicloLectivo$.pipe(untilDestroyed(this)).subscribe((cicloLectivo) => {
+      this.cicloActual = cicloLectivo ? cicloLectivo : moment().year();
+      this.recuperarPlanillasPorCiclo(this.cicloActual);
+    });
     // Carga inicial
-    this.cicloActual = this.cicloActual ? this.cicloActual : moment().year();
-    this.recuperarPlanillasPorCiclo(this.cicloActual);
+    // this.cicloActual = this.cicloActual ? this.cicloActual : moment().year();
+    // this.recuperarPlanillasPorCiclo(this.cicloActual);
   }
   recuperarPlanillasPorCiclo(cicloLectivo: number) {
     console.log('cicloLectivo', cicloLectivo);
@@ -76,7 +80,8 @@ export class PlanillasComponent implements OnInit, OnDestroy {
   }
 
   setParametrosBusqueda({ cicloLectivo }) {
-    this.recuperarPlanillasPorCiclo(cicloLectivo);
+    this._cicloLectivoService.setCicloLectivo(cicloLectivo);
+    // this.recuperarPlanillasPorCiclo(cicloLectivo);
   }
   redireccionar() {
     this._router.navigate(['taller/planillas-agregar']);
