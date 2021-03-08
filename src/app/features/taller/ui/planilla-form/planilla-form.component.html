@@ -82,7 +82,7 @@
         </mat-form-field>
         <!-- division ============================= -->
         <mat-form-field appearance="outline">
-          <mat-label class="lbl">DIVISION</mat-label>
+          <mat-label class="lbl">División</mat-label>
           <input matInput type="number" min="0" formControlName="division" autocomplete="off" />
           <mat-error *ngIf="form.controls.division.hasError('required')"> Este campo es requerido. </mat-error>
           <mat-error
@@ -128,7 +128,9 @@
     </div>
     <div fxLayout="column">
       <div fxLayout="row" fxLayoutAlign="center start">
-        <button [disabled]="cargando || form.invalid" mat-raised-button color="accent" type="submit">Guardar Comision</button>
+        <button [disabled]="cargando || form.invalid" mat-raised-button color="accent" type="submit">
+          {{ actualizar ? 'ACTUALIZAR' : 'GUARDAR' }}
+        </button>
       </div>
       <div fxLayout="row" fxLayoutAlign="center start">
         <mat-error *ngIf="form.errors?.desdeMenorHasta" style="font-size: smaller">

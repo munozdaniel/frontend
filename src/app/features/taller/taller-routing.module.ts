@@ -3,6 +3,7 @@ import { Routes, RouterModule } from '@angular/router';
 import { FichaAlumnosComponent } from './containers/ficha-alumnos/ficha-alumnos.component';
 import { PlanillaAgregarComponent } from './containers/planilla-agregar/planilla-agregar.component';
 import { PlanillaEditarComponent } from './containers/planilla-editar/planilla-editar.component';
+import { PlanillaTallerAdministrarComponent } from './containers/planilla-taller-administrar/planilla-taller-administrar.component';
 import { PlanillaVerComponent } from './containers/planilla-ver/planilla-ver.component';
 import { PlanillasComponent } from './containers/planillas/planillas.component';
 import { SeguimientoAgregarComponent } from './containers/seguimiento-agregar/seguimiento-agregar.component';
@@ -36,8 +37,13 @@ const routes: Routes = [
     //  DEBE estar autenticados
   },
   {
-    path: 'planillas-editar/:id',
-    component: PlanillaEditarComponent,
+    path: 'planillas-administrar/:id',
+    component: PlanillaTallerAdministrarComponent,
+    //  DEBE estar autenticados
+  },
+  {
+    path: 'planillas-administrar/:id/:tipo',
+    component: PlanillaTallerAdministrarComponent,
     //  DEBE estar autenticados
   },
   {

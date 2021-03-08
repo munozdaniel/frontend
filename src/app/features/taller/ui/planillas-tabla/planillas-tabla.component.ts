@@ -14,7 +14,7 @@ import {
   ChangeDetectorRef,
 } from '@angular/core';
 import { MatTableDataSource, MatSort, MatPaginator, PageEvent } from '@angular/material';
-import {  Router } from '@angular/router';
+import { Router } from '@angular/router';
 import { designAnimations } from '@design/animations';
 import { IPlanillaTaller } from 'app/models/interface/iPlanillaTaller';
 import * as moment from 'moment';
@@ -168,27 +168,29 @@ export class PlanillasTablaComponent implements OnInit, OnChanges {
       this.dataSource.paginator.firstPage();
     }
   }
-  editarPlanillaDetalle(planilla: IPlanillaTaller) {
-    const anio = (planilla.cicloLectivo as any).anio;
-    this._router.navigate([`taller/planilla-editar/${planilla._id}/${anio}`]);
-  }
+
   verPlanillaDetalle(planilla: IPlanillaTaller) {
     const anio = (planilla.cicloLectivo as any).anio;
     this._router.navigate([`taller/planilla-ver/${planilla._id}/${anio}`]);
   }
+  editarPlanillaDetalle(planilla: IPlanillaTaller) {
+    const anio = (planilla.cicloLectivo as any).anio;
+    // http://localhost:4200/taller/planillas-administrar/60452df8acf1374130a1dc77
+    this._router.navigate([`taller/planillas-administrar/${planilla._id}`]);
+  }
   tomarAsistencia(planilla: IPlanillaTaller) {
-    this._router.navigate([`taller/asistencia/${planilla._id}`]);
+    this._router.navigate([`taller/planillas-administrar/${planilla._id}/asistencias`]);
   }
   calificarAlumnos(planilla: IPlanillaTaller) {
-    this._router.navigate([`taller/calificar/${planilla._id}`]);
+    this._router.navigate([`taller/planillas-administrar/${planilla._id}/calificaciones`]);
   }
   verLibroDeTemas(planilla: IPlanillaTaller) {
-    this._router.navigate([`taller/temas/${planilla._id}`]);
+    this._router.navigate([`taller/planillas-administrar/${planilla._id}/temas`]);
   }
   verSeguimientoDeAlumnos(planilla: IPlanillaTaller) {
-    this._router.navigate([`taller/seguimiento-alumno/${planilla._id}`]);
+    this._router.navigate([`taller/planillas-administrar/${planilla._id}/seguimientos`]);
   }
   verInformes(planilla: IPlanillaTaller) {
-    this._router.navigate([`taller/informes/${planilla._id}`]);
+    this._router.navigate([`taller/planillas-administrar/${planilla._id}/informes`]);
   }
 }

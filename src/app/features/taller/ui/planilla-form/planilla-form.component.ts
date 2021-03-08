@@ -15,6 +15,7 @@ import Swal from 'sweetalert2';
   styleUrls: ['./planilla-form.component.scss'],
 })
 export class PlanillaFormComponent implements OnInit, OnChanges {
+  @Input() planillaTaller?: IPlanillaTaller;
   @Input() cargando: boolean;
   @Input() cargandoProfesores: boolean;
   @Input() cargandoAsignaturas: boolean;
@@ -32,6 +33,7 @@ export class PlanillaFormComponent implements OnInit, OnChanges {
   pairKeyAsignatura = ASIGNATURA_KEY;
   asignaturas$: Observable<IAsignatura[]>;
   //
+  actualizar=false;
   constructor(private _fb: FormBuilder) {}
   ngOnChanges(changes: SimpleChanges): void {
     if (changes.cargandoProfesores && changes.cargandoProfesores.currentValue) {
@@ -43,6 +45,11 @@ export class PlanillaFormComponent implements OnInit, OnChanges {
     }
     if (changes.asignaturas && changes.asignaturas.currentValue) {
       this._configurarAsignaturaAutocomplete(changes.asignaturas.currentValue);
+    }
+    if (changes.planillaTaller && changes.planillaTaller.currentValue) {
+      console.log('planillaTaller', this.planillaTaller);
+      this.setFormulario();
+      this.actualizar=true;
     }
   }
 
@@ -69,6 +76,21 @@ export class PlanillaFormComponent implements OnInit, OnChanges {
       this.anios.unshift(actual - index);
     }
     this.anios.unshift(actual);
+  }
+  setFormulario() {
+    if (!this.form) {
+      setTimeout(() => {
+        this.setFormulario();
+      }, 1000);
+    } else {
+      this.form.patchValue(this.planillaTaller);
+      this.form.controls.cicloLectivo.setValue(this.planillaTaller.cicloLectivo.anio);
+      this.form.controls.curso.setValue(this.planillaTaller.curso.curso.toString());
+      this.form.controls.comision.setValue(this.planillaTaller.curso.comision.toString());
+      this.form.controls.division.setValue(this.planillaTaller.curso.division);
+      this.form.controls.asignatura.setValue(this.planillaTaller.asignatura);
+      this.form.controls.profesor.setValue(this.planillaTaller.profesor);
+    }
   }
   _configurarProfesoresAutocomplete(profesoresList: IProfesor[]) {
     if (this.form) {

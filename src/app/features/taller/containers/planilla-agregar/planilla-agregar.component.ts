@@ -134,7 +134,7 @@ export class PlanillaAgregarComponent implements OnInit {
             text: 'Espere un momento, está siendo redireccionado.',
             icon: 'success',
           });
-          //   this._router.navigate(['/taller/planillas-editar/' + result.value._id]);
+        this._router.navigate(['/taller/planillas-administrar/' + result.value._id]);
         } else {
           Swal.fire({
             title: 'Oops! Ocurrió un error',
