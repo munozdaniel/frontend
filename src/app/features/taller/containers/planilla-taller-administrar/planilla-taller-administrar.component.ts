@@ -26,7 +26,9 @@ import { IPlanillaTaller } from 'app/models/interface/iPlanillaTaller';
             <!-- Componente Smart podria ser UI pero no D: -->
             <app-planilla-editar [cargando]="cargando" [planillaTaller]="planillaTaller"></app-planilla-editar>
           </mat-tab>
-          <mat-tab label="Asistencias"> ></mat-tab>
+          <mat-tab label="Asistencias">
+            <app-administrar-asistencias [cargandoAlumnos]="cargandoAlumnos" [alumnos]="alumnos"> </app-administrar-asistencias>
+          </mat-tab>
           <mat-tab label="Calificaciones"> </mat-tab>
           <mat-tab label="Libro de Temas"> </mat-tab>
           <mat-tab label="Seguimiento de Alumnos"> </mat-tab>
@@ -92,8 +94,8 @@ export class PlanillaTallerAdministrarComponent implements OnInit {
   obtenerAlumnosPorCurso() {
     this.cargandoAlumnos = true;
     const { curso, comision, division } = this.planillaTaller.curso;
-    this._alumnoService
-      .obtenerAlumnosPorCursoCiclo(curso, division, comision, this.planillaTaller.cicloLectivo.anio)
+    this._asistenciaService
+      .obtenerAsistenciasPorAlumnosCurso(curso, division, comision, this.planillaTaller.cicloLectivo.anio)
       .pipe(untilDestroyed(this))
       .subscribe(
         (datos) => {

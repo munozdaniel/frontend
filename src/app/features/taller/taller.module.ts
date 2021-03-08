@@ -27,6 +27,7 @@ import { TablaAlumnosComponent } from './ui/tabla-alumnos/tabla-alumnos.componen
 import { VerSeguimientoModalComponent } from './ui/ver-seguimiento-modal/ver-seguimiento-modal.component';
 import { PlanillaDetalleInformesComponent } from './ui/planilla-detalle-informes/planilla-detalle-informes.component';
 import { PlanillaTallerAdministrarComponent } from './containers/planilla-taller-administrar/planilla-taller-administrar.component';
+import { AdministrarAsistenciasComponent } from './ui/administrar-asistencias/administrar-asistencias.component';
 
 @NgModule({
   declarations: [
@@ -54,6 +55,7 @@ import { PlanillaTallerAdministrarComponent } from './containers/planilla-taller
     VerSeguimientoModalComponent,
     PlanillaDetalleInformesComponent,
     PlanillaTallerAdministrarComponent,
+    AdministrarAsistenciasComponent,
   ],
   imports: [CommonModule, TallerRoutingModule, SharedModule, DesignSharedModule],
 })
