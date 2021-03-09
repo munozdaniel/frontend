@@ -1,3 +1,4 @@
 {
-    "files.autoSaveDelay": 5000
+    "files.autoSaveDelay": 5000,
+    "angular.enable-experimental-ivy-prompt": false
 }

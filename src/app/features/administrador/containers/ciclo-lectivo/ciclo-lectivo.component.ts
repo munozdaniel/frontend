@@ -1,6 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { designAnimations } from '@design/animations';
-
+import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
+import { AlumnoService } from 'app/core/services/alumno.service';
+import { CicloLectivoService } from 'app/core/services/ciclo-lectivo.service';
+import { IAlumno } from 'app/models/interface/iAlumno';
+import * as moment from 'moment';
+@UntilDestroy()
 @Component({
   selector: 'app-ciclo-lectivo',
   template: `
@@ -15,6 +20,8 @@ import { designAnimations } from '@design/animations';
         </div>
       </div>
       <!--  -->
+      <app-actualizar-alumnos-ciclo [cargando]="cargando" [alumnos]="alumnos" (retBuscarAlumnos)="setBuscarAlumnos($event)">
+      </app-actualizar-alumnos-ciclo>
     </div>
   `,
   styles: [],
@@ -23,7 +30,29 @@ import { designAnimations } from '@design/animations';
 export class CicloLectivoComponent implements OnInit {
   titulo = 'Crear Ciclo Lectivo';
   cargando = false;
-  constructor() {}
+  cicloActual: number;
+  alumnos: IAlumno[];
+  constructor(private _cicloLectivoService: CicloLectivoService, private _alumnoService: AlumnoService) {}
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    this._cicloLectivoService.cicloLectivo$.pipe(untilDestroyed(this)).subscribe((cicloLectivo) => {
+      this.cicloActual = cicloLectivo ? cicloLectivo : moment().year();
+    });
+  }
+  setBuscarAlumnos({ cicloLectivo, curso, division }) {
+    this.cargando = true;
+    this._alumnoService
+      .obtenerAlumnosPorCursoDivisionCiclo(curso, division, cicloLectivo)
+      .pipe(untilDestroyed(this))
+      .subscribe(
+        (datos) => {
+          this.alumnos = datos;
+          this.cargando = false;
+        },
+        (error) => {
+          console.log('[ERROR]', error);
+          this.cargando = false;
+        }
+      );
+  }
 }
