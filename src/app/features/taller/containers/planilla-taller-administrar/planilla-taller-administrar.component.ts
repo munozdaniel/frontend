@@ -8,7 +8,9 @@ import { CalificacionService } from 'app/core/services/calificacion.service';
 import { PlanillaTallerService } from 'app/core/services/planillaTaller.service';
 import { SeguimientoAlumnoService } from 'app/core/services/seguimientoAlumno.service';
 import { TemaService } from 'app/core/services/tema.service';
+import { TemplateEnum } from 'app/models/constants/tipo-template.const';
 import { IAlumno } from 'app/models/interface/iAlumno';
+import { IAsistencia } from 'app/models/interface/iAsistencia';
 import { IPlanillaTaller } from 'app/models/interface/iPlanillaTaller';
 @UntilDestroy()
 @Component({
@@ -27,7 +29,15 @@ import { IPlanillaTaller } from 'app/models/interface/iPlanillaTaller';
             <app-planilla-editar [cargando]="cargando" [planillaTaller]="planillaTaller"></app-planilla-editar>
           </mat-tab>
           <mat-tab label="Asistencias">
-            <app-administrar-asistencias [cargandoAlumnos]="cargandoAlumnos" [alumnos]="alumnos"> </app-administrar-asistencias>
+            <app-planilla-detalle-asistencias
+              [template]="template"
+              [cargandoAsistencias]="cargandoAsistencias"
+              [cargandoAlumnos]="cargandoAlumnos"
+              [alumnos]="alumnos"
+              [asistencias]="asistencias"
+              (retBuscarAsistenciaPorAlumno)="setBuscarAsistenciaPorAlumno($event)"
+            ></app-planilla-detalle-asistencias>
+            <!-- <app-administrar-asistencias [cargandoAlumnos]="cargandoAlumnos" [alumnos]="alumnos"> </app-administrar-asistencias> -->
           </mat-tab>
           <mat-tab label="Calificaciones"> </mat-tab>
           <mat-tab label="Libro de Temas"> </mat-tab>
@@ -41,6 +51,7 @@ import { IPlanillaTaller } from 'app/models/interface/iPlanillaTaller';
   animations: [designAnimations],
 })
 export class PlanillaTallerAdministrarComponent implements OnInit {
+  template = TemplateEnum.EDICION;
   indiceTab = 0;
   titulo = 'Planilla';
   planillaId;
@@ -50,7 +61,10 @@ export class PlanillaTallerAdministrarComponent implements OnInit {
   cargando = false;
   cargandoAlumnos = false;
   alumnos: IAlumno[];
+  alumnoSeleccionado: IAlumno;
   //   Asistencias
+  asistencias: IAsistencia[];
+  cargandoAsistencias: boolean;
   //   Calificaciones
   //   Seguimiento
   //   Temas
@@ -82,7 +96,7 @@ export class PlanillaTallerAdministrarComponent implements OnInit {
         (datos) => {
           console.log('obtenerPlanillaTallerPorId', datos);
           this.planillaTaller = { ...datos };
-          this.obtenerAlumnosPorCurso();
+          this.obtenerAlumnosPorCursoDivisionCiclo();
           this.cargando = false;
         },
         (error) => {
@@ -91,11 +105,11 @@ export class PlanillaTallerAdministrarComponent implements OnInit {
         }
       );
   }
-  obtenerAlumnosPorCurso() {
+  obtenerAlumnosPorCursoDivisionCiclo() {
     this.cargandoAlumnos = true;
-    const { curso, comision, division } = this.planillaTaller.curso;
-    this._asistenciaService
-      .obtenerAsistenciasPorAlumnosCurso(curso, division, comision, this.planillaTaller.cicloLectivo.anio)
+    const { curso, division } = this.planillaTaller.curso;
+    this._alumnoService
+      .obtenerAlumnosPorCursoDivisionCiclo(curso, division, this.planillaTaller.cicloLectivo.anio)
       .pipe(untilDestroyed(this))
       .subscribe(
         (datos) => {
@@ -109,6 +123,24 @@ export class PlanillaTallerAdministrarComponent implements OnInit {
         }
       );
   }
+  //   obtenerAlumnosPorCurso() {
+  //     this.cargandoAlumnos = true;
+  //     const { curso, division } = this.planillaTaller.curso;
+  //     this._asistenciaService
+  //       .obtenerAsistenciasPorAlumnosCurso(curso, division, this.planillaTaller.cicloLectivo.anio)
+  //       .pipe(untilDestroyed(this))
+  //       .subscribe(
+  //         (datos) => {
+  //           console.log('obtenerAlumnosPorCursoCiclo', datos);
+  //           this.alumnos = datos;
+  //           this.cargandoAlumnos = false;
+  //         },
+  //         (error) => {
+  //           this.cargandoAlumnos = false;
+  //           console.log('[ERROR]', error);
+  //         }
+  //       );
+  //   }
   seleccionarTab() {
     switch (this.tipoPantalla) {
       case 'asistencias':
@@ -185,5 +217,24 @@ export class PlanillaTallerAdministrarComponent implements OnInit {
       default:
         break;
     }
+  }
+  //   Output Asistencias
+  setBuscarAsistenciaPorAlumno(alumno: IAlumno) {
+    console.log('1');
+    this.alumnoSeleccionado = alumno;
+    this.cargandoAsistencias = true;
+    this._asistenciaService
+      .obtenerAsistenciasPorAlumnoId(alumno._id, this.planillaId)
+      .pipe(untilDestroyed(this))
+      .subscribe(
+        (datos) => {
+          this.asistencias = [...datos];
+          this.cargandoAsistencias = false;
+        },
+        (error) => {
+          console.log('[ERROR]', error);
+          this.cargandoAsistencias = false;
+        }
+      );
   }
 }

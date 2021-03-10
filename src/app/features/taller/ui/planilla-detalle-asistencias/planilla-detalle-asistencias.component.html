@@ -8,7 +8,7 @@
         *ngIf="alumnos && alumnos.length > 0"
         [@animate]="{ value: '*', params: { delay: '50ms', scale: '0.2' } }"
         class="mt-20 p-0"
-        fxLayoutAlign="center center"
+        fxLayoutAlign="space-between baseline"
         fxLayout="row"
       >
         <mat-form-field appearance="outline" color="accent" fxFlex.xs="100" fxFlex.gt-xs="45">
@@ -16,6 +16,9 @@
           <input matInput users (keyup)="filtroRapido($event.target.value)" [disabled]="dataSource.data.length == 0" />
           <mat-icon matSuffix>search</mat-icon>
         </mat-form-field>
+        <div fxLayout="row" fxLayoutAlign="end center">
+          <button mat-raised-button>Agregar Asistencia</button>
+        </div>
       </div>
       <table
         mat-table
@@ -90,6 +93,7 @@
     <!-- ================================================ -->
     <!-- ASISTENCIAS ================================================ -->
     <!-- ================================================ -->
+
     <div *ngIf="asistencias" fxLayout="column" class="w-100-p" fxFlex.xs="100" fxFlex.gt-xs="45" [class.mt-100]="asistencias.length < 1">
       <div
         *ngIf="asistencias && asistencias.length > 0"
@@ -151,7 +155,10 @@
         <mat-spinner matSuffix class="ml-10" diameter="20"></mat-spinner>
         <p>Cargando...</p>
       </div>
-      <app-empty-data *ngIf="!cargandoAsistencias && (!asistencias || asistencias.length < 1)"></app-empty-data>
+      <app-empty-data
+        [texto]="'No hay registros cargados'"
+        *ngIf="!cargandoAsistencias && (!asistencias || asistencias.length < 1)"
+      ></app-empty-data>
       <!-- Paginado -------------------------------------------------- -->
       <mat-paginator
         class="border-paginador paginator mat-elevation-z2"

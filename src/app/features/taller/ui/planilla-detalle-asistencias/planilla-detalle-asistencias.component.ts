@@ -1,6 +1,7 @@
 import { Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges, ViewChild } from '@angular/core';
 import { MatTableDataSource, MatSort, MatPaginator } from '@angular/material';
 import { designAnimations } from '@design/animations';
+import { TemplateEnum } from 'app/models/constants/tipo-template.const';
 import { IAlumno } from 'app/models/interface/iAlumno';
 import { IAsistencia } from 'app/models/interface/IAsistencia';
 
@@ -11,6 +12,7 @@ import { IAsistencia } from 'app/models/interface/IAsistencia';
   animations: [designAnimations],
 })
 export class PlanillaDetalleAsistenciasComponent implements OnInit, OnChanges {
+  @Input() template: TemplateEnum;
   @Input() cargandoAsistencias: boolean;
   @Input() cargandoAlumnos: boolean;
   @Input() alumnos: IAlumno[];
