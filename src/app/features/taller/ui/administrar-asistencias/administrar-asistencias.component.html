@@ -1,93 +1,137 @@
 <div fxLayout="column" class="mat-card mat-elevation-z4 p-24">
-  <div fxLayout.xs="column" fxLayout.gt.xs="row" fxLayoutAlign.gt-xs="space-between start">
-    <!-- ================================================ -->
-    <!-- ASISTENCIAS  ================================================ -->
-    <!-- ================================================ -->
-    <div
-      *ngIf="!alumnos || alumnos.length < 1"
-      fxLayout="column"
-      fxLayoutAlign="center center"
-      class="w-100-p text-center border p-24"
-      fxFlex.xs="100"
-      fxFlex.gt-xs="45"
-      style="height: 50vh; margin-top: 90px"
+  <div *ngIf="!cargandoAlumnos" fxLayout="column" class="w-100-p" fxFlex.xs="100" fxFlex.gt-xs="45">
+    <form
+      [formGroup]="form"
+      [@animate]="{ value: '*', params: { delay: '50ms', scale: '0.2' } }"
+      class="mt-20 p-0"
+      fxLayoutAlign="center baseline"
+      fxLayout="row"
     >
-      <h3><strong>NO HAY ALUMNOS</strong></h3>
+      <mat-form-field appearance="outline" fxFlex.xs="100" fxFlex.gt-xs="45">
+        <mat-label>Fecha</mat-label>
+        <input autocomplete="off" matInput [matDatepicker]="picker" formControlName="fecha" />
+        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+        <mat-datepicker #picker></mat-datepicker>
+        <mat-error *ngIf="form?.controls.fecha.hasError('required')"> Este campo es requerido. </mat-error>
+      </mat-form-field>
+    </form>
+    <div
+      *ngIf="alumnos && alumnos.length > 0"
+      [@animate]="{ value: '*', params: { delay: '50ms', scale: '0.2' } }"
+      class="mt-20 p-0"
+      fxLayoutAlign="center baseline"
+      fxLayout="row"
+    >
+      <mat-form-field appearance="outline" color="accent" fxFlex.xs="100" fxFlex.gt-xs="45">
+        <mat-label>Búsqueda Rápida</mat-label>
+        <input matInput users (keyup)="filtroRapido($event.target.value)" [disabled]="dataSource.data.length == 0" />
+        <mat-icon matSuffix>search</mat-icon>
+      </mat-form-field>
     </div>
 
-    <!-- ================================================ -->
-    <!-- ASISTENCIAS ================================================ -->
-    <!-- ================================================ -->
-    <div *ngIf="asistencias" fxLayout="column" class="w-100-p" fxFlex.xs="100" fxFlex.gt-xs="45" [class.mt-100]="asistencias.length < 1">
-      <div
-        *ngIf="asistencias && asistencias.length > 0"
-        [@animate]="{ value: '*', params: { delay: '50ms', scale: '0.2' } }"
-        class="mt-20 p-0"
-        fxLayoutAlign="center center"
-        fxLayout="row"
-      >
-        <mat-form-field appearance="outline" color="accent" fxFlex.xs="100" fxFlex.gt-xs="45">
-          <mat-label>Búsqueda Rápida</mat-label>
-          <input matInput users (keyup)="filtroRapidoAsistencia($event.target.value)" [disabled]="dataSourceAsistencia.data.length == 0" />
-          <mat-icon matSuffix>search</mat-icon>
-        </mat-form-field>
-      </div>
-      <table mat-table matSort #sortAsistencia="matSort" [dataSource]="dataSourceAsistencia" class="borde-tabla mat-elevation-z4 w-100-p">
-        <!-- 'fecha', 'presente', 'llegoTarde' -->
-        <ng-container matColumnDef="fecha">
-          <th mat-header-cell *matHeaderCellDef mat-sort-header>Fecha</th>
-          <td mat-cell *matCellDef="let row">
-            {{ row.fecha | date: 'dd/MM/yyyy' }}
-          </td>
-        </ng-container>
-        <ng-container matColumnDef="presente">
-          <th mat-header-cell *matHeaderCellDef mat-sort-header>Presente</th>
-          <td mat-cell *matCellDef="let row">
-            <!-- <h4>{{ row.presente ? 'SI' : 'NO' }}</h4> -->
-            <span *ngIf="!row.presente" class="nav-link-badge text-center ausente"> NO </span>
-            <span *ngIf="row.presente" class="nav-link-badge text-center presente">SI</span>
-          </td>
-        </ng-container>
-        <ng-container matColumnDef="llegoTarde">
-          <th mat-header-cell *matHeaderCellDef mat-sort-header>Tarde</th>
-          <td mat-cell *matCellDef="let row">
-            <!-- <h4>{{ row.llegoTarde ? 'SI' : 'NO' }}</h4> -->
-            <span *ngIf="!row.llegoTarde" class="nav-link-badge text-center no-tarde"> NO </span>
-            <span *ngIf="row.llegoTarde" class="nav-link-badge text-center tarde">SI</span>
-          </td>
-        </ng-container>
-        <tr mat-header-row *matHeaderRowDef="columnasAsistencia"></tr>
-        <tr
-          mat-row
-          *matRowDef="let row; columns: columnasAsistencia"
-          [class.selected]="row.selected"
-          [ngClass]="{
-            hovered: row.hovered,
-            highlighted: row.highlighted
-          }"
-          (mouseover)="row.hovered = true"
-          (mouseout)="row.hovered = false"
-        ></tr>
-      </table>
-      <div
-        fxLayout="row"
-        fxLayoutGap="10px"
-        fxLayoutAlign="center center"
-        *ngIf="cargandoAsistencias && (!asistencias || asistencias.length < 1)"
-        class="mat-card p-24 text-center"
-      >
-        <mat-spinner matSuffix class="ml-10" diameter="20"></mat-spinner>
-        <p>Cargando...</p>
-      </div>
-      <app-empty-data *ngIf="!cargandoAsistencias && (!asistencias || asistencias.length < 1)"></app-empty-data>
-      <!-- Paginado -------------------------------------------------- -->
-      <mat-paginator
-        class="border-paginador paginator mat-elevation-z2"
-        #paginatorAsistencia
-        [pageSize]="5"
-        [pageSizeOptions]="[5, 10, 25, 100]"
-      >
-      </mat-paginator>
-    </div>
+    <table
+      mat-table
+      matSort
+      #sort="matSort"
+      [dataSource]="dataSource"
+      class="borde-tabla mat-elevation-z4 w-100-p"
+      [class.mt-20]="!alumnos || alumnos.length < 1"
+    >
+      <!-- 'nombreCompleto', 'seguimientoEtap' -->
+      <ng-container matColumnDef="nombreCompleto">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Nombre</th>
+        <td mat-cell *matCellDef="let row">
+          <div class="w-100-p" fxLayout="column">
+            <span
+              [ngClass]="{
+                row_seleccionada: row.selected
+              }"
+            >
+              {{ row.nombreCompleto }}
+            </span>
+            <div *ngIf="isMobile" class="container_badge" fxLayout="row  " fxLayoutAlign="start start">
+              <button style="transform: scale(0.7); padding: 0 5px" mat-stroked-button>
+                <span class="iconify" data-icon="noto:p-button" data-inline="false"></span>
+                <span>PRESENTE</span>
+              </button>
+              <button style="transform: scale(0.7); padding: 0 5px" mat-stroked-button>
+                <span class="iconify" data-icon="noto:a-button-blood-type" data-inline="false"></span>
+                <span>AUSENTE</span>
+              </button>
+              <button style="transform: scale(0.7); padding: 0 5px" mat-stroked-button>
+                <span class="iconify" data-icon="fxemoji:clock3thirty" data-inline="false"></span>
+                <span>TARDE</span>
+              </button>
+              <!-- <button mat-icon-button>
+                <span class="iconify" data-icon="noto:p-button" data-inline="false" style="font-size: 24px"></span>
+              </button>
+              <button mat-icon-button>
+                <span class="iconify" data-icon="noto:a-button-blood-type" data-inline="false" style="font-size: 24px"></span>
+              </button>
+              <button mat-icon-button>
+                <span class="iconify" data-icon="fxemoji:clock3thirty" data-inline="false" style="font-size: 24px"></span>
+              </button> -->
+              <!-- <span class="nav-link-badge text-center btn_presente"> PRESENTE </span>
+              <span class="nav-link-badge text-center btn_ausente"> AUSENTE </span>
+              <span class="nav-link-badge text-center btn_tarde"> TARDE </span> -->
+            </div>
+          </div>
+        </td>
+      </ng-container>
+      <ng-container matColumnDef="seguimientoEtap">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>ETAP</th>
+        <td mat-cell *matCellDef="let row">
+          <span *ngIf="!row.seguimientoEtap" class="nav-link-badge text-center no_tiene_etap"> NO </span>
+          <span *ngIf="row.seguimientoEtap" class="nav-link-badge text-center tiene_etap">SI</span>
+        </td>
+      </ng-container>
+      <ng-container matColumnDef="presente">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Presente</th>
+        <td mat-cell *matCellDef="let row">
+          <button mat-raised-button color="accent" (click)="alumnoPresente(row)">
+            <span class="iconify" data-icon="noto:p-button" data-inline="false" style="font-size: 24px"></span>
+            <span>PRESENTE</span>
+          </button>
+        </td>
+      </ng-container>
+      <ng-container matColumnDef="ausente">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Ausente</th>
+        <td mat-cell *matCellDef="let row">
+          <button mat-raised-button color="warn" (click)="alumnoAusente(row)">
+            <span class="iconify" data-icon="noto:a-button-blood-type" data-inline="false" style="font-size: 24px"></span>
+            <span>AUSENTE</span>
+          </button>
+        </td>
+      </ng-container>
+      <ng-container matColumnDef="tarde">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Tarde</th>
+        <td mat-cell *matCellDef="let row">
+          <button mat-raised-button color="primary" (click)="alumnoTarde(row)">
+            <span class="iconify" data-icon="fxemoji:clock3thirty" data-inline="false" style="font-size: 24px"></span>
+            <span>TARDE</span>
+          </button>
+        </td>
+      </ng-container>
+      <ng-container matColumnDef="opciones">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header><mat-icon>settings</mat-icon></th>
+        <td mat-cell *matCellDef="let row"></td>
+      </ng-container>
+      <tr mat-header-row *matHeaderRowDef="columnas"></tr>
+      <tr
+        mat-row
+        *matRowDef="let row; columns: columnas"
+        [class.selected]="row.selected"
+        [ngClass]="{
+          hovered: row.hovered,
+          highlighted: row.highlighted
+        }"
+        (mouseover)="row.hovered = true"
+        (mouseout)="row.hovered = false"
+      ></tr>
+    </table>
+    <app-empty-data *ngIf="!alumnos || alumnos.length < 1"></app-empty-data>
+    <!-- Paginado -------------------------------------------------- -->
+    <mat-paginator class="border-paginador paginator mat-elevation-z2" #paginator [pageSize]="5" [pageSizeOptions]="[5, 10, 25, 100]">
+    </mat-paginator>
   </div>
 </div>

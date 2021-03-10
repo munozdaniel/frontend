@@ -28,6 +28,7 @@ import { VerSeguimientoModalComponent } from './ui/ver-seguimiento-modal/ver-seg
 import { PlanillaDetalleInformesComponent } from './ui/planilla-detalle-informes/planilla-detalle-informes.component';
 import { PlanillaTallerAdministrarComponent } from './containers/planilla-taller-administrar/planilla-taller-administrar.component';
 import { AdministrarAsistenciasComponent } from './ui/administrar-asistencias/administrar-asistencias.component';
+import { TomarAsistenciaComponent } from './containers/tomar-asistencia/tomar-asistencia.component';
 
 @NgModule({
   declarations: [
@@ -56,6 +57,7 @@ import { AdministrarAsistenciasComponent } from './ui/administrar-asistencias/ad
     PlanillaDetalleInformesComponent,
     PlanillaTallerAdministrarComponent,
     AdministrarAsistenciasComponent,
+    TomarAsistenciaComponent,
   ],
   imports: [CommonModule, TallerRoutingModule, SharedModule, DesignSharedModule],
 })

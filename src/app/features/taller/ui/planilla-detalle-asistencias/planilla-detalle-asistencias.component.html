@@ -1,7 +1,7 @@
 <div fxLayout="column" class="mat-card mat-elevation-z4 p-24">
   <div fxLayout.xs="column" fxLayout.gt.xs="row" fxLayoutAlign.gt-xs="space-between start">
     <!-- ================================================ -->
-    <!-- ASISTENCIAS ================================================ -->
+    <!-- ALUMNOS ================================================ -->
     <!-- ================================================ -->
     <div *ngIf="!cargandoAlumnos" fxLayout="column" class="w-100-p" fxFlex.xs="100" fxFlex.gt-xs="45">
       <div
@@ -95,18 +95,16 @@
     <!-- ================================================ -->
 
     <div *ngIf="asistencias" fxLayout="column" class="w-100-p" fxFlex.xs="100" fxFlex.gt-xs="45" [class.mt-100]="asistencias.length < 1">
-      <div
-        *ngIf="asistencias && asistencias.length > 0"
+        <!-- *ngIf="asistencias && asistencias.length > 0" -->
+
+        <div
         [@animate]="{ value: '*', params: { delay: '50ms', scale: '0.2' } }"
-        class="mt-20 p-0"
-        fxLayoutAlign="center center"
-        fxLayout="row"
+        fxLayout="column"
+        class="w-100-p"
       >
-        <mat-form-field appearance="outline" color="accent" class="w-40-p">
-          <mat-label>Búsqueda Rápida</mat-label>
-          <input matInput users (keyup)="filtroRapidoAsistencia($event.target.value)" [disabled]="dataSourceAsistencia.data.length == 0" />
-          <mat-icon matSuffix>search</mat-icon>
-        </mat-form-field>
+        <div><strong>Total de Clases</strong><span></span></div>
+        <div><strong>Cantidad de Asistencias</strong><span>{{totalAsistencias}}</span></div>
+        <div><strong>Cantidad de Ausencias</strong><span>{{totalAusencias}}</span></div>
       </div>
       <table mat-table matSort #sortAsistencia="matSort" [dataSource]="dataSourceAsistencia" class="borde-tabla mat-elevation-z4 w-100-p">
         <!-- 'fecha', 'presente', 'llegoTarde' -->

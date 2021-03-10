@@ -1,0 +1,30 @@
+.container_badge > .nav-link-badge {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 20px;
+  height: 25px;
+  padding: 0 7px;
+  font-size: 12px;
+  font-weight: 600;
+  border-radius: 20px;
+  transition: opacity 0.2s ease-in-out 0.1s;
+  margin-left: 8px;
+  box-shadow: 0 5px 10px 0 rgb(0 0 0 / 20%);
+}
+.btn_presente {
+  background: linear-gradient(-135deg, #97d47e, #a4d489);
+  color: white;
+}
+.btn_ausente {
+  background: linear-gradient(-135deg, #2d3f69, #2f204b);
+  color: white;
+}
+.btn_tarde {
+  background: linear-gradient(-135deg, #d4ad89, #d4a789);
+  color: white;
+}
+.mat-header-row,
+.mat-row {
+  min-height: 130px;
+}

@@ -8,6 +8,8 @@ import { PlanillaVerComponent } from './containers/planilla-ver/planilla-ver.com
 import { PlanillasComponent } from './containers/planillas/planillas.component';
 import { SeguimientoAgregarComponent } from './containers/seguimiento-agregar/seguimiento-agregar.component';
 import { SeguimientoAlumnosComponent } from './containers/seguimiento-alumnos/seguimiento-alumnos.component';
+import { TomarAsistenciaComponent } from './containers/tomar-asistencia/tomar-asistencia.component';
+import { AdministrarAsistenciasComponent } from './ui/administrar-asistencias/administrar-asistencias.component';
 
 // taller
 const routes: Routes = [
@@ -49,6 +51,12 @@ const routes: Routes = [
   {
     path: 'planilla-ver/:id/:ciclo',
     component: PlanillaVerComponent,
+    //  DEBE estar autenticados
+  },
+  //   INDIVIDUALES
+  {
+    path: 'tomar-asistencia/:id',
+    component: TomarAsistenciaComponent,
     //  DEBE estar autenticados
   },
 ];

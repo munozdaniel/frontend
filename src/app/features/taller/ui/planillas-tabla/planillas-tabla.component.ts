@@ -179,7 +179,7 @@ export class PlanillasTablaComponent implements OnInit, OnChanges {
     this._router.navigate([`taller/planillas-administrar/${planilla._id}`]);
   }
   tomarAsistencia(planilla: IPlanillaTaller) {
-    this._router.navigate([`taller/planillas-administrar/${planilla._id}/asistencias`]);
+    this._router.navigate([`taller/tomar-asistencia/${planilla._id}`]);
   }
   calificarAlumnos(planilla: IPlanillaTaller) {
     this._router.navigate([`taller/planillas-administrar/${planilla._id}/calificaciones`]);
