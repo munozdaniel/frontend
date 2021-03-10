@@ -4,11 +4,12 @@ import { MigrarComponent } from './containers/migrar/migrar.component';
 import { DesignSharedModule } from '@design/shared.module';
 import { SharedModule } from 'app/shared/shared.module';
 import { AdministradorRoutingModule } from './administrador-routing.module';
-import { CicloLectivoComponent } from './containers/ciclo-lectivo/ciclo-lectivo.component';
-import { ActualizarAlumnosCicloComponent } from './ui/actualizar-alumnos-ciclo/actualizar-alumnos-ciclo.component';
+ import { ActualizarAlumnosCicloComponent } from './ui/actualizar-alumnos-ciclo/actualizar-alumnos-ciclo.component';
+import { ActualizarCicloLectivoComponent } from './containers/actualizar-ciclo-lectivo/actualizar-ciclo-lectivo.component';
+import { ResultadoCicloTablaComponent } from './ui/resultado-ciclo-tabla/resultado-ciclo-tabla.component';
 
 @NgModule({
-  declarations: [MigrarComponent, CicloLectivoComponent, ActualizarAlumnosCicloComponent],
+  declarations: [MigrarComponent, ActualizarCicloLectivoComponent, ActualizarAlumnosCicloComponent, ResultadoCicloTablaComponent],
   imports: [CommonModule, AdministradorRoutingModule, SharedModule, DesignSharedModule],
 })
 export class AdministradorModule {}

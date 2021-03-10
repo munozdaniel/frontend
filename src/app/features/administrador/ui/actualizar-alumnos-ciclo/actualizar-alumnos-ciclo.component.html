@@ -1,14 +1,22 @@
 <div fxLayout="column" class="mat-card mat-elevation-z4 p-24">
-  <h2>Actualizar los siguientes cursos</h2>
+  <h2>Actualizar los alumnos al nuevo ciclo escolar</h2>
   <div fxLayout.xs="column" fxLayout.gt-xs="row" fxLayoutAlign.gt-xs="space-between start">
     <!-- ================================================== -->
-    <form [formGroup]="form" fxLayout="column" fxFlex.gt-xs="50" fxFlex.xs="100">
+    <form
+      [@animate]="{ value: '*', params: { delay: '50ms', scale: '0.2' } }"
+      [formGroup]="form"
+      fxLayout="column"
+      fxFlex.gt-xs="50"
+      fxFlex.xs="100"
+    >
       <mat-form-field appearance="outline">
-        <mat-label class="lbl">Ciclo Lectivo</mat-label>
-        <mat-select formControlName="cicloLectivo">
-          <mat-option *ngFor="let anio of anios" [value]="anio">{{ anio }}</mat-option>
-        </mat-select>
+        <mat-label class="lbl">Ciclo Lectivo Actual</mat-label>
+        <input matInput class="actual" readonly formControlName="cicloLectivo" />
         <mat-error *ngIf="form.controls.cicloLectivo.hasError('required')"> Este campo es requerido. </mat-error>
+      </mat-form-field>
+      <mat-form-field *ngIf="form.controls.cicloLectivo.value" appearance="outline" color="accent" class="anterior">
+        <mat-label class="lbl">Ciclo Anterior</mat-label>
+        <input class="anterior" matInput #ca readonly [value]="form.controls.cicloLectivo.value - 1" />
       </mat-form-field>
       <mat-form-field appearance="outline">
         <mat-label class="lbl">Curso</mat-label>
@@ -22,19 +30,32 @@
         </mat-select>
         <mat-error *ngIf="form.controls.curso.hasError('required')"> Este campo es requerido. </mat-error>
       </mat-form-field>
-      <div *ngFor="let division of divisiones" fxLayout="column">
+      <!-- [compareWith]="comparar" -->
+      <mat-error *ngIf="form.controls.divisiones.value.length < 1">Seleccione al menos una división</mat-error>
+      <mat-selection-list
+        formControlName="divisiones"
+        fxFlex="50"
+        class="mat-card mat-elevation-z2 border-card"
+        fxLayout.xs="column"
+        fxLayout.gt-xs="row wrap"
+        fxLayoutAlign.gt-xs="space-between center"
+      >
+        <mat-list-option *ngFor="let division of divisiones" [value]="division" fxFlex.xs="100" fxFlex.gt-xs="45">
+          <span> DIVISIÓN {{ division }} </span>
+        </mat-list-option>
+      </mat-selection-list>
+      <!-- <div *ngFor="let division of divisiones" fxLayout="column">
         <div class="p-12 border" fxLayout.xs="column" fxLayout.gt-xs="row" fxLayoutAlign.gt-xs="space-between start">
-          <mat-checkbox> DIVISION {{ division }}</mat-checkbox>
+          <mat-checkbox checked="true"> DIVISION {{ division }}</mat-checkbox>
           <button mat-raised-button color="primary" (click)="buscarAlumnos(division)">Ver Alumnos</button>
         </div>
-      </div>
+      </div> -->
     </form>
     <!-- ================================================== -->
     <!-- ================================================== -->
     <div fxLayout="column" class="w-100-p" fxFlex.xs="100" fxFlex.gt-xs="45" style="border: 1px dashed; padding: 12px">
       <mat-progress-bar *ngIf="cargando" mode="indeterminate"></mat-progress-bar>
-      <h3>Visualizar los alumnos</h3>
-
+      <h3>Visualizar los alumnos {{ form.controls.cicloLectivo.value ? 'del ciclo ' + (form.controls.cicloLectivo.value - 1) : '' }}</h3>
       <div
         *ngIf="alumnos && alumnos.length > 0"
         [@animate]="{ value: '*', params: { delay: '50ms', scale: '0.2' } }"
@@ -42,7 +63,7 @@
         fxLayoutAlign="center center"
         fxLayout="row"
       >
-        <mat-form-field appearance="outline" color="accent" class="w-40-p">
+        <mat-form-field appearance="outline" color="accent" fxFlex.xs="100" fxFlex.gt-xs="45">
           <mat-label>Búsqueda Rápida</mat-label>
           <input matInput users (keyup)="filtroRapido($event.target.value)" [disabled]="dataSource.data.length == 0" />
           <mat-icon matSuffix>search</mat-icon>
@@ -78,6 +99,13 @@
     </div>
   </div>
   <div fxLayout="row" fxLayoutAlign="center start" class="mt-24">
-    <button mat-raised-button color="accent" (click)="actualizarCiclo()">ACTUALIZAR CICLO LECTIVO</button>
+    <button
+      mat-raised-button
+      color="accent"
+      (click)="actualizarCiclo()"
+      [disabled]="form.invalid || form.controls.divisiones.value.length < 1"
+    >
+      ACTUALIZAR CICLO LECTIVO
+    </button>
   </div>
 </div>

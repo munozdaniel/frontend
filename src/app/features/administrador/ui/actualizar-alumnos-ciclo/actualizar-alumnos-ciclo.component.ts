@@ -1,10 +1,11 @@
 import { Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges, ViewChild } from '@angular/core';
-import { FormGroup, FormBuilder, Validators } from '@angular/forms';
+import { FormGroup, FormBuilder, Validators, FormArray, FormControl } from '@angular/forms';
 import { MatTableDataSource, MatSort, MatPaginator } from '@angular/material';
 import { designAnimations } from '@design/animations';
 import { AlumnoService } from 'app/core/services/alumno.service';
 import { ToastService } from 'app/core/services/general/toast.service';
 import { IAlumno } from 'app/models/interface/iAlumno';
+import { ICicloLectivo } from 'app/models/interface/iCicloLectivo';
 import * as moment from 'moment';
 import Swal from 'sweetalert2';
 
@@ -17,6 +18,7 @@ import Swal from 'sweetalert2';
 export class ActualizarAlumnosCicloComponent implements OnInit, OnChanges {
   cursos = [1, 2, 3, 4, 5, 6];
   divisiones = [1, 2, 3, 4, 5, 6, 7, 8, 9];
+  //   divisionSeleccionada: number;
   anios = [];
   form: FormGroup;
   dataSource: MatTableDataSource<any> = new MatTableDataSource([]);
@@ -29,15 +31,11 @@ export class ActualizarAlumnosCicloComponent implements OnInit, OnChanges {
   columnas = ['nombreCompleto'];
   @Input() cargando: boolean;
   @Input() alumnos: IAlumno[];
-  @Output() retBuscarAlumnos = new EventEmitter<{ cicloLectivo: number; curso: number; division: number }>();
+  @Output() retBuscarAlumnos = new EventEmitter<{ curso: number; divisiones: number[]; cicloLectivo: number }>();
   @Output() retActualizarCiclo = new EventEmitter<{ cicloLectivo: number; curso: number; divisiones: number[] }>();
-  constructor(private _fb: FormBuilder) {
-    const actual = moment().year();
-    for (let index = 10; index > 0; index--) {
-      this.anios.unshift(actual - index);
-    }
-    this.anios.unshift(actual);
-  }
+  @Output() retLimpiarAlumnos = new EventEmitter<boolean>();
+
+  constructor(private _fb: FormBuilder) {}
   ngOnChanges(changes: SimpleChanges): void {
     if (changes.alumnos && changes.alumnos.currentValue) {
       this.dataSource.data = this.alumnos;
@@ -50,19 +48,32 @@ export class ActualizarAlumnosCicloComponent implements OnInit, OnChanges {
     }
   }
   ngOnInit(): void {
+    const actual = moment().year();
     this.form = this._fb.group({
-      cicloLectivo: [null, Validators.required],
+      cicloLectivo: [actual, Validators.required],
       curso: [null, [Validators.required]],
+      divisiones: [[]],
+    });
+    this.form.valueChanges.subscribe((val) => {
+      if (val.divisiones) {
+        if (val.divisiones.length < 1) {
+          this.retLimpiarAlumnos.emit(true);
+        } else {
+          this.buscarAlumnos(val.divisiones);
+        }
+      }
     });
   }
-  buscarAlumnos(division: number) {
+
+  buscarAlumnos(divisiones: number[]) {
     if (this.form.valid) {
+      //   this.divisionSeleccionada = division;
       const { curso, cicloLectivo } = this.form.value;
-      this.retBuscarAlumnos.emit({ cicloLectivo, curso, division });
+      this.retBuscarAlumnos.emit({ curso, divisiones, cicloLectivo });
     } else {
       Swal.fire({
         title: 'Campos incompletos',
-        text: 'Seleccione el Ciclo Lectivo y el Curso para poder visualizar los alumnos',
+        text: 'Seleccione el Curso para poder visualizar los alumnos',
         icon: 'error',
       });
       return;
@@ -70,8 +81,9 @@ export class ActualizarAlumnosCicloComponent implements OnInit, OnChanges {
   }
   actualizarCiclo() {
     if (this.form.valid) {
-      const { curso, cicloLectivo } = this.form.value;
-      this.retActualizarCiclo.emit({ cicloLectivo, curso, divisiones: this.divisiones });
+      const { curso, cicloLectivo, divisiones } = this.form.value;
+      console.log('cicloLectivo, ', cicloLectivo);
+      this.retActualizarCiclo.emit({ cicloLectivo, curso, divisiones });
     } else {
       Swal.fire({
         title: 'Campos incompletos',

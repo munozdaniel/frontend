@@ -2,6 +2,7 @@ import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { IAlumno } from 'app/models/interface/iAlumno';
 import { IAlumnoPaginado } from 'app/models/interface/iAlumnoPaginado';
+import { ICicloLectivo } from 'app/models/interface/iCicloLectivo';
 import { IQueryPag } from 'app/models/interface/iQueryPag';
 import { environment } from 'environments/environment';
 import { Observable } from 'rxjs';
@@ -122,5 +123,17 @@ export class AlumnoService {
     const url = this.url + query;
 
     return this.http.post<any>(url, { curso, division, ciclo });
+  }
+  obtenerAlumnosPorCursoDivisionesCiclo(curso: number, divisiones: number[], cicloLectivo: ICicloLectivo): Observable<IAlumno[]> {
+    const query = `alumnos/por-curso-divisiones-ciclo`;
+    const url = this.url + query;
+
+    return this.http.post<any>(url, { curso, divisiones, cicloLectivo });
+  }
+  actualizarAlNuevoCiclo(curso: number, divisiones: number[], cicloAnterior: ICicloLectivo, ciclo: ICicloLectivo): Observable<any> {
+    const query = `alumnos/actualizar-nuevo-ciclo`;
+    const url = this.url + query;
+
+    return this.http.post<any>(url, { curso, divisiones, cicloAnterior, ciclo });
   }
 }

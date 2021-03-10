@@ -1,0 +1,82 @@
+<h1 mat-dialog-title>Resultados de la actualización</h1>
+<div mat-dialog-content class="w-100-p" fxLayout="row wrap" fxLayoutAlign="space-between start">
+  <div fxLayout="column" class="w-100-p" style="padding: 12px" fxFlex.xs="100" fxFlex.gt-xs="45">
+    <h2 style="margin-bottom: 0">Alumnos actualizados al nuevo ciclo</h2>
+    <p></p>
+    <div class="mt-20 p-0" fxLayoutAlign="center center" fxLayout="row">
+      <mat-form-field appearance="outline" color="accent" fxFlex="100">
+        <mat-label>Búsqueda Rápida</mat-label>
+        <input matInput users (keyup)="filtroRapido($event.target.value)" [disabled]="dataSource.data.length == 0" />
+        <mat-icon matSuffix>search</mat-icon>
+      </mat-form-field>
+    </div>
+    <table mat-table matSort #sort="matSort" [dataSource]="dataSource" class="borde-tabla mat-elevation-z4 w-100-p">
+      <ng-container matColumnDef="nombreCompleto">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Nombre y Apellido</th>
+        <td mat-cell *matCellDef="let row">{{ row.nombreCompleto }}</td>
+      </ng-container>
+      <tr mat-header-row *matHeaderRowDef="columnas"></tr>
+      <tr mat-row *matRowDef="let row; columns: columnas" [ngClass]="{ row_deshabilitado: !row.activo }"></tr>
+    </table>
+    <app-empty-data *ngIf="!alumnos || alumnos.length < 1"></app-empty-data>
+    <!-- Paginado -------------------------------------------------- -->
+    <mat-paginator
+      class="border-paginador paginator mat-elevation-z2 w-100-p"
+      #paginator
+      [pageSize]="5"
+      [pageSizeOptions]="[5, 10, 25, 100]"
+    >
+    </mat-paginator>
+    <!-- PAGINADOR -->
+    <!-- <mat-paginator
+        #paginator
+        class="border-paginador paginator mat-elevation-z2"
+        (page)="pageEvent = $event; cambioPagina($event)"
+        [length]="total"
+        [pageSize]="totalAsignaturasPorPagina"
+        [pageSizeOptions]="[2, 5, 10, 25, 100]"
+      >
+      </mat-paginator> -->
+  </div>
+  <div fxLayout="column" class="w-100-p" style="padding: 12px" fxFlex.xs="100" fxFlex.gt-xs="45">
+    <h2 style="margin-bottom: 0">Alumnos que ya estaban actualizados</h2>
+    <p>No se realizaron modificaciones</p>
+    <div class="mt-20 p-0" fxLayoutAlign="center center" fxLayout="row">
+      <mat-form-field appearance="outline" color="accent" fxFlex="100">
+        <mat-label>Búsqueda Rápida</mat-label>
+        <input matInput (keyup)="filtroRapidoNo($event.target.value)" [disabled]="dataSourceNo.data.length == 0" />
+        <mat-icon matSuffix>search</mat-icon>
+      </mat-form-field>
+    </div>
+    <table mat-table matSort #sortNo="matSort" [dataSource]="dataSourceNo" class="borde-tabla mat-elevation-z4 w-100-p">
+      <ng-container matColumnDef="nombreCompleto">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Nombre y Apellido</th>
+        <td mat-cell *matCellDef="let row">{{ row.nombreCompleto }}</td>
+      </ng-container>
+      <tr mat-header-row *matHeaderRowDef="columnasNo"></tr>
+      <tr mat-row *matRowDef="let row; columns: columnasNo" [ngClass]="{ row_deshabilitado: !row.activo }"></tr>
+    </table>
+    <app-empty-data *ngIf="!ultimosNoActualizados || ultimosNoActualizados.length < 1"></app-empty-data>
+    <!-- Paginado -------------------------------------------------- -->
+    <mat-paginator
+      class="border-paginador paginator mat-elevation-z2 w-100-p"
+      #paginatorNo
+      [pageSize]="5"
+      [pageSizeOptions]="[5, 10, 25, 100]"
+    >
+    </mat-paginator>
+    <!-- PAGINADOR -->
+    <!-- <mat-paginator
+        #paginator
+        class="border-paginador paginator mat-elevation-z2"
+        (page)="pageEvent = $event; cambioPagina($event)"
+        [length]="total"
+        [pageSize]="totalAsignaturasPorPagina"
+        [pageSizeOptions]="[2, 5, 10, 25, 100]"
+      >
+      </mat-paginator> -->
+  </div>
+</div>
+<div mat-dialog-actions fxLayout="row" fxLayoutAlign="center start">
+  <button mat-raised-button (click)="onNoClick()" color="accent">ACEPTAR</button>
+</div>

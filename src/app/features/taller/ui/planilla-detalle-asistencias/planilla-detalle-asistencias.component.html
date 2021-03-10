@@ -100,7 +100,7 @@
       >
         <mat-form-field appearance="outline" color="accent" class="w-40-p">
           <mat-label>Búsqueda Rápida</mat-label>
-          <input matInput users (keyup)="filtroRapidoAsistencia($event.target.value)" [disabled]="dataSource.data.length == 0" />
+          <input matInput users (keyup)="filtroRapidoAsistencia($event.target.value)" [disabled]="dataSourceAsistencia.data.length == 0" />
           <mat-icon matSuffix>search</mat-icon>
         </mat-form-field>
       </div>

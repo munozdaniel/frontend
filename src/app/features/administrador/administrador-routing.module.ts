@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
-import { CicloLectivoComponent } from './containers/ciclo-lectivo/ciclo-lectivo.component';
+import { ActualizarCicloLectivoComponent } from './containers/actualizar-ciclo-lectivo/actualizar-ciclo-lectivo.component';
 import { MigrarComponent } from './containers/migrar/migrar.component';
 
 // administrador/migrar
@@ -12,7 +12,7 @@ const routes: Routes = [
   },
   {
     path: 'ciclo-lectivo',
-    component: CicloLectivoComponent,
+    component: ActualizarCicloLectivoComponent,
     //  DEBE estar autenticados
   },
 ];
