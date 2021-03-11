@@ -32,6 +32,7 @@ import { ITema } from 'app/models/interface/iTema';
           <mat-tab label="Asistencias">
             <app-planilla-detalle-asistencias
               [cargandoAsistencias]="cargandoAsistencias"
+              [totalClases]="totalClases"
               [cargandoAlumnos]="cargandoAlumnos"
               [alumnos]="alumnos"
               [asistencias]="asistencias"
@@ -79,6 +80,7 @@ export class PlanillaVerComponent implements OnInit {
   //   Asistencias
   asistencias: IAsistencia[];
   cargandoAsistencias: boolean;
+  totalClases;
   //   Calificaciones
   cargandoCalificaciones: boolean;
   calificaciones: ICalificacion[];
@@ -110,7 +112,6 @@ export class PlanillaVerComponent implements OnInit {
         .pipe(untilDestroyed(this))
         .subscribe(
           (datos) => {
-            console.log('datos', datos);
             this.planillaTaller = datos;
             this.obtenerAlumnosPorCurso();
             this.cargando = false;
@@ -158,6 +159,10 @@ export class PlanillaVerComponent implements OnInit {
         ) {
           this.setBuscarAsistenciaPorAlumno(this.alumnoSeleccionado);
         }
+        if (!this.totalClases) {
+          console.log('?=============================>S');
+          this.buscarTotalesPorPlanilla();
+        }
         break;
       case 2:
         this.titulo = 'Calificaciones del Alumno';
@@ -195,7 +200,24 @@ export class PlanillaVerComponent implements OnInit {
         break;
     }
   }
+  buscarTotalesPorPlanilla() {
+    console.log('this.planillaId', this.planillaId);
+    this._planillaTallerService
+      .buscarTotalAsistenciaPorPlanilla(this.planillaId)
+      .pipe(untilDestroyed(this))
+      .subscribe(
+        (datos) => {
+          console.log('datos', datos);
+          this.totalClases = datos.total;
+        },
+        (error) => {
+          console.log('[ERROR]', error);
+          this.cargandoAsistencias = false;
+        }
+      );
+  }
   //   Output Asistencias
+
   setBuscarAsistenciaPorAlumno(alumno: IAlumno) {
     console.log('1');
     this.alumnoSeleccionado = alumno;

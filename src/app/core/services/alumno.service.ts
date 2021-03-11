@@ -124,6 +124,12 @@ export class AlumnoService {
 
     return this.http.post<any>(url, { curso, division, ciclo });
   }
+  obtenerAlumnosPorCursoEspecifico(curso: number, comision: string, division: number, cicloLectivo: ICicloLectivo): Observable<IAlumno[]> {
+    const query = `alumnos/por-curso-especifico`;
+    const url = this.url + query;
+
+    return this.http.post<any>(url, { curso, comision, division, cicloLectivo });
+  }
   obtenerAlumnosPorCursoDivisionesCiclo(curso: number, divisiones: number[], cicloLectivo: ICicloLectivo): Observable<IAlumno[]> {
     const query = `alumnos/por-curso-divisiones-ciclo`;
     const url = this.url + query;

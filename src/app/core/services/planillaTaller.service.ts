@@ -33,7 +33,7 @@ export class PlanillaTallerService {
     return this.http.get<any>(url);
   }
   obtenerPlanillaTallerPorIdCiclo(planillaTallerId: string, ciclo: number): Observable<IPlanillaTaller> {
-    const query = `planilla-taller/${planillaTallerId}/${ciclo}`;
+    const query = `planilla-taller/filtro/${planillaTallerId}/${ciclo}`;
     const url = this.url + query;
 
     return this.http.get<any>(url);
@@ -91,6 +91,13 @@ export class PlanillaTallerService {
   //
   obtenerPlanillaTalleresPorCiclo(cicloLectivo: number): Observable<IPlanillaTaller[]> {
     const query = `planilla-taller/ciclo/${cicloLectivo}`;
+    const url = this.url + query;
+
+    return this.http.get<any>(url);
+  }
+  buscarTotalAsistenciaPorPlanilla(planillaId: string): Observable<any> {
+    console.log('planillaId', planillaId);
+    const query = `planilla-taller/${planillaId}/total-asistencias`;
     const url = this.url + query;
 
     return this.http.get<any>(url);

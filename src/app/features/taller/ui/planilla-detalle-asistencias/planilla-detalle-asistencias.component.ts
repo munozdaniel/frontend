@@ -4,6 +4,7 @@ import { designAnimations } from '@design/animations';
 import { TemplateEnum } from 'app/models/constants/tipo-template.const';
 import { IAlumno } from 'app/models/interface/iAlumno';
 import { IAsistencia } from 'app/models/interface/iAsistencia';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-planilla-detalle-asistencias',
@@ -12,6 +13,10 @@ import { IAsistencia } from 'app/models/interface/iAsistencia';
   animations: [designAnimations],
 })
 export class PlanillaDetalleAsistenciasComponent implements OnInit, OnChanges {
+  totalNoRegistradas = { valor: 0, porcentaje: 0 };
+  totalAusentes = { valor: 0, porcentaje: 0 };
+  totalPresentes = { valor: 0, porcentaje: 0 };
+  @Input() totalClases: number;
   @Input() template: TemplateEnum;
   @Input() cargandoAsistencias: boolean;
   @Input() cargandoAlumnos: boolean;
@@ -42,12 +47,35 @@ export class PlanillaDetalleAsistenciasComponent implements OnInit, OnChanges {
     if (changes.alumnos && changes.alumnos.currentValue) {
       this.dataSource.data = this.alumnos;
     }
+    if (changes.totalClases && changes.totalClases.currentValue) {
+      console.log('total de clases, ', this.totalClases);
+    }
     if (changes.asistencias && changes.asistencias.currentValue) {
       this.dataSourceAsistencia.data = this.asistencias;
+      this.calcularEstadisticas();
     }
   }
 
   ngOnInit(): void {}
+  calcularEstadisticas() {
+    if (this.totalClases) {
+      let tardes: number = 0;
+      let presentes = 0;
+      let ausentes = 0;
+      this.asistencias.forEach((x) => {
+        tardes += x.llegoTarde ? 1 : 0;
+        presentes += x.presente ? 1 : 0;
+        ausentes += !x.presente ? 1 : 0;
+      });
+      const noRegistradas = this.totalClases - (ausentes + presentes);
+      this.totalAusentes = { valor: ausentes, porcentaje: Number(((ausentes * 100) / this.totalClases).toFixed(2)) };
+      this.totalPresentes = { valor: presentes, porcentaje: Number(((presentes * 100) / this.totalClases).toFixed(2)) };
+      this.totalNoRegistradas = {
+        valor: noRegistradas,
+        porcentaje: Number(((noRegistradas * 100) / this.totalClases).toFixed(2)),
+      };
+    }
+  }
   filtroRapido(filterValue: string) {
     this.dataSource.filter = filterValue.trim().toLowerCase();
     if (this.dataSource.paginator) {

@@ -30,6 +30,7 @@ import { IPlanillaTaller } from 'app/models/interface/iPlanillaTaller';
           </mat-tab>
           <mat-tab label="Asistencias">
             <app-planilla-detalle-asistencias
+              [totalClases]="totalClases"
               [template]="template"
               [cargandoAsistencias]="cargandoAsistencias"
               [cargandoAlumnos]="cargandoAlumnos"
@@ -63,6 +64,7 @@ export class PlanillaTallerAdministrarComponent implements OnInit {
   alumnos: IAlumno[];
   alumnoSeleccionado: IAlumno;
   //   Asistencias
+  totalClases;
   asistencias: IAsistencia[];
   cargandoAsistencias: boolean;
   //   Calificaciones
@@ -94,9 +96,8 @@ export class PlanillaTallerAdministrarComponent implements OnInit {
       .pipe(untilDestroyed(this))
       .subscribe(
         (datos) => {
-          console.log('obtenerPlanillaTallerPorId', datos);
           this.planillaTaller = { ...datos };
-          this.obtenerAlumnosPorCursoDivisionCiclo();
+          this.obtenerAlumnosPorCursoEspecifico();
           this.cargando = false;
         },
         (error) => {
@@ -105,15 +106,14 @@ export class PlanillaTallerAdministrarComponent implements OnInit {
         }
       );
   }
-  obtenerAlumnosPorCursoDivisionCiclo() {
+  obtenerAlumnosPorCursoEspecifico() {
     this.cargandoAlumnos = true;
-    const { curso, division } = this.planillaTaller.curso;
+    const { curso, division, comision } = this.planillaTaller.curso;
     this._alumnoService
-      .obtenerAlumnosPorCursoDivisionCiclo(curso, division, this.planillaTaller.cicloLectivo.anio)
+      .obtenerAlumnosPorCursoEspecifico(curso, comision, division, this.planillaTaller.cicloLectivo)
       .pipe(untilDestroyed(this))
       .subscribe(
         (datos) => {
-          console.log('obtenerAlumnosPorCursoCiclo', datos);
           this.alumnos = datos;
           this.cargandoAlumnos = false;
         },
@@ -123,6 +123,23 @@ export class PlanillaTallerAdministrarComponent implements OnInit {
         }
       );
   }
+  //   obtenerAlumnosPorCursoDivisionCiclo() {
+  //     this.cargandoAlumnos = true;
+  //     const { curso, division } = this.planillaTaller.curso;
+  //     this._alumnoService
+  //       .obtenerAlumnosPorCursoDivisionCiclo(curso, division, this.planillaTaller.cicloLectivo.anio)
+  //       .pipe(untilDestroyed(this))
+  //       .subscribe(
+  //         (datos) => {
+  //           this.alumnos = datos;
+  //           this.cargandoAlumnos = false;
+  //         },
+  //         (error) => {
+  //           this.cargandoAlumnos = false;
+  //           console.log('[ERROR]', error);
+  //         }
+  //       );
+  //   }
   //   obtenerAlumnosPorCurso() {
   //     this.cargandoAlumnos = true;
   //     const { curso, division } = this.planillaTaller.curso;
@@ -145,6 +162,7 @@ export class PlanillaTallerAdministrarComponent implements OnInit {
     switch (this.tipoPantalla) {
       case 'asistencias':
         this.indiceTab = 1;
+
         break;
       case 'calificaciones':
         this.indiceTab = 2;
@@ -163,16 +181,29 @@ export class PlanillaTallerAdministrarComponent implements OnInit {
         break;
     }
   }
+  buscarTotalesPorPlanilla() {
+    this._planillaTallerService
+      .buscarTotalAsistenciaPorPlanilla(this.planillaId)
+      .pipe(untilDestroyed(this))
+      .subscribe(
+        (datos) => {
+          console.log('datos', datos);
+          this.totalClases = datos.total;
+        },
+        (error) => {
+          console.log('[ERROR]', error);
+          this.cargandoAsistencias = false;
+        }
+      );
+  }
   controlTabs(evento) {
     console.log('controlTabs', evento);
     this.indiceTab = evento.index;
     switch (evento.index) {
       case 0:
-        console.log('GENERAL');
         this.titulo = 'Planilla de Taller';
         break;
       case 1:
-        console.log('ASISTENCIAS');
         this.titulo = 'Asistencias del Alumno';
         // Si hay asistencias entonces hay alumnoSeleccionado. Controlamos para no repetir la consulta
         // if (
@@ -181,10 +212,12 @@ export class PlanillaTallerAdministrarComponent implements OnInit {
         // ) {
         //   this.setBuscarAsistenciaPorAlumno(this.alumnoSeleccionado);
         // }
+        if (!this.totalClases) {
+          this.buscarTotalesPorPlanilla();
+        }
         break;
       case 2:
         this.titulo = 'Calificaciones del Alumno';
-        console.log('CALIFICACIONES');
         // if (
         //   (!this.calificaciones && this.alumnoSeleccionado) ||
         //   (this.calificaciones && this.calificaciones.length > 0 && this.alumnoSeleccionado._id !== this.calificaciones[0].alumno._id)
@@ -194,14 +227,12 @@ export class PlanillaTallerAdministrarComponent implements OnInit {
         break;
       case 3:
         this.titulo = 'Libro de Temas del Profesor';
-        console.log('LIBRO DE TEMAS');
         // if (!this.temas) {
         //   this.obtenerLibroDeTemas();
         // }
         break;
       case 4:
         this.titulo = 'Seguimiento del Alumno';
-        console.log('SEGUIMIENTO DE ALUMNOS');
         // if (
         //   (!this.seguimientos && this.alumnoSeleccionado) ||
         //   (this.seguimientos && this.seguimientos.length > 0 && this.alumnoSeleccionado._id !== this.seguimientos[0].alumno._id)
