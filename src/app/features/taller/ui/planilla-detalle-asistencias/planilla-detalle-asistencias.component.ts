@@ -3,7 +3,7 @@ import { MatTableDataSource, MatSort, MatPaginator } from '@angular/material';
 import { designAnimations } from '@design/animations';
 import { TemplateEnum } from 'app/models/constants/tipo-template.const';
 import { IAlumno } from 'app/models/interface/iAlumno';
-import { IAsistencia } from 'app/models/interface/IAsistencia';
+import { IAsistencia } from 'app/models/interface/iAsistencia';
 
 @Component({
   selector: 'app-planilla-detalle-asistencias',

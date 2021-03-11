@@ -156,6 +156,13 @@ export class DesignThemeOptionsComponent implements OnInit, OnDestroy {
           url: '/administrador/mi-cuenta',
         },
         {
+          id: 'calendario',
+          title: 'Calendario',
+          type: 'item',
+          icon: 'account',
+          url: '/administrador/calendario-academico',
+        },
+        {
           id: 'customize',
           title: 'Diseño',
           type: 'item',
