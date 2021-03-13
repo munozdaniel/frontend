@@ -34,7 +34,6 @@ export class AsistenciaFormModalComponent implements OnInit, OnDestroy {
     @Inject(MAT_DIALOG_DATA) public data: any,
     private _asistenciaService: AsistenciaService
   ) {
-    console.log('cinstr', data.planillaTaller);
     this.planillaTaller = data.planillaTaller;
     this.minimo = new Date(this.planillaTaller.fechaInicio);
     this.maximo = new Date(this.planillaTaller.fechaFinalizacion);
@@ -47,7 +46,6 @@ export class AsistenciaFormModalComponent implements OnInit, OnDestroy {
   ngOnDestroy(): void {}
 
   ngOnInit(): void {
-    console.log('asistencia', this.asistencia);
     const fechaHoy = moment();
     let f = fechaHoy;
     if (!fechaHoy.isSameOrBefore(moment(this.planillaTaller.fechaFinalizacion))) {
@@ -117,7 +115,7 @@ export class AsistenciaFormModalComponent implements OnInit, OnDestroy {
       .subscribe(
         (datos) => {
           Swal.fire({   
-            title: 'Asistencia agregada',
+            title: 'Asistencia actualizada',
             text: 'Los datos fueron guardados correctamente',
             icon: 'success',
           });

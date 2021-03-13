@@ -1,0 +1,17 @@
+export const TiposExamenesConst = [
+  { valor: '1ER TRABAJO GRUPAL', nombre: '1ER TRABAJO GRUPAL' },
+  { valor: '1ER TRABAJO PRACTICO', nombre: '1ER TRABAJO PRÁCTICO' },
+  { valor: '1RA EVALUACION', nombre: '1RA EVALUACIÓN' },
+  { valor: '2DA EVALUACION', nombre: '2DA EVALUACIÓN' },
+  { valor: '2DO TRABAJO GRUPAL', nombre: '2DO TRABAJO GRUPAL' },
+  { valor: '2DO TRABAJO PRACTICO', nombre: '2DO TRABAJO PRÁCTICO' },
+  { valor: '3ER TRABAJO PRACTICO', nombre: '3ER TRABAJO PRÁCTICO' },
+  { valor: '3RA EVALUACION', nombre: '3RA EVALUACIÓN' },
+  { valor: '3ER TRABAJO GRUPAL', nombre: '3ER TRABAJO GRUPAL' },
+  { valor: '4TO TRABAJO PRACTICO', nombre: '4TO TRABAJO PRÁCTICO' },
+  { valor: 'CONCEPTO', nombre: 'CONCEPTO' },
+  { valor: 'EVALUACION', nombre: 'EVALUACIÓN' },
+  { valor: 'PARTICIPACION', nombre: 'PARTICIPACIÓN' },
+  { valor: 'TRABAJO GRUPAL', nombre: 'TRABAJO GRUPAL' },
+  { valor: 'TRABAJO PRACTICO', nombre: 'TRABAJO PRÁCTICO' },
+];

@@ -3,7 +3,7 @@ import { IPlanillaTaller } from './iPlanillaTaller';
 import { IProfesor } from './iProfesor';
 
 export interface ICalificacion {
-  _id: number;
+  _id?: string;
   id_calificaciones: number; // para migrar
   planillaTaller: IPlanillaTaller;
   profesor: IProfesor;

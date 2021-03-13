@@ -1,5 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { ICalificacion } from 'app/models/interface/iCalificacion';
 import { environment } from 'environments/environment';
 import { Observable } from 'rxjs';
 
@@ -15,5 +16,17 @@ export class CalificacionService {
     const url = this.url + query;
 
     return this.http.post<any>(url, { planillaId });
+  }
+  guardarCalificacion(calificacion: ICalificacion): Observable<ICalificacion> {
+    const query = `calificacion`;
+    const url = this.url + query;
+
+    return this.http.put<any>(url, { ...calificacion });
+  }
+  actualizarCalificacion(id: string, calificacion: ICalificacion): Observable<ICalificacion> {
+    const query = `calificacion/${id}`;
+    const url = this.url + query;
+
+    return this.http.patch<any>(url, { calificacion });
   }
 }

@@ -160,7 +160,6 @@ export class PlanillaVerComponent implements OnInit {
           this.setBuscarAsistenciaPorAlumno(this.alumnoSeleccionado);
         }
         if (!this.totalClases) {
-          console.log('?=============================>S');
           this.buscarTotalesPorPlanilla();
         }
         break;

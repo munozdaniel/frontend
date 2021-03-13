@@ -125,7 +125,6 @@ export class PlanillaDetalleAsistenciasComponent implements OnInit, OnChanges {
   }
   realizarBusqueda(alumno: IAlumno) {}
   mostrarModalAsistencias() {
-    console.log('mostrarModalAsistencias');
     this.retAbrirModalAsistencias.emit(true);
   }
   editarAsistencia(asistencia: IAsistencia) {

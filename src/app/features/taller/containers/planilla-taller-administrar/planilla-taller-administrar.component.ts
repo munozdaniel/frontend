@@ -13,9 +13,11 @@ import { TemaService } from 'app/core/services/tema.service';
 import { TemplateEnum } from 'app/models/constants/tipo-template.const';
 import { IAlumno } from 'app/models/interface/iAlumno';
 import { IAsistencia } from 'app/models/interface/iAsistencia';
+import { ICalificacion } from 'app/models/interface/iCalificacion';
 import { IPlanillaTaller } from 'app/models/interface/iPlanillaTaller';
 import Swal from 'sweetalert2';
 import { AsistenciaFormModalComponent } from '../asistencia-form-modal/asistencia-form-modal.component';
+import { CalificacionFormModalComponent } from '../calificacion-form-modal/calificacion-form-modal.component';
 @UntilDestroy()
 @Component({
   selector: 'app-planilla-taller-administrar',
@@ -46,7 +48,19 @@ import { AsistenciaFormModalComponent } from '../asistencia-form-modal/asistenci
             ></app-planilla-detalle-asistencias>
             <!-- <app-administrar-asistencias [cargandoAlumnos]="cargandoAlumnos" [alumnos]="alumnos"> </app-administrar-asistencias> -->
           </mat-tab>
-          <mat-tab label="Calificaciones"> </mat-tab>
+          <mat-tab label="Calificaciones">
+            <app-planilla-detalle-calificaciones
+              [template]="template"
+              [cargandoCalificaciones]="cargandoCalificaciones"
+              [cargandoAlumnos]="cargandoAlumnos"
+              [alumnos]="alumnos"
+              [calificaciones]="calificaciones"
+              (retAbrirModalCalificaciones)="setAbrirModalCalificaciones($event)"
+              (retEditarCalificacion)="setEditarCalificacion($event)"
+              (retBuscarCalificacionesPorAlumno)="setBuscarCalificacionesPorAlumno($event)"
+            >
+            </app-planilla-detalle-calificaciones>
+          </mat-tab>
           <mat-tab label="Libro de Temas"> </mat-tab>
           <mat-tab label="Seguimiento de Alumnos"> </mat-tab>
           <mat-tab label="Informes"> <app-planilla-detalle-informes> </app-planilla-detalle-informes> </mat-tab>
@@ -74,6 +88,8 @@ export class PlanillaTallerAdministrarComponent implements OnInit {
   asistencias: IAsistencia[];
   cargandoAsistencias: boolean;
   //   Calificaciones
+  cargandoCalificaciones: boolean;
+  calificaciones: ICalificacion[];
   //   Seguimiento
   //   Temas
   //   Informes
@@ -154,41 +170,7 @@ export class PlanillaTallerAdministrarComponent implements OnInit {
         }
       );
   }
-  //   obtenerAlumnosPorCursoDivisionCiclo() {
-  //     this.cargandoAlumnos = true;
-  //     const { curso, division } = this.planillaTaller.curso;
-  //     this._alumnoService
-  //       .obtenerAlumnosPorCursoDivisionCiclo(curso, division, this.planillaTaller.cicloLectivo.anio)
-  //       .pipe(untilDestroyed(this))
-  //       .subscribe(
-  //         (datos) => {
-  //           this.alumnos = datos;
-  //           this.cargandoAlumnos = false;
-  //         },
-  //         (error) => {
-  //           this.cargandoAlumnos = false;
-  //           console.log('[ERROR]', error);
-  //         }
-  //       );
-  //   }
-  //   obtenerAlumnosPorCurso() {
-  //     this.cargandoAlumnos = true;
-  //     const { curso, division } = this.planillaTaller.curso;
-  //     this._asistenciaService
-  //       .obtenerAsistenciasPorAlumnosCurso(curso, division, this.planillaTaller.cicloLectivo.anio)
-  //       .pipe(untilDestroyed(this))
-  //       .subscribe(
-  //         (datos) => {
-  //           console.log('obtenerAlumnosPorCursoCiclo', datos);
-  //           this.alumnos = datos;
-  //           this.cargandoAlumnos = false;
-  //         },
-  //         (error) => {
-  //           this.cargandoAlumnos = false;
-  //           console.log('[ERROR]', error);
-  //         }
-  //       );
-  //   }
+
   seleccionarTab() {
     switch (this.tipoPantalla) {
       case 'asistencias':
@@ -237,24 +219,24 @@ export class PlanillaTallerAdministrarComponent implements OnInit {
       case 1:
         this.titulo = 'Asistencias del Alumno';
         // Si hay asistencias entonces hay alumnoSeleccionado. Controlamos para no repetir la consulta
-        // if (
-        //   (!this.asistencias && this.alumnoSeleccionado) ||
-        //   (this.asistencias && this.asistencias.length > 0 && this.alumnoSeleccionado._id !== this.asistencias[0].alumno._id)
-        // ) {
-        //   this.setBuscarAsistenciaPorAlumno(this.alumnoSeleccionado);
-        // }
+        if (
+          (!this.asistencias && this.alumnoSeleccionado) ||
+          (this.asistencias && this.asistencias.length > 0 && this.alumnoSeleccionado._id !== this.asistencias[0].alumno._id)
+        ) {
+          this.setBuscarAsistenciaPorAlumno(this.alumnoSeleccionado);
+        }
         if (!this.totalClases) {
           this.buscarTotalesPorPlanilla();
         }
         break;
       case 2:
         this.titulo = 'Calificaciones del Alumno';
-        // if (
-        //   (!this.calificaciones && this.alumnoSeleccionado) ||
-        //   (this.calificaciones && this.calificaciones.length > 0 && this.alumnoSeleccionado._id !== this.calificaciones[0].alumno._id)
-        // ) {
-        //   this.setBuscarCalificacionesPorAlumno(this.alumnoSeleccionado);
-        // }
+        if (
+          (!this.calificaciones && this.alumnoSeleccionado) ||
+          (this.calificaciones && this.calificaciones.length > 0 && this.alumnoSeleccionado._id !== this.calificaciones[0].alumno._id)
+        ) {
+          this.setBuscarCalificacionesPorAlumno(this.alumnoSeleccionado);
+        }
         break;
       case 3:
         this.titulo = 'Libro de Temas del Profesor';
@@ -300,7 +282,6 @@ export class PlanillaTallerAdministrarComponent implements OnInit {
       );
   }
   setAbrirModalAsistencias(evento: boolean) {
-    console.log('setAbrirModalAsistencias', evento);
     if (!this.alumnoSeleccionado) {
       Swal.fire({
         title: 'Seleccione un alumno',
@@ -314,8 +295,7 @@ export class PlanillaTallerAdministrarComponent implements OnInit {
     });
 
     dialogRef.afterClosed().subscribe((resultado) => {
-        console.log('resultado', resultado);
-        if (resultado) {
+      if (resultado) {
         this.setBuscarAsistenciaPorAlumno(this.alumnoSeleccionado);
       }
     });
@@ -343,9 +323,75 @@ export class PlanillaTallerAdministrarComponent implements OnInit {
     });
 
     dialogRef.afterClosed().subscribe((resultado) => {
-      console.log('resultado', resultado);
       if (resultado) {
         this.setBuscarAsistenciaPorAlumno(this.alumnoSeleccionado);
+      }
+    });
+  }
+  // Output Calificaciones
+  setBuscarCalificacionesPorAlumno(alumno: IAlumno) {
+    console.log('2');
+    this.alumnoSeleccionado = alumno;
+    this.cargandoCalificaciones = true;
+    this._calificacionService
+      .obtenerCalificacionesPorAlumnoId(alumno._id, this.planillaId)
+      .pipe(untilDestroyed(this))
+      .subscribe(
+        (datos) => {
+          this.calificaciones = [...datos];
+          this.cargandoCalificaciones = false;
+        },
+        (error) => {
+          console.log('[ERROR]', error);
+          this.cargandoCalificaciones = false;
+        }
+      );
+  }
+  setAbrirModalCalificaciones(evento) {
+    if (!this.alumnoSeleccionado) {
+      Swal.fire({
+        title: 'Seleccione un alumno',
+        text: 'Para gestionar las calificaciones debe seleccionar al alumno',
+        icon: 'error',
+      });
+      return;
+    }
+    const dialogRef = this._dialog.open(CalificacionFormModalComponent, {
+      data: { planillaTaller: this.planillaTaller, alumno: this.alumnoSeleccionado },
+    });
+
+    dialogRef.afterClosed().subscribe((resultado) => {
+      if (resultado) {
+        this.setBuscarCalificacionesPorAlumno(this.alumnoSeleccionado);
+      }
+    });
+  }
+  setEditarCalificacion(evento) {
+    if (!this.alumnoSeleccionado) {
+      Swal.fire({
+        title: 'Seleccione un alumno',
+        text: 'Para gestionar las calificaciones debe seleccionar al alumno',
+        icon: 'error',
+      });
+      return;
+    }
+    if (!evento) {
+      Swal.fire({
+        title: 'Seleccione la calificación',
+        text: 'Para editar la calificación debe seleccionarla primero',
+        icon: 'error',
+      });
+      return;
+    }
+    console.log('evento', evento);
+    const dialogRef = this._dialog.open(CalificacionFormModalComponent, {
+      data: { calificacion: evento, planillaTaller: this.planillaTaller, alumno: this.alumnoSeleccionado },
+    });
+
+    dialogRef.afterClosed().subscribe((resultado) => {
+      console.log('resultado', resultado);
+      if (resultado) {
+        this.setBuscarCalificacionesPorAlumno(this.alumnoSeleccionado);
       }
     });
   }

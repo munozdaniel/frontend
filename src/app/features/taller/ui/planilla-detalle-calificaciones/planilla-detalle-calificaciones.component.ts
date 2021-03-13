@@ -2,6 +2,7 @@ import { MediaMatcher, BreakpointObserver, Breakpoints, BreakpointState } from '
 import { ChangeDetectorRef, Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges, ViewChild } from '@angular/core';
 import { MatTableDataSource, MatSort, MatPaginator } from '@angular/material';
 import { designAnimations } from '@design/animations';
+import { TemplateEnum } from 'app/models/constants/tipo-template.const';
 import { IAlumno } from 'app/models/interface/iAlumno';
 import { ICalificacion } from 'app/models/interface/iCalificacion';
 
@@ -12,11 +13,15 @@ import { ICalificacion } from 'app/models/interface/iCalificacion';
   animations: [designAnimations],
 })
 export class PlanillaDetalleCalificacionesComponent implements OnInit, OnChanges {
+  touchtime = 0;
+  @Input() template?: TemplateEnum;
   @Input() cargandoCalificaciones: boolean;
   @Input() cargandoAlumnos: boolean;
   @Input() alumnos: IAlumno[];
   @Input() calificaciones: ICalificacion[];
   @Output() retBuscarCalificacionesPorAlumno = new EventEmitter<IAlumno>();
+  @Output() retAbrirModalCalificaciones = new EventEmitter<boolean>();
+  @Output() retEditarCalificacion = new EventEmitter<ICalificacion>();
   titulo = 'Calificaciones';
   //   Alumnos
   dataSource: MatTableDataSource<any> = new MatTableDataSource([]);
@@ -36,6 +41,12 @@ export class PlanillaDetalleCalificacionesComponent implements OnInit, OnChanges
     this.dataSourceCalificacion.paginator = paginator;
   }
   columnasCalificacion = ['formaExamen', 'tipoExamen', 'promedia', 'promedioGeneral'];
+  //
+  promedio = '0';
+  promedioFinal = '0';
+  totalCalificaciones = 0;
+  totalPromedios = 0;
+  mostrarLeyenda = true;
   // Mobile
   isMobile: boolean;
   private _mobileQueryListener: () => void;
@@ -46,10 +57,13 @@ export class PlanillaDetalleCalificacionesComponent implements OnInit, OnChanges
     this.breakpointObserver.observe([Breakpoints.Small, Breakpoints.HandsetPortrait]).subscribe((state: BreakpointState) => {
       if (state.matches) {
         this.isMobile = true;
-        this.columnasCalificacion = ['formaExamen_xs',  'promedia', 'promedioGeneral'];
+        this.columnasCalificacion = ['formaExamen_xs', 'promedia', 'promedioGeneral'];
       } else {
         this.isMobile = false;
         this.columnasCalificacion = ['formaExamen', 'tipoExamen', 'promedia', 'promedioGeneral'];
+        if (this.template === TemplateEnum.EDICION) {
+          this.columnasCalificacion.push('opciones');
+        }
       }
     });
   }
@@ -59,6 +73,19 @@ export class PlanillaDetalleCalificacionesComponent implements OnInit, OnChanges
     }
     if (changes.calificaciones && changes.calificaciones.currentValue) {
       this.dataSourceCalificacion.data = this.calificaciones;
+      if (this.calificaciones.length > 0) {
+        let suma = 0;
+        this.totalPromedios = 0;
+        this.totalCalificaciones = this.calificaciones.length;
+        this.calificaciones.forEach((x) => {
+          if (x.promedia) {
+            this.totalPromedios += 1;
+          }
+          suma += x.promedioGeneral;
+        });
+        this.promedio = (suma / this.totalCalificaciones).toFixed(2);
+        this.promedioFinal = (Math.ceil(Number(this.promedio) * 2) / 2).toFixed(2);
+      }
     }
   }
 
@@ -82,5 +109,32 @@ export class PlanillaDetalleCalificacionesComponent implements OnInit, OnChanges
     this.calificaciones = [];
     this.dataSourceCalificacion.data = [];
     this.retBuscarCalificacionesPorAlumno.emit(alumno);
+  }
+  mostrarModalCalificacion() {
+    this.retAbrirModalCalificaciones.emit(true);
+  }
+  editarCalificacion(asistencia: ICalificacion) {
+    if (!this.isMobile) {
+      this.retEditarCalificacion.emit(asistencia);
+    } else {
+      this.mostrarLeyenda = false;
+      this.simularDobleClick(asistencia);
+    }
+  }
+  simularDobleClick(asistencia: ICalificacion) {
+    if (this.touchtime == 0) {
+      // set first click
+      this.touchtime = new Date().getTime();
+    } else {
+      // compare first click to this click and see if they occurred within double click threshold
+      if (new Date().getTime() - this.touchtime < 500) {
+        // double click occurred
+        this.retEditarCalificacion.emit(asistencia);
+        this.touchtime = 0;
+      } else {
+        // not a double click so set as a new first click
+        this.touchtime = new Date().getTime();
+      }
+    }
   }
 }
