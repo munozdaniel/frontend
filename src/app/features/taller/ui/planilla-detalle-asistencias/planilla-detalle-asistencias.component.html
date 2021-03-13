@@ -118,7 +118,7 @@
         <button *ngIf="isMobile" mat-raised-button color="accent" (click)="mostrarModalAsistencias()" class="w-100-p my-12">
           <mat-icon>settings</mat-icon>Agregar Asistencia
         </button>
-        <p *ngIf="isMobile">Haga doble click sobre la asistencia que desea editar</p>
+        <p *ngIf="isMobile && mostrarLeyenda">Haga doble click sobre la asistencia que desea editar</p>
       </div>
       <table mat-table matSort #sortAsistencia="matSort" [dataSource]="dataSourceAsistencia" class="borde-tabla mat-elevation-z4 w-100-p">
         <!-- 'fecha', 'presente', 'llegoTarde' -->
@@ -164,6 +164,7 @@
           }"
           (mouseover)="row.hovered = true"
           (mouseout)="row.hovered = false"
+          (click)="editarAsistencia(row)"
         ></tr>
       </table>
       <div

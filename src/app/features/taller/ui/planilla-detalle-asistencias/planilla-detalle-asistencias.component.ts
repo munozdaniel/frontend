@@ -2,6 +2,7 @@ import { MediaMatcher, BreakpointObserver, Breakpoints, BreakpointState } from '
 import { ChangeDetectorRef, Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges, ViewChild } from '@angular/core';
 import { MatTableDataSource, MatSort, MatPaginator } from '@angular/material';
 import { designAnimations } from '@design/animations';
+import { DesignThemeOptionsModule } from '@design/components';
 import { TemplateEnum } from 'app/models/constants/tipo-template.const';
 import { IAlumno } from 'app/models/interface/iAlumno';
 import { IAsistencia } from 'app/models/interface/iAsistencia';
@@ -47,6 +48,8 @@ export class PlanillaDetalleAsistenciasComponent implements OnInit, OnChanges {
   @Output() retBuscarAsistenciaPorAlumno = new EventEmitter<IAlumno>();
   @Output() retAbrirModalAsistencias = new EventEmitter<boolean>();
   @Output() retEditarAsistencia = new EventEmitter<IAsistencia>();
+  //
+  mostrarLeyenda = true;
   // Mobile
   isMobile: boolean;
   private _mobileQueryListener: () => void;
@@ -60,7 +63,10 @@ export class PlanillaDetalleAsistenciasComponent implements OnInit, OnChanges {
         this.columnasAsistencia = ['fecha', 'presente', 'llegoTarde'];
       } else {
         this.isMobile = false;
-        this.columnasAsistencia = ['fecha', 'presente', 'llegoTarde', 'opciones'];
+        this.columnasAsistencia = ['fecha', 'presente', 'llegoTarde'];
+        if (this.template === TemplateEnum.EDICION) {
+          this.columnasAsistencia.push('opciones');
+        }
       }
     });
   }
@@ -123,6 +129,27 @@ export class PlanillaDetalleAsistenciasComponent implements OnInit, OnChanges {
     this.retAbrirModalAsistencias.emit(true);
   }
   editarAsistencia(asistencia: IAsistencia) {
-    this.retEditarAsistencia.emit(asistencia);
+    if (!this.isMobile) {
+      this.retEditarAsistencia.emit(asistencia);
+    } else {
+      this.mostrarLeyenda = false;
+      this.simularDobleClick(asistencia);
+    }
+  }
+  simularDobleClick(asistencia: IAsistencia) {
+    if (this.touchtime == 0) {
+      // set first click
+      this.touchtime = new Date().getTime();
+    } else {
+      // compare first click to this click and see if they occurred within double click threshold
+      if (new Date().getTime() - this.touchtime < 500) {
+        // double click occurred
+        this.retEditarAsistencia.emit(asistencia);
+        this.touchtime = 0;
+      } else {
+        // not a double click so set as a new first click
+        this.touchtime = new Date().getTime();
+      }
+    }
   }
 }
