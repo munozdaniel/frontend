@@ -1,5 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { ITema } from 'app/models/interface/iTema';
 import { environment } from 'environments/environment';
 import { Observable } from 'rxjs';
 
@@ -15,5 +16,17 @@ export class TemaService {
     const url = this.url + query;
 
     return this.http.get<any>(url);
+  }
+  guardarTema(tema: ITema): Observable<ITema> {
+    const query = `tema`;
+    const url = this.url + query;
+
+    return this.http.put<any>(url, { ...tema });
+  }
+  actualizarTema(id: string, tema: ITema): Observable<ITema> {
+    const query = `tema/${id}`;
+    const url = this.url + query;
+
+    return this.http.patch<any>(url, { tema });
   }
 }

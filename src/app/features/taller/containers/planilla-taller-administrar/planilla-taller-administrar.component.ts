@@ -15,9 +15,11 @@ import { IAlumno } from 'app/models/interface/iAlumno';
 import { IAsistencia } from 'app/models/interface/iAsistencia';
 import { ICalificacion } from 'app/models/interface/iCalificacion';
 import { IPlanillaTaller } from 'app/models/interface/iPlanillaTaller';
+import { ITema } from 'app/models/interface/iTema';
 import Swal from 'sweetalert2';
 import { AsistenciaFormModalComponent } from '../asistencia-form-modal/asistencia-form-modal.component';
 import { CalificacionFormModalComponent } from '../calificacion-form-modal/calificacion-form-modal.component';
+import { TemaFormModalComponent } from '../tema-form-modal/tema-form-modal.component';
 @UntilDestroy()
 @Component({
   selector: 'app-planilla-taller-administrar',
@@ -61,7 +63,15 @@ import { CalificacionFormModalComponent } from '../calificacion-form-modal/calif
             >
             </app-planilla-detalle-calificaciones>
           </mat-tab>
-          <mat-tab label="Libro de Temas"> </mat-tab>
+          <mat-tab label="Libro de Temas">
+            <app-planilla-detalle-temas
+              [template]="template"
+              [temas]="temas"
+              [cargandoTemas]="cargandoTemas"
+              (retAbrirModalTemas)="setAbrirModalTemas($event)"
+            >
+            </app-planilla-detalle-temas>
+          </mat-tab>
           <mat-tab label="Seguimiento de Alumnos"> </mat-tab>
           <mat-tab label="Informes"> <app-planilla-detalle-informes> </app-planilla-detalle-informes> </mat-tab>
         </mat-tab-group>
@@ -92,6 +102,8 @@ export class PlanillaTallerAdministrarComponent implements OnInit {
   calificaciones: ICalificacion[];
   //   Seguimiento
   //   Temas
+  cargandoTemas: boolean;
+  temas: ITema[];
   //   Informes
   // Mobile
   isMobile: boolean;
@@ -240,9 +252,9 @@ export class PlanillaTallerAdministrarComponent implements OnInit {
         break;
       case 3:
         this.titulo = 'Libro de Temas del Profesor';
-        // if (!this.temas) {
-        //   this.obtenerLibroDeTemas();
-        // }
+        if (!this.temas) {
+          this.obtenerLibroDeTemas();
+        }
         break;
       case 4:
         this.titulo = 'Seguimiento del Alumno';
@@ -261,6 +273,24 @@ export class PlanillaTallerAdministrarComponent implements OnInit {
       default:
         break;
     }
+  }
+  //   Temas
+  obtenerLibroDeTemas() {
+    this.cargandoTemas = true;
+    this._temaService
+      .obtenerTemaPorPlanillaTaller(this.planillaId)
+      .pipe(untilDestroyed(this))
+      .subscribe(
+        (datos) => {
+          this.temas = datos;
+          console.log('temas', this.temas);
+          this.cargandoTemas = false;
+        },
+        (error) => {
+          this.cargandoTemas = false;
+          console.log('[ERROR]', error);
+        }
+      );
   }
   //   Output Asistencias
   setBuscarAsistenciaPorAlumno(alumno: IAlumno) {
@@ -392,6 +422,19 @@ export class PlanillaTallerAdministrarComponent implements OnInit {
       console.log('resultado', resultado);
       if (resultado) {
         this.setBuscarCalificacionesPorAlumno(this.alumnoSeleccionado);
+      }
+    });
+  }
+
+  setAbrirModalTemas(evento) {
+    const dialogRef = this._dialog.open(TemaFormModalComponent, {
+        data:{planillaTaller:this.planillaTaller}
+    });
+
+    dialogRef.afterClosed().subscribe((resultado) => {
+      console.log('resultado', resultado);
+      if (resultado) {
+        this.obtenerLibroDeTemas();
       }
     });
   }

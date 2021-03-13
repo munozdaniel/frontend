@@ -19,6 +19,7 @@ import Swal from 'sweetalert2';
   providers: CONFIG_PROVIDER,
 })
 export class AsistenciaFormModalComponent implements OnInit, OnDestroy {
+  cargando = false;
   form: FormGroup;
   planillaTaller: IPlanillaTaller;
   alumno: IAlumno;
@@ -71,6 +72,7 @@ export class AsistenciaFormModalComponent implements OnInit, OnDestroy {
       });
       return;
     }
+    this.cargando = true;
 
     const fecha = new Date(moment(this.form.controls.fecha.value).format('YYYY-MM-DD'));
     const asistencia: IAsistencia = { ...this.form.value, fecha, alumno: this.alumno, activo: true, fechaCreacion: new Date() };
@@ -84,9 +86,11 @@ export class AsistenciaFormModalComponent implements OnInit, OnDestroy {
             text: 'Los datos fueron guardados correctamente',
             icon: 'success',
           });
+          this.cargando = false;
           this.dialogRef.close(true);
         },
         (error) => {
+          this.cargando = false;
           console.log('[ERROR]', error);
           Swal.fire({
             title: 'Ocurrió un error',
@@ -105,6 +109,7 @@ export class AsistenciaFormModalComponent implements OnInit, OnDestroy {
       });
       return;
     }
+    this.cargando = true;
 
     const fecha = new Date(moment(this.form.controls.fecha.value).format('YYYY-MM-DD'));
     const asistenciaForm: IAsistencia = { ...this.form.value, fecha, alumno: this.alumno, activo: true, fechaCreacion: new Date() };
@@ -114,14 +119,16 @@ export class AsistenciaFormModalComponent implements OnInit, OnDestroy {
       .pipe(untilDestroyed(this))
       .subscribe(
         (datos) => {
-          Swal.fire({   
+          Swal.fire({
             title: 'Asistencia actualizada',
             text: 'Los datos fueron guardados correctamente',
             icon: 'success',
           });
           this.dialogRef.close(true);
+          this.cargando = false;
         },
         (error) => {
+          this.cargando = false;
           console.log('[ERROR]', error);
           Swal.fire({
             title: 'Ocurrió un error',

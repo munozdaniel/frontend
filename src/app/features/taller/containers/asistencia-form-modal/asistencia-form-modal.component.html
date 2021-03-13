@@ -47,6 +47,7 @@
       ngClass.xs=""
       class="mt-8 w-100-p"
       fxFlex.xs="100"
+      [disabled]="cargando"
       (click)="guardar()"
       color="primary"
     >
@@ -60,6 +61,7 @@
       class="mt-8 w-100-p"
       fxFlex.xs="100"
       (click)="actualizar()"
+      [disabled]="cargando"
       color="primary"
     >
       Actualizar

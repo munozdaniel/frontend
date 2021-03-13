@@ -1,9 +1,10 @@
 import { trigger, state, style, transition, animate } from '@angular/animations';
 import { MediaMatcher, BreakpointObserver, Breakpoints, BreakpointState } from '@angular/cdk/layout';
-import { ChangeDetectorRef, Component, Input, OnChanges, OnInit, SimpleChanges, ViewChild } from '@angular/core';
+import { ChangeDetectorRef, Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges, ViewChild } from '@angular/core';
 import { MatTableDataSource, MatSort, MatPaginator } from '@angular/material';
 import { Router } from '@angular/router';
 import { designAnimations } from '@design/animations';
+import { TemplateEnum } from 'app/models/constants/tipo-template.const';
 import { ITema } from 'app/models/interface/iTema';
 
 @Component({
@@ -20,8 +21,10 @@ import { ITema } from 'app/models/interface/iTema';
   ],
 })
 export class PlanillaDetalleTemasComponent implements OnInit, OnChanges {
+  @Input() template?: TemplateEnum;
   @Input() temas: ITema[];
   @Input() cargandoTemas: boolean;
+@Output() retAbrirModalTemas= new EventEmitter<boolean>();
 
   dataSource: MatTableDataSource<any> = new MatTableDataSource([]);
   @ViewChild('sort') set setSort(sort: MatSort) {
@@ -68,5 +71,9 @@ export class PlanillaDetalleTemasComponent implements OnInit, OnChanges {
     if (this.dataSource.paginator) {
       this.dataSource.paginator.firstPage();
     }
+  }
+  agregarTema(){
+    this.retAbrirModalTemas.emit(true);
+
   }
 }

@@ -15,7 +15,7 @@ import Swal from 'sweetalert2';
 @Component({
   selector: 'app-calificacion-form-modal',
   template: `
-    <h1 mat-dialog-title>Evaluar Calificación</h1>
+    <h1 mat-dialog-title>Evaluar</h1>
     <div mat-dialog-content class="px-24">
       <form
         [formGroup]="form"
@@ -111,6 +111,7 @@ import Swal from 'sweetalert2';
           fxFlex.xs="100"
           (click)="guardar()"
           color="primary"
+          [disabled]="cargando"
         >
           Guardar
         </button>
@@ -122,6 +123,7 @@ import Swal from 'sweetalert2';
           class="mt-8 w-100-p"
           fxFlex.xs="100"
           (click)="actualizar()"
+          [disabled]="cargando"
           color="primary"
         >
           Actualizar
@@ -133,6 +135,7 @@ import Swal from 'sweetalert2';
   animations: [designAnimations],
 })
 export class CalificacionFormModalComponent implements OnInit, OnDestroy {
+  cargando = false;
   tiposExamenes = TiposExamenesConst;
   formasExamenes = FormasExamenesConst;
   form: FormGroup;
@@ -190,6 +193,7 @@ export class CalificacionFormModalComponent implements OnInit, OnDestroy {
       });
       return;
     }
+    this.cargando = true;
 
     const calificacion: ICalificacion = {
       ...this.form.value,
@@ -209,8 +213,10 @@ export class CalificacionFormModalComponent implements OnInit, OnDestroy {
             icon: 'success',
           });
           this.dialogRef.close(true);
+          this.cargando = false;
         },
         (error) => {
+          this.cargando = false;
           console.log('[ERROR]', error);
           Swal.fire({
             title: 'Ocurrió un error',
@@ -229,6 +235,7 @@ export class CalificacionFormModalComponent implements OnInit, OnDestroy {
       });
       return;
     }
+    this.cargando = true;
 
     const calificacionForm: ICalificacion = {
       ...this.form.value,
@@ -248,9 +255,11 @@ export class CalificacionFormModalComponent implements OnInit, OnDestroy {
             text: 'Los datos fueron guardados correctamente',
             icon: 'success',
           });
+          this.cargando = false;
           this.dialogRef.close(true);
         },
         (error) => {
+          this.cargando = false;
           console.log('[ERROR]', error);
           Swal.fire({
             title: 'Ocurrió un error',
