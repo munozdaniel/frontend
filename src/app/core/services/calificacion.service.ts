@@ -29,4 +29,10 @@ export class CalificacionService {
 
     return this.http.patch<any>(url, { calificacion });
   }
+  eliminar(_id: string): Observable<any> {
+    const query = `calificacion/${_id}`;
+    const url = this.url + query;
+
+    return this.http.delete<any>(url);
+  }
 }

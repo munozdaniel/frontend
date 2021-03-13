@@ -22,6 +22,7 @@ export class PlanillaDetalleCalificacionesComponent implements OnInit, OnChanges
   @Output() retBuscarCalificacionesPorAlumno = new EventEmitter<IAlumno>();
   @Output() retAbrirModalCalificaciones = new EventEmitter<boolean>();
   @Output() retEditarCalificacion = new EventEmitter<ICalificacion>();
+  @Output() retEliminarCalificacion = new EventEmitter<ICalificacion>();
   titulo = 'Calificaciones';
   //   Alumnos
   dataSource: MatTableDataSource<any> = new MatTableDataSource([]);
@@ -57,10 +58,10 @@ export class PlanillaDetalleCalificacionesComponent implements OnInit, OnChanges
     this.breakpointObserver.observe([Breakpoints.Small, Breakpoints.HandsetPortrait]).subscribe((state: BreakpointState) => {
       if (state.matches) {
         this.isMobile = true;
-        this.columnasCalificacion = ['formaExamen_xs', 'promedia', 'promedioGeneral'];
+        this.columnasCalificacion = ['formaExamen_xs', 'promedia', 'promedioGeneral', 'opciones'];
       } else {
         this.isMobile = false;
-        this.columnasCalificacion = ['formaExamen', 'tipoExamen', 'promedia', 'promedioGeneral'];
+        this.columnasCalificacion = ['formaExamen', 'tipoExamen', 'promedia', 'promedioGeneral', 'opciones'];
         if (this.template === TemplateEnum.EDICION) {
           this.columnasCalificacion.push('opciones');
         }
@@ -114,27 +115,33 @@ export class PlanillaDetalleCalificacionesComponent implements OnInit, OnChanges
     this.retAbrirModalCalificaciones.emit(true);
   }
   editarCalificacion(asistencia: ICalificacion) {
-    if (!this.isMobile) {
-      this.retEditarCalificacion.emit(asistencia);
-    } else {
-      this.mostrarLeyenda = false;
-      this.simularDobleClick(asistencia);
-    }
+    this.retEditarCalificacion.emit(asistencia);
+
+    // if (!this.isMobile) {
+    //   this.retEditarCalificacion.emit(asistencia);
+    // } else {
+    //   this.mostrarLeyenda = false;
+    //   this.simularDobleClick(asistencia);
+    // }
   }
-  simularDobleClick(asistencia: ICalificacion) {
-    if (this.touchtime == 0) {
-      // set first click
-      this.touchtime = new Date().getTime();
-    } else {
-      // compare first click to this click and see if they occurred within double click threshold
-      if (new Date().getTime() - this.touchtime < 500) {
-        // double click occurred
-        this.retEditarCalificacion.emit(asistencia);
-        this.touchtime = 0;
-      } else {
-        // not a double click so set as a new first click
-        this.touchtime = new Date().getTime();
-      }
-    }
+  //   simularDobleClick(asistencia: ICalificacion) {
+  //     if (this.touchtime == 0) {
+  //       // set first click
+  //       this.touchtime = new Date().getTime();
+  //     } else {
+  //       // compare first click to this click and see if they occurred within double click threshold
+  //       if (new Date().getTime() - this.touchtime < 500) {
+  //         // double click occurred
+  //         this.retEditarCalificacion.emit(asistencia);
+  //         this.touchtime = 0;
+  //       } else {
+  //         // not a double click so set as a new first click
+  //         this.touchtime = new Date().getTime();
+  //       }
+  //     }
+  //   }
+
+  eliminar(calificacion: ICalificacion) {
+    this.retEliminarCalificacion.emit(calificacion);
   }
 }

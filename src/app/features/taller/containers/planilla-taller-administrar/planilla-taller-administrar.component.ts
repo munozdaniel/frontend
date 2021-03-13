@@ -16,6 +16,8 @@ import { IAsistencia } from 'app/models/interface/iAsistencia';
 import { ICalificacion } from 'app/models/interface/iCalificacion';
 import { IPlanillaTaller } from 'app/models/interface/iPlanillaTaller';
 import { ITema } from 'app/models/interface/iTema';
+import { of } from 'rxjs';
+import { catchError } from 'rxjs/operators';
 import Swal from 'sweetalert2';
 import { AsistenciaFormModalComponent } from '../asistencia-form-modal/asistencia-form-modal.component';
 import { CalificacionFormModalComponent } from '../calificacion-form-modal/calificacion-form-modal.component';
@@ -47,6 +49,7 @@ import { TemaFormModalComponent } from '../tema-form-modal/tema-form-modal.compo
               (retBuscarAsistenciaPorAlumno)="setBuscarAsistenciaPorAlumno($event)"
               (retAbrirModalAsistencias)="setAbrirModalAsistencias($event)"
               (retEditarAsistencia)="setEditarAsistencia($event)"
+              (retEliminarAsistencia)="setEliminarAsistencia($event)"
             ></app-planilla-detalle-asistencias>
             <!-- <app-administrar-asistencias [cargandoAlumnos]="cargandoAlumnos" [alumnos]="alumnos"> </app-administrar-asistencias> -->
           </mat-tab>
@@ -60,6 +63,7 @@ import { TemaFormModalComponent } from '../tema-form-modal/tema-form-modal.compo
               (retAbrirModalCalificaciones)="setAbrirModalCalificaciones($event)"
               (retEditarCalificacion)="setEditarCalificacion($event)"
               (retBuscarCalificacionesPorAlumno)="setBuscarCalificacionesPorAlumno($event)"
+              (retEliminarCalificacion)="setEliminarCalificacion($event)"
             >
             </app-planilla-detalle-calificaciones>
           </mat-tab>
@@ -69,6 +73,8 @@ import { TemaFormModalComponent } from '../tema-form-modal/tema-form-modal.compo
               [temas]="temas"
               [cargandoTemas]="cargandoTemas"
               (retAbrirModalTemas)="setAbrirModalTemas($event)"
+              (retEditarTema)="setEditarTema($event)"
+              (retEliminarTema)="setEliminarTema($event)"
             >
             </app-planilla-detalle-temas>
           </mat-tab>
@@ -358,6 +364,50 @@ export class PlanillaTallerAdministrarComponent implements OnInit {
       }
     });
   }
+  setEliminarAsistencia(asistencia: IAsistencia) {
+    Swal.fire({
+      title: '¿Está seguro de continuar?',
+      html: 'Está a punto de <strong>ELIMINAR PERMANENTEMENTE</strong> la asistencia',
+      icon: 'warning',
+      focusConfirm: false,
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      confirmButtonText: 'Si, estoy seguro',
+      cancelButtonText: 'Cancelar',
+      showLoaderOnConfirm: true,
+      preConfirm: () => {
+        return this._asistenciaService.eliminar(asistencia._id).pipe(
+          catchError((error) => {
+            console.log('[ERROR]', error);
+            Swal.fire({
+              title: 'Oops! Ocurrió un error',
+              text: error && error.error ? error.error.message : 'Error de conexion',
+              icon: 'error',
+            });
+            return of(error);
+          })
+        );
+      },
+      allowOutsideClick: () => !Swal.isLoading(),
+    }).then((result: any) => {
+      if (result.isConfirmed) {
+        if (result.value && result.value.status === 200) {
+          Swal.fire({
+            title: 'Operación Exitosa',
+            text: 'La asistencia ha sido actualizado correctamente.',
+            icon: 'success',
+          });
+          this.setBuscarAsistenciaPorAlumno(this.alumnoSeleccionado);
+        } else {
+          Swal.fire({
+            title: 'Oops! Ocurrió un error',
+            text: 'Intentelo nuevamente. Si el problema persiste comuniquese con el soporte técnico.',
+            icon: 'error',
+          });
+        }
+      }
+    });
+  }
   // Output Calificaciones
   setBuscarCalificacionesPorAlumno(alumno: IAlumno) {
     console.log('2');
@@ -413,7 +463,6 @@ export class PlanillaTallerAdministrarComponent implements OnInit {
       });
       return;
     }
-    console.log('evento', evento);
     const dialogRef = this._dialog.open(CalificacionFormModalComponent, {
       data: { calificacion: evento, planillaTaller: this.planillaTaller, alumno: this.alumnoSeleccionado },
     });
@@ -425,16 +474,116 @@ export class PlanillaTallerAdministrarComponent implements OnInit {
       }
     });
   }
-
+  setEliminarCalificacion(calificacion: ICalificacion) {
+    Swal.fire({
+      title: '¿Está seguro de continuar?',
+      html: 'Está a punto de <strong>ELIMINAR PERMANENTEMENTE</strong> la calificación',
+      icon: 'warning',
+      focusConfirm: false,
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      confirmButtonText: 'Si, estoy seguro',
+      cancelButtonText: 'Cancelar',
+      showLoaderOnConfirm: true,
+      preConfirm: () => {
+        return this._calificacionService.eliminar(calificacion._id).pipe(
+          catchError((error) => {
+            console.log('[ERROR]', error);
+            Swal.fire({
+              title: 'Oops! Ocurrió un error',
+              text: error && error.error ? error.error.message : 'Error de conexion',
+              icon: 'error',
+            });
+            return of(error);
+          })
+        );
+      },
+      allowOutsideClick: () => !Swal.isLoading(),
+    }).then((result: any) => {
+      if (result.isConfirmed) {
+        if (result.value && result.value.status === 200) {
+          Swal.fire({
+            title: 'Operación Exitosa',
+            text: 'La calificación ha sido actualizado correctamente.',
+            icon: 'success',
+          });
+          this.setBuscarCalificacionesPorAlumno(this.alumnoSeleccionado);
+        } else {
+          Swal.fire({
+            title: 'Oops! Ocurrió un error',
+            text: 'Intentelo nuevamente. Si el problema persiste comuniquese con el soporte técnico.',
+            icon: 'error',
+          });
+        }
+      }
+    });
+  }
+  // TEmas
   setAbrirModalTemas(evento) {
     const dialogRef = this._dialog.open(TemaFormModalComponent, {
-        data:{planillaTaller:this.planillaTaller}
+      data: { planillaTaller: this.planillaTaller },
     });
 
     dialogRef.afterClosed().subscribe((resultado) => {
       console.log('resultado', resultado);
       if (resultado) {
         this.obtenerLibroDeTemas();
+      }
+    });
+  }
+  setEditarTema(tema: ITema) {
+    const dialogRef = this._dialog.open(TemaFormModalComponent, {
+      data: { planillaTaller: this.planillaTaller, tema: tema },
+    });
+
+    dialogRef.afterClosed().subscribe((resultado) => {
+      console.log('resultado', resultado);
+      if (resultado) {
+        this.obtenerLibroDeTemas();
+      }
+    });
+  }
+  setEliminarTema(tema: ITema) {
+    Swal.fire({
+      title: '¿Está seguro de continuar?',
+      html: 'Está a punto de <strong>ELIMINAR PERMANENTEMENTE</strong> el tema',
+      icon: 'warning',
+      focusConfirm: false,
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      confirmButtonText: 'Si, estoy seguro',
+      cancelButtonText: 'Cancelar',
+      showLoaderOnConfirm: true,
+      preConfirm: () => {
+        return this._temaService.eliminar(tema._id).pipe(
+          catchError((error) => {
+            console.log('[ERROR]', error);
+            Swal.fire({
+              title: 'Oops! Ocurrió un error',
+              text: error && error.error ? error.error.message : 'Error de conexion',
+              icon: 'error',
+            });
+            return of(error);
+          })
+        );
+      },
+      allowOutsideClick: () => !Swal.isLoading(),
+    }).then((result: any) => {
+      if (result.isConfirmed) {
+        if (result.value && result.value.status === 200) {
+          Swal.fire({
+            title: 'Operación Exitosa',
+            text: 'El tema ha sido actualizado correctamente.',
+            icon: 'success',
+          });
+          this.obtenerLibroDeTemas();
+        } else {
+          Swal.fire({
+            title: 'Oops! Ocurrió un error',
+            text: 'Intentelo nuevamente. Si el problema persiste comuniquese con el soporte técnico.',
+            icon: 'error',
+          });
+        }
       }
     });
   }

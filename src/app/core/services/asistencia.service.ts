@@ -41,4 +41,10 @@ export class AsistenciaService {
 
     return this.http.patch<any>(url, { asistencia });
   }
+  eliminar(_id: string): Observable<any> {
+    const query = `asistencia/${_id}`;
+    const url = this.url + query;
+
+    return this.http.delete<any>(url);
+  }
 }

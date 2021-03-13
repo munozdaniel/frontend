@@ -24,7 +24,9 @@ export class PlanillaDetalleTemasComponent implements OnInit, OnChanges {
   @Input() template?: TemplateEnum;
   @Input() temas: ITema[];
   @Input() cargandoTemas: boolean;
-@Output() retAbrirModalTemas= new EventEmitter<boolean>();
+  @Output() retAbrirModalTemas = new EventEmitter<boolean>();
+  @Output() retEditarTema = new EventEmitter<ITema>();
+  @Output() retEliminarTema = new EventEmitter<ITema>();
 
   dataSource: MatTableDataSource<any> = new MatTableDataSource([]);
   @ViewChild('sort') set setSort(sort: MatSort) {
@@ -50,11 +52,11 @@ export class PlanillaDetalleTemasComponent implements OnInit, OnChanges {
     this.breakpointObserver.observe([Breakpoints.Small, Breakpoints.HandsetPortrait]).subscribe((state: BreakpointState) => {
       if (state.matches) {
         this.isMobile = true;
-        this.columnas = ['fecha', 'temaDelDia'];
+        this.columnas = ['fecha', 'temaDelDia', 'opciones'];
       } else {
         this.isMobile = false;
 
-        this.columnas = ['fecha', 'nroClase', 'unidad', 'caracterClase', 'temaDelDia', 'temasProximaClase'];
+        this.columnas = ['fecha', 'nroClase', 'unidad', 'caracterClase', 'temaDelDia', 'temasProximaClase', 'opciones'];
       }
     });
   }
@@ -72,8 +74,14 @@ export class PlanillaDetalleTemasComponent implements OnInit, OnChanges {
       this.dataSource.paginator.firstPage();
     }
   }
-  agregarTema(){
+  agregarTema() {
     this.retAbrirModalTemas.emit(true);
+  }
+  editarTema(tema: ITema) {
+    this.retEditarTema.emit(tema);
+  }
+  eliminarTema(tema: ITema) {
+    this.retEliminarTema.emit(tema);
 
   }
 }

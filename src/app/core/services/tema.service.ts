@@ -29,4 +29,10 @@ export class TemaService {
 
     return this.http.patch<any>(url, { tema });
   }
+  eliminar(_id: string): Observable<any> {
+    const query = `tema/${_id}`;
+    const url = this.url + query;
+
+    return this.http.delete<any>(url);
+  }
 }
