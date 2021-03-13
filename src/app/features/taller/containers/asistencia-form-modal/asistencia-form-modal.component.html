@@ -1,0 +1,68 @@
+<h1 mat-dialog-title>Tomar Asistencia</h1>
+<div mat-dialog-content class="px-24">
+  <form
+    [formGroup]="form"
+    [@animate]="{ value: '*', params: { delay: '50ms', scale: '0.2' } }"
+    class="mt-20 p-0"
+    fxLayoutAlign="center baseline"
+    fxLayout="row wrap"
+  >
+    <div fxLayout="column" class="w-100-p">
+      <!-- Curso -->
+      <div fxFlex="100"></div>
+      <!-- Alumno -->
+      <mat-form-field appearance="outline" fxFlex="100">
+        <mat-label>Alumno/a</mat-label>
+        <input matInput class="" readonly formControlName="alumno" />
+      </mat-form-field>
+      <!-- Fecha -->
+      <mat-form-field appearance="outline" fxFlex.xs="100" fxFlex.gt-xs="45">
+        <mat-label>Fecha</mat-label>
+        <input [max]="maximo" [min]="minimo" autocomplete="off" matInput [matDatepicker]="picker" formControlName="fecha" />
+        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+        <mat-datepicker #picker></mat-datepicker>
+        <mat-error *ngIf="form?.controls.fecha.hasError('required')"> Este campo es requerido. </mat-error>
+      </mat-form-field>
+
+      <!-- Presente -->
+      <div fxFlex.xs="100" fxFlex.gt-xs="45" class="border p-12 mb-12">
+        <mat-slide-toggle (change)="controlarAsistencia($event)" formControlName="presente">{{
+          form.controls.presente.value ? 'PRESENTE' : 'AUSENTE'
+        }}</mat-slide-toggle>
+      </div>
+      <!-- Tarde -->
+      <div fxFlex.xs="100" fxFlex.gt-xs="45 " class="border p-12">
+        <mat-slide-toggle formControlName="llegoTarde">{{
+          form.controls.llegoTarde.value ? 'LLEGÓ TARDE' : 'EN HORARIO'
+        }}</mat-slide-toggle>
+      </div>
+    </div>
+  </form>
+  <div fxLayout="row wrap" fxLayoutAlign="space-between start" class="mt-12">
+    <button mat-raised-button ngClass.xs="" class="mt-8 w-100-p" fxFlex.xs="100" (click)="cerrar()" color="warn">Cerrar</button>
+    <button
+      *ngIf="!isUpdate"
+      mat-raised-button
+      [disabled]="form.invalid"
+      ngClass.xs=""
+      class="mt-8 w-100-p"
+      fxFlex.xs="100"
+      (click)="guardar()"
+      color="primary"
+    >
+      Guardar
+    </button>
+    <button
+      *ngIf="isUpdate"
+      mat-raised-button
+      [disabled]="form.invalid"
+      ngClass.xs=""
+      class="mt-8 w-100-p"
+      fxFlex.xs="100"
+      (click)="actualizar()"
+      color="primary"
+    >
+      Actualizar
+    </button>
+  </div>
+</div>

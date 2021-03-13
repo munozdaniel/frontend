@@ -29,6 +29,7 @@ import { PlanillaDetalleInformesComponent } from './ui/planilla-detalle-informes
 import { PlanillaTallerAdministrarComponent } from './containers/planilla-taller-administrar/planilla-taller-administrar.component';
 import { AdministrarAsistenciasComponent } from './ui/administrar-asistencias/administrar-asistencias.component';
 import { TomarAsistenciaComponent } from './containers/tomar-asistencia/tomar-asistencia.component';
+import { AsistenciaFormModalComponent } from './containers/asistencia-form-modal/asistencia-form-modal.component';
 
 @NgModule({
   declarations: [
@@ -58,6 +59,7 @@ import { TomarAsistenciaComponent } from './containers/tomar-asistencia/tomar-as
     PlanillaTallerAdministrarComponent,
     AdministrarAsistenciasComponent,
     TomarAsistenciaComponent,
+    AsistenciaFormModalComponent,
   ],
   imports: [CommonModule, TallerRoutingModule, SharedModule, DesignSharedModule],
 })

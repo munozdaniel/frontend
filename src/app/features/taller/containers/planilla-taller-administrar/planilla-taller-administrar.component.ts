@@ -1,5 +1,7 @@
-import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { MediaMatcher, BreakpointObserver, Breakpoints, BreakpointState } from '@angular/cdk/layout';
+import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
+import { MatDialog } from '@angular/material';
+import { ActivatedRoute, Router } from '@angular/router';
 import { designAnimations } from '@design/animations';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { AlumnoService } from 'app/core/services/alumno.service';
@@ -12,6 +14,8 @@ import { TemplateEnum } from 'app/models/constants/tipo-template.const';
 import { IAlumno } from 'app/models/interface/iAlumno';
 import { IAsistencia } from 'app/models/interface/iAsistencia';
 import { IPlanillaTaller } from 'app/models/interface/iPlanillaTaller';
+import Swal from 'sweetalert2';
+import { AsistenciaFormModalComponent } from '../asistencia-form-modal/asistencia-form-modal.component';
 @UntilDestroy()
 @Component({
   selector: 'app-planilla-taller-administrar',
@@ -37,6 +41,8 @@ import { IPlanillaTaller } from 'app/models/interface/iPlanillaTaller';
               [alumnos]="alumnos"
               [asistencias]="asistencias"
               (retBuscarAsistenciaPorAlumno)="setBuscarAsistenciaPorAlumno($event)"
+              (retAbrirModalAsistencias)="setAbrirModalAsistencias($event)"
+              (retEditarAsistencia)="setEditarAsistencia($event)"
             ></app-planilla-detalle-asistencias>
             <!-- <app-administrar-asistencias [cargandoAlumnos]="cargandoAlumnos" [alumnos]="alumnos"> </app-administrar-asistencias> -->
           </mat-tab>
@@ -71,6 +77,10 @@ export class PlanillaTallerAdministrarComponent implements OnInit {
   //   Seguimiento
   //   Temas
   //   Informes
+  // Mobile
+  isMobile: boolean;
+  private _mobileQueryListener: () => void;
+  mobileQuery: MediaQueryList;
   constructor(
     private _activeRoute: ActivatedRoute,
     private _alumnoService: AlumnoService,
@@ -78,8 +88,23 @@ export class PlanillaTallerAdministrarComponent implements OnInit {
     private _asistenciaService: AsistenciaService,
     private _calificacionService: CalificacionService,
     private _planillaTallerService: PlanillaTallerService,
-    private _seguimientoAlumnoService: SeguimientoAlumnoService
-  ) {}
+    private _seguimientoAlumnoService: SeguimientoAlumnoService,
+    private _dialog: MatDialog,
+    private _changeDetectorRef: ChangeDetectorRef,
+    private _media: MediaMatcher,
+    public breakpointObserver: BreakpointObserver,
+    private _router: Router
+  ) {
+    this.mobileQuery = this._media.matchMedia('(max-width: 600px)');
+    this._mobileQueryListener = () => this._changeDetectorRef.detectChanges();
+    this.breakpointObserver.observe([Breakpoints.Small, Breakpoints.HandsetPortrait]).subscribe((state: BreakpointState) => {
+      if (state.matches) {
+        this.isMobile = true;
+      } else {
+        this.isMobile = false;
+      }
+    });
+  }
 
   ngOnInit(): void {
     this._activeRoute.params.subscribe((params) => {
@@ -102,6 +127,12 @@ export class PlanillaTallerAdministrarComponent implements OnInit {
         },
         (error) => {
           this.cargando = false;
+          Swal.fire({
+            title: 'Planilla de Taller no encontrada',
+            text: 'La planilla que está buscando no se encuentra disponible',
+            icon: 'error',
+          });
+          this._router.navigate(['taller/planillas']);
           console.log('[ERROR]', error);
         }
       );
@@ -267,5 +298,55 @@ export class PlanillaTallerAdministrarComponent implements OnInit {
           this.cargandoAsistencias = false;
         }
       );
+  }
+  setAbrirModalAsistencias(evento: boolean) {
+    console.log('setAbrirModalAsistencias', evento);
+    if (!this.alumnoSeleccionado) {
+      Swal.fire({
+        title: 'Seleccione un alumno',
+        text: 'Para administrar las asistencias debe seleccionar al alumno',
+        icon: 'error',
+      });
+      return;
+    }
+    const dialogRef = this._dialog.open(AsistenciaFormModalComponent, {
+      data: { planillaTaller: this.planillaTaller, alumno: this.alumnoSeleccionado },
+    });
+
+    dialogRef.afterClosed().subscribe((resultado) => {
+        console.log('resultado', resultado);
+        if (resultado) {
+        this.setBuscarAsistenciaPorAlumno(this.alumnoSeleccionado);
+      }
+    });
+  }
+  setEditarAsistencia(evento: IAsistencia) {
+    if (!this.alumnoSeleccionado) {
+      Swal.fire({
+        title: 'Seleccione un alumno',
+        text: 'Para administrar las asistencias debe seleccionar al alumno',
+        icon: 'error',
+      });
+      return;
+    }
+    if (!evento) {
+      Swal.fire({
+        title: 'Seleccione una asistencia',
+        text: 'Para editar la asistencia debe seleccionarla primero',
+        icon: 'error',
+      });
+      return;
+    }
+    console.log('evento', evento);
+    const dialogRef = this._dialog.open(AsistenciaFormModalComponent, {
+      data: { asistencia: evento, planillaTaller: this.planillaTaller, alumno: this.alumnoSeleccionado },
+    });
+
+    dialogRef.afterClosed().subscribe((resultado) => {
+      console.log('resultado', resultado);
+      if (resultado) {
+        this.setBuscarAsistenciaPorAlumno(this.alumnoSeleccionado);
+      }
+    });
   }
 }

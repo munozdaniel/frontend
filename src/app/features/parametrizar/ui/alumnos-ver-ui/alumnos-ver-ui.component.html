@@ -17,7 +17,7 @@
             <strong>Sexo:</strong><span>{{ alumno.sexo }}</span>
           </p>
           <p>
-            <strong>Fecha de Nacimiento:</strong><span>{{ alumno.fechaNacimiento | date: 'dd/MM/yyyy' }}</span>
+            <strong>Fecha de Nacimiento:</strong><span>{{ alumno.fechaNacimiento | date: 'dd/MM/yyyy':'GMT' }}</span>
           </p>
           <p>
             <strong>Nacionalidad:</strong><span>{{ alumno.nacionalidad }}</span>
@@ -36,7 +36,7 @@
             <strong>Email:</strong><span>{{ alumno.email }}</span>
           </p>
           <p>
-            <strong>Fecha de Ingreso:</strong><span>{{ alumno.fechaIngreso | date: 'dd/MM/yyyy' }}</span>
+            <strong>Fecha de Ingreso:</strong><span>{{ alumno.fechaIngreso | date: 'dd/MM/yyyy':'GMT' }}</span>
           </p>
           <p>
             <strong>Procedencia colegio Primario:</strong><span>{{ alumno.procedenciaColegioPrimario }}</span>
@@ -46,7 +46,7 @@
           </p>
           <p>
             <strong>Fecha de Baja:</strong
-            ><span>{{ alumno.fechaDeBaja ? (alumno.fechaDeBaja | date: 'dd/MM/yyyy') : 'NO REGISTRADO' }}</span>
+            ><span>{{ alumno.fechaDeBaja ? (alumno.fechaDeBaja | date: 'dd/MM/yyyy':'GMT') : 'NO REGISTRADO' }}</span>
           </p>
           <p>
             <strong>Motivo de Baja:</strong><span>{{ alumno.motivoDeBaja ? alumno.motivoDeBaja : 'NO REGISTRADO' }}</span>
@@ -63,11 +63,11 @@
         </div>
       </div>
       <div fxFlex.xs="100" fxFlex.gt-xs="45">
-        <h2 >Seguimiento Etap</h2>
-        <div  *ngIf="!alumno.seguimientoEtap || alumno.nombreCompletoTae.length<1"  class="mat-card mat-elevation-z4 mb-24">
-            <p>Sin Seguimiento</p>
+        <h2>Seguimiento Etap</h2>
+        <div *ngIf="!alumno.seguimientoEtap || alumno.nombreCompletoTae.length < 1" class="mat-card mat-elevation-z4 mb-24">
+          <p>Sin Seguimiento</p>
         </div>
-        <div *ngIf="alumno.seguimientoEtap &&  alumno.nombreCompletoTae " class="mat-card mat-elevation-z4 mb-24">
+        <div *ngIf="alumno.seguimientoEtap && alumno.nombreCompletoTae" class="mat-card mat-elevation-z4 mb-24">
           <p>
             <strong>Nombre Completo Tae:</strong><span>{{ alumno.nombreCompletoTae }}</span>
           </p>
@@ -113,10 +113,7 @@
   <mat-tab label="Comisiones">
     <h2>Comisiones</h2>
     <div>
-      <app-comisiones-tabla-param
-      [cargando]="cargando"
-      [comisiones]="alumno.comisiones"
-      [soloLectura]="true"
-    ></app-comisiones-tabla-param>    </div>
+      <app-comisiones-tabla-param [cargando]="cargando" [comisiones]="alumno.comisiones" [soloLectura]="true"></app-comisiones-tabla-param>
+    </div>
   </mat-tab>
 </mat-tab-group>

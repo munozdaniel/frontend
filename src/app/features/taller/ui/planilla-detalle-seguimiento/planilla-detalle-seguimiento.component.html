@@ -114,7 +114,7 @@
         <ng-container matColumnDef="fecha">
           <th mat-header-cell *matHeaderCellDef mat-sort-header>Fecha</th>
           <td mat-cell *matCellDef="let row">
-            {{ row.fecha | date: 'dd/MM/yyyy' }}
+            {{ row.fecha | date: 'dd/MM/yyyy':'GMT' }}
           </td>
         </ng-container>
         <ng-container matColumnDef="tipoSeguimiento">

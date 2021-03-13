@@ -54,7 +54,7 @@ profesor: "6021bb72c18fc750b87b0a12"
       </th>
       <td mat-cell *matCellDef="let row">
         <div fxLayout="row" fxLayoutAlign="center center">
-          {{ row.fechaInicio | date: 'dd/MM/yyyy' }}
+          {{ row.fechaInicio | date: 'dd/MM/yyyy':'GMT' }}
         </div>
       </td>
     </ng-container>
@@ -187,7 +187,7 @@ profesor: "6021bb72c18fc750b87b0a12"
               <strong>Profesor:</strong><span>{{ element.profesor.nombreCompleto }}</span>
             </p>
             <p fxFlex="row" fxLayoutAlign="start center" fxLayoutGap="10px">
-              <strong>Fecha de Inicio:</strong><span>{{ element.fechaInicio | date: 'dd/MM/yyyy' }}</span>
+              <strong>Fecha de Inicio:</strong><span>{{ element.fechaInicio | date: 'dd/MM/yyyy':'GMT' }}</span>
             </p>
             <p fxFlex="row" fxLayoutAlign="start center" fxLayoutGap="10px">
               <strong>Observación:</strong><span>{{ element.observacion ? element.observacion : 'Sin Observación' }}</span>

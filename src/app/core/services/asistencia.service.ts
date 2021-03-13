@@ -29,4 +29,16 @@ export class AsistenciaService {
 
     return this.http.get<any>(url);
   }
+  guardarAsistencia(asistencia: IAsistencia): Observable<IAsistencia> {
+    const query = `asistencia`;
+    const url = this.url + query;
+
+    return this.http.put<any>(url, { asistencia });
+  }
+  actualizarAsistencia(id: string, asistencia: IAsistencia): Observable<IAsistencia> {
+    const query = `asistencia/${id}`;
+    const url = this.url + query;
+
+    return this.http.patch<any>(url, { asistencia });
+  }
 }

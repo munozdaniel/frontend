@@ -7,13 +7,13 @@
     <div fxLayout="row wrap" fxLayoutAlign="start center" fxLayoutGap="10px" fxFlex.gt-xs="30" fxFlex.xs="100">
       <mat-icon fxHide.xs="true">calendar_today</mat-icon>
       <h3 fxLayout="row" fxLayoutGap="10px">
-        <strong>Fecha de Inicio:</strong><span>{{ planillaTaller.fechaInicio | date: 'dd/MM/yyyy' }}</span>
+        <strong>Fecha de Inicio:</strong><span>{{ planillaTaller.fechaInicio | date: 'dd/MM/yyyy':'GMT' }}</span>
       </h3>
     </div>
     <div fxLayout="row wrap" fxLayoutAlign="start center" fxLayoutGap="10px" fxFlex.gt-xs="30" fxFlex.xs="100">
       <mat-icon fxHide.xs="true">calendar_today</mat-icon>
       <h3 fxLayout="row" fxLayoutGap="10px">
-        <strong>Fecha de Finalización:</strong><span>{{ planillaTaller.fechaFinalizacion | date: 'dd/MM/yyyy' }}</span>
+        <strong>Fecha de Finalización:</strong><span>{{ planillaTaller.fechaFinalizacion | date: 'dd/MM/yyyy':'GMT' }}</span>
       </h3>
     </div>
   </div>
