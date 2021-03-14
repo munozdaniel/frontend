@@ -32,6 +32,7 @@ import { TomarAsistenciaComponent } from './containers/tomar-asistencia/tomar-as
 import { AsistenciaFormModalComponent } from './containers/asistencia-form-modal/asistencia-form-modal.component';
 import { CalificacionFormModalComponent } from './containers/calificacion-form-modal/calificacion-form-modal.component';
 import { TemaFormModalComponent } from './containers/tema-form-modal/tema-form-modal.component';
+import { SeguimientoFormModalComponent } from './containers/seguimiento-form-modal/seguimiento-form-modal.component';
 
 @NgModule({
   declarations: [
@@ -64,6 +65,7 @@ import { TemaFormModalComponent } from './containers/tema-form-modal/tema-form-m
     AsistenciaFormModalComponent,
     CalificacionFormModalComponent,
     TemaFormModalComponent,
+    SeguimientoFormModalComponent,
   ],
   imports: [CommonModule, TallerRoutingModule, SharedModule, DesignSharedModule],
 })

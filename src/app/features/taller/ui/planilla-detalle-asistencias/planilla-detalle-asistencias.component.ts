@@ -61,19 +61,22 @@ export class PlanillaDetalleAsistenciasComponent implements OnInit, OnChanges {
     this.breakpointObserver.observe([Breakpoints.Small, Breakpoints.HandsetPortrait]).subscribe((state: BreakpointState) => {
       if (state.matches) {
         this.isMobile = true;
-        this.columnasAsistencia = ['fecha', 'presente', 'llegoTarde', 'opciones'];
+        this.columnasAsistencia = ['fecha', 'presente', 'llegoTarde'];
       } else {
         this.isMobile = false;
-        this.columnasAsistencia = ['fecha', 'presente', 'llegoTarde','opciones'];
-        if (this.template === TemplateEnum.EDICION) {
-          this.columnasAsistencia.push('opciones');
-        }
+        this.columnasAsistencia = ['fecha', 'presente', 'llegoTarde'];
+      }
+      if (this.template === TemplateEnum.EDICION) {
+        this.columnasAsistencia = [...this.columnasAsistencia, 'opciones'];
       }
     });
   }
   ngOnChanges(changes: SimpleChanges): void {
     if (changes.alumnos && changes.alumnos.currentValue) {
       this.dataSource.data = this.alumnos;
+      if (this.template === TemplateEnum.EDICION) {
+        this.columnasAsistencia = [...this.columnasAsistencia, 'opciones'];
+      }
     }
     if (changes.totalClases && changes.totalClases.currentValue) {
       console.log('total de clases, ', this.totalClases);
@@ -129,7 +132,7 @@ export class PlanillaDetalleAsistenciasComponent implements OnInit, OnChanges {
     this.retAbrirModalAsistencias.emit(true);
   }
   editarAsistencia(asistencia: IAsistencia) {
-      this.retEditarAsistencia.emit(asistencia);
+    this.retEditarAsistencia.emit(asistencia);
     // if (!this.isMobile) {
     //   this.retEditarAsistencia.emit(asistencia);
     // } else {
@@ -137,25 +140,24 @@ export class PlanillaDetalleAsistenciasComponent implements OnInit, OnChanges {
     //   this.simularDobleClick(asistencia);
     // }
   }
-//   simularDobleClick(asistencia: IAsistencia) {
-//     if (this.touchtime == 0) {
-//       // set first click
-//       this.touchtime = new Date().getTime();
-//     } else {
-//       // compare first click to this click and see if they occurred within double click threshold
-//       if (new Date().getTime() - this.touchtime < 500) {
-//         // double click occurred
-//         this.retEditarAsistencia.emit(asistencia);
-//         this.touchtime = 0;
-//       } else {
-//         // not a double click so set as a new first click
-//         this.touchtime = new Date().getTime();
-//       }
-//     }
-//   }
- 
+  //   simularDobleClick(asistencia: IAsistencia) {
+  //     if (this.touchtime == 0) {
+  //       // set first click
+  //       this.touchtime = new Date().getTime();
+  //     } else {
+  //       // compare first click to this click and see if they occurred within double click threshold
+  //       if (new Date().getTime() - this.touchtime < 500) {
+  //         // double click occurred
+  //         this.retEditarAsistencia.emit(asistencia);
+  //         this.touchtime = 0;
+  //       } else {
+  //         // not a double click so set as a new first click
+  //         this.touchtime = new Date().getTime();
+  //       }
+  //     }
+  //   }
+
   eliminar(tema: IAsistencia) {
     this.retEliminarAsistencia.emit(tema);
-
   }
 }

@@ -52,11 +52,14 @@ export class PlanillaDetalleTemasComponent implements OnInit, OnChanges {
     this.breakpointObserver.observe([Breakpoints.Small, Breakpoints.HandsetPortrait]).subscribe((state: BreakpointState) => {
       if (state.matches) {
         this.isMobile = true;
-        this.columnas = ['fecha', 'temaDelDia', 'opciones'];
+        this.columnas = ['fecha', 'temaDelDia'];
       } else {
         this.isMobile = false;
 
-        this.columnas = ['fecha', 'nroClase', 'unidad', 'caracterClase', 'temaDelDia', 'temasProximaClase', 'opciones'];
+        this.columnas = ['fecha', 'nroClase', 'unidad', 'caracterClase', 'temaDelDia', 'temasProximaClase'];
+      }
+      if (this.template === TemplateEnum.EDICION) {
+        this.columnas = [...this.columnas, 'opciones'];
       }
     });
   }
@@ -64,6 +67,9 @@ export class PlanillaDetalleTemasComponent implements OnInit, OnChanges {
   ngOnChanges(changes: SimpleChanges): void {
     if (changes.temas && changes.temas.currentValue) {
       this.dataSource.data = this.temas;
+      if (this.template === TemplateEnum.EDICION) {
+        this.columnas = [...this.columnas, 'opciones'];
+      }
     }
   }
 
@@ -82,6 +88,5 @@ export class PlanillaDetalleTemasComponent implements OnInit, OnChanges {
   }
   eliminarTema(tema: ITema) {
     this.retEliminarTema.emit(tema);
-
   }
 }

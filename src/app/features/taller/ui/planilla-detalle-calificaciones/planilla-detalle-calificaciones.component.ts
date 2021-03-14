@@ -58,19 +58,22 @@ export class PlanillaDetalleCalificacionesComponent implements OnInit, OnChanges
     this.breakpointObserver.observe([Breakpoints.Small, Breakpoints.HandsetPortrait]).subscribe((state: BreakpointState) => {
       if (state.matches) {
         this.isMobile = true;
-        this.columnasCalificacion = ['formaExamen_xs', 'promedia', 'promedioGeneral', 'opciones'];
+        this.columnasCalificacion = ['formaExamen_xs', 'promedia', 'promedioGeneral'];
       } else {
         this.isMobile = false;
-        this.columnasCalificacion = ['formaExamen', 'tipoExamen', 'promedia', 'promedioGeneral', 'opciones'];
-        if (this.template === TemplateEnum.EDICION) {
-          this.columnasCalificacion.push('opciones');
-        }
+        this.columnasCalificacion = ['formaExamen', 'tipoExamen', 'promedia', 'promedioGeneral'];
+      }
+      if (this.template === TemplateEnum.EDICION) {
+        this.columnasCalificacion = [...this.columnasCalificacion, 'opciones'];
       }
     });
   }
   ngOnChanges(changes: SimpleChanges): void {
     if (changes.alumnos && changes.alumnos.currentValue) {
       this.dataSource.data = this.alumnos;
+      if (this.template === TemplateEnum.EDICION) {
+        this.columnasCalificacion = [...this.columnasCalificacion, 'opciones'];
+      }
     }
     if (changes.calificaciones && changes.calificaciones.currentValue) {
       this.dataSourceCalificacion.data = this.calificaciones;

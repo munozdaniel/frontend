@@ -15,12 +15,14 @@ import { IAlumno } from 'app/models/interface/iAlumno';
 import { IAsistencia } from 'app/models/interface/iAsistencia';
 import { ICalificacion } from 'app/models/interface/iCalificacion';
 import { IPlanillaTaller } from 'app/models/interface/iPlanillaTaller';
+import { ISeguimientoAlumno } from 'app/models/interface/iSeguimientoAlumno';
 import { ITema } from 'app/models/interface/iTema';
 import { of } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 import Swal from 'sweetalert2';
 import { AsistenciaFormModalComponent } from '../asistencia-form-modal/asistencia-form-modal.component';
 import { CalificacionFormModalComponent } from '../calificacion-form-modal/calificacion-form-modal.component';
+import { SeguimientoFormModalComponent } from '../seguimiento-form-modal/seguimiento-form-modal.component';
 import { TemaFormModalComponent } from '../tema-form-modal/tema-form-modal.component';
 @UntilDestroy()
 @Component({
@@ -78,7 +80,19 @@ import { TemaFormModalComponent } from '../tema-form-modal/tema-form-modal.compo
             >
             </app-planilla-detalle-temas>
           </mat-tab>
-          <mat-tab label="Seguimiento de Alumnos"> </mat-tab>
+          <mat-tab label="Seguimiento de Alumnos">
+            <app-planilla-detalle-seguimiento
+              [template]="template"
+              [seguimientos]="seguimientos"
+              [cargandoAlumnos]="cargandoAlumnos"
+              [alumnos]="alumnos"
+              [cargandoSeguimiento]="cargandoSeguimiento"
+              (retBuscarSeguimientosPorAlumno)="setBuscarSeguimientosPorAlumno($event)"
+              (retEliminarSeguimiento)="setEliminarSeguimiento($event)"
+              (retEditarSeguimiento)="setEditarSeguimiento($event)"
+            >
+            </app-planilla-detalle-seguimiento>
+          </mat-tab>
           <mat-tab label="Informes"> <app-planilla-detalle-informes> </app-planilla-detalle-informes> </mat-tab>
         </mat-tab-group>
       </div>
@@ -106,10 +120,12 @@ export class PlanillaTallerAdministrarComponent implements OnInit {
   //   Calificaciones
   cargandoCalificaciones: boolean;
   calificaciones: ICalificacion[];
-  //   Seguimiento
   //   Temas
   cargandoTemas: boolean;
   temas: ITema[];
+  //   Seguimiento
+  seguimientos: ISeguimientoAlumno[];
+  cargandoSeguimiento: boolean;
   //   Informes
   // Mobile
   isMobile: boolean;
@@ -179,6 +195,7 @@ export class PlanillaTallerAdministrarComponent implements OnInit {
       .pipe(untilDestroyed(this))
       .subscribe(
         (datos) => {
+          console.log('obtenerAlumnosPorCursoEspecifico');
           this.alumnos = datos;
           this.cargandoAlumnos = false;
         },
@@ -228,7 +245,6 @@ export class PlanillaTallerAdministrarComponent implements OnInit {
       );
   }
   controlTabs(evento) {
-    console.log('controlTabs', evento);
     this.indiceTab = evento.index;
     switch (evento.index) {
       case 0:
@@ -268,6 +284,8 @@ export class PlanillaTallerAdministrarComponent implements OnInit {
         //   (!this.seguimientos && this.alumnoSeleccionado) ||
         //   (this.seguimientos && this.seguimientos.length > 0 && this.alumnoSeleccionado._id !== this.seguimientos[0].alumno._id)
         // ) {
+        //   console.log('buscando seguimientos');
+
         //   this.setBuscarSeguimientosPorAlumno(this.alumnoSeleccionado);
         // }
         break;
@@ -301,7 +319,6 @@ export class PlanillaTallerAdministrarComponent implements OnInit {
   //   Output Asistencias
   setBuscarAsistenciaPorAlumno(alumno: IAlumno) {
     console.log('1');
-    this.alumnoSeleccionado = alumno;
     this.cargandoAsistencias = true;
     this._asistenciaService
       .obtenerAsistenciasPorAlumnoId(alumno._id, this.planillaId)
@@ -411,7 +428,6 @@ export class PlanillaTallerAdministrarComponent implements OnInit {
   // Output Calificaciones
   setBuscarCalificacionesPorAlumno(alumno: IAlumno) {
     console.log('2');
-    this.alumnoSeleccionado = alumno;
     this.cargandoCalificaciones = true;
     this._calificacionService
       .obtenerCalificacionesPorAlumnoId(alumno._id, this.planillaId)
@@ -574,6 +590,93 @@ export class PlanillaTallerAdministrarComponent implements OnInit {
           Swal.fire({
             title: 'Operación Exitosa',
             text: 'El tema ha sido actualizado correctamente.',
+            icon: 'success',
+          });
+          this.obtenerLibroDeTemas();
+        } else {
+          Swal.fire({
+            title: 'Oops! Ocurrió un error',
+            text: 'Intentelo nuevamente. Si el problema persiste comuniquese con el soporte técnico.',
+            icon: 'error',
+          });
+        }
+      }
+    });
+  }
+  //
+  setBuscarSeguimientosPorAlumno(alumno: IAlumno) {
+    console.log('alumno', alumno);
+    this.cargandoSeguimiento = true;
+    this._seguimientoAlumnoService
+      .obtenerPorPlanillaYAlumno(this.planillaId, alumno._id)
+      .pipe(untilDestroyed(this))
+      .subscribe(
+        (datos) => {
+          this.seguimientos = [...datos];
+          console.log('obtenerPorPlanillaYAlumno', this.seguimientos);
+          this.cargandoSeguimiento = false;
+        },
+        (error) => {
+          this.cargandoSeguimiento = false;
+          console.log('[ERROR]', error);
+        }
+      );
+  }
+  setAbrirModalSeguimiento(evento) {
+    const dialogRef = this._dialog.open(SeguimientoFormModalComponent, {
+      data: { planillaTaller: this.planillaTaller, alumno: this.alumnoSeleccionado },
+    });
+
+    dialogRef.afterClosed().subscribe((resultado) => {
+      console.log('resultado', resultado);
+      if (resultado) {
+        this.setBuscarSeguimientosPorAlumno(this.alumnoSeleccionado);
+      }
+    });
+  }
+  setEditarSeguimiento(seguimiento: ISeguimientoAlumno) {
+    const dialogRef = this._dialog.open(SeguimientoFormModalComponent, {
+      data: { planillaTaller: this.planillaTaller, seguimiento: seguimiento, alumno: this.alumnoSeleccionado },
+    });
+
+    dialogRef.afterClosed().subscribe((resultado) => {
+      console.log('resultado', resultado);
+      if (resultado) {
+        this.obtenerLibroDeTemas();
+      }
+    });
+  }
+  setEliminarSeguimiento(seguimiento: ISeguimientoAlumno) {
+    Swal.fire({
+      title: '¿Está seguro de continuar?',
+      html: 'Está a punto de <strong>ELIMINAR PERMANENTEMENTE</strong> el seguimiento',
+      icon: 'warning',
+      focusConfirm: false,
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      confirmButtonText: 'Si, estoy seguro',
+      cancelButtonText: 'Cancelar',
+      showLoaderOnConfirm: true,
+      preConfirm: () => {
+        return this._seguimientoAlumnoService.eliminarSeguimientoAlumno(seguimiento._id).pipe(
+          catchError((error) => {
+            console.log('[ERROR]', error);
+            Swal.fire({
+              title: 'Oops! Ocurrió un error',
+              text: error && error.error ? error.error.message : 'Error de conexion',
+              icon: 'error',
+            });
+            return of(error);
+          })
+        );
+      },
+      allowOutsideClick: () => !Swal.isLoading(),
+    }).then((result: any) => {
+      if (result.isConfirmed) {
+        if (result.value && result.value.status === 200) {
+          Swal.fire({
+            title: 'Operación Exitosa',
+            text: 'El seguimiento ha sido actualizado correctamente.',
             icon: 'success',
           });
           this.obtenerLibroDeTemas();

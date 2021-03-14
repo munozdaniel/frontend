@@ -33,23 +33,20 @@ export class PlanillaFormComponent implements OnInit, OnChanges {
   pairKeyAsignatura = ASIGNATURA_KEY;
   asignaturas$: Observable<IAsignatura[]>;
   //
-  actualizar=false;
+  actualizar = false;
   constructor(private _fb: FormBuilder) {}
   ngOnChanges(changes: SimpleChanges): void {
     if (changes.cargandoProfesores && changes.cargandoProfesores.currentValue) {
-      console.log('cargandoProfesores', this.cargandoProfesores);
     }
     if (changes.profesores && changes.profesores.currentValue) {
-      console.log('cargandoProfesores', this.profesores);
       this._configurarProfesoresAutocomplete(changes.profesores.currentValue);
     }
     if (changes.asignaturas && changes.asignaturas.currentValue) {
       this._configurarAsignaturaAutocomplete(changes.asignaturas.currentValue);
     }
     if (changes.planillaTaller && changes.planillaTaller.currentValue) {
-      console.log('planillaTaller', this.planillaTaller);
       this.setFormulario();
-      this.actualizar=true;
+      this.actualizar = true;
     }
   }
 

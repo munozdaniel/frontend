@@ -9,6 +9,7 @@ import { Observable } from 'rxjs';
   providedIn: 'root',
 })
 export class SeguimientoAlumnoService {
+  
   protected url = environment.apiURI;
   constructor(private http: HttpClient) {}
 
@@ -37,26 +38,26 @@ export class SeguimientoAlumnoService {
     return this.http.put<any>(url, asignatura);
   }
 
-  actualizarSeguimientoAlumno(asignaturaId: string, asignatura: ISeguimientoAlumno): Observable<any> {
-    const query = `seguimiento-alumnos/${asignaturaId}`;
+  actualizarSeguimientoAlumno(seguimientoId: string, asignatura: ISeguimientoAlumno): Observable<any> {
+    const query = `seguimiento-alumnos/${seguimientoId}`;
     const url = this.url + query;
 
     return this.http.patch<any>(url, asignatura);
   }
-  eliminarSeguimientoAlumno(asignaturaId: string): Observable<any> {
-    const query = `seguimiento-alumnos/${asignaturaId}`;
+  eliminarSeguimientoAlumno(seguimientoId: string): Observable<any> {
+    const query = `seguimiento-alumnos/${seguimientoId}`;
     const url = this.url + query;
 
     return this.http.delete<any>(url);
   }
-  deshabilitarSeguimientoAlumno(asignaturaId: string, activo: boolean): Observable<any> {
-    const query = `seguimiento-alumnos/deshabilitar/${asignaturaId}`;
+  deshabilitarSeguimientoAlumno(seguimientoId: string, activo: boolean): Observable<any> {
+    const query = `seguimiento-alumnos/deshabilitar/${seguimientoId}`;
     const url = this.url + query;
 
     return this.http.put<any>(url, { activo });
   }
-  habilitarSeguimientoAlumno(asignaturaId: string, activo: boolean): Observable<any> {
-    const query = `seguimiento-alumnos/habilitar/${asignaturaId}`;
+  habilitarSeguimientoAlumno(seguimientoId: string, activo: boolean): Observable<any> {
+    const query = `seguimiento-alumnos/habilitar/${seguimientoId}`;
     const url = this.url + query;
 
     return this.http.put<any>(url, { activo });
@@ -74,5 +75,11 @@ export class SeguimientoAlumnoService {
     const url = this.url + query;
 
     return this.http.post<any>(url, { alumnoId, ciclo });
+  }
+  obtenerPorPlanillaYAlumno(planillaId: string, alumno_id: string) {
+    const query = `seguimiento-alumnos/por-planilla-alumno/${planillaId}/${alumno_id}`;
+    const url = this.url + query;
+
+    return this.http.get<any>(url);
   }
 }

@@ -219,7 +219,6 @@ export class PlanillaVerComponent implements OnInit {
 
   setBuscarAsistenciaPorAlumno(alumno: IAlumno) {
     console.log('1');
-    this.alumnoSeleccionado = alumno;
     this.cargandoAsistencias = true;
     this._asistenciaService
       .obtenerAsistenciasPorAlumnoId(alumno._id, this.planillaId)
@@ -238,7 +237,6 @@ export class PlanillaVerComponent implements OnInit {
   //   Output Calificaciones
   setBuscarCalificacionesPorAlumno(alumno: IAlumno) {
     console.log('2');
-    this.alumnoSeleccionado = alumno;
     this.cargandoCalificaciones = true;
     this._calificacionService
       .obtenerCalificacionesPorAlumnoId(alumno._id, this.planillaId)
@@ -274,10 +272,10 @@ export class PlanillaVerComponent implements OnInit {
   }
   //   Seguimientos
   setBuscarSeguimientosPorAlumno(alumno: IAlumno) {
-    this.alumnoSeleccionado = alumno;
     this.cargandoSeguimiento = true;
     this._seguimientoAlumnoService
-      .obtenerSeguimientoAlumnoPorPlanillaCiclo(this.planillaId, alumno._id, this.ciclo)
+      .obtenerPorPlanillaYAlumno(this.planillaId, alumno._id)
+      //   .obtenerSeguimientoAlumnoPorPlanillaCiclo(this.planillaId, alumno._id, this.ciclo)
       .pipe(untilDestroyed(this))
       .subscribe(
         (datos) => {
