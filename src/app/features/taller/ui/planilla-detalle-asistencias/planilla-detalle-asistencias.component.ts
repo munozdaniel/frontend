@@ -15,6 +15,7 @@ import Swal from 'sweetalert2';
   animations: [designAnimations],
 })
 export class PlanillaDetalleAsistenciasComponent implements OnInit, OnChanges {
+  TemplateEnum = TemplateEnum;
   touchtime = 0;
 
   totalNoRegistradas = { valor: 0, porcentaje: 0 };
@@ -77,6 +78,9 @@ export class PlanillaDetalleAsistenciasComponent implements OnInit, OnChanges {
       if (this.template === TemplateEnum.EDICION) {
         this.columnasAsistencia = [...this.columnasAsistencia, 'opciones'];
       }
+    }
+    if (changes.template && changes.template.currentValue) {
+      this.template;
     }
     if (changes.totalClases && changes.totalClases.currentValue) {
     }

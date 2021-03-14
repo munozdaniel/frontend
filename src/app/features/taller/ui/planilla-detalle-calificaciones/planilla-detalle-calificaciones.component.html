@@ -17,6 +17,7 @@
           <mat-icon matSuffix>search</mat-icon>
         </mat-form-field>
         <div
+          *ngIf="template?.toString() == TemplateEnum.EDICION.toString()"
           ngClass.xs="mb-12"
           fxLayout="row"
           fxLayoutAlign.gt-xs="end center"
@@ -130,7 +131,13 @@
           <strong>Promedio Final</strong><span>{{ promedioFinal }}</span>
         </div>
         <!-- <div><strong>Cantidad de Ausencias</strong><span>{{totalAusencias}}</span></div> -->
-        <button *ngIf="isMobile" mat-raised-button color="accent" (click)="mostrarModalCalificacion()" class="w-100-p my-12">
+        <button
+          *ngIf="isMobile && template?.toString() == TemplateEnum.EDICION.toString()"
+          mat-raised-button
+          color="accent"
+          (click)="mostrarModalCalificacion()"
+          class="w-100-p my-12"
+        >
           <mat-icon>settings</mat-icon> Calificar
         </button>
         <p *ngIf="isMobile && mostrarLeyenda">Haga doble click sobre la asistencia que desea editar</p>
@@ -215,7 +222,7 @@
             <span class="nav-link-badge text-center no_promedia"> {{ row.promedioGeneral }} </span>
           </td>
         </ng-container>
-   
+
         <ng-container matColumnDef="opciones">
           <th mat-header-cell *matHeaderCellDef mat-sort-header><mat-icon>settings</mat-icon></th>
           <td mat-cell *matCellDef="let row" (click)="$event.stopPropagation()">

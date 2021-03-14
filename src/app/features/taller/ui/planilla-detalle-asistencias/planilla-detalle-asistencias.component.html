@@ -17,6 +17,7 @@
           <mat-icon matSuffix>search</mat-icon>
         </mat-form-field>
         <div
+          *ngIf="template?.toString() == TemplateEnum.EDICION.toString()"
           ngClass.xs="mb-12"
           fxLayout="row"
           fxLayoutAlign.gt-xs="end center"
@@ -115,7 +116,13 @@
           <strong>Clases NO REGISTRADAS</strong><span>{{ totalNoRegistradas.valor }} ({{ totalNoRegistradas.porcentaje }}%)</span>
         </div>
         <!-- <div><strong>Cantidad de Ausencias</strong><span>{{totalAusencias}}</span></div> -->
-        <button *ngIf="isMobile" mat-raised-button color="accent" (click)="mostrarModalAsistencias()" class="w-100-p my-12">
+        <button
+          *ngIf="isMobile && template?.toString() == TemplateEnum.EDICION.toString()"
+          mat-raised-button
+          color="accent"
+          (click)="mostrarModalAsistencias()"
+          class="w-100-p my-12"
+        >
           <mat-icon>settings</mat-icon>Agregar Asistencia
         </button>
         <p *ngIf="isMobile && mostrarLeyenda">Haga doble click sobre la asistencia que desea editar</p>

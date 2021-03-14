@@ -13,6 +13,7 @@ import { ICalificacion } from 'app/models/interface/iCalificacion';
   animations: [designAnimations],
 })
 export class PlanillaDetalleCalificacionesComponent implements OnInit, OnChanges {
+  TemplateEnum = TemplateEnum;
   touchtime = 0;
   @Input() template?: TemplateEnum;
   @Input() cargandoCalificaciones: boolean;

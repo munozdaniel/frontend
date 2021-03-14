@@ -18,6 +18,7 @@ import { VerSeguimientoModalComponent } from '../ver-seguimiento-modal/ver-segui
   providers: CONFIG_PROVIDER, // Para el time
 })
 export class PlanillaDetalleSeguimientoComponent implements OnInit, OnChanges {
+  TemplateEnum = TemplateEnum;
   @Input() template: TemplateEnum;
   @Input() cargandoAlumnos: boolean;
   @Input() alumnos: IAlumno[];
@@ -61,14 +62,11 @@ export class PlanillaDetalleSeguimientoComponent implements OnInit, OnChanges {
     this.breakpointObserver.observe([Breakpoints.Small, Breakpoints.HandsetPortrait]).subscribe((state: BreakpointState) => {
       if (state.matches) {
         this.isMobile = true;
-        this.columnasSeguimiento = ['fecha', 'tipoSeguimiento', 'resuelto'];
+        this.columnasSeguimiento = ['fecha', 'tipoSeguimiento', 'resuelto', 'opciones'];
       } else {
         this.isMobile = false;
-        this.columnasSeguimiento = ['fecha', 'tipoSeguimiento', 'resuelto'];
+        this.columnasSeguimiento = ['fecha', 'tipoSeguimiento', 'resuelto', 'opciones'];
         console.log('no mbnii', this.template);
-      }
-      if (this.template === TemplateEnum.EDICION) {
-        this.columnasSeguimiento = [...this.columnasSeguimiento, 'opciones'];
       }
     });
   }
@@ -77,9 +75,6 @@ export class PlanillaDetalleSeguimientoComponent implements OnInit, OnChanges {
       console.log('alumnos', this.alumnos);
       this.dataSource.data = this.alumnos;
       console.log('template', this.template);
-      if (this.template === TemplateEnum.EDICION) {
-        this.columnasSeguimiento = [...this.columnasSeguimiento, 'opciones'];
-      }
     }
     if (changes.template && changes.template.currentValue) {
     }

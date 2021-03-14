@@ -21,6 +21,7 @@ import { ITema } from 'app/models/interface/iTema';
   ],
 })
 export class PlanillaDetalleTemasComponent implements OnInit, OnChanges {
+  TemplateEnum = TemplateEnum;
   @Input() template?: TemplateEnum;
   @Input() temas: ITema[];
   @Input() cargandoTemas: boolean;
