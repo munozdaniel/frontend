@@ -79,7 +79,6 @@ export class PlanillaDetalleAsistenciasComponent implements OnInit, OnChanges {
       }
     }
     if (changes.totalClases && changes.totalClases.currentValue) {
-      console.log('total de clases, ', this.totalClases);
     }
     if (changes.asistencias && changes.asistencias.currentValue) {
       this.dataSourceAsistencia.data = this.asistencias;

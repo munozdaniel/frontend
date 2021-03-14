@@ -2,7 +2,7 @@ import { Component, Inject, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 import { designAnimations } from '@design/animations';
-import { untilDestroyed } from '@ngneat/until-destroy';
+import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { SeguimientoAlumnoService } from 'app/core/services/seguimientoAlumno.service';
 import { IAlumno } from 'app/models/interface/iAlumno';
 import { ICicloLectivo } from 'app/models/interface/iCicloLectivo';
@@ -11,7 +11,7 @@ import { ISeguimientoAlumno } from 'app/models/interface/iSeguimientoAlumno';
 import { CONFIG_PROVIDER } from 'app/shared/config.provider';
 import * as moment from 'moment';
 import Swal from 'sweetalert2';
-
+@UntilDestroy()
 @Component({
   selector: 'app-seguimiento-form-modal',
   template: `
@@ -35,8 +35,8 @@ import Swal from 'sweetalert2';
           </mat-form-field>
           <!-- tipoSeguimiento -->
           <mat-form-field appearance="outline" fxFlex.gt-xs="45" fxFlex.xs="100">
-            <mat-label class="lbl">Tema del Día</mat-label>
-            <input matInput type="text" formControlName="tipoSeguimiento" maxlength="100" minlength="4" autocomplete="off" />
+            <mat-label class="lbl">Tipo de Seguimiento  </mat-label>
+            <input matInput type="text" formControlName="tipoSeguimiento" maxlength="100" minlength="7" autocomplete="off" />
             <mat-error *ngIf="form.controls.tipoSeguimiento.hasError('required')"> Este campo es requerido. </mat-error>
             <mat-error
               *ngIf="
@@ -44,7 +44,7 @@ import Swal from 'sweetalert2';
                 (form.get('tipoSeguimiento').hasError('minlength') || form.get('tipoSeguimiento').hasError('maxlength'))
               "
             >
-              Entre 4 y 100 caracteres
+              Entre 7 y 100 caracteres
             </mat-error>
           </mat-form-field>
           <!-- resuelto -->
@@ -61,29 +61,12 @@ import Swal from 'sweetalert2';
               cdkTextareaAutosize
               cdkAutosizeMinRows="3"
               cdkAutosizeMaxRows="6"
-              rows="5"
+              rows="3"
               cols="40"
               formControlName="observacion"
             ></textarea>
             <mat-error *ngIf="form.get('observacion').hasError('minlength') || form.get('observacion').hasError('maxlength')">
-              Minimo 4 caracteres y Máximo 100
-            </mat-error>
-          </mat-form-field>
-          <!-- observacion ============================= -->
-          <mat-form-field appearance="fill" fxFlexAlign.gt-xs="center" class="w-100-p">
-            <mat-label class="lbl">Observación</mat-label>
-            <textarea
-              matInput
-              type="text"
-              cdkTextareaAutosize
-              cdkAutosizeMinRows="3"
-              cdkAutosizeMaxRows="6"
-              rows="5"
-              cols="40"
-              formControlName="observacion"
-            ></textarea>
-            <mat-error *ngIf="form.get('observacion').hasError('minlength') || form.get('observacion').hasError('maxlength')">
-              Minimo 4 caracteres y Máximo 100
+              Minimo 7 caracteres y Máximo 100
             </mat-error>
           </mat-form-field>
           <!-- observacion ============================= -->
@@ -95,12 +78,12 @@ import Swal from 'sweetalert2';
               cdkTextareaAutosize
               cdkAutosizeMinRows="3"
               cdkAutosizeMaxRows="6"
-              rows="5"
+              rows="3"
               cols="40"
               formControlName="observacion2"
             ></textarea>
             <mat-error *ngIf="form.get('observacion2').hasError('minlength') || form.get('observacion2').hasError('maxlength')">
-              Minimo 4 caracteres y Máximo 100
+              Minimo 7 caracteres y Máximo 100
             </mat-error>
           </mat-form-field>
           <!-- observacionJefe ============================= -->
@@ -112,12 +95,12 @@ import Swal from 'sweetalert2';
               cdkTextareaAutosize
               cdkAutosizeMinRows="3"
               cdkAutosizeMaxRows="6"
-              rows="5"
+              rows="3"
               cols="40"
               formControlName="observacionJefe"
             ></textarea>
             <mat-error *ngIf="form.get('observacionJefe').hasError('minlength') || form.get('observacionJefe').hasError('maxlength')">
-              Minimo 4 caracteres y Máximo 100
+              Minimo 7 caracteres y Máximo 100
             </mat-error>
           </mat-form-field>
         </div>
@@ -234,12 +217,20 @@ export class SeguimientoFormModalComponent implements OnInit {
       .pipe(untilDestroyed(this))
       .subscribe(
         (datos) => {
-          Swal.fire({
-            title: 'Tema Agregado',
-            text: 'Un nuevo seguimiento fue agregado al libro',
-            icon: 'success',
-          });
-          this.dialogRef.close(true);
+          if (datos.success) {
+            Swal.fire({
+              title: 'Seguimiento del alumno/a agregado',
+              text: 'Los datos fueron guardados correctamente',
+              icon: 'success',
+            });
+            this.dialogRef.close(true);
+          } else {
+            Swal.fire({
+              title: 'Seguimiento no guardado',
+              text: datos.message,
+              icon: 'warning',
+            });
+          }
           this.cargando = false;
         },
         (error) => {

@@ -1,14 +1,31 @@
 .mt-100 {
-    margin-top: 100px !important;
-  }
-  tr.hovered {
-    background-color: #c8e0fe;
-    color: white;
-  }
-  tr.selected {
-    background-color: rgb(43, 137, 226);
-  }
-  .row_seleccionada {
-    color: white;
-  }
-  
+  margin-top: 100px !important;
+}
+tr.hovered {
+  background-color: #c8e0fe;
+  color: white;
+}
+tr.selected {
+  background-color: rgb(43, 137, 226);
+}
+.row_seleccionada {
+  color: white;
+}
+.resuelto {
+  background: linear-gradient(-135deg, #79a569, #2c8a31);
+  color: white;
+}
+
+.no-resuelto {
+  background: linear-gradient(-135deg, #e24848, #da7272);
+  //   background: linear-gradient(-135deg, #d4a489, #d49889);
+  color: white;
+
+}
+.hover_text{
+    cursor: pointer;
+}
+.hover_text:hover{
+    font-weight: bolder;
+    
+}

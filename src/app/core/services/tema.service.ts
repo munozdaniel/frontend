@@ -17,7 +17,7 @@ export class TemaService {
 
     return this.http.get<any>(url);
   }
-  guardarTema(tema: ITema): Observable<ITema> {
+  guardarTema(tema: ITema): Observable<any> {
     const query = `tema`;
     const url = this.url + query;
 

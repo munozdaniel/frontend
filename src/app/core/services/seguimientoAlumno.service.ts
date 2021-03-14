@@ -9,7 +9,6 @@ import { Observable } from 'rxjs';
   providedIn: 'root',
 })
 export class SeguimientoAlumnoService {
-  
   protected url = environment.apiURI;
   constructor(private http: HttpClient) {}
 
@@ -31,7 +30,7 @@ export class SeguimientoAlumnoService {
 
     return this.http.get<any>(url);
   }
-  agregarSeguimientoAlumno(asignatura: ISeguimientoAlumno): Observable<ISeguimientoAlumno> {
+  agregarSeguimientoAlumno(asignatura: ISeguimientoAlumno): Observable<any> {
     const query = `seguimiento-alumnos`;
     const url = this.url + query;
 

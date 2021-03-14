@@ -1,67 +1,67 @@
 <h1 mat-dialog-title>Seguimiento del Alumno</h1>
-<div mat-dialog-content class="w-100-p">
+<div mat-dialog-content class="px-24">
   <div fxLayout.xs="column" fxLayout.gt-xs="row" fxLayoutAlign.gt-xs="space-between start" fxLayoutGap.xs="20px">
     <div fxFlex.xs="100" fxFlex.gt-xs="45">
-      <p>
+      <p fxLayout="row wrap" fxLayoutAlign.gt-xs="start center" fxLayoutGap.gt-xs="10px">
         <strong>Ciclo:</strong>
         <span>{{ seguimiento.cicloLectivo.anio }}</span>
       </p>
-      <p>
+      <p fxLayout="row wrap" fxLayoutAlign.gt-xs="start center" fxLayoutGap.gt-xs="10px">
         <strong>Alumno/a:</strong>
         <span>{{ seguimiento.alumno.nombreCompleto }}</span>
       </p>
-      <p>
+      <p fxLayout="row wrap" fxLayoutAlign.gt-xs="start center" fxLayoutGap.gt-xs="10px">
         <strong>Email:</strong>
         <span>{{ seguimiento.alumno.email }}</span>
       </p>
-      <p>
+      <p fxLayout="row wrap" fxLayoutAlign.gt-xs="start center" fxLayoutGap.gt-xs="10px">
         <strong>Telefono:</strong>
         <span>{{ seguimiento.alumno.telefono ? seguimiento.alumno.telefono : 'SIN REGISTRAR' }}</span>
       </p>
-      <p>
+      <p fxLayout="row wrap" fxLayoutAlign.gt-xs="start center" fxLayoutGap.gt-xs="10px">
         <strong>Celular:</strong>
         <span>{{ seguimiento.alumno.celular ? seguimiento.alumno.celular : 'SIN REGISTRAR' }}</span>
       </p>
     </div>
 
     <div *ngIf="seguimiento.alumno.seguimientoEtap" fxFlex.xs="100" fxFlex.gt-xs="45">
-      <p>
+      <p fxLayout="row wrap" fxLayoutAlign.gt-xs="start center" fxLayoutGap.gt-xs="10px">
         <strong>Nombre Completo TAE:</strong>
         <span>{{ seguimiento.alumno.nombreCompletoTae }}</span>
       </p>
-      <p>
+      <p fxLayout="row wrap" fxLayoutAlign.gt-xs="start center" fxLayoutGap.gt-xs="10px">
         <strong>Email TAE:</strong>
         <span>{{ seguimiento.alumno.emailTae }}</span>
       </p>
-      <p>
+      <p fxLayout="row wrap" fxLayoutAlign.gt-xs="start center" fxLayoutGap.gt-xs="10px">
         <strong>Diagnostico:</strong>
         <span>{{ seguimiento.alumno.archivoDiagnostico }}</span>
       </p>
     </div>
     <div fxFlex.xs="100" fxFlex.gt-xs="45">
-      <p>
+      <p fxLayout="row wrap" fxLayoutAlign.gt-xs="start center" fxLayoutGap.gt-xs="10px">
         <strong>Tipo de Seguimiento:</strong>
         <span>{{ seguimiento.tipoSeguimiento }}</span>
       </p>
-      <p>
+      <p fxLayout="row wrap" fxLayoutAlign.gt-xs="start center" fxLayoutGap.gt-xs="10px">
         <strong>Estado:</strong>
         <span>{{ seguimiento.resuelto ? 'RESUELTO' : 'NO RESUELTO' }}</span>
       </p>
-      <p>
+      <p fxLayout="row wrap" fxLayoutAlign.gt-xs="start center" fxLayoutGap.gt-xs="10px">
         <strong>Observación:</strong>
         <span>{{ seguimiento.observacion }}</span>
       </p>
-      <p>
+      <p fxLayout="row wrap" fxLayoutAlign.gt-xs="start center" fxLayoutGap.gt-xs="10px">
         <strong>Observación 2:</strong>
         <span>{{ seguimiento.observacion2 }}</span>
       </p>
-      <p>
+      <p fxLayout="row wrap" fxLayoutAlign.gt-xs="start center" fxLayoutGap.gt-xs="10px">
         <strong>Observación del Jefe de Taller:</strong>
         <span>{{ seguimiento.observacionJefe }}</span>
       </p>
     </div>
   </div>
 </div>
-<div mat-dialog-actions>
+<div mat-dialog-actions fxLayout="row" fxLayoutAlign="center center">
   <button mat-button (click)="cerrar()">Cerrar</button>
 </div>

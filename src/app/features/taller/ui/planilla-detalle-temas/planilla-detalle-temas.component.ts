@@ -68,7 +68,10 @@ export class PlanillaDetalleTemasComponent implements OnInit, OnChanges {
     if (changes.temas && changes.temas.currentValue) {
       this.dataSource.data = this.temas;
       if (this.template === TemplateEnum.EDICION) {
-        this.columnas = [...this.columnas, 'opciones'];
+        const index = this.columnas.findIndex((x) => x === 'opciones');
+        if (index === -1) {
+          this.columnas = [...this.columnas, 'opciones'];
+        }
       }
     }
   }

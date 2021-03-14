@@ -62,9 +62,9 @@ import { TemaFormModalComponent } from '../tema-form-modal/tema-form-modal.compo
               [cargandoAlumnos]="cargandoAlumnos"
               [alumnos]="alumnos"
               [calificaciones]="calificaciones"
+              (retBuscarCalificacionesPorAlumno)="setBuscarCalificacionesPorAlumno($event)"
               (retAbrirModalCalificaciones)="setAbrirModalCalificaciones($event)"
               (retEditarCalificacion)="setEditarCalificacion($event)"
-              (retBuscarCalificacionesPorAlumno)="setBuscarCalificacionesPorAlumno($event)"
               (retEliminarCalificacion)="setEliminarCalificacion($event)"
             >
             </app-planilla-detalle-calificaciones>
@@ -88,6 +88,7 @@ import { TemaFormModalComponent } from '../tema-form-modal/tema-form-modal.compo
               [alumnos]="alumnos"
               [cargandoSeguimiento]="cargandoSeguimiento"
               (retBuscarSeguimientosPorAlumno)="setBuscarSeguimientosPorAlumno($event)"
+              (retAbrirModalSeguimiento)="setAbrirModalSeguimiento($event)"
               (retEliminarSeguimiento)="setEliminarSeguimiento($event)"
               (retEditarSeguimiento)="setEditarSeguimiento($event)"
             >
@@ -306,7 +307,7 @@ export class PlanillaTallerAdministrarComponent implements OnInit {
       .pipe(untilDestroyed(this))
       .subscribe(
         (datos) => {
-          this.temas = datos;
+          this.temas = [...datos];
           console.log('temas', this.temas);
           this.cargandoTemas = false;
         },
@@ -319,6 +320,7 @@ export class PlanillaTallerAdministrarComponent implements OnInit {
   //   Output Asistencias
   setBuscarAsistenciaPorAlumno(alumno: IAlumno) {
     console.log('1');
+    this.alumnoSeleccionado = alumno; // cuando viene por output se actualiza
     this.cargandoAsistencias = true;
     this._asistenciaService
       .obtenerAsistenciasPorAlumnoId(alumno._id, this.planillaId)
@@ -428,6 +430,7 @@ export class PlanillaTallerAdministrarComponent implements OnInit {
   // Output Calificaciones
   setBuscarCalificacionesPorAlumno(alumno: IAlumno) {
     console.log('2');
+    this.alumnoSeleccionado = alumno; // cuando viene por output se actualiza
     this.cargandoCalificaciones = true;
     this._calificacionService
       .obtenerCalificacionesPorAlumnoId(alumno._id, this.planillaId)
@@ -462,7 +465,7 @@ export class PlanillaTallerAdministrarComponent implements OnInit {
       }
     });
   }
-  setEditarCalificacion(evento) {
+  setEditarCalificacion(evento: ICalificacion) {
     if (!this.alumnoSeleccionado) {
       Swal.fire({
         title: 'Seleccione un alumno',
@@ -606,6 +609,7 @@ export class PlanillaTallerAdministrarComponent implements OnInit {
   //
   setBuscarSeguimientosPorAlumno(alumno: IAlumno) {
     console.log('alumno', alumno);
+    this.alumnoSeleccionado = alumno; // cuando viene por output se actualiza
     this.cargandoSeguimiento = true;
     this._seguimientoAlumnoService
       .obtenerPorPlanillaYAlumno(this.planillaId, alumno._id)
@@ -623,6 +627,15 @@ export class PlanillaTallerAdministrarComponent implements OnInit {
       );
   }
   setAbrirModalSeguimiento(evento) {
+    if (!this.alumnoSeleccionado) {
+      Swal.fire({
+        title: 'Seleccione un alumno',
+        text: 'Para gestionar el seguimiento debe seleccionar al alumno',
+        icon: 'error',
+      });
+      return;
+    }
+
     const dialogRef = this._dialog.open(SeguimientoFormModalComponent, {
       data: { planillaTaller: this.planillaTaller, alumno: this.alumnoSeleccionado },
     });
@@ -635,6 +648,22 @@ export class PlanillaTallerAdministrarComponent implements OnInit {
     });
   }
   setEditarSeguimiento(seguimiento: ISeguimientoAlumno) {
+    if (!this.alumnoSeleccionado) {
+      Swal.fire({
+        title: 'Seleccione un alumno',
+        text: 'Para gestionar el seguimiento debe seleccionar al alumno',
+        icon: 'error',
+      });
+      return;
+    }
+    if (!seguimiento) {
+      Swal.fire({
+        title: 'Seleccione el seguimiento del alumno',
+        text: 'Para editar el seguimiento debe seleccionarla primero',
+        icon: 'error',
+      });
+      return;
+    }
     const dialogRef = this._dialog.open(SeguimientoFormModalComponent, {
       data: { planillaTaller: this.planillaTaller, seguimiento: seguimiento, alumno: this.alumnoSeleccionado },
     });
@@ -642,7 +671,7 @@ export class PlanillaTallerAdministrarComponent implements OnInit {
     dialogRef.afterClosed().subscribe((resultado) => {
       console.log('resultado', resultado);
       if (resultado) {
-        this.obtenerLibroDeTemas();
+        this.setBuscarSeguimientosPorAlumno(this.alumnoSeleccionado);
       }
     });
   }
@@ -679,7 +708,7 @@ export class PlanillaTallerAdministrarComponent implements OnInit {
             text: 'El seguimiento ha sido actualizado correctamente.',
             icon: 'success',
           });
-          this.obtenerLibroDeTemas();
+          this.setBuscarSeguimientosPorAlumno(this.alumnoSeleccionado);
         } else {
           Swal.fire({
             title: 'Oops! Ocurrió un error',

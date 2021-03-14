@@ -208,10 +208,7 @@ export class TemaFormModalComponent implements OnInit, OnDestroy {
         [Validators.required, Validators.minLength(7), Validators.maxLength(100)],
       ],
       planillaTaller: [this.planillaTaller, [Validators.required]],
-      observacionJefe: [
-        this.tema ? this.tema.observacionJefe : null,
-        [ Validators.minLength(4), Validators.maxLength(100)],
-      ],
+      observacionJefe: [this.tema ? this.tema.observacionJefe : null, [Validators.minLength(4), Validators.maxLength(100)]],
       fechaCreacion: [new Date(moment().format('YYYY-MM-DD')), Validators.required],
       activo: [true],
     });
@@ -240,12 +237,22 @@ export class TemaFormModalComponent implements OnInit, OnDestroy {
       .pipe(untilDestroyed(this))
       .subscribe(
         (datos) => {
-          Swal.fire({
-            title: 'Tema Agregado',
-            text: 'Un nuevo tema fue agregado al libro',
-            icon: 'success',
-          });
-          this.dialogRef.close(true);
+          if (datos.success) {
+            Swal.fire({
+              title: 'Tema agregado',
+              text: 'Los datos fueron guardados correctamente',
+              icon: 'success',
+            });
+            this.dialogRef.close(true);
+          } else {
+            Swal.fire({
+              title: 'Tema no guardado',
+              text: datos.message,
+              icon: 'warning',
+            });
+          }
+
+         
           this.cargando = false;
         },
         (error) => {

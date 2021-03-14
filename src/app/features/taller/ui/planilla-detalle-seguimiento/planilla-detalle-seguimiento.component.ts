@@ -26,7 +26,7 @@ export class PlanillaDetalleSeguimientoComponent implements OnInit, OnChanges {
   @Output() retBuscarSeguimientosPorAlumno = new EventEmitter<IAlumno>();
   @Output() retEliminarSeguimiento = new EventEmitter<ISeguimientoAlumno>();
   @Output() retEditarSeguimiento = new EventEmitter<ISeguimientoAlumno>();
-
+  @Output() retAbrirModalSeguimiento = new EventEmitter<boolean>();
   //   Alumnos
   dataSource: MatTableDataSource<any> = new MatTableDataSource([]);
   @ViewChild('sort') set setSort(sort: MatSort) {
@@ -111,7 +111,6 @@ export class PlanillaDetalleSeguimientoComponent implements OnInit, OnChanges {
   abrirModalDetalle(row: ISeguimientoAlumno) {
     const dialogRef = this.dialog.open(VerSeguimientoModalComponent, {
       data: row,
-      width: '60%',
     });
 
     dialogRef.afterClosed().subscribe((result) => {
@@ -124,5 +123,8 @@ export class PlanillaDetalleSeguimientoComponent implements OnInit, OnChanges {
   }
   editar(seguimiento: ISeguimientoAlumno) {
     this.retEditarSeguimiento.emit(seguimiento);
+  }
+  mostrarModal() {
+    this.retAbrirModalSeguimiento.emit(true);
   }
 }
