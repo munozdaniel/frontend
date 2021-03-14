@@ -1,11 +1,15 @@
 import { IAdulto } from './iAdulto';
 import { IComision } from './iComision';
+import { IEstadoCursada } from './iEstadoCursada';
 
 export interface IAlumno {
-  _id: string;
-  identificador?: number; // Numero secuencial empezando en 100
+  _id?: string;
+  alumnoNro: number;
+  legajo: string;
+  alumnoId: number; // para migrar
   adultos: IAdulto[];
-  comisiones: IComision[];
+  estadoCursadas: IEstadoCursada[];
+  // comisiones?:IComision[];
   tipoDni: string;
   dni: string;
   nombreCompleto: string;
@@ -18,13 +22,12 @@ export interface IAlumno {
   email: string;
   fechaIngreso: string;
   procedenciaColegioPrimario: string;
-  procedenciaColegioSecundario?: string;
-  fechaDeBaja?: string;
-  motivoDeBaja?: string;
+  procedenciaColegioSecundario: string;
+  fechaDeBaja: string;
+  motivoDeBaja: string;
   domicilio: string;
 
   cantidadIntegranteGrupoFamiliar: number;
-
   seguimientoEtap: string;
 
   nombreCompletoTae: string;

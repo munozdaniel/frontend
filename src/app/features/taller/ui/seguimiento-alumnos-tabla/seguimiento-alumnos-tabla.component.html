@@ -58,23 +58,10 @@
     <ng-container matColumnDef="resuelto">
       <th mat-header-cell *matHeaderCellDef mat-sort-header>Resuelto</th>
       <td mat-cell *matCellDef="let row">
-        <span
-          *ngIf="row.resuelto"
-          class="iconify"
-          style="font-size: 24px"
-          data-icon="emojione:ballot-box-with-check"
-          data-inline="false"
-        ></span>
-        <span
-          *ngIf="!row.resuelto"
-          style="color: red; font-size: 24px"
-          class="iconify"
-          data-icon="si-glyph:circle-error"
-          data-inline="false"
-        ></span>
-        <!-- <div [ngClass]="{ resuelto: !row.resuelto, noResuelto: row.resuelto }">
-            <span>{{ row.resuelto ? 'SI' : 'NO' }}</span>
-        </div> -->
+        
+        <span *ngIf="!row.resuelto" class="nav-link-badge text-center no-resuelto"> NO </span>
+        <span *ngIf="row.resuelto" class="nav-link-badge text-center resuelto">SI</span>
+       
       </td>
     </ng-container>
     <ng-container matColumnDef="opciones">

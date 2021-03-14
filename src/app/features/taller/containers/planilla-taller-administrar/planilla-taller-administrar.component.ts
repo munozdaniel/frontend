@@ -31,9 +31,22 @@ import { TemaFormModalComponent } from '../tema-form-modal/tema-form-modal.compo
     <button-volver></button-volver>
     <div fxLayout="column" class="w-100-p p-24 mt-50" fxLayoutGap="20px">
       <div fxLayout="column" class="mat-card mat-elevation-z4 p-24">
-        <div fxLayout fxLayoutAlign="start center" class="w-100-p mb-12" style="border-bottom: 2px solid #80808057;">
-          <h1 [@animate]="{ value: '*', params: { x: '50px' } }" class="px-12">{{ titulo }}</h1>
-          <mat-spinner *ngIf="cargando" matSuffix class="ml-10" diameter="20"></mat-spinner>
+        <div fxLayout="row wrap" fxLayoutAlign="space-between center" class="w-100-p mb-12" style="border-bottom: 2px solid #80808057;">
+          <div>
+            <h1 [@animate]="{ value: '*', params: { x: '50px' } }" class="px-12">{{ titulo }}</h1>
+            <mat-spinner *ngIf="cargando" matSuffix class="ml-10" diameter="20"></mat-spinner>
+          </div>
+          <div *ngIf="alumnoSeleccionado" fxFlex.xs="100">
+            <h3
+              [@animate]="{ value: '*', params: { x: '50px' } }"
+              fxLayoutAlign.xs="center center"
+              fxLayout="row"
+              fxLayoutGap="10px"
+              class="legajo"
+            >
+              <strong>Legajo:</strong><span>{{ alumnoSeleccionado.legajo }}</span>
+            </h3>
+          </div>
         </div>
         <mat-tab-group [selectedIndex]="indiceTab" (selectedTabChange)="controlTabs($event)">
           <mat-tab label="General">
@@ -99,7 +112,19 @@ import { TemaFormModalComponent } from '../tema-form-modal/tema-form-modal.compo
       </div>
     </div>
   `,
-  styles: [],
+  styles: [
+    `
+      .legajo {
+        border: 1px solid gray;
+        padding: 2px 10px;
+        margin: 0;
+        /* text-decoration: underline; */
+        background: #3f3f3f;
+        text-shadow: 0 0 #000000;
+        color: white;
+      }
+    `,
+  ],
   animations: [designAnimations],
 })
 export class PlanillaTallerAdministrarComponent implements OnInit {
