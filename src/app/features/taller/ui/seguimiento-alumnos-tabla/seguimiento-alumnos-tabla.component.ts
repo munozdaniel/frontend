@@ -1,8 +1,12 @@
 import { trigger, state, style, transition, animate } from '@angular/animations';
-import { Component, Input, OnChanges, OnInit, SimpleChanges, ViewChild } from '@angular/core';
+import { MediaMatcher, BreakpointObserver, Breakpoints, BreakpointState } from '@angular/cdk/layout';
+import { ChangeDetectorRef, Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges, ViewChild } from '@angular/core';
 import { MatTableDataSource, MatSort, MatPaginator } from '@angular/material';
+import { Router } from '@angular/router';
 import { designAnimations } from '@design/animations';
+import { TemplateEnum } from 'app/models/constants/tipo-template.const';
 import { ISeguimientoAlumno } from 'app/models/interface/iSeguimientoAlumno';
+import * as moment from 'moment';
 
 @Component({
   selector: 'app-seguimiento-alumnos-tabla',
@@ -25,6 +29,8 @@ import { ISeguimientoAlumno } from 'app/models/interface/iSeguimientoAlumno';
 export class SeguimientoAlumnosTablaComponent implements OnInit, OnChanges {
   @Input() cargando: boolean;
   @Input() seguimientoAlumnos: ISeguimientoAlumno[] = [];
+  @Output() retEditar = new EventEmitter<ISeguimientoAlumno>();
+  @Output() retEliminar = new EventEmitter<ISeguimientoAlumno>();
   dataSource: MatTableDataSource<any> = new MatTableDataSource([]);
   @ViewChild('sort') set setSort(sort: MatSort) {
     this.dataSource.sort = sort;
@@ -46,7 +52,31 @@ export class SeguimientoAlumnosTablaComponent implements OnInit, OnChanges {
   ];
   expandedElement: any | null;
   _id;
-  constructor() {}
+  // Mobile
+  isMobile: boolean;
+  private _mobileQueryListener: () => void;
+  mobileQuery: MediaQueryList;
+  constructor(
+    private _router: Router,
+    private _changeDetectorRef: ChangeDetectorRef,
+    private _media: MediaMatcher,
+    public breakpointObserver: BreakpointObserver
+  ) {
+    this.mobileQuery = this._media.matchMedia('(max-width: 600px)');
+    this._mobileQueryListener = () => this._changeDetectorRef.detectChanges();
+    this.breakpointObserver.observe([Breakpoints.Small, Breakpoints.HandsetPortrait]).subscribe((state: BreakpointState) => {
+      if (state.matches) {
+        this.isMobile = true;
+        this.columnas = ['alumno', 'fecha', 'resuelto', 'opciones'];
+      } else {
+        this.isMobile = false;
+        this.columnas = ['seguimientoAlumnoNro', 'alumno', 'fecha', 'cicloLectivo', 'resuelto', 'opciones'];
+      }
+      //   if (this.template === TemplateEnum.EDICION) {
+      //     this.columnas = [...this.columnas, 'opciones'];
+      //   }
+    });
+  }
 
   ngOnInit(): void {
     this.personalizarSearchSortDetalle();
@@ -67,7 +97,15 @@ export class SeguimientoAlumnosTablaComponent implements OnInit, OnChanges {
     this.dataSource.filterPredicate = (data: ISeguimientoAlumno, filters: string) => {
       const matchFilter = [];
       const filterArray = filters.split(',');
-      const columns = [data.seguimientoAlumnoNro, data.alumno.nombreCompleto, data.fecha, data.cicloLectivo];
+      const columns: any[] = [
+        data.resuelto ? 'RESUELTO' : 'SIN RESOLVER',
+        data.alumno.nombreCompleto,
+        moment(data.fecha, 'YYYY-MM-DD').format('DD/MM/YYYY').toString(), // 2021-03-02T15:21:12
+      ];
+      if (!this.isMobile) {
+        columns.push(data.seguimientoAlumnoNro ? data.seguimientoAlumnoNro : '');
+        columns.push(data.cicloLectivo.anio);
+      }
 
       filterArray.forEach((filter) => {
         const customFilter = [];
@@ -77,16 +115,30 @@ export class SeguimientoAlumnosTablaComponent implements OnInit, OnChanges {
       return matchFilter.every(Boolean); // AND
     };
     // Personalizar Sort
-    this.dataSource.sortingDataAccessor = (item, property) => {
+    this.dataSource.sortingDataAccessor = (item: ISeguimientoAlumno, property) => {
       switch (property) {
         // case 'seguimientoAlumnoNro':
         //   return item.seguimientoAlumnoNro ;
         case 'fecha':
           return item.fecha ? new Date(item.fecha) : '';
-
+        case 'alumno':
+          return item.alumno.nombreCompleto;
+        case 'resuelto':
+          return item.resuelto ? 'SI' : 'NO';
         default:
           return item[property];
       }
     };
+  }
+  editar(row: ISeguimientoAlumno) {
+    this._router.navigate([`taller/seguimiento-edicion-single/${row._id}`]);
+  }
+  eliminar(row: ISeguimientoAlumno) {
+    this.retEliminar.emit(row);
+  }
+  redireccionarPlanilla(row: ISeguimientoAlumno) {
+    if (row.planillaTaller) {
+      this._router.navigate([`taller/planilla-ver/${row.planillaTaller._id}/${row.cicloLectivo.anio}`]);
+    }
   }
 }

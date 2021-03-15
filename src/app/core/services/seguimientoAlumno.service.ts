@@ -12,7 +12,7 @@ export class SeguimientoAlumnoService {
   protected url = environment.apiURI;
   constructor(private http: HttpClient) {}
 
-  obtenerSeguimientoAlumnoPorId(seguimientoAlumnoId: string): Observable<ISeguimientoAlumno> {
+  obtenerSeguimientoPorId(seguimientoAlumnoId: string): Observable<any> {
     const query = `seguimiento-alumnos/${seguimientoAlumnoId}`;
     const url = this.url + query;
 
@@ -77,6 +77,12 @@ export class SeguimientoAlumnoService {
   }
   obtenerPorPlanillaYAlumno(planillaId: string, alumno_id: string) {
     const query = `seguimiento-alumnos/por-planilla-alumno/${planillaId}/${alumno_id}`;
+    const url = this.url + query;
+
+    return this.http.get<any>(url);
+  }
+  obtenerPorAlumno(alumno_id: string) {
+    const query = `seguimiento-alumnos/por-alumno/${alumno_id}`;
     const url = this.url + query;
 
     return this.http.get<any>(url);

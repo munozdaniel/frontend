@@ -96,6 +96,7 @@ import { TemaFormModalComponent } from '../tema-form-modal/tema-form-modal.compo
           <mat-tab label="Seguimiento de Alumnos">
             <app-planilla-detalle-seguimiento
               [template]="template"
+              [cicloLectivo]="planillaTaller?.cicloLectivo"
               [seguimientos]="seguimientos"
               [cargandoAlumnos]="cargandoAlumnos"
               [alumnos]="alumnos"
@@ -205,7 +206,7 @@ export class PlanillaTallerAdministrarComponent implements OnInit {
           this.cargando = false;
           Swal.fire({
             title: 'Planilla de Taller no encontrada',
-            text: 'La planilla que está buscando no se encuentra disponible',
+            text: 'Puede que el registro que busca ya no se encuentre disponible',
             icon: 'error',
           });
           this._router.navigate(['taller/planillas']);

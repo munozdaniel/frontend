@@ -1,0 +1,164 @@
+<div fxLayout="column">
+  <!-- Alumno -->
+  <mat-accordion *ngIf="seguimiento?.alumno as alumno" class="mb-12">
+    <mat-expansion-panel expanded (opened)="panelOpenState = true" (closed)="panelOpenState = false">
+      <mat-expansion-panel-header>
+        <mat-panel-title> Alumno/a </mat-panel-title>
+        <mat-panel-description> Información </mat-panel-description>
+      </mat-expansion-panel-header>
+      <div fxLayout="row wrap" fxLayoutAlign="space-between start">
+        <!-- Legajo -->
+        <div fxFlex.xs="100" fxFlex.gt-xs="45" fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="10px">
+          <strong>Legajo</strong>
+          <span>{{ alumno.legajo }}</span>
+        </div>
+        <!-- NombreCompleto -->
+        <div fxFlex.xs="100" fxFlex.gt-xs="45" fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="10px">
+          <strong>Nombre Completo</strong>
+          <span>{{ alumno.nombreCompleto }}</span>
+        </div>
+        <!-- tipoDni -->
+        <div fxFlex.xs="100" fxFlex.gt-xs="45" fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="10px">
+          <strong>{{ alumno.tipoDni }}</strong>
+          <span>{{ alumno.dni }}</span>
+        </div>
+        <!-- fechaNacimiento -->
+        <div fxFlex.xs="100" fxFlex.gt-xs="45" fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="10px">
+          <strong>Fecha Nacimiento:</strong>
+          <span>{{ alumno.fechaNacimiento | date: 'dd/MM/yyyy':'GMT' }}</span>
+        </div>
+        <!-- sexo -->
+        <!-- <div fxFlex.xs="100" fxFlex.gt-xs="45" fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="10px">
+          <strong>Sexo:</strong>
+          <span>{{ alumno.sexo }}</span>
+        </div> -->
+        <!-- telefono -->
+        <div *ngIf="alumno.telefono" fxFlex.xs="100" fxFlex.gt-xs="45" fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="10px">
+          <strong>Telefono:</strong>
+          <span>{{ alumno.telefono }}</span>
+        </div>
+        <!-- celular -->
+        <div *ngIf="alumno.celular" fxFlex.xs="100" fxFlex.gt-xs="45" fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="10px">
+          <strong>Celular:</strong>
+          <span>{{ alumno.celular }}</span>
+        </div>
+        <!-- email -->
+        <div fxFlex.xs="100" fxFlex.gt-xs="45" fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="10px">
+          <strong>Email:</strong>
+          <span>{{ alumno.email }}</span>
+        </div>
+        <!-- domicilio -->
+        <div fxFlex.xs="100" fxFlex.gt-xs="45" fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="10px">
+          <strong>Domicilio:</strong>
+          <span>{{ alumno.domicilio }}</span>
+        </div>
+      </div>
+    </mat-expansion-panel>
+  </mat-accordion>
+  <!-- Seguimiento -->
+  <div class="mat-card mat-elevation-z4" [class.p-12]="!isMobile" [class.p-4]="isMobile">
+    <form
+      [formGroup]="form"
+      [@animate]="{ value: '*', params: { delay: '50ms', scale: '0.2' } }"
+      class="mt-20 p-0"
+      fxLayoutAlign="center baseline"
+      fxLayout="row wrap"
+    >
+      <div fxLayout.xs="column" class="w-100-p" fxLayout.gt-xs="row wrap" fxLayoutAlign.gt-xs="space-between start">
+        <!-- Fecha -->
+        <mat-form-field appearance="outline" fxFlex.xs="100" fxFlex.gt-xs="45">
+          <mat-label>Fecha</mat-label>
+          <input [max]="maximo" [min]="minimo" autocomplete="off" matInput [matDatepicker]="picker" formControlName="fecha" />
+          <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+          <mat-datepicker #picker></mat-datepicker>
+          <mat-error *ngIf="form?.controls.fecha.hasError('required')"> Este campo es requerido. </mat-error>
+        </mat-form-field>
+        <!-- tipoSeguimiento -->
+        <mat-form-field appearance="outline" fxFlex.gt-xs="45" fxFlex.xs="100">
+          <mat-label class="lbl">Tipo de Seguimiento </mat-label>
+          <input matInput type="text" formControlName="tipoSeguimiento" maxlength="100" minlength="7" autocomplete="off" />
+          <mat-error *ngIf="form.controls.tipoSeguimiento.hasError('required')"> Este campo es requerido. </mat-error>
+          <mat-error
+            *ngIf="
+              !form.get('tipoSeguimiento').hasError('required') &&
+              (form.get('tipoSeguimiento').hasError('minlength') || form.get('tipoSeguimiento').hasError('maxlength'))
+            "
+          >
+            Entre 7 y 100 caracteres
+          </mat-error>
+        </mat-form-field>
+        <!-- resuelto -->
+        <div *ngIf="isUpdate" fxFlex.xs="100" fxFlex.gt-xs="45" class="border p-12 mb-12">
+          <mat-slide-toggle formControlName="resuelto">{{ form.controls.resuelto.value ? 'RESUELTO' : 'NO RESUELTO' }}</mat-slide-toggle>
+        </div>
+
+        <!-- observacion ============================= -->
+        <mat-form-field appearance="fill" fxFlexAlign.gt-xs="center" class="w-100-p">
+          <mat-label class="lbl">Observación</mat-label>
+          <textarea
+            matInput
+            type="text"
+            cdkTextareaAutosize
+            cdkAutosizeMinRows="3"
+            cdkAutosizeMaxRows="6"
+            rows="3"
+            cols="40"
+            formControlName="observacion"
+          ></textarea>
+          <mat-error *ngIf="form.get('observacion').hasError('minlength') || form.get('observacion').hasError('maxlength')">
+            Minimo 7 caracteres y Máximo 100
+          </mat-error>
+        </mat-form-field>
+        <!-- observacion ============================= -->
+        <mat-form-field appearance="fill" fxFlexAlign.gt-xs="center" class="w-100-p">
+          <mat-label class="lbl">Segunda Observación</mat-label>
+          <textarea
+            matInput
+            type="text"
+            cdkTextareaAutosize
+            cdkAutosizeMinRows="3"
+            cdkAutosizeMaxRows="6"
+            rows="3"
+            cols="40"
+            formControlName="observacion2"
+          ></textarea>
+          <mat-error *ngIf="form.get('observacion2').hasError('minlength') || form.get('observacion2').hasError('maxlength')">
+            Minimo 7 caracteres y Máximo 100
+          </mat-error>
+        </mat-form-field>
+        <!-- observacionJefe ============================= -->
+        <mat-form-field appearance="fill" fxFlexAlign.gt-xs="center" class="w-100-p">
+          <mat-label class="lbl"> Observación Jefe de Taller</mat-label>
+          <textarea
+            matInput
+            type="text"
+            cdkTextareaAutosize
+            cdkAutosizeMinRows="3"
+            cdkAutosizeMaxRows="6"
+            rows="3"
+            cols="40"
+            formControlName="observacionJefe"
+          ></textarea>
+          <mat-error *ngIf="form.get('observacionJefe').hasError('minlength') || form.get('observacionJefe').hasError('maxlength')">
+            Minimo 7 caracteres y Máximo 100
+          </mat-error>
+        </mat-form-field>
+      </div>
+    </form>
+    <div fxLayout="row wrap" fxLayoutAlign="center start" class="mt-12">
+      <button
+        *ngIf="isUpdate"
+        mat-raised-button
+        [disabled]="form.invalid"
+        ngClass.xs=""
+        class="mt-8 w-100-p"
+        fxFlex.xs="100"
+        [disabled]="cargando"
+        (click)="actualizar()"
+        color="primary"
+      >
+        Actualizar
+      </button>
+    </div>
+  </div>
+</div>

@@ -33,6 +33,8 @@ import { AsistenciaFormModalComponent } from './containers/asistencia-form-modal
 import { CalificacionFormModalComponent } from './containers/calificacion-form-modal/calificacion-form-modal.component';
 import { TemaFormModalComponent } from './containers/tema-form-modal/tema-form-modal.component';
 import { SeguimientoFormModalComponent } from './containers/seguimiento-form-modal/seguimiento-form-modal.component';
+import { SeguimientoEditarComponent } from './containers/seguimiento-editar/seguimiento-editar.component';
+import { SeguimientoFormComponent } from './ui/seguimiento-form/seguimiento-form.component';
 
 @NgModule({
   declarations: [
@@ -66,6 +68,8 @@ import { SeguimientoFormModalComponent } from './containers/seguimiento-form-mod
     CalificacionFormModalComponent,
     TemaFormModalComponent,
     SeguimientoFormModalComponent,
+    SeguimientoEditarComponent,
+    SeguimientoFormComponent,
   ],
   imports: [CommonModule, TallerRoutingModule, SharedModule, DesignSharedModule],
 })

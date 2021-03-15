@@ -33,7 +33,12 @@ import Swal from 'sweetalert2';
         </div>
       </div>
       <!--  -->
-      <app-seguimiento-alumnos-tabla [cargando]="cargando" [seguimientoAlumnos]="seguimientoAlumnos"></app-seguimiento-alumnos-tabla>
+      <app-seguimiento-alumnos-tabla
+        [cargando]="cargando"
+        [seguimientoAlumnos]="seguimientoAlumnos"
+        (retEditar)="setEditar($event)"
+        (retEliminar)="setEliminar($event)"
+      ></app-seguimiento-alumnos-tabla>
     </div>
   `,
   styles: [],
@@ -85,4 +90,6 @@ export class SeguimientoAlumnosComponent implements OnInit {
         }
       );
   }
+  setEditar(seguimiento: ISeguimientoAlumno) {}
+  setEliminar(seguimiento: ISeguimientoAlumno) {}
 }

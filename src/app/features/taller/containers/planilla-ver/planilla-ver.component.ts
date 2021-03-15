@@ -54,6 +54,7 @@ import { ITema } from 'app/models/interface/iTema';
           <mat-tab label="Seguimiento de Alumnos">
             <app-planilla-detalle-seguimiento
               [seguimientos]="seguimientos"
+              [cicloLectivo]="planillaTaller?.cicloLectivo"
               [cargandoAlumnos]="cargandoAlumnos"
               [alumnos]="alumnos"
               [cargandoSeguimiento]="cargandoSeguimiento"

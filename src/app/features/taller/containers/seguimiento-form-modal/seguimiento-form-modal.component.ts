@@ -26,6 +26,7 @@ import Swal from 'sweetalert2';
       >
         <div fxLayout.xs="column" class="w-100-p" fxLayout.gt-xs="row wrap" fxLayoutAlign.gt-xs="space-between start">
           <!-- Fecha -->
+          {{ this.form.value | json }}
           <mat-form-field appearance="outline" fxFlex.xs="100" fxFlex.gt-xs="45">
             <mat-label>Fecha</mat-label>
             <input [max]="maximo" [min]="minimo" autocomplete="off" matInput [matDatepicker]="picker" formControlName="fecha" />
@@ -35,7 +36,7 @@ import Swal from 'sweetalert2';
           </mat-form-field>
           <!-- tipoSeguimiento -->
           <mat-form-field appearance="outline" fxFlex.gt-xs="45" fxFlex.xs="100">
-            <mat-label class="lbl">Tipo de Seguimiento  </mat-label>
+            <mat-label class="lbl">Tipo de Seguimiento </mat-label>
             <input matInput type="text" formControlName="tipoSeguimiento" maxlength="100" minlength="7" autocomplete="off" />
             <mat-error *ngIf="form.controls.tipoSeguimiento.hasError('required')"> Este campo es requerido. </mat-error>
             <mat-error
@@ -141,7 +142,7 @@ import Swal from 'sweetalert2';
   providers: CONFIG_PROVIDER,
 })
 export class SeguimientoFormModalComponent implements OnInit {
-  cicloLectivo: ICicloLectivo;
+  cicloLectivo: ICicloLectivo; // solo va a tner datos cuando venga por planilla
   alumno: IAlumno;
   cargando = false;
   form: FormGroup;
@@ -150,17 +151,24 @@ export class SeguimientoFormModalComponent implements OnInit {
   seguimiento: ISeguimientoAlumno;
   minimo;
   maximo;
+  ciclosLectivos: ICicloLectivo[];
   constructor(
     private _fb: FormBuilder,
     private _seguimientoAlumnoService: SeguimientoAlumnoService,
     public dialogRef: MatDialogRef<SeguimientoFormModalComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any
   ) {
-    this.planillaTaller = data.planillaTaller;
-    this.minimo = new Date(this.planillaTaller.fechaInicio);
-    this.maximo = new Date(this.planillaTaller.fechaFinalizacion);
+    if (data.planillaTaller) {
+      this.planillaTaller = data.planillaTaller;
+      this.minimo = new Date(this.planillaTaller.fechaInicio);
+      this.maximo = new Date(this.planillaTaller.fechaFinalizacion);
+      this.cicloLectivo = this.planillaTaller.cicloLectivo;
+    }
+    if (data.ciclosLectivos) {
+      this.ciclosLectivos = data.ciclosLectivos;
+    }
+
     this.alumno = data.alumno;
-    this.cicloLectivo = this.planillaTaller.cicloLectivo;
     if (data.seguimiento) {
       this.isUpdate = true;
       this.seguimiento = data.seguimiento;
@@ -170,14 +178,17 @@ export class SeguimientoFormModalComponent implements OnInit {
   ngOnInit(): void {
     const fechaHoy = moment();
     let f = fechaHoy;
-    if (!fechaHoy.isSameOrBefore(moment(this.planillaTaller.fechaFinalizacion))) {
+    if (this.planillaTaller && !fechaHoy.isSameOrBefore(moment(this.planillaTaller.fechaFinalizacion))) {
       f = moment(this.planillaTaller.fechaFinalizacion);
     }
     this.form = this._fb.group({
       fecha: [this.seguimiento ? this.seguimiento.fecha : f, [Validators.required]],
       alumno: [this.alumno, [Validators.required]],
       planillaTaller: [this.planillaTaller, [Validators.required]],
-      cicloLectivo: [this.cicloLectivo, [Validators.required]],
+      cicloLectivo: [
+        this.cicloLectivo ? this.cicloLectivo : this.seguimiento ? this.seguimiento.cicloLectivo : null,
+        [Validators.required],
+      ],
       tipoSeguimiento: [
         this.seguimiento ? this.seguimiento.tipoSeguimiento : null,
         [Validators.required, Validators.minLength(7), Validators.maxLength(100)],
@@ -192,11 +203,39 @@ export class SeguimientoFormModalComponent implements OnInit {
       fechaCreacion: [new Date(moment().format('YYYY-MM-DD')), Validators.required],
       activo: [this.seguimiento ? this.seguimiento.activo : true, [Validators.required]],
     });
+    if (!this.planillaTaller) {
+      this.form.get('planillaTaller').clearValidators();
+      this.form.get('planillaTaller').updateValueAndValidity();
+      this.form.get('cicloLectivo').clearValidators();
+      this.form.get('cicloLectivo').updateValueAndValidity();
+    }
   }
   cerrar(): void {
     this.dialogRef.close();
   }
+  buscarCicloLectivo() {
+    const { fecha } = this.form.value;
+    const anio: string = moment(fecha).format('YYYY');
+    console.log('anio', anio);
+    const index = this.ciclosLectivos.findIndex((x) => x.anio === Number(anio));
+    if (index !== -1) {
+      this.form.controls.cicloLectivo.setValue(this.ciclosLectivos[index]);
+      return true;
+    }
+    return false;
+  }
   guardar() {
+    const hayCiclo = this.buscarCicloLectivo();
+    console.log(hayCiclo);
+    if (!hayCiclo) {
+      Swal.fire({
+        title: 'Error en el Formulario',
+        text: 'El ciclo se genera a traves de la fecha. Seleccione una fecha válida.',
+        icon: 'error',
+      });
+      return;
+    }
+    console.log('form valid?');
     if (!this.form.valid) {
       Swal.fire({
         title: 'Error en el Formulario',
@@ -244,7 +283,16 @@ export class SeguimientoFormModalComponent implements OnInit {
         }
       );
   }
+
   actualizar() {
+    if (!this.buscarCicloLectivo()) {
+      Swal.fire({
+        title: 'Error en el Formulario',
+        text: 'El ciclo se genera a traves de la fecha. Seleccione una fecha válida.',
+        icon: 'error',
+      });
+      return;
+    }
     if (!this.form.valid) {
       Swal.fire({
         title: 'Error en el Formulario',
@@ -267,7 +315,7 @@ export class SeguimientoFormModalComponent implements OnInit {
       .subscribe(
         (datos) => {
           Swal.fire({
-            title: 'Tema actualizado',
+            title: 'Seguimiento actualizado',
             text: 'Los datos fueron actualizados correctamente',
             icon: 'success',
           });

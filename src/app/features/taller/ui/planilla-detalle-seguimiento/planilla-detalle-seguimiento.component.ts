@@ -4,9 +4,11 @@ import { MatTableDataSource, MatSort, MatPaginator, MatDialog } from '@angular/m
 import { designAnimations } from '@design/animations';
 import { TemplateEnum } from 'app/models/constants/tipo-template.const';
 import { IAlumno } from 'app/models/interface/iAlumno';
+import { ICicloLectivo } from 'app/models/interface/iCicloLectivo';
 import { ISeguimientoAlumno } from 'app/models/interface/iSeguimientoAlumno';
 import { ITema } from 'app/models/interface/iTema';
 import { CONFIG_PROVIDER } from 'app/shared/config.provider';
+import * as moment from 'moment';
 import { connectableObservableDescriptor } from 'rxjs/internal/observable/ConnectableObservable';
 import { VerSeguimientoModalComponent } from '../ver-seguimiento-modal/ver-seguimiento-modal.component';
 
@@ -23,6 +25,7 @@ export class PlanillaDetalleSeguimientoComponent implements OnInit, OnChanges {
   @Input() cargandoAlumnos: boolean;
   @Input() alumnos: IAlumno[];
   @Input() seguimientos: ISeguimientoAlumno[];
+  @Input() cicloLectivo?: ICicloLectivo; // DEBERIA USAR EL CICLO LECTIVO DEL SEGUIMIENTO
   @Input() cargandoSeguimiento: boolean;
   @Output() retBuscarSeguimientosPorAlumno = new EventEmitter<IAlumno>();
   @Output() retEliminarSeguimiento = new EventEmitter<ISeguimientoAlumno>();
@@ -66,15 +69,12 @@ export class PlanillaDetalleSeguimientoComponent implements OnInit, OnChanges {
       } else {
         this.isMobile = false;
         this.columnasSeguimiento = ['fecha', 'tipoSeguimiento', 'resuelto', 'opciones'];
-        console.log('no mbnii', this.template);
       }
     });
   }
   ngOnChanges(changes: SimpleChanges): void {
     if (changes.alumnos && changes.alumnos.currentValue) {
-      console.log('alumnos', this.alumnos);
       this.dataSource.data = this.alumnos;
-      console.log('template', this.template);
     }
     if (changes.template && changes.template.currentValue) {
     }
@@ -83,6 +83,7 @@ export class PlanillaDetalleSeguimientoComponent implements OnInit, OnChanges {
     }
   }
   ngOnInit(): void {}
+
   filtroRapido(filterValue: string) {
     this.dataSource.filter = filterValue.trim().toLowerCase();
     if (this.dataSource.paginator) {
@@ -104,6 +105,7 @@ export class PlanillaDetalleSeguimientoComponent implements OnInit, OnChanges {
     this.retBuscarSeguimientosPorAlumno.emit(alumno);
   }
   abrirModalDetalle(row: ISeguimientoAlumno) {
+    row.cicloLectivo = this.cicloLectivo;
     const dialogRef = this.dialog.open(VerSeguimientoModalComponent, {
       data: row,
     });

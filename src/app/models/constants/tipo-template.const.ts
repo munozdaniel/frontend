@@ -1,5 +1,5 @@
 export enum TemplateEnum {
-  EDICION,
-  VER,
-  AGREGAR,
+  'EDICION',
+  'VER',
+  'AGREGAR',
 }

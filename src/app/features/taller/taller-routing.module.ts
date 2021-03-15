@@ -8,6 +8,7 @@ import { PlanillaVerComponent } from './containers/planilla-ver/planilla-ver.com
 import { PlanillasComponent } from './containers/planillas/planillas.component';
 import { SeguimientoAgregarComponent } from './containers/seguimiento-agregar/seguimiento-agregar.component';
 import { SeguimientoAlumnosComponent } from './containers/seguimiento-alumnos/seguimiento-alumnos.component';
+import { SeguimientoEditarComponent } from './containers/seguimiento-editar/seguimiento-editar.component';
 import { TomarAsistenciaComponent } from './containers/tomar-asistencia/tomar-asistencia.component';
 import { AdministrarAsistenciasComponent } from './ui/administrar-asistencias/administrar-asistencias.component';
 
@@ -54,6 +55,11 @@ const routes: Routes = [
     //  DEBE estar autenticados
   },
   //   INDIVIDUALES
+  {
+    path: 'seguimiento-edicion-single/:id',
+    component: SeguimientoEditarComponent,
+    //  DEBE estar autenticados
+  },
   {
     path: 'tomar-asistencia/:id',
     component: TomarAsistenciaComponent,
