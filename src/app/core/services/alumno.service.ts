@@ -56,8 +56,8 @@ export class AlumnoService {
 
     return this.http.get<any>(url);
   }
-  obtenerAlumnoPorId(productoId: string): Observable<IAlumno> {
-    const query = `alumnos/${productoId}`;
+  obtenerAlumnoPorId(alumnoId: string): Observable<IAlumno> {
+    const query = `alumnos/${alumnoId}`;
     const url = this.url + query;
 
     return this.http.get<any>(url);

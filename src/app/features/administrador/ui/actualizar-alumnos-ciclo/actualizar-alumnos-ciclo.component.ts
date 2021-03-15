@@ -2,10 +2,7 @@ import { Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChange
 import { FormGroup, FormBuilder, Validators, FormArray, FormControl } from '@angular/forms';
 import { MatTableDataSource, MatSort, MatPaginator } from '@angular/material';
 import { designAnimations } from '@design/animations';
-import { AlumnoService } from 'app/core/services/alumno.service';
-import { ToastService } from 'app/core/services/general/toast.service';
 import { IAlumno } from 'app/models/interface/iAlumno';
-import { ICicloLectivo } from 'app/models/interface/iCicloLectivo';
 import * as moment from 'moment';
 import Swal from 'sweetalert2';
 

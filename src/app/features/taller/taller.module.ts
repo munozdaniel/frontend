@@ -35,6 +35,7 @@ import { TemaFormModalComponent } from './containers/tema-form-modal/tema-form-m
 import { SeguimientoFormModalComponent } from './containers/seguimiento-form-modal/seguimiento-form-modal.component';
 import { SeguimientoEditarComponent } from './containers/seguimiento-editar/seguimiento-editar.component';
 import { SeguimientoFormComponent } from './ui/seguimiento-form/seguimiento-form.component';
+import { FichaAlumnoDetalleComponent } from './containers/ficha-alumno-detalle/ficha-alumno-detalle.component';
 
 @NgModule({
   declarations: [
@@ -70,6 +71,7 @@ import { SeguimientoFormComponent } from './ui/seguimiento-form/seguimiento-form
     SeguimientoFormModalComponent,
     SeguimientoEditarComponent,
     SeguimientoFormComponent,
+    FichaAlumnoDetalleComponent,
   ],
   imports: [CommonModule, TallerRoutingModule, SharedModule, DesignSharedModule],
 })

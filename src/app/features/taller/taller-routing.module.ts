@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
+import { FichaAlumnoDetalleComponent } from './containers/ficha-alumno-detalle/ficha-alumno-detalle.component';
 import { FichaAlumnosComponent } from './containers/ficha-alumnos/ficha-alumnos.component';
 import { PlanillaAgregarComponent } from './containers/planilla-agregar/planilla-agregar.component';
 import { PlanillaEditarComponent } from './containers/planilla-editar/planilla-editar.component';
@@ -63,6 +64,11 @@ const routes: Routes = [
   {
     path: 'tomar-asistencia/:id',
     component: TomarAsistenciaComponent,
+    //  DEBE estar autenticados
+  },
+  {
+    path: 'ficha-alumno-detalle/:id',
+    component: FichaAlumnoDetalleComponent,
     //  DEBE estar autenticados
   },
 ];

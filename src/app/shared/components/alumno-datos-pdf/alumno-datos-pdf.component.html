@@ -1,0 +1,205 @@
+<div id="invoice" #alumno class="modern page-layout blank" fxLayout="row">
+  <div class="invoice-container">
+    <!-- Fecha CET30 -->
+    <div fxLayout.xs="column" fxLayout.gt-xs="row" fxLayoutAlign="space-between start">
+      <p>Fecha:</p>
+      <p>CET 30</p>
+    </div>
+    <!-- Tiulo -->
+    <!-- INVOICE -->
+    <div *ngIf="alumno" class="card">
+      <div class="header" fxLayout="row" fxLayoutAlign="space-between start">
+        <div class="ids" fxLayout="column">
+          <div fxLayout="row" class="seller" fxLayoutAlign="start center">
+            <div class="logo">
+              <!-- <img src="assets/images/logos/fuse.svg" /> -->
+            </div>
+
+            <div class="divider"></div>
+
+            <div class="detail">
+              <div class="title">{{ alumno.nombreCompleto }}</div>
+              <div *ngIf="alumno?.direccion" class="address">
+                {{ alumno.direccion }}
+              </div>
+              <div *ngIf="alumno?.telefono" class="phone">
+                <span>Telefono:</span>
+                {{ alumno.telefono }}
+              </div>
+
+              <div *ngIf="alumno?.celular" class="website">
+                <span>Celular:</span>
+                {{ alumno.celular }}
+              </div>
+              <div *ngIf="alumno?.email" class="email">
+                <span>Email:</span>
+                {{ alumno.email }}
+              </div>
+            </div>
+          </div>
+
+          <div fxLayout="row" class="client" fxLayoutAlign="start center">
+            <div class="label" fxLayout="row" fxLayoutAlign="end center">
+              <div>
+                FICHA {{ alumno.sexo == 'MASCULINO' ? 'DEL' : alumno.sexo == 'FEMENINO' ? 'DE LA' : 'DEL/LA' }} ALUMN{{
+                  alumno.sexo == 'MASCULINO' ? 'O' : alumno.sexo == 'FEMENINO' ? 'A' : 'O/A'
+                }}
+              </div>
+            </div>
+
+            <div class="divider"></div>
+
+            <!-- <div class="detail">
+              <div class="title">{{ invoice.client.title }}</div>
+              <div *ngIf="invoice?.client.address" class="address">
+                {{ invoice.client.address }}
+              </div>
+              <div *ngIf="invoice?.client.phone" class="phone">
+                <span>Phone:</span>
+                {{ invoice.client.phone }}
+              </div>
+              <div *ngIf="invoice?.client.email" class="email">
+                <span>Email:</span>
+                {{ invoice.client.email }}
+              </div>
+              <div *ngIf="invoice?.client.website" class="website">
+                <span>Web:</span>
+                {{ invoice.client.website }}
+              </div>
+            </div> -->
+          </div>
+        </div>
+
+        <table class="summary">
+          <tr class="code">
+            <td class="label">{{ alumno.nombreCompleto }}</td>
+            <td class="value">
+              <!-- {{ invoice.number }} -->
+            </td>
+          </tr>
+
+          <tr>
+            <td class="label">FECHA INGRESO</td>
+            <td class="value">{{ alumno.fechaIngreso | date: 'dd/MM/yyyy':'GMT' }}</td>
+          </tr>
+
+          <tr>
+            <td class="label">DUE DATE</td>
+            <!-- <td class="value">{{ invoice.dueDate }}</td> -->
+          </tr>
+
+          <tr>
+            <td class="label">TOTAL DUE</td>
+            <!-- <td class="value">{{ invoice.total | currency: 'USD':'symbol' }}</td> -->
+          </tr>
+        </table>
+      </div>
+
+      <div class="content">
+        <!-- <table class="simple invoice-table">
+          <thead>
+            <tr>
+              <th>SERVICE</th>
+              <th>UNIT</th>
+              <th class="text-right">UNIT PRICE</th>
+              <th class="text-right">QUANTITY</th>
+              <th class="text-right">TOTAL</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let service of invoice.services">
+              <td>
+                <div class="title">{{ service.title }}</div>
+                <div class="detail">{{ service.detail }}</div>
+              </td>
+              <td>
+                {{ service.unit }}
+              </td>
+              <td class="text-right">
+                {{ service.unitPrice | currency: 'USD':'symbol' }}
+              </td>
+              <td class="text-right">
+                {{ service.quantity }}
+              </td>
+              <td class="text-right">
+                {{ service.total | currency: 'USD':'symbol' }}
+              </td>
+            </tr>
+          </tbody>
+        </table> -->
+
+        <!-- <table class="simple invoice-table-footer">
+          <tbody>
+            <tr class="subtotal">
+              <td>SUBTOTAL</td>
+              <td>{{ invoice.subtotal | currency: 'USD':'symbol' }}</td>
+            </tr>
+            <tr class="tax">
+              <td>TAX</td>
+              <td>{{ invoice.tax | currency: 'USD':'symbol' }}</td>
+            </tr>
+            <tr class="discount">
+              <td>DISCOUNT</td>
+              <td>-{{ invoice.discount | currency: 'USD':'symbol' }}</td>
+            </tr>
+            <tr class="total">
+              <td>TOTAL</td>
+              <td>{{ invoice.total | currency: 'USD':'symbol' }}</td>
+            </tr>
+          </tbody>
+        </table> -->
+      </div>
+
+      <div class="footer">
+        <div class="note">Please pay within 15 days. Thank you for your business.</div>
+        <div fxLayout="row" fxLayoutAlign="start start">
+          <div class="logo">
+            <!-- <img src="assets/images/logos/fuse.svg" /> -->
+          </div>
+          <div class="small-note">
+            In condimentum malesuada efficitur. Mauris volutpat placerat auctor. Ut ac congue dolor. Quisque scelerisque lacus sed feugiat
+            fermentum. Cras aliquet facilisis pellentesque. Nunc hendrerit quam at leo commodo, a suscipit tellus dapibus. Etiam at felis
+            volutpat est mollis lacinia. Mauris placerat sem sit amet velit mollis, in porttitor ex finibus. Proin eu nibh id libero
+            tincidunt lacinia et eget eros.
+          </div>
+        </div>
+      </div>
+
+      <!--
+
+            Use the following elements to add breaks to your pages. This will make sure that the section in between
+            these elements will be printed on a new page. The following two elements must be used before and after the
+            page content that you want to show as a new page. So, you have to wrap your content with them.
+
+            Elements:
+            ---------
+            <div class="page-break-after"></div>
+            <div class="page-break-before"></div>
+
+            -->
+
+      <!--
+
+            Example:
+            --------
+
+            Initial page content!
+
+            <div class="page-break-after"></div>
+            <div class="page-break-before"></div>
+
+            This is the second page!
+
+            <div class="page-break-after"></div>
+            <div class="page-break-before"></div>
+
+            This is the third page!
+
+            <div class="page-break-after"></div>
+            <div class="page-break-before"></div>
+
+            -->
+    </div>
+    <!-- / INVOICE -->
+  </div>
+</div>

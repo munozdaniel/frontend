@@ -14,6 +14,7 @@ import { AlumnosTablaParamComponent } from './components/alumnos-tabla-param/alu
 import { FormCicloLectivoComponent } from './components/form-ciclo-lectivo/form-ciclo-lectivo.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { InputAutocompleteComponent } from './components/input-autocomplete/input-autocomplete.component';
+import { AlumnoDatosPdfComponent } from './components/alumno-datos-pdf/alumno-datos-pdf.component';
 
 @NgModule({
   imports: [
@@ -41,6 +42,7 @@ import { InputAutocompleteComponent } from './components/input-autocomplete/inpu
     AlumnosTablaParamComponent,
     FormCicloLectivoComponent,
     InputAutocompleteComponent,
+    AlumnoDatosPdfComponent,
   ],
   declarations: [
     Error401Component,
@@ -53,6 +55,7 @@ import { InputAutocompleteComponent } from './components/input-autocomplete/inpu
     AlumnosTablaParamComponent,
     FormCicloLectivoComponent,
     InputAutocompleteComponent,
+    AlumnoDatosPdfComponent,
   ],
 })
 export class SharedModule {}

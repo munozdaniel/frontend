@@ -5,12 +5,12 @@
   fxLayout="column"
   fxLayoutAlign="center start"
 >
-  <div class="w-100-p" fxLayout="row wrap" fxLayoutAlign="space-between center" >
+  <div class="w-100-p" fxLayout="row wrap" fxLayoutAlign="space-between center">
     <!-- cicloLectivo ============================= -->
     <mat-form-field appearance="outline" fxFlex.gt-xs="30" fxFlex.xs="100">
       <mat-label class="lbl">Ciclo Lectivo</mat-label>
       <mat-select formControlName="cicloLectivo">
-        <mat-option *ngFor="let anio of anios" [value]="anio">{{ anio }}</mat-option>
+        <mat-option *ngFor="let ciclo of ciclosLectivos" [value]="ciclo">{{ ciclo.anio }}</mat-option>
       </mat-select>
       <mat-error *ngIf="form.controls.cicloLectivo.hasError('required')"> Este campo es requerido. </mat-error>
     </mat-form-field>
@@ -40,7 +40,9 @@
       >
     </mat-form-field>
   </div>
-  <div fxLayout="row" fxLayoutAlign="center start"  class="w-100-p" >
-    <button mat-raised-button color="primary" type="submit" [disabled]="form.invalid"><mat-icon class="mr-8">search</mat-icon>Buscar</button>
+  <div fxLayout="row" fxLayoutAlign="center start" class="w-100-p">
+    <button mat-raised-button color="primary" type="submit" [disabled]="form.invalid">
+      <mat-icon class="mr-8">search</mat-icon>Buscar
+    </button>
   </div>
 </form>

@@ -4,27 +4,13 @@
       <h1 [@animate]="{ value: '*', params: { x: '50px' } }" class="px-12">{{ titulo }}</h1>
       <mat-spinner *ngIf="cargando" matSuffix class="ml-10" diameter="20"></mat-spinner>
     </div>
-    <div
-      *ngIf="alumnos?.length > 0"
-      fxLayout
-      fxLayoutAlign="end center"
-      fxLayoutGap="10px"
-    >
-      <button mat-raised-button color="accent">Ficha Personal</button>
-      <button mat-raised-button color="warn">Seguimiento</button>
-      <button mat-raised-button color="warn">Nueva Búsqueda</button>
-    </div>
   </div>
   <app-form-busqueda-alumnos
     [@animate]="{ value: '*', params: { x: '50px' } }"
     [cargando]="cargando"
+    [ciclosLectivos]="ciclosLectivos"
     (retParametrosBusqueda)="setParametrosBusqueda($event)"
     class="w-100-p"
   ></app-form-busqueda-alumnos>
-  <app-alumnos-tabla-param
-    [cargando]="cargando"
-    [alumnos]="alumnos"
-    [operacion]="alumnoOperacion.FICHA"
-    (retFichaPersonal)="setFichaPersonal($event)"
-  ></app-alumnos-tabla-param>
+  <app-alumnos-tabla-param [cargando]="cargando" [alumnos]="alumnos" [operacion]="alumnoOperacion.FICHA"></app-alumnos-tabla-param>
 </div>

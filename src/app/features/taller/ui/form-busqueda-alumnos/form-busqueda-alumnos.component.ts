@@ -1,5 +1,6 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
+import { ICicloLectivo } from 'app/models/interface/iCicloLectivo';
 import { IFichaAlumnoParam } from 'app/models/interface/iFichaAlumnoParam';
 import * as moment from 'moment';
 import Swal from 'sweetalert2';
@@ -10,16 +11,12 @@ import Swal from 'sweetalert2';
   styleUrls: ['./form-busqueda-alumnos.component.scss'],
 })
 export class FormBusquedaAlumnosComponent implements OnInit {
+  @Input() ciclosLectivos: ICicloLectivo[];
   @Input() cargando: boolean;
   @Output() retParametrosBusqueda = new EventEmitter<IFichaAlumnoParam>();
   form: FormGroup;
-  anios = [];
   constructor(private _fb: FormBuilder) {
-    const actual = moment().year();
-    for (let index = 10; index > 0; index--) {
-      this.anios.unshift(actual - index);
-    }
-    this.anios.unshift(actual);
+  
   }
 
   ngOnInit(): void {

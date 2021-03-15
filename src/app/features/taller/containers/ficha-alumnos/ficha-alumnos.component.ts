@@ -10,6 +10,8 @@ import { IFichaAlumnoParam } from 'app/models/interface/iFichaAlumnoParam';
 import { ALUMNO_OPERACION } from 'app/models/constants/alumno-operacion.enum';
 import Swal from 'sweetalert2';
 import { ToastService } from 'app/core/services/general/toast.service';
+import { ICicloLectivo } from 'app/models/interface/iCicloLectivo';
+import { CicloLectivoService } from 'app/core/services/ciclo-lectivo.service';
 
 @UntilDestroy()
 @Component({
@@ -19,17 +21,31 @@ import { ToastService } from 'app/core/services/general/toast.service';
   animations: designAnimations,
 })
 export class FichaAlumnosComponent implements OnInit {
-  titulo = 'Buscar fichas de alumnos';
+  titulo = 'Buscar fichas de alumnos/as';
   cargando = false;
   alumnos: IAlumno[];
   alumnoOperacion = ALUMNO_OPERACION;
+  ciclosLectivos: ICicloLectivo[];
   constructor(
     private _toastService: ToastService,
     private _alumnoService: AlumnoService,
+    private _cicloLectivoService: CicloLectivoService,
     private _designProgressBar: DesignProgressBarService
   ) {}
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    this._cicloLectivoService
+      .obtenerCiclosLectivos()
+      .pipe(untilDestroyed(this))
+      .subscribe(
+        (datos) => {
+            this.ciclosLectivos = datos;
+        },
+        (error) => {
+          console.log('[ERROR]', error);
+        }
+      );
+  }
   setParametrosBusqueda(evento: IFichaAlumnoParam) {
     if (evento) {
       this.cargando = true;
@@ -59,9 +75,5 @@ export class FichaAlumnosComponent implements OnInit {
         );
     }
   }
-  setFichaPersonal(evento: IAlumno) {
-    if (evento) {
-      // generar pdf
-    }
-  }
+
 }
