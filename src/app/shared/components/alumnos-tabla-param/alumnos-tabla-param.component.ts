@@ -3,6 +3,7 @@ import { ChangeDetectorRef, Component, EventEmitter, Input, OnChanges, OnInit, O
 import { MatTableDataSource, MatSort, MatPaginator } from '@angular/material';
 import { Router } from '@angular/router';
 import { designAnimations } from '@design/animations';
+import { FichaAlumnoPdf } from 'app/core/services/pdf/ficha-alumno.pdf';
 import { ALUMNO_OPERACION } from 'app/models/constants/alumno-operacion.enum';
 import { IAlumno } from 'app/models/interface/iAlumno';
 import { IPaginado } from 'app/models/interface/iPaginado';
@@ -33,6 +34,7 @@ export class AlumnosTablaParamComponent implements OnInit, OnChanges {
   private _mobileQueryListener: () => void;
   mobileQuery: MediaQueryList;
   constructor(
+    private _fichaAlumnoPdf: FichaAlumnoPdf,
     private _router: Router,
     private _changeDetectorRef: ChangeDetectorRef,
     private _media: MediaMatcher,
@@ -71,7 +73,7 @@ export class AlumnosTablaParamComponent implements OnInit, OnChanges {
   //   }
 
   verFichaPersonalAlumno(alumno: IAlumno) {
-    this._router.navigate([`/taller/ficha-alumno-detalle/${alumno._id}`]);
+    this._fichaAlumnoPdf.generatePdf(alumno);
   }
   verSeguimientoAlumno(alumno: IAlumno) {
     this._router.navigate([`/taller/seguimiento-alumno-single/${alumno._id}`]);

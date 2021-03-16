@@ -1,31 +1,21 @@
-import { Component, ElementRef, Input, OnInit, ViewChild } from '@angular/core';
-import { designAnimations } from '@design/animations';
-import { ScriptService } from 'app/core/services/plugins/script-excel.service';
+import { Injectable } from '@angular/core';
 import { IAdulto } from 'app/models/interface/iAdulto';
 import { IAlumno } from 'app/models/interface/iAlumno';
-import { ICurso } from 'app/models/interface/iCurso';
 import { IEstadoCursada } from 'app/models/interface/iEstadoCursada';
 import * as moment from 'moment';
-import Swal from 'sweetalert2';
+import { ScriptService } from '../plugins/script-excel.service';
 declare let pdfMake: any;
-
-@Component({
-  selector: 'app-alumno-datos-pdf',
-  templateUrl: './alumno-datos-pdf.component.html',
-  styleUrls: ['./alumno-datos-pdf.component.scss'],
-  animations: [designAnimations],
+@Injectable({
+  providedIn: 'root',
 })
-export class AlumnoDatosPdfComponent implements OnInit {
-  @Input() cargando: boolean;
-  @Input() alumno: IAlumno;
-  //   @ViewChild('alumno', null) message: ElementRef;
-
+export class FichaAlumnoPdf {
+  alumno: IAlumno;
   constructor(private scriptService: ScriptService) {
     this.scriptService.load('pdfMake', 'vfsFonts');
   }
 
-  ngOnInit(): void {}
-  generatePdf(action = 'open') {
+  generatePdf(alumno: IAlumno, action = 'open') {
+    this.alumno = alumno;
     const documentDefinition = this.getDocumentDefinition();
     switch (action) {
       case 'open':
