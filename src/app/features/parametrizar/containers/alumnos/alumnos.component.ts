@@ -15,7 +15,6 @@ import Swal from 'sweetalert2';
     <div class="w-100-p p-24" fxLayout="column">
       <app-alumnos-menu-param [cargando]="cargando" (retAgregarAlumno)="setAgregarAlumno($event)"> </app-alumnos-menu-param>
       <app-alumnos-tabla-param
-        [operacion]="alumnoOperacion.ADMINISTRADOR"
         [cargando]="cargando"
         [alumnos]="alumnos"
         (retEliminarAlumno)="setEliminarAlumno($event)"

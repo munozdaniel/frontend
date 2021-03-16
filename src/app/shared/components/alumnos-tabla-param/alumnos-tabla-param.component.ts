@@ -17,8 +17,6 @@ import { IAlumno } from 'app/models/interface/iAlumno';
   animations: designAnimations,
 })
 export class AlumnosTablaParamComponent implements OnInit, OnChanges {
-  alumnoOperacion = ALUMNO_OPERACION;
-  @Input() operacion: ALUMNO_OPERACION;
   @Input() cargando: boolean;
   // ALUMNOS ________________________________
   dataSource: MatTableDataSource<any> = new MatTableDataSource([]);
@@ -69,12 +67,12 @@ export class AlumnosTablaParamComponent implements OnInit, OnChanges {
       this.dataSource.paginator.firstPage();
     }
   }
-  //   editar(row: IAlumno) {
-  //     this._router.navigate(['/parametrizar/alumnos-editar/' + row._id]);
-  //   }
-  //   ver(row: IAlumno) {
-  //     this._router.navigate(['/parametrizar/alumnos-ver/' + row._id]);
-  //   }
+  editar(row: IAlumno) {
+    this._router.navigate(['/parametrizar/alumnos-editar/' + row._id]);
+  }
+  ver(row: IAlumno) {
+    this._router.navigate(['/parametrizar/alumnos-ver/' + row._id]);
+  }
 
   verFichaPersonalAlumno(alumno: IAlumno) {
     this._fichaAlumnoPdf.generatePdf(alumno);
@@ -86,7 +84,6 @@ export class AlumnosTablaParamComponent implements OnInit, OnChanges {
       .pipe(untilDestroyed(this))
       .subscribe(
         (datos) => {
-          console.log('seguimiento', datos);
           this._seguimientoAlumnoPdf.generatePdf(alumno, datos);
         },
         (error) => {

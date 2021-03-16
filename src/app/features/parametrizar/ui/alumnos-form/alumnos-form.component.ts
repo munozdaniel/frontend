@@ -84,11 +84,18 @@ export class AlumnosFormComponent implements OnInit, OnChanges {
     }
 
     this.formDatosPersonales.patchValue(this.alumno);
-    this.formEtap.patchValue(this.alumno);
+    if (this.alumno.seguimientoEtap === 'SI') {
+      this.formEtap.patchValue(this.alumno);
+    } else {
+      this.formEtap.get('nombreCompletoTae').clearValidators();
+      this.formEtap.get('emailTae').clearValidators();
+      this.formEtap.get('archivoDiagnostico').clearValidators();
+      this.formEtap.get('nombreCompletoTae').updateValueAndValidity();
+      this.formEtap.get('emailTae').updateValueAndValidity();
+      this.formEtap.get('archivoDiagnostico').updateValueAndValidity();
+    }
     this.adultos = this.alumno.adultos.map((x: IAdulto, index: number) => ({ ...x, index: index + 1 }));
     this.seguimientoEtap = this.alumno.seguimientoEtap && this.alumno.seguimientoEtap === 'SI' ? true : false;
-    console.log('this.alumno.sexo', this.alumno.sexo);
-    console.log('this.alumno.sexo', this.alumno.tipoDni);
     this.formDatosPersonales.controls.sexo.setValue(this.alumno.sexo.toUpperCase());
     this.formDatosPersonales.controls.tipoDni.setValue(this.alumno.tipoDni ? this.alumno.tipoDni.toUpperCase() : 'DNI');
     if (!this.soloLectura) {
@@ -159,8 +166,8 @@ export class AlumnosFormComponent implements OnInit, OnChanges {
       ...this.formEtap.value,
       adultos: this.adultos,
       comisiones: this.comisiones,
-      telefono: this.formDatosPersonales.controls.telefono.value.toString(),
-      celular: this.formDatosPersonales.controls.celular.value.toString(),
+      telefono: this.formDatosPersonales.controls.telefono.value ? this.formDatosPersonales.controls.telefono.value.toString() : null,
+      celular: this.formDatosPersonales.controls.celular.value ? this.formDatosPersonales.controls.celular.value.toString() : null,
       seguimientoEtap: this.seguimientoEtap ? 'SI' : 'NO',
     };
     console.log('alumno', alumno);

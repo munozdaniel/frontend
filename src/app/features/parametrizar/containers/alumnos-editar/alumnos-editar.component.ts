@@ -46,7 +46,6 @@ export class AlumnosEditarComponent implements OnInit {
   recuperarDatos() {
     this._activeRoute.params.subscribe((params) => {
       this.alumnoId = params['id'];
-      console.log(' this.alumnoId', this.alumnoId);
       this.alumno$ = this._alumnoService.obtenerAlumnoPorId(this.alumnoId).pipe(finalize(() => (this.cargando = false)));
     });
   }
@@ -57,7 +56,6 @@ export class AlumnosEditarComponent implements OnInit {
     }
   }
   confirmarGuardar(alumno: IAlumno) {
-    console.log('alumno length ', alumno.dni.length);
     Swal.fire({
       title: '¿Está seguro de continuar?',
       html: 'Está a punto de actualizar el alumno: ' + alumno.nombreCompleto,
