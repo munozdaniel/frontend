@@ -10,7 +10,6 @@ export interface IAsistencia {
   fecha: Date;
   presente: boolean;
   llegoTarde: boolean;
-
   fechaCreacion?: Date;
   fechaModificacion?: Date;
   activo: boolean;
