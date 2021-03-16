@@ -250,7 +250,7 @@ export class FichaAlumnoPdf {
           {
             // auto-sized columns have their widths based on their content
             width: '70%',
-            text: this.alumno.fechaNacimiento ? moment(this.alumno.fechaNacimiento).format('DD/MM/YYYY').toString() : 'Sin Registrar',
+            text: this.alumno.fechaNacimiento ? moment.utc(this.alumno.fechaNacimiento).format('DD/MM/YYYY').toString() : 'Sin Registrar',
             alignment: 'start',
           },
           {
@@ -337,7 +337,7 @@ export class FichaAlumnoPdf {
           {
             // auto-sized columns have their widths based on their content
             width: '70%',
-            text: x.nombreCompleto,
+            text: x.nombreCompleto ? x.nombreCompleto : 'Sin Registrar',
             alignment: 'start',
             margin: [0, 0, 5, 0],
           },

@@ -49,8 +49,8 @@ export class AsistenciaFormModalComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     const fechaHoy = moment();
     let f = fechaHoy;
-    if (!fechaHoy.isSameOrBefore(moment(this.planillaTaller.fechaFinalizacion))) {
-      f = moment(this.planillaTaller.fechaFinalizacion);
+    if (!fechaHoy.isSameOrBefore(moment.utc(this.planillaTaller.fechaFinalizacion))) {
+      f = moment.utc(this.planillaTaller.fechaFinalizacion);
     }
     this.form = this._fb.group({
       fecha: [this.asistencia ? this.asistencia.fecha : f, [Validators.required]],
@@ -74,7 +74,7 @@ export class AsistenciaFormModalComponent implements OnInit, OnDestroy {
     }
     this.cargando = true;
 
-    const fecha = new Date(moment(this.form.controls.fecha.value).format('YYYY-MM-DD'));
+    const fecha = new Date(moment.utc(this.form.controls.fecha.value).format('YYYY-MM-DD'));
     const asistencia: IAsistencia = { ...this.form.value, fecha, alumno: this.alumno, activo: true, fechaCreacion: new Date() };
     this._asistenciaService
       .guardarAsistencia(asistencia)
@@ -111,7 +111,7 @@ export class AsistenciaFormModalComponent implements OnInit, OnDestroy {
     }
     this.cargando = true;
 
-    const fecha = new Date(moment(this.form.controls.fecha.value).format('YYYY-MM-DD'));
+    const fecha = new Date(moment.utc(this.form.controls.fecha.value).format('YYYY-MM-DD'));
     const asistenciaForm: IAsistencia = { ...this.form.value, fecha, alumno: this.alumno, activo: true, fechaCreacion: new Date() };
     console.log('asistencia', asistenciaForm);
     this._asistenciaService

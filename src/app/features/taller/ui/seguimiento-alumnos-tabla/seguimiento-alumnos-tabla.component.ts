@@ -100,7 +100,7 @@ export class SeguimientoAlumnosTablaComponent implements OnInit, OnChanges {
       const columns: any[] = [
         data.resuelto ? 'RESUELTO' : 'SIN RESOLVER',
         data.alumno.nombreCompleto,
-        moment(data.fecha, 'YYYY-MM-DD').format('DD/MM/YYYY').toString(), // 2021-03-02T15:21:12
+        moment.utc(data.fecha, 'YYYY-MM-DD').format('DD/MM/YYYY').toString(), // 2021-03-02T15:21:12
       ];
       if (!this.isMobile) {
         columns.push(data.seguimientoAlumnoNro ? data.seguimientoAlumnoNro : '');

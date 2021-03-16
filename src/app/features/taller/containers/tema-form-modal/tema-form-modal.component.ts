@@ -190,8 +190,8 @@ export class TemaFormModalComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     const fechaHoy = moment();
     let f = fechaHoy;
-    if (!fechaHoy.isSameOrBefore(moment(this.planillaTaller.fechaFinalizacion))) {
-      f = moment(this.planillaTaller.fechaFinalizacion);
+    if (!fechaHoy.isSameOrBefore(moment.utc(this.planillaTaller.fechaFinalizacion))) {
+      f = moment.utc(this.planillaTaller.fechaFinalizacion);
     }
     this.form = this._fb.group({
       fecha: [this.tema ? this.tema.fecha : f, [Validators.required]],

@@ -178,8 +178,8 @@ export class SeguimientoFormModalComponent implements OnInit {
   ngOnInit(): void {
     const fechaHoy = moment();
     let f = fechaHoy;
-    if (this.planillaTaller && !fechaHoy.isSameOrBefore(moment(this.planillaTaller.fechaFinalizacion))) {
-      f = moment(this.planillaTaller.fechaFinalizacion);
+    if (this.planillaTaller && !fechaHoy.isSameOrBefore(moment.utc(this.planillaTaller.fechaFinalizacion))) {
+      f = moment.utc(this.planillaTaller.fechaFinalizacion);
     }
     this.form = this._fb.group({
       fecha: [this.seguimiento ? this.seguimiento.fecha : f, [Validators.required]],
@@ -215,7 +215,7 @@ export class SeguimientoFormModalComponent implements OnInit {
   }
   buscarCicloLectivo() {
     const { fecha } = this.form.value;
-    const anio: string = moment(fecha).format('YYYY');
+    const anio: string = moment.utc(fecha).format('YYYY');
     console.log('anio', anio);
     const index = this.ciclosLectivos.findIndex((x) => x.anio === Number(anio));
     if (index !== -1) {

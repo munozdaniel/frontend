@@ -3,11 +3,13 @@ import { ChangeDetectorRef, Component, EventEmitter, Input, OnChanges, OnInit, O
 import { MatTableDataSource, MatSort, MatPaginator } from '@angular/material';
 import { Router } from '@angular/router';
 import { designAnimations } from '@design/animations';
+import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { FichaAlumnoPdf } from 'app/core/services/pdf/ficha-alumno.pdf';
+import { SeguimientoAlumnoPdf } from 'app/core/services/pdf/seguimiento-alumno.pdf';
+import { SeguimientoAlumnoService } from 'app/core/services/seguimientoAlumno.service';
 import { ALUMNO_OPERACION } from 'app/models/constants/alumno-operacion.enum';
 import { IAlumno } from 'app/models/interface/iAlumno';
-import { IPaginado } from 'app/models/interface/iPaginado';
-
+@UntilDestroy()
 @Component({
   selector: 'app-alumnos-tabla-param',
   templateUrl: './alumnos-tabla-param.component.html',
@@ -34,7 +36,9 @@ export class AlumnosTablaParamComponent implements OnInit, OnChanges {
   private _mobileQueryListener: () => void;
   mobileQuery: MediaQueryList;
   constructor(
+    private _seguimientoService: SeguimientoAlumnoService,
     private _fichaAlumnoPdf: FichaAlumnoPdf,
+    private _seguimientoAlumnoPdf: SeguimientoAlumnoPdf,
     private _router: Router,
     private _changeDetectorRef: ChangeDetectorRef,
     private _media: MediaMatcher,
@@ -76,6 +80,18 @@ export class AlumnosTablaParamComponent implements OnInit, OnChanges {
     this._fichaAlumnoPdf.generatePdf(alumno);
   }
   verSeguimientoAlumno(alumno: IAlumno) {
-    this._router.navigate([`/taller/seguimiento-alumno-single/${alumno._id}`]);
+    // obtener seguimiento por alumno
+    this._seguimientoService
+      .obtenerPorAlumno(alumno._id)
+      .pipe(untilDestroyed(this))
+      .subscribe(
+        (datos) => {
+          console.log('seguimiento', datos);
+          this._seguimientoAlumnoPdf.generatePdf(alumno, datos);
+        },
+        (error) => {
+          console.log('[ERROR]', error);
+        }
+      );
   }
 }

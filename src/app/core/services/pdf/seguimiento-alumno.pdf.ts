@@ -1,31 +1,24 @@
-import { Component, ElementRef, Input, OnInit, ViewChild } from '@angular/core';
-import { designAnimations } from '@design/animations';
-import { ScriptService } from 'app/core/services/plugins/script-excel.service';
+import { Injectable } from '@angular/core';
 import { IAdulto } from 'app/models/interface/iAdulto';
 import { IAlumno } from 'app/models/interface/iAlumno';
-import { ICurso } from 'app/models/interface/iCurso';
 import { IEstadoCursada } from 'app/models/interface/iEstadoCursada';
+import { ISeguimientoAlumno } from 'app/models/interface/iSeguimientoAlumno';
 import * as moment from 'moment';
-import Swal from 'sweetalert2';
+import { ScriptService } from '../plugins/script-excel.service';
 declare let pdfMake: any;
-
-@Component({
-  selector: 'app-alumno-datos-pdf',
-  templateUrl: './alumno-datos-pdf.component.html',
-  styleUrls: ['./alumno-datos-pdf.component.scss'],
-  animations: [designAnimations],
+@Injectable({
+  providedIn: 'root',
 })
-export class AlumnoDatosPdfComponent implements OnInit {
-  @Input() cargando: boolean;
-  @Input() alumno: IAlumno;
-  //   @ViewChild('alumno', null) message: ElementRef;
-
+export class SeguimientoAlumnoPdf {
+  alumno: IAlumno;
+  seguimientos: ISeguimientoAlumno[];
   constructor(private scriptService: ScriptService) {
     this.scriptService.load('pdfMake', 'vfsFonts');
   }
 
-  ngOnInit(): void {}
-  generatePdf(action = 'open') {
+  generatePdf(alumno: IAlumno, seguimientos: ISeguimientoAlumno[], action = 'open') {
+    this.alumno = alumno;
+    this.seguimientos = [...seguimientos];
     const documentDefinition = this.getDocumentDefinition();
     switch (action) {
       case 'open':
@@ -46,7 +39,7 @@ export class AlumnoDatosPdfComponent implements OnInit {
     return {
       content: [
         {
-          text: 'Ficha individual del alumno',
+          text: 'Seguimiento de Alumno',
           bold: true,
           fontSize: 20,
           alignment: 'center',
@@ -68,16 +61,7 @@ export class AlumnoDatosPdfComponent implements OnInit {
                 },
               ],
               [this.getDatosPersonales()],
-              [
-                {
-                  text: 'DATOS ESCOLARES',
-                  bold: true,
-                  fontSize: 16,
-                  fillColor: '#282936',
-                  color: '#ffffff',
-                },
-              ],
-              [this.getDatosEscolares()],
+
               [
                 {
                   text: 'ADULTOS A CARGO',
@@ -102,24 +86,23 @@ export class AlumnoDatosPdfComponent implements OnInit {
           style: 'tabla_cursadas',
           color: '#444',
           table: {
-            widths: ['*', '*', '*', '*', '*'],
+            widths: ['*', '*', '*', '*'],
             body: [
               [
                 {
-                  text: 'CURSADAS',
+                  text: 'INFORME',
                   bold: true,
                   fontSize: 16,
                   fillColor: '#282936',
                   color: '#ffffff',
-                  colSpan: 5,
+                  colSpan: 4,
                 },
                 {},
                 {},
                 {},
-                {},
               ],
-              ['Ciclo Lectivo', 'Curso', 'Comisión', 'División', 'Condición'],
-              ...this.getCursadas(),
+              ['Ciclo Lectivo', 'Fecha', 'Tipo de Seguimiento', 'Observación'],
+              ...this.getSeguimientos(),
             ],
           },
         },
@@ -131,9 +114,9 @@ export class AlumnoDatosPdfComponent implements OnInit {
       },
     };
   }
-  getCursadas() {
-    const retorno = this.alumno.estadoCursadas.map((x: IEstadoCursada) => {
-      return [x.cicloLectivo.anio, x.curso.curso, x.curso.comision, x.curso.division, x.condicion];
+  getSeguimientos() {
+    const retorno = this.seguimientos.map((x: ISeguimientoAlumno) => {
+      return [x.cicloLectivo.anio, moment.utc(x.fecha).format('DD/MM/YYYY'), x.tipoSeguimiento, x.observacion];
     });
     console.log('return', retorno);
     return retorno;
@@ -347,7 +330,7 @@ export class AlumnoDatosPdfComponent implements OnInit {
           {
             // auto-sized columns have their widths based on their content
             width: '70%',
-            text: x.nombreCompleto,
+            text: x.nombreCompleto ? x.nombreCompleto : 'Sin Registrar',
             alignment: 'start',
             margin: [0, 0, 5, 0],
           },

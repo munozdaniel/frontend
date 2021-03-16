@@ -113,7 +113,7 @@ export class PlanillasTablaComponent implements OnInit, OnChanges {
       const filterArray = filters.split(',');
       const columns = [
         data.planillaTallerNro,
-        moment(data.fechaInicio, 'YYYY-MM-DDTHH:mm:ss').format('DD/MM/YYYY HH:mm:ss').toString(), // 2021-03-02T15:21:12
+        moment.utc(data.fechaInicio, 'YYYY-MM-DDTHH:mm:ss').format('DD/MM/YYYY HH:mm:ss').toString(), // 2021-03-02T15:21:12
         data.bimestre,
         data.asignatura.detalle,
         '0' + data.curso.curso + ' / 0' + data.curso.division + ' / ' + data.curso.comision,
@@ -150,7 +150,7 @@ export class PlanillasTablaComponent implements OnInit, OnChanges {
         case 'cicloLectivo':
           return item.cicloLectivo[0].anio;
         case 'fechaInicio':
-          return moment(item.fechaInicio, 'YYYY-MM-DDTHH:mm:ss').format('DD/MM/YYYY HH:mm:ss').toString();
+          return moment.utc(item.fechaInicio, 'YYYY-MM-DDTHH:mm:ss').format('DD/MM/YYYY HH:mm:ss').toString();
         case 'asignatura':
           return item.asignatura.detalle;
         case 'comisioncompleta':
