@@ -14,6 +14,7 @@ import { FormCicloLectivoComponent } from './components/form-ciclo-lectivo/form-
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { InputAutocompleteComponent } from './components/input-autocomplete/input-autocomplete.component';
 import { AlumnoDatosPdfComponent } from './components/alumno-datos-pdf/alumno-datos-pdf.component';
+import { EmailAusenteModalComponent } from './components/email-ausente-modal/email-ausente-modal.component';
 
 @NgModule({
   imports: [
@@ -53,6 +54,7 @@ import { AlumnoDatosPdfComponent } from './components/alumno-datos-pdf/alumno-da
     FormCicloLectivoComponent,
     InputAutocompleteComponent,
     AlumnoDatosPdfComponent,
+    EmailAusenteModalComponent,
   ],
 })
 export class SharedModule {}

@@ -1,0 +1,53 @@
+<h1 mat-dialog-title>Notificar por email</h1>
+<div mat-dialog-content>
+  <form [formGroup]="form" fxLayout="column">
+    <mat-slide-toggle (change)="toggleManual($event)">
+      <span *ngIf="!isMobile">INGRESAR EMAIL MANUALMENTE</span>
+      <span *ngIf="isMobile" class="my-8">
+        <small>INGRESAR EMAIL</small>
+      </span>
+    </mat-slide-toggle>
+    <mat-form-field *ngIf="manual" appearance="outline">
+      <mat-label class="lbl">Email</mat-label>
+      <input matInput class="actual" formControlName="email" type="email" />
+      <mat-icon matSuffix>email</mat-icon>
+      <mat-error *ngIf="form.controls.email.hasError('required')"> Este campo es requerido. </mat-error>
+    </mat-form-field>
+    <mat-form-field *ngIf="!manual" appearance="outline" class="w-100-p">
+      <mat-label class="lbl">Tipo de Adulto</mat-label>
+      <mat-select formControlName="adulto">
+        <mat-option fxLayout="column" *ngFor="let adulto of alumno.adultos" [value]="adulto">
+          <div>{{ adulto.nombreCompleto ? adulto.nombreCompleto : 'NO REGISTRA' }}</div>
+        </mat-option>
+      </mat-select>
+      <mat-error *ngIf="form.controls.adulto.hasError('required')"> Este campo es requerido. </mat-error>
+    </mat-form-field>
+    <div *ngIf="!manual" class="w-100-p" fxLayout="row wrap" fxLayoutAlign="space-between start">
+      <span>{{ form.controls.adulto.value?.tipoAdulto }}</span>
+      <span>
+        <mat-icon>email</mat-icon>
+        <span>{{ form.controls.adulto.value?.email }}</span>
+      </span>
+    </div>
+    <mat-form-field appearance="fill" fxFlexAlign.gt-xs="center" class="w-100-p">
+      <mat-label class="lbl"> Observación</mat-label>
+      <textarea
+        matInput
+        type="text"
+        cdkTextareaAutosize
+        cdkAutosizeMinRows="3"
+        cdkAutosizeMaxRows="6"
+        rows="3"
+        cols="40"
+        formControlName="observacion"
+      ></textarea>
+      <mat-error *ngIf="form.get('observacion').hasError('minlength') || form.get('observacion').hasError('maxlength')">
+        Minimo 7 caracteres y Máximo 100
+      </mat-error>
+    </mat-form-field>
+  </form>
+</div>
+<div mat-dialog-actions fxLayout="row wrap" fxLayoutAlign="space-between start">
+  <button fxFlex.xs="100" mat-raised-button color="warn" (click)="cerrar()">Cancelar</button>
+  <button fxFlex.xs="100" mat-raised-button color="accent" (click)="enviar()">Enviar</button>
+</div>
