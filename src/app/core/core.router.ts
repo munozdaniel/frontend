@@ -1,6 +1,5 @@
 import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
-import { AuthGuard } from '@auth0/auth0-angular';
 const routes = [
   {
     path: '',
@@ -10,7 +9,7 @@ const routes = [
   {
     path: 'home',
     loadChildren: () => import('../features/home/home.module').then((m) => m.HomeModule),
-    canActivate: [AuthGuard],
+    canActivate: [],
   },
   // {
   //     path: "autenticacion",
@@ -28,17 +27,22 @@ const routes = [
   {
     path: 'taller',
     loadChildren: () => import('../features/taller/taller.module').then((m) => m.TallerModule),
-    canActivate: [AuthGuard],
+    canActivate: [],
   },
   {
     path: 'informes',
     loadChildren: () => import('../features/informes/informes.module').then((m) => m.InformesModule),
-    canActivate: [AuthGuard],
+    canActivate: [],
   },
   {
     path: 'administrador',
     loadChildren: () => import('../features/administrador/administrador.module').then((m) => m.AdministradorModule),
-    canActivate: [AuthGuard],
+    canActivate: [],
+  },
+  {
+    path: 'auth',
+    loadChildren: () => import('../features/auth/auth.module').then((m) => m.AuthModule),
+    canActivate: [],
   },
   // {
   //     path: "administrar",

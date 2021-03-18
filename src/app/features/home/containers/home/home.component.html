@@ -8,15 +8,17 @@
   >
     <div class="bar_image"></div>
     <!-- Titulo -->
-    <div *ngIf="authService.user$ | async as usuario; else cargando" class="barra_titulos" fxLayout="column">
+    <div *ngIf="authService.currentUser$ | async as usuario; else cargando" class="barra_titulos" fxLayout="column">
       <h1>Sistema Administrativo Escolar</h1>
-      {{ usuario | json }}
+      <div *ngIf="usuario && usuario.rol === 'ADMIN'">
+        {{ usuario | json }}
+      </div>
       <mat-chip-list>
         <mat-chip style="background-color: #0116292e; color: rgb(245 245 245)"
-          ><mat-icon class="mr-4">account_circle</mat-icon> <span>{{ usuario.nickname }}</span></mat-chip
+          ><mat-icon class="mr-4">account_circle</mat-icon> <span>{{ usuario.email }}</span></mat-chip
         >
         <mat-chip style="background-color: #0116292e; color: rgb(245 245 245)"
-          ><mat-icon class="mr-5">stars</mat-icon><span>ROL ADMINISTRADOR</span>
+          ><mat-icon class="mr-5">stars</mat-icon><span>{{ usuario.rol }}</span>
         </mat-chip>
       </mat-chip-list>
     </div>

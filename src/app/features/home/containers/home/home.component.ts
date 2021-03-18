@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Title } from '@angular/platform-browser';
-import { AuthService } from '@auth0/auth0-angular';
 import { designAnimations } from '@design/animations';
+import { AuthenticationService } from 'app/core/services/helpers/authentication.service';
 
 @Component({
   selector: 'app-home',
@@ -12,7 +12,7 @@ import { designAnimations } from '@design/animations';
 export class HomeComponent implements OnInit {
   pageTitle = 'Página de Inicio';
 
-  constructor(private title: Title, public authService: AuthService) {}
+  constructor(private title: Title, public authService: AuthenticationService) {}
 
   ngOnInit() {
     this.title.setTitle(this.pageTitle);

@@ -18,7 +18,6 @@ import { AppComponent } from 'app/app.component';
 import { LayoutModule } from 'app/layout/layout.module';
 import { CallbackComponent } from './features/callback/callback.component';
 import { AppRoutingModule } from './app-routing.module';
-import { AuthHttpInterceptor, AuthModule } from '@auth0/auth0-angular';
 import { environment } from 'environments/environment';
 import { SharedModule } from './shared/shared.module';
 import { registerLocaleData } from '@angular/common';
@@ -60,20 +59,8 @@ const appRoutes: Routes = [
     SharedModule,
     // App modules
     LayoutModule,
-    // Import the module into the application, with configuration
-    AuthModule.forRoot({
-      ...environment.auth,
-    }),
   ],
   bootstrap: [AppComponent],
-  providers: [
-    Title,
-    {
-      provide: HTTP_INTERCEPTORS,
-      useClass: AuthHttpInterceptor,
-      multi: true,
-    },
-    { provide: LOCALE_ID, useValue: 'es-Ar' },
-  ],
+  providers: [Title, { provide: LOCALE_ID, useValue: 'es-Ar' }],
 })
 export class AppModule {}

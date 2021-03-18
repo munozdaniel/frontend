@@ -9,7 +9,6 @@ import { GhostsComponent } from './components/ghosts/ghosts.component';
 import { EmptyDataComponent } from './components/empty-data/empty-data.component';
 import { VolverComponent } from './volver/volver.component';
 import { FlexLayoutModule } from '@angular/flex-layout';
-import { EmailUnverifiedComponent } from './components/email-unverified/email-unverified.component';
 import { AlumnosTablaParamComponent } from './components/alumnos-tabla-param/alumnos-tabla-param.component';
 import { FormCicloLectivoComponent } from './components/form-ciclo-lectivo/form-ciclo-lectivo.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
@@ -38,7 +37,6 @@ import { AlumnoDatosPdfComponent } from './components/alumno-datos-pdf/alumno-da
     GhostsComponent,
     EmptyDataComponent,
     VolverComponent,
-    EmailUnverifiedComponent,
     AlumnosTablaParamComponent,
     FormCicloLectivoComponent,
     InputAutocompleteComponent,
@@ -51,7 +49,6 @@ import { AlumnoDatosPdfComponent } from './components/alumno-datos-pdf/alumno-da
     GhostsComponent,
     EmptyDataComponent,
     VolverComponent,
-    EmailUnverifiedComponent,
     AlumnosTablaParamComponent,
     FormCicloLectivoComponent,
     InputAutocompleteComponent,

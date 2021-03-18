@@ -2,16 +2,10 @@
 <design-progress-bar></design-progress-bar>
 <!-- / PROGRESS BAR -->
 
-<!-- EMAIL NO VERIFICADO -->
-<ng-container  *ngIf="usuario && !usuario.email_verified">
-  <app-email-unverified class="w-100-p " fxLayout="row" fxLayoutAlign="center center"></app-email-unverified>
-</ng-container>
-
 <!-- VERTICAL LAYOUT 1 -->
-<ng-container *ngIf="designConfig.layout.style === 'vertical-layout-1' && isLogin && usuario.email_verified">
+<ng-container *ngIf="designConfig.layout.style === 'vertical-layout-1'">
   <vertical-layout-1></vertical-layout-1>
 </ng-container>
-<!-- / VERTICAL LAYOUT 1 -->
 
 <design-sidebar name="themeOptionsPanel" class="theme-options-sidebar" position="right" [invisibleOverlay]="true">
   <design-theme-options></design-theme-options>

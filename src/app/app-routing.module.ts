@@ -1,7 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CoreModule } from '@angular/flex-layout';
 import { Routes, RouterModule } from '@angular/router';
-import { AuthGuard } from '@auth0/auth0-angular';
 
 import { CallbackComponent } from './features/callback/callback.component';
 import { Error401Component } from './shared/errors/401/error-401.component';
@@ -18,7 +17,7 @@ const routes: Routes = [
     path: 'callback',
     component: CallbackComponent,
     //  DEBE estar autenticados
-    canActivate: [AuthGuard],
+    canActivate: [],
   },
   { path: '401', component: Error401Component },
   { path: '404', component: Error404Component },

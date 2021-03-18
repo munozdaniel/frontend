@@ -1,10 +1,16 @@
 export interface IUsuario {
-  'http://myapp.com/roles': string[];
-  nickname: string;
-  name: string;
-  picture: string;
-  updated_at: string;
+  _id?: string;
+  token?: string;
   email: string;
-  email_verified: boolean;
-  sub: string;
+  password: string;
+  nombre: string;
+  apellido: string;
+  rol?: 'PROFESOR' | 'ADMIN' | 'DIRECTOR' | 'JEFETALLER' | 'PRECEPTOR';
+
+  observacion?: string; // Agregado por el dueño del comercio
+
+  fechaCreacion: Date;
+  usuarioCreacion?: string | null;
+  activo: boolean;
+  picture?: string; //
 }

@@ -8,7 +8,9 @@
 .mt-50 {
   margin-top: 50px;
 }
-
+.pointer {
+  cursor: pointer;
+}
 .mat-form-field-appearance-outline .mat-form-field-flex {
   // Force all inputs to have the same height.
   // Otherwise mat-select are doing their own thing and gain extra-height

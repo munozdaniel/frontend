@@ -19,27 +19,51 @@
         </div>
       </div>
     </div>
-
-    <div class="" fxFlex="0 1 auto" fxLayout="row" fxLayoutAlign="start center">
-      <button *ngIf="authService.user$ | async as usuario" mat-button [matMenuTriggerFor]="userMenu" class="user-button">
+    <ng-template #sinUsuario>
+      <button mat-button [matMenuTriggerFor]="userMenu" class="user-button">
         <div fxLayout="row" fxLayoutAlign="center center">
-          <img class="avatar mr-0 mr-sm-16" [src]="usuario.picture" [alt]="usuario.nickname" />
+          <img class="avatar mr-0 mr-sm-16" [src]="'/assets/auth/avatar.svg'" [alt]="'Sin Login'" />
 
           <span class="username mr-12" fxHide fxShow.gt-sm>
             <!-- {{ auth.userProfile?.name }} -->
-            {{ usuario.name }}
+            Anonimo
+          </span>
+          <mat-icon class="s-16" fxHide.xs>keyboard_arrow_down</mat-icon>
+        </div>
+      </button>
+      <mat-menu #userMenu="matMenu">
+        <button mat-menu-item>
+          <mat-icon>vpn_key</mat-icon>
+          <span>Login</span>
+        </button>
+      </mat-menu>
+    </ng-template>
+    <div
+      *ngIf="authService.currentUser$ | async as usuario; else sinUsuario"
+      class=""
+      fxFlex="0 1 auto"
+      fxLayout="row"
+      fxLayoutAlign="start center"
+    >
+      <button mat-button [matMenuTriggerFor]="userMenu" class="user-button">
+        <div fxLayout="row" fxLayoutAlign="center center">
+          <img class="avatar mr-0 mr-sm-16" [src]="usuario.picture ? usuario.picture : '/assets/auth/avatar.svg'" [alt]="usuario.nombre" />
+
+          <span class="username mr-12" fxHide fxShow.gt-sm>
+            <!-- {{ auth.userProfile?.name }} -->
+            {{ usuario.nombre }}
           </span>
           <mat-icon class="s-16" fxHide.xs>keyboard_arrow_down</mat-icon>
         </div>
       </button>
       <!-- [overlapTrigger]="false" -->
       <mat-menu #userMenu="matMenu">
-        <button mat-menu-item (click)="authService.loginWithRedirect()">
-          <mat-icon>user</mat-icon>
+        <button *ngIf="!usuario" mat-menu-item>
+          <mat-icon>vpn_key</mat-icon>
           <span>Login</span>
         </button>
 
-        <button mat-menu-item>
+        <!-- <button mat-menu-item>
           <mat-icon>account_circle</mat-icon>
           <span>My Profile</span>
         </button>
@@ -47,9 +71,9 @@
         <button mat-menu-item class="">
           <mat-icon>mail</mat-icon>
           <span>Inbox</span>
-        </button>
+        </button> -->
 
-        <button mat-menu-item class="" (click)="authService.logout({ returnTo: document.location.origin })">
+        <button *ngIf="usuario" mat-menu-item class="" (click)="authService.logout({ returnTo: document.location.origin })">
           <mat-icon>exit_to_app</mat-icon>
           <span>Logout</span>
         </button>

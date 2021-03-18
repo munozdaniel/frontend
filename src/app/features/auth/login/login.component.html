@@ -1,0 +1,66 @@
+<div id="login" fxLayout="column">
+  <div id="login-form-wrapper" fxLayout="column" fxLayoutAlign="center center">
+    <div id="login-form" [@animate]="{ value: '*', params: { duration: '300ms', y: '100px' } }">
+      <div class="logo">
+        <!-- <img src="assets/images/logos/design.svg" /> -->
+      </div>
+
+      <div class="title">INICIAR SESIÓN</div>
+
+      <form name="loginForm" [formGroup]="loginForm" novalidate>
+        <mat-form-field appearance="outline">
+          <mat-label>Email</mat-label>
+          <input matInput formControlName="email" />
+          <mat-icon matSuffix class="secondary-text">mail</mat-icon>
+          <mat-error *ngIf="loginForm.get('email').hasError('required')"> El email es requerido </mat-error>
+          <mat-error *ngIf="!loginForm.get('email').hasError('required') && loginForm.get('email').hasError('email')">
+            El email no es válido
+          </mat-error>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+          <mat-label>Password</mat-label>
+          <input matInput [type]="hide ? 'password' : 'text'" formControlName="password" />
+          <mat-icon class="pointer" matSuffix (click)="hide = !hide">{{ hide ? 'visibility_off' : 'visibility' }}</mat-icon>
+          <mat-error> El password es requerido </mat-error>
+        </mat-form-field>
+
+        <div class="remember-forgot-password" fxLayout="row" fxLayout.xs="column" fxLayoutAlign="space-between center">
+          <!-- <mat-checkbox class="remember-me" aria-label="Remember Me">
+                        Remember Me
+                    </mat-checkbox> -->
+
+          <a class="forgot-password" [routerLink]="'/auth/forgot'"> Olvidó su contraseña? </a>
+        </div>
+
+        <button
+          (click)="iniciarSesion()"
+          mat-raised-button
+          color="accent"
+          class="submit-button"
+          aria-label="LOG IN"
+          [disabled]="loginForm.invalid"
+        >
+          INGRESAR
+        </button>
+      </form>
+
+      <!-- <div class="separator">
+                <span class="text">OR</span>
+            </div>
+
+            <button mat-raised-button class="google">
+                Log in with Google
+            </button>
+
+            <button mat-raised-button class="facebook">
+                Log in with Facebook
+            </button> -->
+
+      <div class="register" fxLayout="column" fxLayoutAlign="center center">
+        <span class="text">No tiene una cuenta?</span>
+        <a class="link" [routerLink]="'/auth/registrar'">Registrarme</a>
+      </div>
+    </div>
+  </div>
+</div>
