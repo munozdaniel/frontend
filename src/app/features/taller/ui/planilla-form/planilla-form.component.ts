@@ -82,6 +82,7 @@ export class PlanillaFormComponent implements OnInit, OnChanges {
     } else {
       this.form.patchValue(this.planillaTaller);
       this.form.controls.cicloLectivo.setValue(this.planillaTaller.cicloLectivo.anio);
+      this.form.controls.cicloLectivo.disable();
       this.form.controls.curso.setValue(this.planillaTaller.curso.curso.toString());
       this.form.controls.comision.setValue(this.planillaTaller.curso.comision.toString());
       this.form.controls.division.setValue(this.planillaTaller.curso.division);

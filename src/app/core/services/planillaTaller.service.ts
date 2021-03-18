@@ -57,7 +57,7 @@ export class PlanillaTallerService {
     return this.http.put<any>(url, planillaTaller);
   }
 
-  actualizarPlanillaTaller(planillaTallerId: string, planillaTaller: IPlanillaTaller): Observable<any> {
+  actualizarPlanillaTaller(planillaTallerId: string, planillaTaller: any): Observable<any> {
     const query = `planilla-taller/${planillaTallerId}`;
     const url = this.url + query;
 

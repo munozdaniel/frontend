@@ -5,13 +5,13 @@
     <div class="w-100-p" fxLayout="row wrap" fxLayoutAlign="space-between start">
       <div fxFlex.gt-xs="42" fxFlex.xs="100" fxLayout="column">
         <!-- cicloLectivo ============================= -->
-        <mat-form-field appearance="outline" fxFlex.gt-xs="30" fxFlex.xs="100">
+        <!-- <mat-form-field appearance="outline" fxFlex.gt-xs="30" fxFlex.xs="100">
           <mat-label class="lbl">Ciclo Lectivo</mat-label>
           <mat-select formControlName="cicloLectivo">
             <mat-option *ngFor="let anio of anios" [value]="anio">{{ anio }}</mat-option>
           </mat-select>
           <mat-error *ngIf="form.controls.cicloLectivo.hasError('required')"> Este campo es requerido. </mat-error>
-        </mat-form-field>
+        </mat-form-field> -->
         <!-- FechaInicio ============================= -->
         <mat-form-field appearance="outline">
           <mat-label>Fecha de Inicio</mat-label>
