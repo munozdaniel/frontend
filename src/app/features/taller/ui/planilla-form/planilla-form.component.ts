@@ -5,6 +5,7 @@ import { ValidationService } from 'app/core/services/general/validation.services
 import { ASIGNATURA_KEY, IAsignatura } from 'app/models/interface/iAsignatura';
 import { IPlanillaTaller } from 'app/models/interface/iPlanillaTaller';
 import { IProfesor, PROFESOR_KEY } from 'app/models/interface/iProfesor';
+import { CONFIG_PROVIDER } from 'app/shared/config.provider';
 import * as moment from 'moment';
 import { Observable, of } from 'rxjs';
 import { startWith, switchMap, delay, map } from 'rxjs/operators';
@@ -13,6 +14,7 @@ import Swal from 'sweetalert2';
   selector: 'app-planilla-form',
   templateUrl: './planilla-form.component.html',
   styleUrls: ['./planilla-form.component.scss'],
+  providers: CONFIG_PROVIDER,
 })
 export class PlanillaFormComponent implements OnInit, OnChanges {
   @Input() planillaTaller?: IPlanillaTaller;
@@ -34,7 +36,13 @@ export class PlanillaFormComponent implements OnInit, OnChanges {
   asignaturas$: Observable<IAsignatura[]>;
   //
   actualizar = false;
-  constructor(private _fb: FormBuilder) {}
+  minimo;
+  maximo;
+  constructor(private _fb: FormBuilder) {
+    var thisYear = new Date().getFullYear();
+    this.minimo = new Date('1/1/' + thisYear);
+    this.maximo = new Date('12/31/' + thisYear);
+  }
   ngOnChanges(changes: SimpleChanges): void {
     if (changes.cargandoProfesores && changes.cargandoProfesores.currentValue) {
     }
@@ -65,7 +73,7 @@ export class PlanillaFormComponent implements OnInit, OnChanges {
         observacion: [null, [Validators.maxLength(150), Validators.minLength(5)]],
       },
       {
-        validator: [ValidationService.desdeMenorHasta('fechaInicio', 'fechaFinalizacion')], // validator: ValidationService.restriccionFechaConHoras('fechaDesde', 'fechaHasta', 'horaDesde', 'horaHasta')
+        validator: [ValidationService.desdeMenorEstrictoHasta('fechaInicio', 'fechaFinalizacion')], // validator: ValidationService.restriccionFechaConHoras('fechaDesde', 'fechaHasta', 'horaDesde', 'horaHasta')
       }
     );
     const actual = moment().year();

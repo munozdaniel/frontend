@@ -115,6 +115,26 @@ export class ValidationService {
       return {};
     };
   }
+  static desdeMenorEstrictoHasta(desde: string, hasta: string) {
+    return (group: FormGroup): { [key: string]: any } => {
+      // if ( group.controls.value == null) {
+      //     return null;
+      // }
+      const f = group.controls[desde];
+      const t = group.controls[hasta];
+      if (!f || f.value == null) {
+        return {};
+      }
+      if (!t || t.value == null) {
+        return {};
+      }
+      // if ((date1 !== null && date2 !== null) && date1 > date2) {
+      if (f.value >= t.value) {
+        return { desdeMenorEstrictoHasta: true };
+      }
+      return {};
+    };
+  }
   /**
    * Verifica que un numero sea menor a otro
    * arg0<arg1

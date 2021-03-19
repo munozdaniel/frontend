@@ -15,7 +15,7 @@
         <!-- FechaInicio ============================= -->
         <mat-form-field appearance="outline">
           <mat-label>Fecha de Inicio</mat-label>
-          <input autocomplete="off" matInput [matDatepicker]="picker" formControlName="fechaInicio" />
+          <input [max]="maximo" [min]="minimo" autocomplete="off" matInput [matDatepicker]="picker" formControlName="fechaInicio" />
           <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
           <mat-datepicker #picker></mat-datepicker>
           <mat-error *ngIf="form.controls.fechaInicio.hasError('required')"> Este campo es requerido. </mat-error>
@@ -23,7 +23,14 @@
         <!-- FechaFinal ============================= -->
         <mat-form-field appearance="outline">
           <mat-label>Fecha de Fin</mat-label>
-          <input autocomplete="off" matInput [matDatepicker]="pickerFinal" formControlName="fechaFinalizacion" />
+          <input
+            [max]="maximo"
+            [min]="minimo"
+            autocomplete="off"
+            matInput
+            [matDatepicker]="pickerFinal"
+            formControlName="fechaFinalizacion"
+          />
           <mat-datepicker-toggle matSuffix [for]="pickerFinal"></mat-datepicker-toggle>
           <mat-datepicker #pickerFinal></mat-datepicker>
           <mat-error *ngIf="form.controls.fechaFinalizacion.hasError('required')"> Este campo es requerido. </mat-error>
@@ -133,7 +140,7 @@
         </button>
       </div>
       <div fxLayout="row" fxLayoutAlign="center start">
-        <mat-error *ngIf="form.errors?.desdeMenorHasta" style="font-size: smaller">
+        <mat-error *ngIf="form.errors?.desdeMenorEstrictoHasta" style="font-size: smaller">
           * La fecha inicial no puede ser mayor a la final
         </mat-error>
       </div>

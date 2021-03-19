@@ -68,7 +68,6 @@ export class PlanillaEditarComponent implements OnInit, OnChanges {
   }
   setPlanilla(evento) {
     if (evento) {
-      console.log('planillaparams', evento);
       const anio = moment(evento.fechaInicio).utc().format('YYYY');
       const planilla: any = {
         ...evento,
