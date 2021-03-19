@@ -17,6 +17,7 @@ import { ICalificacion } from 'app/models/interface/iCalificacion';
 import { IPlanillaTaller } from 'app/models/interface/iPlanillaTaller';
 import { ISeguimientoAlumno } from 'app/models/interface/iSeguimientoAlumno';
 import { ITema } from 'app/models/interface/iTema';
+import { EmailAusenteModalComponent } from 'app/shared/components/email-ausente-modal/email-ausente-modal.component';
 import { of } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 import Swal from 'sweetalert2';
@@ -65,6 +66,7 @@ import { TemaFormModalComponent } from '../tema-form-modal/tema-form-modal.compo
               (retAbrirModalAsistencias)="setAbrirModalAsistencias($event)"
               (retEditarAsistencia)="setEditarAsistencia($event)"
               (retEliminarAsistencia)="setEliminarAsistencia($event)"
+              (retEnviarEmail)="setEnviarEmail($event)"
             ></app-planilla-detalle-asistencias>
             <!-- <app-administrar-asistencias [cargandoAlumnos]="cargandoAlumnos" [alumnos]="alumnos"> </app-administrar-asistencias> -->
           </mat-tab>
@@ -408,6 +410,14 @@ export class PlanillaTallerAdministrarComponent implements OnInit {
         this.setBuscarAsistenciaPorAlumno(this.alumnoSeleccionado);
       }
     });
+  }
+  setEnviarEmail({ asistencia, faltas }) {
+    const dialogRef = this._dialog.open(EmailAusenteModalComponent, {
+      width: '50%',
+      data: { asistencia, alumno: this.alumnoSeleccionado, faltas },
+    });
+
+    dialogRef.afterClosed().subscribe((result) => {});
   }
   setEliminarAsistencia(asistencia: IAsistencia) {
     Swal.fire({

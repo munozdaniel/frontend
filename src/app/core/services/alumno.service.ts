@@ -2,6 +2,7 @@ import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { IAlumno } from 'app/models/interface/iAlumno';
 import { IAlumnoPaginado } from 'app/models/interface/iAlumnoPaginado';
+import { IAsistencia } from 'app/models/interface/iAsistencia';
 import { ICicloLectivo } from 'app/models/interface/iCicloLectivo';
 import { IQueryPag } from 'app/models/interface/iQueryPag';
 import { environment } from 'environments/environment';
@@ -141,5 +142,25 @@ export class AlumnoService {
     const url = this.url + query;
 
     return this.http.post<any>(url, { curso, divisiones, cicloAnterior, ciclo });
+  }
+  informarAusencia(
+    nombreAdulto: string,
+    fechaInasitencia: string,
+    faltas: number,
+    nombreAlumno: string,
+    emailAdulto: string,
+    observacion: string
+  ): Observable<any> {
+    const query = `alumnos/informar-ausencia`;
+    const url = this.url + query;
+
+    return this.http.post<any>(url, {
+      nombreAdulto,
+      fechaInasitencia,
+      faltas,
+      nombreAlumno,
+      emailAdulto,
+      observacion,
+    });
   }
 }

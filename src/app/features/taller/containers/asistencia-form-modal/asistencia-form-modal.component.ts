@@ -36,8 +36,8 @@ export class AsistenciaFormModalComponent implements OnInit, OnDestroy {
     private _asistenciaService: AsistenciaService
   ) {
     this.planillaTaller = data.planillaTaller;
-    this.minimo = new Date(this.planillaTaller.fechaInicio);
-    this.maximo = new Date(this.planillaTaller.fechaFinalizacion);
+    this.minimo = new Date(moment.utc(this.planillaTaller.fechaInicio).toDate());
+    this.maximo = new Date(moment.utc(this.planillaTaller.fechaFinalizacion).add(1, 'day').toDate());
     this.alumno = data.alumno;
     if (data.asistencia) {
       this.isUpdate = true;
@@ -113,7 +113,6 @@ export class AsistenciaFormModalComponent implements OnInit, OnDestroy {
 
     const fecha = new Date(moment.utc(this.form.controls.fecha.value).format('YYYY-MM-DD'));
     const asistenciaForm: IAsistencia = { ...this.form.value, fecha, alumno: this.alumno, activo: true, fechaCreacion: new Date() };
-    console.log('asistencia', asistenciaForm);
     this._asistenciaService
       .actualizarAsistencia(this.asistencia._id, asistenciaForm)
       .pipe(untilDestroyed(this))
@@ -139,7 +138,6 @@ export class AsistenciaFormModalComponent implements OnInit, OnDestroy {
       );
   }
   controlarAsistencia(evento) {
-    console.log(evento);
     if (evento.checked === false) {
       this.form.controls.llegoTarde.setValue(false);
     }

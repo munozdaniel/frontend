@@ -50,6 +50,7 @@ export class PlanillaDetalleAsistenciasComponent implements OnInit, OnChanges {
   @Output() retAbrirModalAsistencias = new EventEmitter<boolean>();
   @Output() retEditarAsistencia = new EventEmitter<IAsistencia>();
   @Output() retEliminarAsistencia = new EventEmitter<IAsistencia>();
+  @Output() retEnviarEmail = new EventEmitter<{ asistencia: IAsistencia; faltas: number }>();
   //
   mostrarLeyenda = false;
   // Mobile
@@ -160,7 +161,22 @@ export class PlanillaDetalleAsistenciasComponent implements OnInit, OnChanges {
   //     }
   //   }
 
-  eliminar(tema: IAsistencia) {
-    this.retEliminarAsistencia.emit(tema);
+  eliminar(row: IAsistencia) {
+    this.retEliminarAsistencia.emit(row);
+  }
+  enviarEmail(row: IAsistencia) {
+    if (row.presente) {
+      Swal.fire({
+        title: 'Alumno/a Presente',
+        text: 'No se enviará ningun email porque el/la alumno/a se encuentra presente',
+        icon: 'info',
+      });
+      return;
+    }
+    let faltas = 0;
+    this.asistencias.forEach((x) => {
+      faltas += x.presente ? 0 : 1;
+    });
+    this.retEnviarEmail.emit({ asistencia: row, faltas });
   }
 }

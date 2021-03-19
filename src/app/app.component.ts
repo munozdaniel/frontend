@@ -10,9 +10,11 @@ import { DesignSidebarService } from '@design/components/sidebar/sidebar.service
 import { DesignSplashScreenService } from '@design/services/splash-screen.service';
 
 import { navigation } from 'app/navigation/navigation';
-import { AuthService } from '@auth0/auth0-angular';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { IUsuario } from './models/interface/iUsuario';
+import { AuthenticationService } from './core/services/helpers/authentication.service';
+import { Router } from '@angular/router';
+import { navigationEmpty } from './navigation/navigation-empty';
 @UntilDestroy()
 @Component({
   selector: 'app',
@@ -39,23 +41,23 @@ export class AppComponent implements OnInit, OnDestroy {
    * @param {Platform} _platform
    */
   constructor(
-    public auth: AuthService,
     @Inject(DOCUMENT) private document: any,
     private _designConfigService: DesignConfigService,
     private _designNavigationService: DesignNavigationService,
     private _designSidebarService: DesignSidebarService,
     private _designSplashScreenService: DesignSplashScreenService,
-    private _platform: Platform
+    private _platform: Platform,
+    private _authService: AuthenticationService,
+    private _router: Router
   ) {
-    this.comprobarLogin();
     // Get default navigation
     this.navigation = navigation;
 
     // Register the navigation to the service
     this._designNavigationService.register('main', this.navigation);
-
-    // Set the main navigation as our current navigation
-    this._designNavigationService.setCurrentNavigation('main');
+    this._designNavigationService.register('navigationEmpty', navigationEmpty);
+    this._designNavigationService.setCurrentNavigation('navigationEmpty');
+    this.comprobarLogin();
 
     /**
      * ----------------------------------------------------------------------------------------------------
@@ -144,19 +146,38 @@ export class AppComponent implements OnInit, OnDestroy {
   // @ Public methods
   // -----------------------------------------------------------------------------------------------------
   comprobarLogin() {
-    this.auth.user$.pipe(untilDestroyed(this)).subscribe(
-      (datos) => {
-        console.log('auth user$', datos);
-        this.isLogin = datos ? true : false;
-        this.usuario = datos;
-        if (!datos) {
-          this.auth.loginWithRedirect();
+    this._authService.currentUser$
+      .pipe(untilDestroyed(this))
+      .pipe(untilDestroyed(this))
+      .subscribe(
+        (datos) => {
+          console.log('datos', datos);
+          if (!datos) {
+            this._router.navigate(['/auth/iniciar-sesion']);
+            this.isLogin = false;
+            this._designNavigationService.setCurrentNavigation('navigationEmpty');
+          } else {
+            this.isLogin = true; // Set the main navigation as our current navigation
+            this._designNavigationService.setCurrentNavigation('main');
+          }
+        },
+        (error) => {
+          console.log('[ERROR]', error);
         }
-      },
-      (error) => {
-        console.log('[ERROR]', error);
-      }
-    );
+      );
+    // this._auth.user$.pipe(untilDestroyed(this)).subscribe(
+    //   (datos) => {
+    //     console.log('auth user$', datos);
+    //     this.isLogin = datos ? true : false;
+    //     this.usuario = datos;
+    //     if (!datos) {
+    //       this._auth.loginWithRedirect();
+    //     }
+    //   },
+    //   (error) => {
+    //     console.log('[ERROR]', error);
+    //   }
+    // );
   }
   /**
    * Toggle sidebar open

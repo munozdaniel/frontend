@@ -7,7 +7,7 @@ import { DesignConfigService } from '@design/services/config.service';
 import { DesignNavigationService } from '@design/components/navigation/navigation.service';
 import { DesignPerfectScrollbarDirective } from '@design/directives/design-perfect-scrollbar/design-perfect-scrollbar.directive';
 import { DesignSidebarService } from '@design/components/sidebar/sidebar.service';
-import { AuthService } from '@auth0/auth0-angular';
+import { AuthenticationService } from 'app/core/services/helpers/authentication.service';
 
 @Component({
   selector: 'navbar-vertical-style-1',
@@ -36,7 +36,7 @@ export class NavbarVerticalStyle1Component implements OnInit, OnDestroy {
     private _designNavigationService: DesignNavigationService,
     private _designSidebarService: DesignSidebarService,
     private _router: Router,
-    public authService: AuthService
+    public authService: AuthenticationService
   ) {
     // Set the private defaults
     this._unsubscribeAll = new Subject();

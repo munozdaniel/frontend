@@ -9,12 +9,12 @@ import { GhostsComponent } from './components/ghosts/ghosts.component';
 import { EmptyDataComponent } from './components/empty-data/empty-data.component';
 import { VolverComponent } from './volver/volver.component';
 import { FlexLayoutModule } from '@angular/flex-layout';
-import { EmailUnverifiedComponent } from './components/email-unverified/email-unverified.component';
 import { AlumnosTablaParamComponent } from './components/alumnos-tabla-param/alumnos-tabla-param.component';
 import { FormCicloLectivoComponent } from './components/form-ciclo-lectivo/form-ciclo-lectivo.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { InputAutocompleteComponent } from './components/input-autocomplete/input-autocomplete.component';
 import { AlumnoDatosPdfComponent } from './components/alumno-datos-pdf/alumno-datos-pdf.component';
+import { EmailAusenteModalComponent } from './components/email-ausente-modal/email-ausente-modal.component';
 
 @NgModule({
   imports: [
@@ -38,7 +38,6 @@ import { AlumnoDatosPdfComponent } from './components/alumno-datos-pdf/alumno-da
     GhostsComponent,
     EmptyDataComponent,
     VolverComponent,
-    EmailUnverifiedComponent,
     AlumnosTablaParamComponent,
     FormCicloLectivoComponent,
     InputAutocompleteComponent,
@@ -51,11 +50,11 @@ import { AlumnoDatosPdfComponent } from './components/alumno-datos-pdf/alumno-da
     GhostsComponent,
     EmptyDataComponent,
     VolverComponent,
-    EmailUnverifiedComponent,
     AlumnosTablaParamComponent,
     FormCicloLectivoComponent,
     InputAutocompleteComponent,
     AlumnoDatosPdfComponent,
+    EmailAusenteModalComponent,
   ],
 })
 export class SharedModule {}

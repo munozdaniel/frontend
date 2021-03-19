@@ -5,6 +5,7 @@ import { ProfesorService } from 'app/core/services/profesor.service';
 import { IAsignatura } from 'app/models/interface/iAsignatura';
 import { IPlanillaTaller } from 'app/models/interface/iPlanillaTaller';
 import { IProfesor } from 'app/models/interface/iProfesor';
+import * as moment from 'moment';
 import { Observable, BehaviorSubject, of } from 'rxjs';
 import { catchError, finalize } from 'rxjs/operators';
 import Swal from 'sweetalert2';
@@ -67,21 +68,25 @@ export class PlanillaEditarComponent implements OnInit, OnChanges {
   }
   setPlanilla(evento) {
     if (evento) {
+      const anio = moment(evento.fechaInicio).utc().format('YYYY');
       const planilla: any = {
+        ...evento,
         fechaInicio: evento.fechaInicio,
         fechaFinalizacion: evento.fechaFinalizacion,
         observacion: evento.observacion,
         bimestre: evento.bimestre,
-        profesor: evento.profesor,
         asignatura: evento.asignatura,
-        curso: evento.curso, // set en el back
-        cicloLectivo: evento.cicloLectivo, // set en el back
+        profesor: evento.profesor,
+        comision: evento.comision, // set en el back
+        division: Number(evento.division), // set en el back
+        cursoNro: Number(evento.curso), // set en el back
+        anio: Number(anio), // set en el back
         activo: true,
       };
 
-      console.log('evento', evento);
+      console.log('evento', planilla);
 
-      this.actualizarPlanillaTaller(evento);
+      this.actualizarPlanillaTaller(planilla);
     }
   }
   actualizarPlanillaTaller(planilla: any) {

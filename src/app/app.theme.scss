@@ -79,14 +79,14 @@ $typography: mat-typography-config(
 
 // Import app and page component themes here to enable theming for them
 @import "src/app/layout/components/toolbar/toolbar.theme";
-@import "src/app/shared/components/email-unverified/lock.theme";
+// @import "src/app/shared/components/email-unverified/lock.theme";
 
 // Define a mixin for easier access
 @mixin components-theme($theme) {
 
     // Layout components
     @include toolbar-theme($theme);
-    @include lock-theme($theme);
+    // @include lock-theme($theme);
 
 }
 

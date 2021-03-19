@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { MatDialog } from '@angular/material';
 import { ActivatedRoute } from '@angular/router';
 import { designAnimations } from '@design/animations';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
@@ -14,6 +15,7 @@ import { ICalificacion } from 'app/models/interface/iCalificacion';
 import { IPlanillaTaller } from 'app/models/interface/iPlanillaTaller';
 import { ISeguimientoAlumno } from 'app/models/interface/iSeguimientoAlumno';
 import { ITema } from 'app/models/interface/iTema';
+import { EmailAusenteModalComponent } from 'app/shared/components/email-ausente-modal/email-ausente-modal.component';
 @UntilDestroy()
 @Component({
   selector: 'app-planilla-ver',
@@ -37,6 +39,7 @@ import { ITema } from 'app/models/interface/iTema';
               [alumnos]="alumnos"
               [asistencias]="asistencias"
               (retBuscarAsistenciaPorAlumno)="setBuscarAsistenciaPorAlumno($event)"
+              (retEnviarEmail)="setEnviarEmail($event)"
             ></app-planilla-detalle-asistencias
           ></mat-tab>
           <mat-tab label="Calificaciones">
@@ -94,6 +97,7 @@ export class PlanillaVerComponent implements OnInit {
   seguimientos: ISeguimientoAlumno[];
   cargandoSeguimiento: boolean;
   constructor(
+    private _dialog: MatDialog,
     private _activeRoute: ActivatedRoute,
     private _alumnoService: AlumnoService,
     private _temaService: TemaService,
@@ -234,6 +238,14 @@ export class PlanillaVerComponent implements OnInit {
           this.cargandoAsistencias = false;
         }
       );
+  }
+  setEnviarEmail({ asistencia, faltas }) {
+    const dialogRef = this._dialog.open(EmailAusenteModalComponent, {
+      width: '50%',
+      data: { asistencia, alumno: this.alumnoSeleccionado, faltas },
+    });
+
+    dialogRef.afterClosed().subscribe((result) => {});
   }
   //   Output Calificaciones
   setBuscarCalificacionesPorAlumno(alumno: IAlumno) {
