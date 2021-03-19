@@ -22,7 +22,7 @@ export class AuthenticationService {
     return this.currentUserSubject.value;
   }
   registrar(usuario: IUsuario) {
-    const query = `/auth/registrar`;
+    const query = `auth/registrar`;
     const url = this.url + query;
 
     return this.http.post<any>(url, usuario).pipe(
@@ -35,7 +35,7 @@ export class AuthenticationService {
     );
   }
   login(email, password) {
-    const query = `/auth/login`;
+    const query = `auth/login`;
     const url = this.url + query;
     return this.http
       .post<any>(url, { email, password })
