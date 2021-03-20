@@ -1,0 +1,101 @@
+<div fxLayout="column" [class.p-12]="!isMobile" [class.p-4]="isMobile">
+  <!-- ================================================ -->
+  <!-- ALUMNOS ================================================ -->
+  <!-- ================================================ -->
+  <div
+    *ngIf="usuarios && usuarios.length > 0"
+    [@animate]="{ value: '*', params: { delay: '50ms', scale: '0.2' } }"
+    class="mt-20 p-0"
+    fxLayoutAlign="center baseline"
+    fxLayout="row"
+  >
+    <mat-form-field appearance="outline" color="accent" fxFlex.xs="100" fxFlex.gt-xs="45">
+      <mat-label>Búsqueda Rápida</mat-label>
+      <input matInput users (keyup)="filtroRapido($event.target.value)" [disabled]="dataSource.data.length == 0" />
+      <mat-icon matSuffix>search</mat-icon>
+    </mat-form-field>
+  </div>
+  <table
+    mat-table
+    matSort
+    #sort="matSort"
+    [dataSource]="dataSource"
+    class="borde-tabla mat-elevation-z4 w-100-p"
+    [class.mt-20]="!usuarios || usuarios.length < 1"
+  >
+    <!-- 'email', 'nombre', 'apellido', 'rol', 'fechaCreacion', 'opciones' -->
+    <ng-container matColumnDef="nombreCompleto">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header>Nombre</th>
+      <td mat-cell *matCellDef="let row">
+        <span
+          [ngClass]="{
+            row_seleccionada: row.selected
+          }"
+        >
+          {{ row.nombreCompleto }}
+        </span>
+      </td>
+    </ng-container>
+    <ng-container matColumnDef="email">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header>Email</th>
+      <td mat-cell *matCellDef="let row">
+        <span>{{ row.email }}</span>
+      </td>
+    </ng-container>
+    <ng-container matColumnDef="nombre">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header>Nombre</th>
+      <td mat-cell *matCellDef="let row">
+        <span>{{ row.nombre }}</span>
+      </td>
+    </ng-container>
+    <ng-container matColumnDef="apellido">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header>Apellido</th>
+      <td mat-cell *matCellDef="let row">
+        <span>{{ row.apellido }}</span>
+      </td>
+    </ng-container>
+    <ng-container matColumnDef="rol">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header>Rol</th>
+      <td mat-cell *matCellDef="let row">
+        <span class="nav-link-badge text-center rol">{{ row.rol }}</span>
+      </td>
+    </ng-container>
+    <ng-container matColumnDef="fechaCreacion">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header>Creado</th>
+      <td mat-cell *matCellDef="let row">
+        <span>{{ row.fechaCreacion | date: 'dd/MM/yyyy':'GMT' }}</span>
+      </td>
+    </ng-container>
+    <ng-container matColumnDef="opciones">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header></th>
+      <td mat-cell *matCellDef="let row">
+        <button mat-flat-button color="warn" [matMenuTriggerFor]="menu"><mat-icon>settings</mat-icon>Cambiar Rol</button>
+        <mat-menu #menu="matMenu">
+          <!-- Hay mil formas de hacerlo, voy a probar esta -->
+          <!-- 'PROFESOR' | 'ADMIN' | 'DIRECTOR' | 'JEFETALLER' | 'PRECEPTOR' -->
+          <button mat-menu-item (click)="actualizarRol(row, 'PROFESOR')">Profesor</button>
+          <button mat-menu-item (click)="actualizarRol(row, 'ADMIN')">Admin</button>
+          <button mat-menu-item (click)="actualizarRol(row, 'DIRECTOR')">Director</button>
+          <button mat-menu-item (click)="actualizarRol(row, 'JEFETALLER')">Jefe de Taller</button>
+          <button mat-menu-item (click)="actualizarRol(row, 'PRECEPTOR')">Preceptor</button>
+        </mat-menu>
+      </td>
+    </ng-container>
+    <tr mat-header-row *matHeaderRowDef="columnas"></tr>
+    <tr
+      mat-row
+      *matRowDef="let row; columns: columnas"
+      [class.selected]="row.selected"
+      [ngClass]="{
+        hovered: row.hovered,
+        highlighted: row.highlighted
+      }"
+      (mouseover)="!isMobile ? (row.hovered = true) : (row.hovered = false)"
+      (mouseout)="row.hovered = false"
+    ></tr>
+  </table>
+  <app-empty-data *ngIf="!usuarios || usuarios.length < 1"></app-empty-data>
+  <!-- Paginado -------------------------------------------------- -->
+  <mat-paginator class="border-paginador paginator mat-elevation-z2" #paginator [pageSize]="5" [pageSizeOptions]="[5, 10, 25, 100]">
+  </mat-paginator>
+</div>

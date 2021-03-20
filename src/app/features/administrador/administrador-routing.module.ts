@@ -3,6 +3,7 @@ import { Routes, RouterModule } from '@angular/router';
 import { ActualizarCicloLectivoComponent } from './containers/actualizar-ciclo-lectivo/actualizar-ciclo-lectivo.component';
 import { CalendarioAcademicoComponent } from './containers/calendario-academico/calendario-academico.component';
 import { MigrarComponent } from './containers/migrar/migrar.component';
+import { RolesComponent } from './containers/roles/roles.component';
 
 // administrador/migrar
 const routes: Routes = [
@@ -19,6 +20,11 @@ const routes: Routes = [
   {
     path: 'calendario-academico',
     component: CalendarioAcademicoComponent,
+    //  DEBE estar autenticados
+  },
+  {
+    path: 'usuarios-roles',
+    component: RolesComponent,
     //  DEBE estar autenticados
   },
 ];

@@ -121,45 +121,45 @@ export class DesignThemeOptionsComponent implements OnInit, OnDestroy {
     });
 
     // En tiempo de ejecucion. TODO: Verificar permisos
-    // MENU ADMINISTRADOR EJECUCION
+    // MENU ADMINISTRADOR EJECUCION. Menu dinamico
     const customFunctionNavItem = {
       id: 'custom-function',
       title: 'Administrar',
       type: 'collapsable',
       children: [
-        {
-          id: 'migrar',
-          title: 'Migrador',
-          type: 'item',
-          icon: 'users',
-          url: '/administrador/migrar',
-        },
+        // {
+        //   id: 'migrar',
+        //   title: 'Migrador',
+        //   type: 'item',
+        //   icon: 'users',
+        //   url: '/administrador/migrar',
+        // },
         {
           id: 'usuarios',
           title: 'Usuarios',
           type: 'item',
-          icon: 'users',
-          url: '/administrador/usuarios',
+          icon: 'build_circle',
+          url: '/administrador/usuarios-roles',
         },
         {
           id: 'ciclo-lectivo',
           title: 'Ciclo Lectivo',
           type: 'item',
-          icon: 'users',
+          icon: 'warning',
           url: '/administrador/ciclo-lectivo',
         },
-        {
-          id: 'micuenta',
-          title: 'Mi Cuenta',
-          type: 'item',
-          icon: 'account',
-          url: '/administrador/mi-cuenta',
-        },
+        // {
+        //   id: 'micuenta',
+        //   title: 'Mi Cuenta',
+        //   type: 'item',
+        //   icon: 'account',
+        //   url: '/administrador/mi-cuenta',
+        // },
         {
           id: 'calendario',
           title: 'Calendario',
           type: 'item',
-          icon: 'account',
+          icon: 'today',
           url: '/administrador/calendario-academico',
         },
         {
