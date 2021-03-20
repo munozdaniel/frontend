@@ -9,15 +9,11 @@ export class AlumnosMenuParamComponent implements OnInit {
   @Input() titulo: string = 'Alumnos';
   @Input() cargando: boolean;
   @Input() soloLectura: boolean;
-  @Output() retAgregarAlumno = new EventEmitter<boolean>();
   @Output() retHabilitarEdicion = new EventEmitter<boolean>();
 
   constructor() {}
 
   ngOnInit(): void {}
-  agregarAlumno() {
-    this.retAgregarAlumno.emit(true);
-  }
   editarAlumno() {
     this.retHabilitarEdicion.emit(true);
   }

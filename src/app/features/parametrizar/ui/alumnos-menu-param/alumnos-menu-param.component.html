@@ -1,10 +1,9 @@
-<div class="mat-card mat-elevation-z4 p-24" fxLayout="row" fxLayoutAlign="space-between center">
+<div class="mat-card mat-elevation-z4 p-24" fxLayout="row wrap" fxLayoutAlign="space-between center">
   <div fxLayout fxLayoutAlign="start center">
-    <h1 class="px-12">{{titulo}}</h1>
+    <h1 class="px-12">{{ titulo }}</h1>
     <mat-spinner *ngIf="cargando" matSuffix class="ml-10" diameter="20"></mat-spinner>
   </div>
   <div fxLayout fxLayoutAlign="end center" fxLayoutGap="10px">
-    <button mat-raised-button color="primary" (click)="agregarAlumno()">Agregar Alumno</button>
     <button *ngIf="soloLectura" mat-raised-button color="primary" (click)="editarAlumno()">Editar Alumno</button>
   </div>
 </div>

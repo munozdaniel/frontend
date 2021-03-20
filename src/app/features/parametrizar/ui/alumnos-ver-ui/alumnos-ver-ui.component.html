@@ -1,20 +1,19 @@
-<mat-tab-group class="w-100-p">
+<mat-tab-group class="w-100-p mt-24" [color]="'primary'" [backgroundColor]="'accent'">
   <mat-tab label="Datos Personales">
-    <div fxLayout.gt-xs="row wrap" fxLayoutAlign.gt-xs="space-between start" class="p-12">
+    <div fxLayout="row wrap" fxLayoutAlign="space-between start" class="p-12">
       <div fxFlex.xs="100" fxFlex.gt-xs="45">
-        <h2>Datos Personales</h2>
         <div class="mat-card mat-elevation-z4 resumen">
           <p>
-            <strong>Tipo de Identifcación:</strong><span>{{ alumno.tipoDni }}</span>
+            <strong>Tipo de Identifcación:</strong><span>{{ alumno.tipoDni ? alumno.tipoDni : 'SIN REGISTRAR' }}</span>
           </p>
           <p>
-            <strong>Identifcación:</strong><span>{{ alumno.dni }}</span>
+            <strong>Identifcación:</strong><span>{{ alumno.dni ? alumno.dni : 'SIN REGISTRAR' }}</span>
           </p>
           <p>
             <strong>Nombre Completo:</strong><span>{{ alumno.nombreCompleto }}</span>
           </p>
           <p>
-            <strong>Sexo:</strong><span>{{ alumno.sexo }}</span>
+            <strong>Sexo:</strong><span>{{ alumno.sexo ? alumno.sexo : 'SIN ESPECIFICAR' }}</span>
           </p>
           <p>
             <strong>Fecha de Nacimiento:</strong><span>{{ alumno.fechaNacimiento | date: 'dd/MM/yyyy':'GMT' }}</span>
@@ -27,16 +26,19 @@
             ><span>{{ alumno.observacionTelefono ? alumno.observacionTelefono : 'SIN OBSERVACION' }}</span>
           </p>
           <p>
-            <strong>Telefono:</strong><span>{{ alumno.telefono }}</span>
+            <strong>Telefono:</strong><span>{{ alumno.telefono ? alumno.telefono : 'SIN REGISTRAR' }}</span>
           </p>
           <p>
-            <strong>Celular:</strong><span>{{ alumno.celular }}</span>
+            <strong>Celular:</strong><span>{{ alumno.celular ? alumno.celular : 'SIN REGISTRAR' }}</span>
           </p>
           <p>
-            <strong>Email:</strong><span>{{ alumno.email }}</span>
+            <strong>Email:</strong><span>{{ alumno.email ? alumno.email : 'SIN REGISTRAR' }}</span>
           </p>
           <p>
-            <strong>Fecha de Ingreso:</strong><span>{{ alumno.fechaIngreso | date: 'dd/MM/yyyy':'GMT' }}</span>
+            <strong>Fecha de Ingreso:</strong>
+            <span *ngIf="alumno.fechaIngreso">{{
+              alumno.fechaIngreso === 'SIN REGISTRAR' ? alumno.fechaIngreso : (alumno.fechaIngreso | date: 'dd/MM/yyyy':'GMT')
+            }}</span>
           </p>
           <p>
             <strong>Procedencia colegio Primario:</strong><span>{{ alumno.procedenciaColegioPrimario }}</span>
@@ -58,7 +60,7 @@
             <strong>Cantidad de integrantes del grupo familiar:</strong><span>{{ alumno.cantidadIntegranteGrupoFamiliar }}</span>
           </p>
           <p>
-            <strong>Observación:</strong><span>{{ alumno.observacion }}</span>
+            <strong>Observación:</strong><span>{{ alumno.observacion ? alumno.observacion : 'SIN REGISTRAR' }}</span>
           </p>
         </div>
       </div>
@@ -99,21 +101,101 @@
                 <strong>Celular:</strong><span>{{ adulto.celular ? adulto.celular : 'SIN REGISTRAR' }}</span>
               </p>
               <p>
-                <strong>Email:</strong><span>{{ adulto.email }}</span>
+                <strong>Email:</strong><span>{{ adulto.email ? adulto.email : 'SIN REGISTRAR' }}</span>
               </p>
             </div>
           </mat-expansion-panel>
         </mat-accordion>
         <ng-template #sinAdultos>
-          <h3>No hay registros asignados</h3>
+          <div class="mat-card mat-elevation-z4 mb-24">
+            <p>No hay registros asignados</p>
+          </div>
         </ng-template>
       </div>
     </div>
   </mat-tab>
-  <mat-tab label="Comisiones">
-    <h2>Comisiones</h2>
-    <div>
-      <!-- <app-comisiones-tabla-param [cargando]="cargando" [comisiones]="alumno.comisiones" [soloLectura]="true"></app-comisiones-tabla-param> -->
+  <mat-tab label="Cursadas">
+    <div *ngIf="!alumno.estadoCursadas || alumno.estadoCursadas.length < 1" class="mat-card mat-elevation-z4 mb-24">
+      <p>El/La alumno/a no posee registro de las cursadas realizadas</p>
+    </div>
+    <div *ngIf="alumno.estadoCursadas && alumno.estadoCursadas.length > 0">
+      <table
+        mat-table
+        matSort
+        #sort="matSort"
+        [dataSource]="dataSource"
+        class="borde-tabla mat-elevation-z4 w-100-p"
+        [class.mt-20]="!estadoCursadas || estadoCursadas.length < 1"
+      >
+        <!-- 'cicloLectivo', 'curso', 'division', 'comision', 'condicion' -->
+        <ng-container matColumnDef="cicloLectivo">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>Ciclo</th>
+          <td mat-cell *matCellDef="let row">
+            {{ row.cicloLectivo.anio }}
+          </td>
+        </ng-container>
+        <ng-container matColumnDef="curso">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>Curso</th>
+          <td mat-cell *matCellDef="let row">
+            <div *ngIf="isMobile" fxLayout="column">
+              <div fxLayout="row" fxLayoutAlign="space-between start">
+                <strong>Curso </strong> <strong>{{ row.curso.curso }}</strong>
+              </div>
+              <div fxLayout="row" fxLayoutAlign="space-between start">
+                <span>División </span> <span>{{ row.curso.division }}</span>
+              </div>
+              <div fxLayout="row" fxLayoutAlign="space-between start">
+                <strong>Comisión </strong> <strong>{{ row.curso.comision }}</strong>
+              </div>
+            </div>
+            <span *ngIf="!isMobile">{{ row.curso.curso }}</span>
+          </td>
+        </ng-container>
+        <ng-container matColumnDef="division">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>División</th>
+          <td mat-cell *matCellDef="let row">
+            {{ row.curso.division }}
+          </td>
+        </ng-container>
+        <ng-container matColumnDef="comision">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>Comisión</th>
+          <td mat-cell *matCellDef="let row">
+            {{ row.curso.comision }}
+          </td>
+        </ng-container>
+        <ng-container matColumnDef="condicion">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>
+            <div *ngIf="!isMobile" fxLayout="row" fxLayoutAlign="end start">
+              <span>Condición</span>
+            </div>
+            <span *ngIf="isMobile">Condición</span>
+          </th>
+          <td mat-cell *matCellDef="let row">
+            <div *ngIf="isMobile" fxLayout="row" fxLayoutAlign="end start">
+              {{ row.condicion }}
+            </div>
+            <span *ngIf="!isMobile">
+              {{ row.condicion }}
+            </span>
+          </td>
+        </ng-container>
+        <tr mat-header-row *matHeaderRowDef="columnas"></tr>
+        <tr
+          mat-row
+          *matRowDef="let row; columns: columnas"
+          [class.selected]="row.selected"
+          [ngClass]="{
+            hovered: row.hovered,
+            highlighted: row.highlighted
+          }"
+          (mouseover)="!isMobile ? (row.hovered = true) : (row.hovered = false)"
+          (mouseout)="row.hovered = false"
+        ></tr>
+      </table>
+      <app-empty-data *ngIf="!estadoCursadas || estadoCursadas.length < 1"></app-empty-data>
+      <!-- Paginado -------------------------------------------------- -->
+      <mat-paginator class="border-paginador paginator mat-elevation-z2" #paginator [pageSize]="5" [pageSizeOptions]="[5, 10, 25, 100]">
+      </mat-paginator>
     </div>
   </mat-tab>
 </mat-tab-group>
