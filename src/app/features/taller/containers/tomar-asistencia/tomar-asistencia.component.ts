@@ -80,7 +80,6 @@ export class TomarAsistenciaComponent implements OnInit {
       .pipe(untilDestroyed(this))
       .subscribe(
         (datos) => {
-          console.log('obtenerPlanillaTallerPorId', datos);
           this.planillaTaller = { ...datos };
           this.cargando = false;
           this.obtenerAlumnosPorCursoDivisionCiclo()
@@ -116,7 +115,6 @@ export class TomarAsistenciaComponent implements OnInit {
         .pipe(untilDestroyed(this))
         .subscribe(
           (datos) => {
-            console.log('obtenerAlumnosPorCursoCiclo', datos);
             this.alumnos = datos;
             this.cargandoAlumnos = false;
           },

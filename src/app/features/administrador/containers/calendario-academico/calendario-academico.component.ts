@@ -57,7 +57,7 @@ import * as moment from 'moment';
           <button mat-raised-button color="accent" (click)="crearCicloPrueba()">Crear</button>
         </form>
       </div>
-      <app-calendario-datos></app-calendario-datos>
+      <app-calendario-datos [calendario]="calendario"></app-calendario-datos>
     </div>
   `,
   styles: [],
@@ -98,7 +98,7 @@ export class CalendarioAcademicoComponent implements OnInit {
         (datos) => {
           console.log('calendario por ciclo', datos);
           this.cargando = false;
-          this.calendario = datos;
+          this.calendario = [...datos];
         },
         (error) => {
           this.cargando = false;
@@ -114,6 +114,7 @@ export class CalendarioAcademicoComponent implements OnInit {
       .subscribe(
         (datos) => {
           console.log('crearCalendarioDatos', datos);
+          this.calendario = [...datos];
         },
         (error) => {
           console.log('[ERROR]', error);

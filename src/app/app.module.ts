@@ -18,11 +18,11 @@ import { AppComponent } from 'app/app.component';
 import { LayoutModule } from 'app/layout/layout.module';
 import { CallbackComponent } from './features/callback/callback.component';
 import { AppRoutingModule } from './app-routing.module';
-import { environment } from 'environments/environment';
 import { SharedModule } from './shared/shared.module';
 import { registerLocaleData } from '@angular/common';
 
 import localeEsAr from '@angular/common/locales/es-AR';
+
 registerLocaleData(localeEsAr, 'es-Ar');
 
 const appRoutes: Routes = [

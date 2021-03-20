@@ -11,7 +11,14 @@ import { CalendarioAcademicoComponent } from './containers/calendario-academico/
 import { CalendarioDatosComponent } from './ui/calendario-datos/calendario-datos.component';
 import { RolesComponent } from './containers/roles/roles.component';
 import { UsuariosTablaComponent } from './ui/usuarios-tabla/usuarios-tabla.component';
+import { CalendarModule, DateAdapter } from 'angular-calendar';
+import { adapterFactory } from 'angular-calendar/date-adapters/moment';
+import * as moment from 'moment';
+import { CalendarHeaderComponent } from './ui/calendar-header/calendar-header.component';
 
+export function momentAdapterFactory() {
+  return adapterFactory(moment);
+}
 @NgModule({
   declarations: [
     MigrarComponent,
@@ -22,7 +29,14 @@ import { UsuariosTablaComponent } from './ui/usuarios-tabla/usuarios-tabla.compo
     CalendarioDatosComponent,
     RolesComponent,
     UsuariosTablaComponent,
+    CalendarHeaderComponent,
   ],
-  imports: [CommonModule, AdministradorRoutingModule, SharedModule, DesignSharedModule],
+  imports: [
+    CommonModule,
+    AdministradorRoutingModule,
+    SharedModule,
+    DesignSharedModule,
+    CalendarModule.forRoot({ provide: DateAdapter, useFactory: momentAdapterFactory }),
+  ],
 })
 export class AdministradorModule {}
