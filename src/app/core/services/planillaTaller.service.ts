@@ -1,10 +1,8 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { IPlanillaTaller } from 'app/models/interface/iPlanillaTaller';
-import { IQueryPag } from 'app/models/interface/iQueryPag';
 import { environment } from 'environments/environment';
-import { BehaviorSubject, Observable, Subject } from 'rxjs';
-import { takeUntil } from 'rxjs/operators';
+import { Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
@@ -15,7 +13,6 @@ export class PlanillaTallerService {
   obtenerPlanillaTalleresPaginado(filter = '', sortField = '', sortOrder = 'asc', pageNumber = 0, pageSize = 3): Observable<any> {
     const query = `planilla-taller/paginar`;
     const url = this.url + query;
-    console.log('>>>', filter, sortField, sortOrder, pageNumber, pageSize);
     return this.http.get(url, {
       params: new HttpParams()
         //   .set('courseId', courseId.toString())

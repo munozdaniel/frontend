@@ -26,6 +26,7 @@ export class FichaAlumnosComponent implements OnInit {
   alumnos: IAlumno[];
   alumnoOperacion = ALUMNO_OPERACION;
   ciclosLectivos: ICicloLectivo[];
+  parametros: IFichaAlumnoParam;
   constructor(
     private _toastService: ToastService,
     private _alumnoService: AlumnoService,
@@ -34,46 +35,53 @@ export class FichaAlumnosComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
+    this._alumnoService.fichaAlumno$.pipe(untilDestroyed(this)).subscribe((datos) => {
+      if (datos) {
+        this.parametros = { ...datos };
+        this.obtenerAlumnos();
+      }
+    });
     this._cicloLectivoService
       .obtenerCiclosLectivos()
       .pipe(untilDestroyed(this))
       .subscribe(
         (datos) => {
-            this.ciclosLectivos = datos;
+          this.ciclosLectivos = datos;
         },
         (error) => {
           console.log('[ERROR]', error);
         }
       );
   }
+  obtenerAlumnos() {
+    this.cargando = true;
+    const { cicloLectivo, division, curso } = this.parametros;
+    this._alumnoService
+      .obtenerFichaAlumnos(cicloLectivo, division, curso)
+      .pipe(untilDestroyed(this))
+      .subscribe(
+        (alumnos) => {
+          this.alumnos = alumnos;
+          if (alumnos.length < 1) {
+            this._toastService.sinRegistros();
+          }
+          this.cargando = false;
+        },
+        (error) => {
+          this.cargando = false;
+          console.log('[ERROR]', error);
+          Swal.fire({
+            title: 'Oops! Ocurrió un error',
+            html:
+              'No se pudieron recuperar los registros de la base de datos. <br> Si el problema persiste comuniquesé con el soporte técnico.',
+            icon: 'error',
+          });
+        }
+      );
+  }
   setParametrosBusqueda(evento: IFichaAlumnoParam) {
     if (evento) {
-      this.cargando = true;
-      const { cicloLectivo, division, curso } = evento;
-      this._alumnoService
-        .obtenerFichaAlumnos(cicloLectivo, division, curso)
-        .pipe(untilDestroyed(this))
-        .subscribe(
-          (alumnos) => {
-            console.log('Datos', alumnos);
-            this.alumnos = alumnos;
-            if (alumnos.length < 1) {
-              this._toastService.sinRegistros();
-            }
-            this.cargando = false;
-          },
-          (error) => {
-            this.cargando = false;
-            console.log('[ERROR]', error);
-            Swal.fire({
-              title: 'Oops! Ocurrió un error',
-              html:
-                'No se pudieron recuperar los registros de la base de datos. <br> Si el problema persiste comuniquesé con el soporte técnico.',
-              icon: 'error',
-            });
-          }
-        );
+      this._alumnoService.setFichaAlumnoConsulta(evento);
     }
   }
-
 }

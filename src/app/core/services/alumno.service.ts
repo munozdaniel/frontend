@@ -4,14 +4,23 @@ import { IAlumno } from 'app/models/interface/iAlumno';
 import { IAlumnoPaginado } from 'app/models/interface/iAlumnoPaginado';
 import { IAsistencia } from 'app/models/interface/iAsistencia';
 import { ICicloLectivo } from 'app/models/interface/iCicloLectivo';
+import { IFichaAlumnoParam } from 'app/models/interface/iFichaAlumnoParam';
 import { IQueryPag } from 'app/models/interface/iQueryPag';
 import { environment } from 'environments/environment';
-import { Observable } from 'rxjs';
+import { BehaviorSubject, Observable } from 'rxjs';
+import { shareReplay, tap } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root',
 })
 export class AlumnoService {
+  private fichaAlumnoSubject = new BehaviorSubject<IFichaAlumnoParam>(null);
+  public fichaAlumno$ = this.fichaAlumnoSubject.asObservable().pipe(shareReplay(1));
+
+  setFichaAlumnoConsulta({ cicloLectivo, curso, division }) {
+    this.fichaAlumnoSubject.next({ cicloLectivo, curso, division });
+  }
+
   protected url = environment.apiURI;
   constructor(private http: HttpClient) {}
   migrar() {
@@ -89,11 +98,12 @@ export class AlumnoService {
 
     return this.http.put<any>(url, { activo });
   }
-  obtenerFichaAlumnos(cicloLectivo: number, division: number, curso: number): Observable<IAlumno[]> {
+  obtenerFichaAlumnos(cicloLectivo: ICicloLectivo, division: number, curso: number): Observable<IAlumno[]> {
     const query = `alumnos/ficha`;
     const url = this.url + query;
 
     return this.http.post<any>(url, { cicloLectivo, curso, division });
+    //   .pipe(tap((datos) => this.setFichaAlumnoConsulta({ cicloLectivo, curso, division })));
   }
   eliminarColeccion(): Observable<any> {
     const query = `alumnos/eliminar-coleccion`;

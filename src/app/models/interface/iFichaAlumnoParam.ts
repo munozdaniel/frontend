@@ -1,5 +1,7 @@
+import { ICicloLectivo } from './iCicloLectivo';
+
 export interface IFichaAlumnoParam {
-  cicloLectivo: number;
+  cicloLectivo: ICicloLectivo;
   curso: number;
   division: number;
 }
