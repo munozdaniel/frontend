@@ -2,6 +2,7 @@ import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { IAlumno } from 'app/models/interface/iAlumno';
 import { IAlumnoPaginado } from 'app/models/interface/iAlumnoPaginado';
+import { IAsignatura } from 'app/models/interface/iAsignatura';
 import { IAsistencia } from 'app/models/interface/iAsistencia';
 import { ICicloLectivo } from 'app/models/interface/iCicloLectivo';
 import { IFichaAlumnoParam } from 'app/models/interface/iFichaAlumnoParam';
@@ -185,5 +186,12 @@ export class AlumnoService {
       emailAdulto,
       observacion,
     });
+  }
+  //   Informes
+  obtenerAlumnosAsignatura(asignatura: IAsignatura): Observable<IAlumno[]> {
+    const query = `alumnos/por-asignatura`;
+    const url = this.url + query;
+
+    return this.http.post<any>(url, asignatura);
   }
 }

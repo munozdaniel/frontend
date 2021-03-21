@@ -102,7 +102,7 @@ export const navigation: DesignNavigation[] = [
         title: 'Libro de Temas',
         type: 'item',
         icon: 'users',
-        url: '/informes/libro_temas',
+        url: '/informes/libro-temas',
       },
       {
         id: 'informes_alumno_por_taller',
@@ -116,7 +116,7 @@ export const navigation: DesignNavigation[] = [
         title: 'Taller por Alumnos',
         type: 'item',
         icon: 'users',
-        url: '/informes/taller-por-alumno',
+        url: '/informes/taller-por-alumnos-tutores',
       },
     ],
   },

@@ -1,0 +1,38 @@
+<button-volver></button-volver>
+<div fxLayout="column" class="w-100-p p-24 mt-50" fxLayoutGap="20px">
+  <div fxLayout="column" class="mat-card mat-elevation-z4 p-24">
+    <div fxLayout="row wrap" fxLayoutAlign="space-between center" class="w-100-p mb-12" style="border-bottom: 2px solid #80808057">
+      <div>
+        <h1 [@animate]="{ value: '*', params: { x: '50px' } }" class="px-12">{{ titulo }}</h1>
+        <mat-spinner *ngIf="cargando" matSuffix class="ml-10" diameter="20"></mat-spinner>
+      </div>
+      <!-- Autotomcplete -->
+    </div>
+  </div>
+  <!-- Contenido -->
+  <div fxLayout="column">
+    <form
+      [formGroup]="form"
+      class="mat-card mat-elevation-z4 p-24"
+      fxLayout="row wrap"
+      fxLayoutAlign="start baseline"
+      fxLayoutGap="20px"
+      (ngSubmit)="obtenerInforme()"
+    >
+      <input-autocomplete
+        formControlName="asignatura"
+        label="Asignatura"
+        [campoNombre]="pairKeyAsignatura.campoNombre"
+        [campoId]="pairKeyAsignatura.campoId"
+        [options]="asignaturas$ | async"
+        required="true"
+        hint="Ej.: Dibujo Técnico"
+        icon="assignment"
+      >
+      </input-autocomplete>
+      <button fxFlex.xs="100" color="accent" type="submit" mat-raised-button>Buscar Alumnos</button>
+    </form>
+    <!-- Informe -->
+    <app-alumnos-tabla-param class="mt-24" [cargando]="cargando" [alumnos]="alumnos"></app-alumnos-tabla-param>
+  </div>
+</div>
