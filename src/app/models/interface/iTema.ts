@@ -17,4 +17,7 @@ export interface ITema {
   fechaCreacion?: Date;
   fechaModificacion?: Date;
   activo: boolean;
+
+  //
+  incompleto?: boolean;
 }

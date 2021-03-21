@@ -18,6 +18,7 @@ import { IPlanillaTaller } from 'app/models/interface/iPlanillaTaller';
 import { ISeguimientoAlumno } from 'app/models/interface/iSeguimientoAlumno';
 import { ITema } from 'app/models/interface/iTema';
 import { EmailAusenteModalComponent } from 'app/shared/components/email-ausente-modal/email-ausente-modal.component';
+import * as moment from 'moment';
 import { of } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 import Swal from 'sweetalert2';
@@ -92,6 +93,7 @@ import { TemaFormModalComponent } from '../tema-form-modal/tema-form-modal.compo
               (retAbrirModalTemas)="setAbrirModalTemas($event)"
               (retEditarTema)="setEditarTema($event)"
               (retEliminarTema)="setEliminarTema($event)"
+              (retTemasCalendario)="setTemasCalendario($event)"
             >
             </app-planilla-detalle-temas>
           </mat-tab>
@@ -152,6 +154,7 @@ export class PlanillaTallerAdministrarComponent implements OnInit {
   //   Temas
   cargandoTemas: boolean;
   temas: ITema[];
+  temasDelCalendario: ITema[];
   //   Seguimiento
   seguimientos: ISeguimientoAlumno[];
   cargandoSeguimiento: boolean;
@@ -641,6 +644,44 @@ export class PlanillaTallerAdministrarComponent implements OnInit {
         }
       }
     });
+  }
+  setTemasCalendario(tipo: string) {
+    console.log('tipo', tipo);
+    this.cargando = true;
+    this._temaService
+      .obtenerTemasCalendario(tipo, this.planillaId)
+      .pipe(untilDestroyed(this))
+      .subscribe(
+        (datos) => {
+          if (datos.status === 200) {
+            this.cargando = false;
+            const temasDelCalendario = [...datos.temasDelCalendario];
+            const merge = temasDelCalendario.map((x) => {
+              const index = this.temas.findIndex((t) => {
+                console.log('1', t.fecha);
+                console.log('2', moment.utc(t.fecha));
+                return moment.utc(t.fecha).isSame(moment.utc(x.fecha));
+              });
+              if (index === -1) {
+                return { ...x, incompleto: true };
+              } else {
+                return this.temas[index];
+              }
+            });
+            this.temas = [...merge];
+          } else {
+            Swal.fire({
+              title: '',
+              text: datos.message,
+              icon: 'error',
+            });
+          }
+        },
+        (error) => {
+          this.cargando = false;
+          console.log('[ERROR]', error);
+        }
+      );
   }
   //
   setBuscarSeguimientosPorAlumno(alumno: IAlumno) {

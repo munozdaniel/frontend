@@ -194,7 +194,7 @@ export class TemaFormModalComponent implements OnInit, OnDestroy {
       f = moment.utc(this.planillaTaller.fechaFinalizacion);
     }
     this.form = this._fb.group({
-      fecha: [this.tema ? this.tema.fecha : f, [Validators.required]],
+      fecha: [this.tema ? moment.utc(this.tema.fecha) : f, [Validators.required]],
       temaDelDia: [this.tema ? this.tema.temaDelDia : null, [Validators.required, Validators.minLength(4), Validators.maxLength(100)]],
       tipoDesarrollo: [
         this.tema ? this.tema.tipoDesarrollo : null,
@@ -252,7 +252,6 @@ export class TemaFormModalComponent implements OnInit, OnDestroy {
             });
           }
 
-         
           this.cargando = false;
         },
         (error) => {

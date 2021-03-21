@@ -28,6 +28,7 @@ export class PlanillaDetalleTemasComponent implements OnInit, OnChanges {
   @Output() retAbrirModalTemas = new EventEmitter<boolean>();
   @Output() retEditarTema = new EventEmitter<ITema>();
   @Output() retEliminarTema = new EventEmitter<ITema>();
+  @Output() retTemasCalendario = new EventEmitter<string>();
 
   dataSource: MatTableDataSource<any> = new MatTableDataSource([]);
   @ViewChild('sort') set setSort(sort: MatSort) {
@@ -92,5 +93,8 @@ export class PlanillaDetalleTemasComponent implements OnInit, OnChanges {
   }
   eliminarTema(tema: ITema) {
     this.retEliminarTema.emit(tema);
+  }
+  cargarCalendario(tipo: string) {
+    this.retTemasCalendario.emit(tipo);
   }
 }
