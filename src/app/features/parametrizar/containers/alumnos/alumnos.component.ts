@@ -40,7 +40,6 @@ export class AlumnosComponent implements OnInit {
       .pipe(untilDestroyed(this))
       .subscribe(
         (datos) => {
-          console.log('datos', datos);
           this.cargando = false;
           this.alumnos = datos;
         },

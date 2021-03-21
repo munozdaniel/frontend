@@ -1,9 +1,9 @@
 .comision {
   padding: 5px;
-  border: 2px solid #0374ab;
-  background-color: #0374ab;
+  //   border: 2px solid #0374ab;
+  //   background-color: #0374ab;
   gap: 5px;
-  color: white !important;
+  //   color: white !important;
 }
 .comision:hover {
   background-color: #039be58f;
@@ -12,59 +12,58 @@
 // Expansible
 
 table {
-    width: 100%;
-  }
-  
-  tr.fila_detalle {
-    height: 0;
-  }
-  
-  tr.fila_seleccionada:not(.example-expanded-row):hover {
-    background: rgb(0, 132, 255);
-    color: white;
-    cursor: pointer;
-  }
-  
-  tr.fila_seleccionada:not(.example-expanded-row):hover>.button_marker {
-    color: white !important;
-    cursor: pointer;
-  }
-  
-  tr.fila_seleccionada:not(.example-expanded-row):active {
-    background: #efefef;
-    color:rgb(34, 33, 33);
-  }
-  
-  .fila_seleccionada td {
-    border-bottom-width: 0;
-  }
-  
-  .detalle_expansible {
-    overflow: hidden;
-    display: flex;
-  }
-  
-  .contenedor_imagen {
-    // 264 × 254
-   width:100%;
-  
-    border: 4px solid ;
-    padding: 8px;
-    font-weight: lighter;
-    margin: 8px 0;
-  }
-  
-  .example-element-symbol {
-    font-weight: bold;
-    font-size: 40px;
-    line-height: normal;
-  }
-  
-  .example-element-description {
-    padding: 16px;
-  }
-  
-  .example-element-description-attribution {
-    opacity: 0.5;
-  }
-  
+  width: 100%;
+}
+
+tr.fila_detalle {
+  height: 0;
+}
+
+tr.fila_seleccionada:not(.example-expanded-row):hover {
+  background: rgb(0, 132, 255);
+  color: white;
+  cursor: pointer;
+}
+
+tr.fila_seleccionada:not(.example-expanded-row):hover > .button_marker {
+  color: white !important;
+  cursor: pointer;
+}
+
+tr.fila_seleccionada:not(.example-expanded-row):active {
+  background: #efefef;
+  color: rgb(34, 33, 33);
+}
+
+.fila_seleccionada td {
+  border-bottom-width: 0;
+}
+
+.detalle_expansible {
+  overflow: hidden;
+  display: flex;
+}
+
+.contenedor_imagen {
+  // 264 × 254
+  width: 100%;
+
+  border: 4px solid;
+  padding: 8px;
+  font-weight: lighter;
+  margin: 8px 0;
+}
+
+.example-element-symbol {
+  font-weight: bold;
+  font-size: 40px;
+  line-height: normal;
+}
+
+.example-element-description {
+  padding: 16px;
+}
+
+.example-element-description-attribution {
+  opacity: 0.5;
+}

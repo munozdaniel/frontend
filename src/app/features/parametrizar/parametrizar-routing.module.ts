@@ -12,6 +12,7 @@ import { ComisionesAgregarComponent } from './containers/comisiones-agregar/comi
 import { ComisionesEditarComponent } from './containers/comisiones-editar/comisiones-editar.component';
 import { ComisionesVerComponent } from './containers/comisiones-ver/comisiones-ver.component';
 import { ComisionesComponent } from './containers/comisiones/comisiones.component';
+import { ImportarAlumnosComponent } from "./containers/importar-alumnos/importar-alumnos.component";
 import { ProfesoresAgregarComponent } from './containers/profesores-agregar/profesores-agregar.component';
 import { ProfesoresEditarComponent } from './containers/profesores-editar/profesores-editar.component';
 import { ProfesoresVerComponent } from './containers/profesores-ver/profesores-ver.component';
@@ -97,6 +98,11 @@ const routes: Routes = [
     {
         path: "comisiones-ver/:id",
         component:ComisionesVerComponent,
+        //  DEBE estar autenticados
+    },
+    {
+        path: "importar-alumnos",
+        component:ImportarAlumnosComponent,
         //  DEBE estar autenticados
     },
 ];

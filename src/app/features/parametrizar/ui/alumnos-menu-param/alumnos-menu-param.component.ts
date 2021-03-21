@@ -1,4 +1,5 @@
 import { Component, Input, OnInit, EventEmitter, Output } from '@angular/core';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-alumnos-menu-param',
@@ -11,10 +12,13 @@ export class AlumnosMenuParamComponent implements OnInit {
   @Input() soloLectura: boolean;
   @Output() retHabilitarEdicion = new EventEmitter<boolean>();
 
-  constructor() {}
+  constructor(private _router:Router) {}
 
   ngOnInit(): void {}
   editarAlumno() {
     this.retHabilitarEdicion.emit(true);
+  }
+  importarMasivo(){
+      this._router.navigate(['/parametrizar/importar-alumnos']);
   }
 }

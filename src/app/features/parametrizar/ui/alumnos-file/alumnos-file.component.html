@@ -1,0 +1,141 @@
+<div fxLayout="column">
+  <div
+    fxLayout="row wrap"
+    fxLayoutAlign.xs="space-between center"
+    fxLayoutAlign.gt-xs="space-around baseline"
+    class="upload_file w-100-p"
+    [formGroup]="formularioArchivo"
+  >
+    <mat-form-field appearance="outline" class="formCompany" fxFlex.gt-xs="60" fxFlex.xs="100">
+      <mat-label>Seleccione archivo a subir</mat-label>
+      <input #fileInput type="text" readonly matInput placeholder="Seleccione archivo a subir" formControlName="archivo" required />
+    </mat-form-field>
+
+    <input hidden type="file" #uploader (change)="subirArchivo($event)" />
+
+    <button fxFlex.xs="100" mat-raised-button color="primary" (click)="buscarArchivo()">
+      <mat-icon style="color: white; margin-right: 16px">cloud_upload</mat-icon>
+      CARGAR EXCEL
+    </button>
+  </div>
+
+  <!-- Tabla -------------------------------------- -->
+  <mat-progress-bar class="w-100-p" *ngIf="cargando" mode="indeterminate"></mat-progress-bar>
+
+  <div
+    *ngIf="alumnos && alumnos.length > 0"
+    [@animate]="{ value: '*', params: { delay: '50ms', scale: '0.2' } }"
+    class="mt-20 p-0"
+    fxLayoutAlign="center center"
+    fxLayout="row"
+  >
+    <mat-form-field appearance="outline" color="accent" class="w-40-p">
+      <mat-label>Búsqueda Rápida</mat-label>
+      <input matInput users (keyup)="filtroRapido($event.target.value)" [disabled]="dataSource.data.length == 0" />
+      <mat-icon matSuffix>search</mat-icon>
+    </mat-form-field>
+  </div>
+  <table
+    mat-table
+    matSort
+    #sort="matSort"
+    [dataSource]="dataSource"
+    class="borde-tabla mat-elevation-z4 w-100-p"
+    [class.mt-20]="!alumnos || alumnos.length < 1"
+  >
+    <ng-container matColumnDef="settings">
+      <th mat-header-cell *matHeaderCellDef>
+        <mat-checkbox
+          (change)="$event ? masterToggle() : null"
+          [checked]="seleccion.hasValue() && todosSeleccionados()"
+          [indeterminate]="seleccion.hasValue() && !todosSeleccionados()"
+          color="primary"
+        >
+        </mat-checkbox>
+      </th>
+      <td mat-cell *matCellDef="let row">
+        <mat-checkbox
+          (click)="$event.stopPropagation()"
+          (change)="$event ? seleccion.toggle(row) : null"
+          [checked]="seleccion.isSelected(row)"
+          color="primary"
+        >
+        </mat-checkbox>
+      </td>
+    </ng-container>
+    <!--'settings', 'legajo', 'nombreCompleto', 'tipoDni', 'dni', 'estado'  -->
+    <ng-container matColumnDef="legajo">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header>Legajo *</th>
+      <td mat-cell *matCellDef="let row">
+        <strong>{{ row.legajo }}</strong>
+      </td>
+    </ng-container>
+
+    <!-- Progress APELLIDO -->
+    <ng-container matColumnDef="nombreCompleto">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header>Nombre *</th>
+      <td mat-cell *matCellDef="let row">{{ row.nombreCompleto }}</td>
+    </ng-container>
+
+    <!-- Progress NOMBRE -->
+    <ng-container matColumnDef="tipoDni">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header>Tipo Doc *</th>
+      <td mat-cell *matCellDef="let row">{{ row.tipoDni }}</td>
+    </ng-container>
+
+    <!-- Progress EMAIL -->
+    <ng-container matColumnDef="dni">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header>Documento *</th>
+      <td mat-cell *matCellDef="let row">
+        <strong>{{ row.dni }}</strong>
+      </td>
+    </ng-container>
+
+    <!-- Progress TELEFONO -->
+    <ng-container matColumnDef="estado">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header>Estado</th>
+      <td mat-cell *matCellDef="let row">
+        <div *ngIf="isMobile" fxLayout="row" fxLayoutAlign="end start">
+          <span> {{ row.estado }}</span>
+        </div>
+        <span *ngIf="!isMobile"> {{ row.estado }}</span>
+      </td>
+    </ng-container>
+
+    <!-- Progress CELULAR -->
+    <ng-container matColumnDef="documento">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header>Doc</th>
+      <td mat-cell *matCellDef="let row">
+        <div fxLayout="column">
+          <span>{{ row.tipoDni }}</span>
+          <span>{{ row.dni }}</span>
+        </div>
+      </td>
+    </ng-container>
+
+    <!-- Progress DNI -->
+    <ng-container matColumnDef="nombreLegajo">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header>Alumno/a</th>
+      <td mat-cell *matCellDef="let row">
+        <div fxLayout="column" class="ml-8">
+          <span>{{ row.legajo }}</span>
+          <span>{{ row.nombreCompleto }}</span>
+        </div>
+      </td>
+    </ng-container>
+
+    <tr mat-header-row *matHeaderRowDef="columnas"></tr>
+    <tr
+      mat-row
+      *matRowDef="let row; columns: columnas"
+      [ngClass]="{ red: !row.selected, fila_error: !row.selected }"
+      [matTooltip]="row.tieneError ? row.descripcionError : ''"
+      matTooltipClass="big_tooltip"
+      matTooltipPosition="above"
+    ></tr>
+  </table>
+  <app-empty-data class="w-100-p" *ngIf="!alumnos || alumnos.length < 1"></app-empty-data>
+  <!-- Paginado -------------------------------------------------- -->
+  <mat-paginator class="w-100-p border-paginador paginator mat-elevation-z2" #paginator [pageSize]="5" [pageSizeOptions]="[5, 10, 25, 100]">
+  </mat-paginator>
+</div>

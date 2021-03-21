@@ -148,11 +148,24 @@ export class AlumnoService {
     return this.http.post<any>(url, { curso, divisiones, cicloLectivo });
   }
   actualizarAlNuevoCiclo(curso: number, divisiones: number[], cicloAnterior: ICicloLectivo, ciclo: ICicloLectivo): Observable<any> {
-    const query = `alumnos/actualizar-nuevo-ciclo`;
+    const query = `alumnos/`;
     const url = this.url + query;
 
     return this.http.post<any>(url, { curso, divisiones, cicloAnterior, ciclo });
   }
+  disponibleLegajo(legajo: any): Observable<boolean> {
+    const query = `alumnos/disponible-legajo/${legajo}`;
+    const url = this.url + query;
+
+    return this.http.get<any>(url);
+  }
+  guardarMasivo(alumnosCheck: IAlumno[]): Observable<any> {
+    const query = `alumnos/guardar-masivo`;
+    const url = this.url + query;
+
+    return this.http.put<any>(url, alumnosCheck);
+  }
+
   informarAusencia(
     nombreAdulto: string,
     fechaInasitencia: string,

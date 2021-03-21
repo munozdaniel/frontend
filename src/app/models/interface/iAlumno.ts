@@ -10,6 +10,7 @@ export interface IAlumno {
   adultos: IAdulto[];
   estadoCursadas: IEstadoCursada[];
   // comisiones?:IComision[];
+  
   tipoDni: string;
   dni: string;
   nombreCompleto: string;

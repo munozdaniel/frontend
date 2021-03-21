@@ -34,6 +34,8 @@ import { ComisionesFormComponent } from './ui/comisiones-form/comisiones-form.co
 import { AlumnosVerUiComponent } from './ui/alumnos-ver-ui/alumnos-ver-ui.component';
 import { AdultosFormComponent } from './ui/adultos-form/adultos-form.component';
 import { AdultosTablaParamComponent } from './ui/adultos-table-param/adultos-tabla-param.component';
+import { ImportarAlumnosComponent } from './containers/importar-alumnos/importar-alumnos.component';
+import { AlumnosFileComponent } from './ui/alumnos-file/alumnos-file.component';
 
 @NgModule({
   declarations: [
@@ -68,6 +70,8 @@ import { AdultosTablaParamComponent } from './ui/adultos-table-param/adultos-tab
     AlumnosVerUiComponent,
     AdultosFormComponent,
     AdultosTablaParamComponent,
+    ImportarAlumnosComponent,
+    AlumnosFileComponent,
   ],
   entryComponents: [ComisionesFormComponent, AdultosFormComponent],
   imports: [CommonModule, ParametrizarRoutingModule, SharedModule, DesignSharedModule],
