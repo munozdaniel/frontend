@@ -89,6 +89,8 @@ export class PlanillaFormComponent implements OnInit, OnChanges {
       }, 1000);
     } else {
       this.form.patchValue(this.planillaTaller);
+      this.form.controls.fechaInicio.setValue(moment.utc(this.planillaTaller.fechaInicio));
+      this.form.controls.fechaFinalizacion.setValue(moment.utc(this.planillaTaller.fechaFinalizacion));
       this.form.controls.cicloLectivo.setValue(this.planillaTaller.cicloLectivo.anio);
       this.form.controls.cicloLectivo.disable();
       this.form.controls.curso.setValue(this.planillaTaller.curso.curso.toString());
