@@ -54,4 +54,9 @@ export class AsistenciaService {
     const url = this.url + query;
     return this.http.post<any>(url, { planillaTaller });
   }
+  informeAsistenciasPorPlanilla(planillaTaller: IPlanillaTaller): Observable<any> {
+    const query = `asistencia/informe-por-planilla`;
+    const url = this.url + query;
+    return this.http.post<any>(url, { planillaTaller });
+  }
 }
