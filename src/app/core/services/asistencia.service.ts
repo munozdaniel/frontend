@@ -1,6 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { IAsistencia } from 'app/models/interface/iAsistencia';
+import { IPlanillaTaller } from 'app/models/interface/iPlanillaTaller';
 import { environment } from 'environments/environment';
 import { Observable } from 'rxjs';
 
@@ -46,5 +47,11 @@ export class AsistenciaService {
     const url = this.url + query;
 
     return this.http.delete<any>(url);
+  }
+  //   Informes
+  informeAsistenciasPlantillasEntreFechas(planillaTaller: IPlanillaTaller): Observable<any> {
+    const query = `asistencia/informe-plantillas-entre-fechas`;
+    const url = this.url + query;
+    return this.http.post<any>(url, { planillaTaller });
   }
 }

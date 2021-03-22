@@ -64,7 +64,9 @@ import { EmailAusenteModalComponent } from 'app/shared/components/email-ausente-
               (retBuscarSeguimientosPorAlumno)="setBuscarSeguimientosPorAlumno($event)"
             ></app-planilla-detalle-seguimiento>
           </mat-tab>
-          <mat-tab label="Informes"> <app-planilla-detalle-informes> </app-planilla-detalle-informes> </mat-tab>
+          <mat-tab label="Informes">
+            <app-informes [planillaTaller]="planillaTaller"> </app-informes>
+          </mat-tab>
         </mat-tab-group>
       </div>
     </div>

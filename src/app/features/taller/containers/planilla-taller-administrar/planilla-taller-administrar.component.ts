@@ -112,7 +112,9 @@ import { TemaFormModalComponent } from '../tema-form-modal/tema-form-modal.compo
             >
             </app-planilla-detalle-seguimiento>
           </mat-tab>
-          <mat-tab label="Informes"> <app-planilla-detalle-informes> </app-planilla-detalle-informes> </mat-tab>
+          <mat-tab label="Informes">
+            <app-informes [planillaTaller]="planillaTaller"> </app-informes>
+          </mat-tab>
         </mat-tab-group>
       </div>
     </div>
@@ -773,7 +775,8 @@ export class PlanillaTallerAdministrarComponent implements OnInit {
               icon: 'error',
             });
             return of(error);
-          })
+          }),
+          untilDestroyed(this)
         );
       },
       allowOutsideClick: () => !Swal.isLoading(),

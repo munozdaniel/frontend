@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 
 @Component({
   selector: 'app-planilla-detalle-informes',
@@ -50,8 +50,50 @@ export class PlanillaDetalleInformesComponent implements OnInit {
       subtitulo: 'GENERAL',
     },
   ];
+  @Input() cargando: boolean;
+  @Output() retInformeAsistenciaPorTaller = new EventEmitter<boolean>();
+  @Output() retInformeAsistenciaPorDia = new EventEmitter<boolean>();
+  @Output() retInformeCalificacionesPorTaller = new EventEmitter<boolean>();
+  @Output() retInformeCalificacionesResumido = new EventEmitter<boolean>();
+  @Output() retSeguimientoPorTaller = new EventEmitter<boolean>();
+  @Output() retInformeLibroDeTemas = new EventEmitter<boolean>();
+  @Output() retInformeResumenTallerPorAlumnos = new EventEmitter<boolean>();
+  @Output() retInformeListadoAlumnosTaller = new EventEmitter<boolean>();
   constructor() {}
 
   ngOnInit(): void {}
-  verInforme(id: number) {}
+  verInforme(id: number) {
+    if (this.cargando) {
+      return;
+    }
+    switch (id) {
+      case 1:
+        this.retInformeAsistenciaPorTaller.emit(true);
+        break;
+      case 2:
+        this.retInformeAsistenciaPorDia.emit(true);
+        break;
+      case 3:
+        this.retInformeCalificacionesPorTaller.emit(true);
+        break;
+      case 4:
+        this.retInformeCalificacionesResumido.emit(true);
+        break;
+      case 5:
+        this.retSeguimientoPorTaller.emit(true);
+        break;
+      case 6:
+        this.retInformeLibroDeTemas.emit(true);
+        break;
+      case 7:
+        this.retInformeResumenTallerPorAlumnos.emit(true);
+        break;
+      case 8:
+        this.retInformeListadoAlumnosTaller.emit(true);
+        break;
+
+      default:
+        break;
+    }
+  }
 }
