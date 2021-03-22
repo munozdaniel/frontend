@@ -66,6 +66,28 @@ export class FichaAsistenciaDiaPdf {
           margin: [0, 0, 0, 20],
         },
         {
+          columns: [
+            {
+              // auto-sized columns have their widths based on their content
+              text: this.planilla.asignatura.detalle,
+              bold: true,
+              fontSize: 16,
+              alignment: 'left',
+              width: '50%',
+            },
+            {
+              // star-sized columns fill the remaining space
+              // if there's more than one star-column, available width is divided equally
+              text: 'Prof. ' + this.planilla.profesor.nombreCompleto,
+              width: '50%',
+              bold: true,
+              fontSize: 16,
+              alignment: 'right',
+            },
+          ],
+        },
+
+        {
           table: {
             widths: ['20%', '40%', '20%', '20%'],
             body: [...this.bodyAsistencias()],
