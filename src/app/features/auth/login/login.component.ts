@@ -84,6 +84,17 @@ export class LoginComponent implements OnInit {
       .pipe(untilDestroyed(this))
       .subscribe(
         (datos) => {
+          console.log('datos', datos);
+          if (!datos || !datos.success) {
+            Swal.fire({
+              title: 'Ingreso Incorrecto',
+              text: datos.message,
+              icon: 'error',
+              timer: 2000,
+              timerProgressBar: true,
+            }).then(() => {});
+            return;
+          }
           this._designProgressBar.hide();
           this._designNavigationService.setCurrentNavigation('main');
           Swal.fire({
