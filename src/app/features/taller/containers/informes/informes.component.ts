@@ -8,6 +8,8 @@ import { CalificacionesDetalladoPdf } from 'app/core/services/pdf/calificaciones
 import { CalificacionesResumidoPdf } from 'app/core/services/pdf/calificaciones-resumido.pdf';
 import { FichaAsistenciaDiaPdf } from 'app/core/services/pdf/ficha-asistencias-dia.pdf';
 import { FichaAsistenciaGeneralPdf } from 'app/core/services/pdf/ficha-asistencias-general.pdf';
+import { LibroTemasPdf } from 'app/core/services/pdf/libro-temas.pdf';
+import { TemaService } from 'app/core/services/tema.service';
 import { IPlanillaTaller } from 'app/models/interface/iPlanillaTaller';
 import { of } from 'rxjs';
 import { catchError } from 'rxjs/operators';
@@ -42,7 +44,9 @@ export class InformesComponent implements OnInit, OnChanges {
     private _fichaAsistenciaDiaPdf: FichaAsistenciaDiaPdf,
     private _calificacioService: CalificacionService,
     private _calificacionesDetalladoPdf: CalificacionesDetalladoPdf,
-    private _calificacionesResumidoPdf: CalificacionesResumidoPdf
+    private _calificacionesResumidoPdf: CalificacionesResumidoPdf,
+    private _temaService: TemaService,
+    private _libroTemasPdf: LibroTemasPdf
   ) {}
   ngOnChanges(changes: SimpleChanges): void {
     if (changes.planillaTaller && changes.planillaTaller.currentValue) {
@@ -276,7 +280,62 @@ export class InformesComponent implements OnInit, OnChanges {
     });
   }
   setSeguimientoPorTaller(evento) {}
-  setInformeLibroDeTemas(evento) {}
+  setInformeLibroDeTemas(evento) {
+    this.cargando = true;
+    // this._designProgressBarService.show();
+
+    Swal.fire({
+      title: 'Generar Informe',
+      html: 'El proceso puede tardar varios minutos debido a la cantidad de datos que se procesan. <br> <strong>¿Desea continuar?</strong>',
+      icon: 'warning',
+      focusConfirm: false,
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      confirmButtonText: 'Continuar',
+      cancelButtonText: 'Cancelar',
+      showLoaderOnConfirm: true,
+      preConfirm: () => {
+        return this._temaService.informeTemasPorPlanillaTaller(this.planillaTaller).pipe(
+          catchError((error) => {
+            console.log('[ERROR]', error);
+            Swal.fire({
+              title: 'Oops! Ocurrió un error',
+              text: error && error.error ? error.error.message : 'Error de conexion',
+              icon: 'error',
+            });
+            return of(error);
+          }),
+          untilDestroyed(this)
+        );
+      },
+      allowOutsideClick: () => !Swal.isLoading(),
+    }).then((result: any) => {
+      this.cargando = false;
+      console.log('result,', result);
+      if (result.isConfirmed) {
+        if (result.value) {
+          if (!result.value.temasPorFecha || result.value.temasPorFecha.length < 1) {
+            Swal.fire({
+              title: 'Informe cancelado',
+              text: 'NO hay registros cargados',
+              icon: 'error',
+            });
+            return;
+          }
+          console.log('informe ', result.value.temasPorFecha);
+          this.cargando = false;
+          this._designProgressBarService.hide();
+          this._libroTemasPdf.generatePdf(this.planillaTaller, result.value.temasPorFecha);
+        } else {
+          Swal.fire({
+            title: 'Oops! Ocurrió un error',
+            text: 'Intentelo nuevamente. Si el problema persiste comuniquese con el soporte técnico.',
+            icon: 'error',
+          });
+        }
+      }
+    });
+  }
   setInformeResumenTallerPorAlumnos(evento) {}
   setInformeListadoAlumnosTaller(evento) {}
 }

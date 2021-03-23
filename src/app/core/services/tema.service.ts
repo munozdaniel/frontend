@@ -1,5 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { IPlanillaTaller } from 'app/models/interface/iPlanillaTaller';
 import { ITema } from 'app/models/interface/iTema';
 import { environment } from 'environments/environment';
 import { Observable } from 'rxjs';
@@ -40,5 +41,12 @@ export class TemaService {
     const url = this.url + query;
 
     return this.http.post<any>(url, { tipo, planillaId });
+  }
+  //   Informes
+  informeTemasPorPlanillaTaller(planillaTaller: IPlanillaTaller): Observable<any> {
+    const query = `tema/informe-por-planilla`;
+    const url = this.url + query;
+
+    return this.http.post<any>(url, { planillaTaller });
   }
 }
