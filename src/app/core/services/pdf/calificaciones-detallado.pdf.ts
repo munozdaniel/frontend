@@ -84,7 +84,7 @@ export class CalificacionesDetalladoPdf {
 
         {
           table: {
-            widths: ['12%', '31%', '12%', '25%', '20%'],
+            widths: ['12%', '31%', '23%', '28%', '5%'],
             body: [...this.bodyCalificaciones()],
           },
         },
@@ -134,13 +134,48 @@ export class CalificacionesDetalladoPdf {
           fillColor: '#d9d6d6',
         },
         {
-          text: 'Calificación',
+          text: 'Cal.',
           bold: true,
           fontSize: 12,
           colSpan: 1,
           fillColor: '#d9d6d6',
         },
       ];
+      let terceraLinea = [];
+      x.calificaciones.forEach((a, index: number) => {
+        if (a) {
+          terceraLinea.push([
+            {
+              text: a.formaExamen,
+              bold: false,
+              fontSize: 12,
+              colSpan: 1,
+              fillColor: index % 2 === 0 ? '' : '#d9d6d6',
+            },
+            {
+              text: a.tipoExamen,
+              bold: false,
+              fontSize: 12,
+              colSpan: 1,
+              fillColor: index % 2 === 0 ? '' : '#d9d6d6',
+            },
+            {
+              text: a.promedioGeneral,
+              bold: false,
+              fontSize: 12,
+              colSpan: 1,
+              fillColor: index % 2 === 0 ? '' : '#d9d6d6',
+            },
+          ]);
+          if (a.promedia) {
+            totalPromedios += 1;
+          }
+          suma += a.promedioGeneral;
+        }
+        // subtotal.push(terceraLinea);
+      });
+
+      const t = terceraLinea.length > 0 ? _.zip.apply(_, terceraLinea) : [{}, {}, {}];
       const segundaLinea = [
         {
           text: x.legajo,
@@ -155,66 +190,45 @@ export class CalificacionesDetalladoPdf {
           colSpan: 1,
         },
         {
-          text: '',
+          table: {
+            widths: ['41%', '50%', '*'],
+            body: [t],
+          },
           colSpan: 3,
+
+          //   layout: {
+          //     hLineWidth: function (i, node) {
+          //       return i === 0 || i === node.table.body.length ? 2 : 1;
+          //     },
+          //     vLineWidth: function (i, node) {
+          //       return i === 0 || i === node.table.widths.length ? 2 : 1;
+          //     },
+          //     hLineColor: function (i, node) {
+          //       return i === 0 || i === node.table.body.length ? 'black' : 'gray';
+          //     },
+          //     vLineColor: function (i, node) {
+          //       return i === 0 || i === node.table.widths.length ? 'black' : 'gray';
+          //     },
+          //   },
+          layout: 'noBorders',
         },
+
+        // {
+        //   text: '',
+        //   colSpan: 3,
+        // },
         {},
         {},
       ];
-      x.calificaciones.forEach((a) => {
-        if (typeof a.presente === 'boolean') {
-          console.log('typeof a.presente,0', a);
-        }
-        console.log('nombre lega', x.alumnoNombre, x.legajo);
-        const terceraLinea = [
-          //   {
-          //     text: x.legajo,
-          //     bold: false,
-          //     fontSize: 12,
-          //     colSpan: 1,
-          //   },
-          //   {
-          //     text: x.alumnoNombre,
-          //     bold: false,
-          //     fontSize: 12,
-          //     colSpan: 1,
-          //   },
-          {},
-          {},
-          {
-            text: a.formaExamen,
-            bold: false,
-            fontSize: 12,
-            colSpan: 1,
-          },
-          {
-            text: a.tipoExamen,
-            bold: false,
-            fontSize: 12,
-            colSpan: 1,
-          },
-          {
-            text: a.promedioGeneral,
-            bold: false,
-            fontSize: 12,
-            colSpan: 1,
-          },
-        ];
-        if (a.promedia) {
-          totalPromedios += 1;
-        }
-        suma += a.promedioGeneral;
-        // subtotal.push(terceraLinea);
-      });
+
       //
       total.push(primeraLinea);
       total.push(segundaLinea);
       //   total.push(subtotal);
-      const promedio = (suma / totalCalificaciones).toFixed(2);
+      const promedio = suma ? (suma / totalCalificaciones).toFixed(2) : Number(0).toFixed(2);
       const promedioFinal = (Math.ceil(Number(promedio) * 2) / 2).toFixed(2);
       total.push([
-        { text: '', colSpan: 3 },
-        {},
+        { text: '', colSpan: 2 },
         {},
         {
           columns: [
@@ -223,23 +237,18 @@ export class CalificacionesDetalladoPdf {
               width: 'auto',
               text: 'Promedio',
               alignment: 'left',
+              bold: true,
             },
             {
               // star-sized columns fill the remaining space
               // if there's more than one star-column, available width is divided equally
               width: '*',
-              text: promedio,
+              text: promedio ? promedio : 0,
               alignment: 'right',
+              bold: true,
             },
           ],
-
-          //   text: Promedio:'' + promedio,
-          //   bold: true,
-          //   fontSize: 12,
-          //   colSpan: 1,
-          //   fillColor: '#d9d6d6',
         },
-        // { text: x.totalAsistencias, bold: true, fontSize: 12, colSpan: 1, fillColor: '#d9d6d6', alignment: 'left' },
         {
           columns: [
             {
@@ -247,6 +256,7 @@ export class CalificacionesDetalladoPdf {
               width: 'auto',
               text: 'Promedio Final',
               alignment: 'left',
+              bold: true,
             },
             {
               // star-sized columns fill the remaining space
@@ -254,20 +264,16 @@ export class CalificacionesDetalladoPdf {
               width: '*',
               text: promedioFinal,
               alignment: 'right',
+              bold: true,
             },
           ],
-          //   text: 'Promedio Final:' + promedioFinal,
-          //   bold: true,
-          //   fontSize: 12,
-          //   fillColor: '#d9d6d6',
-          //   colSpan: 1,
         },
+        {},
 
         // { text: x.totalAusentes, bold: true, fontSize: 12, fillColor: '#d9d6d6', colSpan: 1, alignment: 'left' },
       ]);
       total.push([{ text: '', colSpan: 5 }, {}, {}, {}, {}]);
     });
-    console.log('toal', total);
     return total;
   }
 }
