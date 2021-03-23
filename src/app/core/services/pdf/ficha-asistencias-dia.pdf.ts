@@ -130,10 +130,7 @@ export class FichaAsistenciaDiaPdf {
             fillColor: '#d9d6d6',
           },
         ];
-        if (typeof a.presente === 'boolean') {
-          console.log('typeof a.presente,0', a);
-        }
-        console.log('nombre lega', x.alumnoNombre, x.legajo);
+
         const segundaLinea = [
           {
             text: x.legajo,
@@ -163,6 +160,29 @@ export class FichaAsistenciaDiaPdf {
         total.push(primeraLinea);
         total.push(segundaLinea);
       });
+      //
+      total.push([
+        {
+          text: 'Total Asistencia:' + x.totalAsistencias,
+          bold: true,
+          fontSize: 12,
+          colSpan: 2,
+          fillColor: '#d9d6d6',
+        },
+        // { text: x.totalAsistencias, bold: true, fontSize: 12, colSpan: 1, fillColor: '#d9d6d6', alignment: 'left' },
+        {
+          text: 'Total Ausentes:' + x.totalAusentes,
+          bold: true,
+          fontSize: 12,
+          fillColor: '#d9d6d6',
+          colSpan: 2,
+        },
+        {},
+        {},
+        // { text: x.totalAusentes, bold: true, fontSize: 12, fillColor: '#d9d6d6', colSpan: 1, alignment: 'left' },
+      ]);
+      total.push([{}, {}, {}, {}]);
+      //
     });
     console.log('toal', total);
     return total;
