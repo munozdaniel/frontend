@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { IAdulto } from 'app/models/interface/iAdulto';
 import { IAlumno } from 'app/models/interface/iAlumno';
 import { IEstadoCursada } from 'app/models/interface/iEstadoCursada';
+import { IPlanillaTaller } from 'app/models/interface/iPlanillaTaller';
 import { ISeguimientoAlumno } from 'app/models/interface/iSeguimientoAlumno';
 import * as moment from 'moment';
 import { ScriptService } from '../plugins/script-excel.service';
@@ -10,6 +11,7 @@ declare let pdfMake: any;
   providedIn: 'root',
 })
 export class SeguimientoAlumnoPdf {
+  planilla: IPlanillaTaller;
   alumno: IAlumno;
   seguimientos: ISeguimientoAlumno[];
   constructor(private scriptService: ScriptService) {
@@ -35,7 +37,27 @@ export class SeguimientoAlumnoPdf {
         break;
     }
   }
-  getDocumentDefinition() {
+  generatePdfPorPlanilla(planilla: IPlanillaTaller, seguimientos: [], action = 'open') {
+    this.planilla = planilla;
+    this.seguimientos = [...seguimientos];
+    const documentDefinition = this.getDocumentoPorPlanilla();
+    switch (action) {
+      case 'open':
+        pdfMake.createPdf(documentDefinition).open();
+        break;
+      case 'print':
+        pdfMake.createPdf(documentDefinition).print();
+        break;
+      case 'download':
+        pdfMake.createPdf(documentDefinition).download();
+        break;
+      default:
+        pdfMake.createPdf(documentDefinition).open();
+        break;
+    }
+  }
+  //   En la planillaTaller
+  private getDocumentoPorPlanilla() {
     return {
       content: [
         {
@@ -114,14 +136,94 @@ export class SeguimientoAlumnoPdf {
       },
     };
   }
-  getSeguimientos() {
+  //   Individual ... el otro
+  private getDocumentDefinition() {
+    return {
+      content: [
+        {
+          text: 'Seguimiento de Alumno',
+          bold: true,
+          fontSize: 20,
+          alignment: 'center',
+          margin: [0, 0, 0, 20],
+        },
+        {
+          style: 'tabla_datos_personales',
+          color: '#444',
+          table: {
+            widths: ['100%', '100%'],
+            body: [
+              [
+                {
+                  text: 'DATOS PERSONALES',
+                  bold: true,
+                  fontSize: 16,
+                  fillColor: '#282936',
+                  color: '#ffffff',
+                },
+              ],
+              [this.getDatosPersonales()],
+
+              [
+                {
+                  text: 'ADULTOS A CARGO',
+                  bold: true,
+                  fontSize: 16,
+                  fillColor: '#282936',
+                  color: '#ffffff',
+                },
+              ],
+              [this.getAdultos()],
+              [
+                {
+                  text: 'Cantidad de Integrantes en la familia: ' + this.alumno.adultos.length,
+                  bold: true,
+                },
+              ],
+            ],
+          },
+          //   layout: { vLineColor: 'red' },
+        },
+        {
+          style: 'tabla_cursadas',
+          color: '#444',
+          table: {
+            widths: ['*', '*', '*', '*'],
+            body: [
+              [
+                {
+                  text: 'INFORME',
+                  bold: true,
+                  fontSize: 16,
+                  fillColor: '#282936',
+                  color: '#ffffff',
+                  colSpan: 4,
+                },
+                {},
+                {},
+                {},
+              ],
+              ['Ciclo Lectivo', 'Fecha', 'Tipo de Seguimiento', 'Observación'],
+              ...this.getSeguimientos(),
+            ],
+          },
+        },
+      ],
+      styles: {
+        tabla_cursadas: {
+          margin: [0, 20, 0, 0],
+        },
+      },
+    };
+  }
+  private getSeguimientos() {
     const retorno = this.seguimientos.map((x: ISeguimientoAlumno) => {
       return [x.cicloLectivo.anio, moment.utc(x.fecha).format('DD/MM/YYYY'), x.tipoSeguimiento, x.observacion];
     });
     console.log('return', retorno);
     return retorno;
   }
-  getDatosEscolares() {
+  private getDatosEscolares() {
     return {
       columns: [
         [
@@ -160,7 +262,7 @@ export class SeguimientoAlumnoPdf {
       columnGap: 10,
     };
   }
-  getDatosPersonales() {
+  private getDatosPersonales() {
     const retorno = {
       columns: [
         [
@@ -283,7 +385,7 @@ export class SeguimientoAlumnoPdf {
     };
     return retorno;
   }
-  getAdultos() {
+  private getAdultos() {
     const columnas = [];
     if (this.alumno.adultos.length > 0) {
       this.alumno.adultos.forEach((x: IAdulto) => {

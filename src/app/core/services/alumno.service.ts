@@ -6,6 +6,7 @@ import { IAsignatura } from 'app/models/interface/iAsignatura';
 import { IAsistencia } from 'app/models/interface/iAsistencia';
 import { ICicloLectivo } from 'app/models/interface/iCicloLectivo';
 import { IFichaAlumnoParam } from 'app/models/interface/iFichaAlumnoParam';
+import { IPlanillaTaller } from 'app/models/interface/iPlanillaTaller';
 import { IQueryPag } from 'app/models/interface/iQueryPag';
 import { environment } from 'environments/environment';
 import { BehaviorSubject, Observable } from 'rxjs';
@@ -193,5 +194,11 @@ export class AlumnoService {
     const url = this.url + query;
 
     return this.http.post<any>(url, asignatura);
+  }
+  informeAlumnosPorPlanilla(planillaTaller: IPlanillaTaller): Observable<any> {
+    const query = `alumnos/informe-por-planilla/${planillaTaller._id}`;
+    const url = this.url + query;
+
+    return this.http.get<any>(url);
   }
 }

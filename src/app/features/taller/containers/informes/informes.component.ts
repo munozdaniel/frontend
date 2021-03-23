@@ -4,6 +4,7 @@ import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { AlumnoService } from 'app/core/services/alumno.service';
 import { AsistenciaService } from 'app/core/services/asistencia.service';
 import { CalificacionService } from 'app/core/services/calificacion.service';
+import { AlumnosPdf } from 'app/core/services/pdf/alumnos.pdf';
 import { CalificacionesDetalladoPdf } from 'app/core/services/pdf/calificaciones-detallado.pdf';
 import { CalificacionesResumidoPdf } from 'app/core/services/pdf/calificaciones-resumido.pdf';
 import { FichaAsistenciaDiaPdf } from 'app/core/services/pdf/ficha-asistencias-dia.pdf';
@@ -46,7 +47,8 @@ export class InformesComponent implements OnInit, OnChanges {
     private _calificacionesDetalladoPdf: CalificacionesDetalladoPdf,
     private _calificacionesResumidoPdf: CalificacionesResumidoPdf,
     private _temaService: TemaService,
-    private _libroTemasPdf: LibroTemasPdf
+    private _libroTemasPdf: LibroTemasPdf,
+    private _alumnosPorTallerPdf: AlumnosPdf
   ) {}
   ngOnChanges(changes: SimpleChanges): void {
     if (changes.planillaTaller && changes.planillaTaller.currentValue) {
@@ -86,7 +88,6 @@ export class InformesComponent implements OnInit, OnChanges {
       allowOutsideClick: () => !Swal.isLoading(),
     }).then((result: any) => {
       this.cargando = false;
-      console.log('result,', result);
       if (result.isConfirmed) {
         if (result.value) {
           if (!result.value.success) {
@@ -97,7 +98,6 @@ export class InformesComponent implements OnInit, OnChanges {
             });
             return;
           }
-          console.log('informe de asistencia por planilla', result.value.asistencias);
           this.cargando = false;
           this._designProgressBarService.hide();
           this._fichaAsistenciaGeneralPdf.generatePdf(this.planillaTaller, result.value.asistencias);
@@ -142,7 +142,6 @@ export class InformesComponent implements OnInit, OnChanges {
       allowOutsideClick: () => !Swal.isLoading(),
     }).then((result: any) => {
       this.cargando = false;
-      console.log('result,', result);
       if (result.isConfirmed) {
         if (result.value) {
           if (!result.value.asistenciasPorAlumno || result.value.asistenciasPorAlumno.length < 1) {
@@ -153,7 +152,6 @@ export class InformesComponent implements OnInit, OnChanges {
             });
             return;
           }
-          console.log('informe de asistencia por planilla', result.value.asistencias);
           this.cargando = false;
           this._designProgressBarService.hide();
           this._fichaAsistenciaDiaPdf.generatePdf(this.planillaTaller, result.value.asistenciasPorAlumno);
@@ -198,7 +196,6 @@ export class InformesComponent implements OnInit, OnChanges {
       allowOutsideClick: () => !Swal.isLoading(),
     }).then((result: any) => {
       this.cargando = false;
-      console.log('result,', result);
       if (result.isConfirmed) {
         if (result.value) {
           if (!result.value.asistenciasPorAlumno || result.value.asistenciasPorAlumno.length < 1) {
@@ -209,7 +206,6 @@ export class InformesComponent implements OnInit, OnChanges {
             });
             return;
           }
-          console.log('informe ', result.value.asistencias);
           this.cargando = false;
           this._designProgressBarService.hide();
           this._calificacionesDetalladoPdf.generatePdf(this.planillaTaller, result.value.asistenciasPorAlumno);
@@ -254,7 +250,6 @@ export class InformesComponent implements OnInit, OnChanges {
       allowOutsideClick: () => !Swal.isLoading(),
     }).then((result: any) => {
       this.cargando = false;
-      console.log('result,', result);
       if (result.isConfirmed) {
         if (result.value) {
           if (!result.value.asistenciasPorAlumno || result.value.asistenciasPorAlumno.length < 1) {
@@ -265,7 +260,6 @@ export class InformesComponent implements OnInit, OnChanges {
             });
             return;
           }
-          console.log('informe ', result.value.asistencias);
           this.cargando = false;
           this._designProgressBarService.hide();
           this._calificacionesResumidoPdf.generatePdf(this.planillaTaller, result.value.asistenciasPorAlumno);
@@ -311,7 +305,6 @@ export class InformesComponent implements OnInit, OnChanges {
       allowOutsideClick: () => !Swal.isLoading(),
     }).then((result: any) => {
       this.cargando = false;
-      console.log('result,', result);
       if (result.isConfirmed) {
         if (result.value) {
           if (!result.value.temasPorFecha || result.value.temasPorFecha.length < 1) {
@@ -322,7 +315,6 @@ export class InformesComponent implements OnInit, OnChanges {
             });
             return;
           }
-          console.log('informe ', result.value.temasPorFecha);
           this.cargando = false;
           this._designProgressBarService.hide();
           this._libroTemasPdf.generatePdf(this.planillaTaller, result.value.temasPorFecha);
@@ -337,5 +329,57 @@ export class InformesComponent implements OnInit, OnChanges {
     });
   }
   setInformeResumenTallerPorAlumnos(evento) {}
-  setInformeListadoAlumnosTaller(evento) {}
+  setInformeListadoAlumnosTaller(evento) {
+    this.cargando = true;
+    // this._designProgressBarService.show();
+
+    Swal.fire({
+      title: 'Generar Informe',
+      html: 'El proceso puede tardar varios minutos debido a la cantidad de datos que se procesan. <br> <strong>¿Desea continuar?</strong>',
+      icon: 'warning',
+      focusConfirm: false,
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      confirmButtonText: 'Continuar',
+      cancelButtonText: 'Cancelar',
+      showLoaderOnConfirm: true,
+      preConfirm: () => {
+        return this._alumnoService.informeAlumnosPorPlanilla(this.planillaTaller).pipe(
+          catchError((error) => {
+            console.log('[ERROR]', error);
+            Swal.fire({
+              title: 'Oops! Ocurrió un error',
+              text: error && error.error ? error.error.message : 'Error de conexion',
+              icon: 'error',
+            });
+            return of(error);
+          }),
+          untilDestroyed(this)
+        );
+      },
+      allowOutsideClick: () => !Swal.isLoading(),
+    }).then((result: any) => {
+      this.cargando = false;
+      if (result.isConfirmed) {
+        if (result.value) {
+          if (!result.value.alumnos || result.value.alumnos.length < 1) {
+            Swal.fire({
+              title: 'Informe cancelado',
+              text: 'NO hay registros cargados',
+              icon: 'error',
+            });
+            return;
+          }
+          this._designProgressBarService.hide();
+          this._alumnosPorTallerPdf.generatePdf(this.planillaTaller, result.value.alumnos);
+        } else {
+          Swal.fire({
+            title: 'Oops! Ocurrió un error',
+            text: 'Intentelo nuevamente. Si el problema persiste comuniquese con el soporte técnico.',
+            icon: 'error',
+          });
+        }
+      }
+    });
+  }
 }
