@@ -1,6 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { ICalificacion } from 'app/models/interface/iCalificacion';
+import { IPlanillaTaller } from 'app/models/interface/iPlanillaTaller';
 import { environment } from 'environments/environment';
 import { Observable } from 'rxjs';
 
@@ -34,5 +35,12 @@ export class CalificacionService {
     const url = this.url + query;
 
     return this.http.delete<any>(url);
+  }
+  //   Informe
+  informeCalificacionesPorPlanilla(planillaTaller: IPlanillaTaller): Observable<any> {
+    const query = `calificacion/informe-por-planilla`;
+    const url = this.url + query;
+
+    return this.http.post<any>(url, { planillaTaller });
   }
 }
