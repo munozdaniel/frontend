@@ -60,6 +60,8 @@ export class InformesComponent implements OnInit, OnChanges {
 
   ngOnInit(): void {}
   setInformeAsistenciaPorTaller(evento) {
+    alert('TRABAJO EN PROGRESO... NO USAR');
+
     this.cargando = true;
     // this._designProgressBarService.show();
 
@@ -275,7 +277,9 @@ export class InformesComponent implements OnInit, OnChanges {
       }
     });
   }
-  setSeguimientoPorTaller(evento) {}
+  setSeguimientoPorTaller(evento) {
+    alert('TRABAJO EN PROGRESO... NO USAR');
+  }
   setInformeLibroDeTemas(evento) {
     this.cargando = true;
     // this._designProgressBarService.show();
