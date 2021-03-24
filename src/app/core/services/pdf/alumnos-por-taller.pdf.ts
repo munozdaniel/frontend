@@ -93,28 +93,124 @@ export class AlumnosPorTallerPdf {
     ];
   }
   calificaciones(alumno) {
-    return [
+    let notas = '';
+    let suma = 0;
+    let totalPromedios = 0;
+    let totalCalificaciones = alumno.calificaciones.length;
+    alumno.calificaciones.forEach((a, index: number) => {
+      if (a) {
+        notas += '  ' + Number(a.promedioGeneral).toFixed(2) + '  ';
+        if (a.promedia) {
+          totalPromedios += 1;
+        }
+        suma += a.promedioGeneral;
+      }
+      // subtotal.push(terceraLinea);
+    });
+    const total = [];
+    const promedio = suma ? (suma / totalCalificaciones).toFixed(2) : Number(0).toFixed(2);
+    console.log('promedio', promedio);
+    const promedioFinal = promedio !== '0.00' ? (Math.ceil(Number(promedio) * 2) / 2).toFixed(2) : Number(0).toFixed(2);
+    total.push(
+      [
+        {
+          table: {
+            body: [
+              [
+                {
+                  text: 'Calificaciones',
+                  bold: true,
+                  fontSize: 12,
+                  alignment: 'right',
+                  width: '100%',
+                },
+              ],
+              [
+                {
+                  // star-sized columns fill the remaining space
+                  // if there's more than one star-column, available width is divided equally
+                  text: 'Promedio Final',
+                  bold: true,
+                  fontSize: 12,
+                  alignment: 'right',
+                  width: '100%',
+                },
+              ],
+            ],
+          },
+          layout: {
+            defaultBorder: false,
+          },
+        },
+      ],
+      [
+        {
+          //   text:  x.calificaciones.map((x) => x.promedioGeneral).join(' - '),
+          text: notas,
+          bold: true,
+          fontSize: 14,
+        },
+        {
+          //   text:  x.calificaciones.map((x) => x.promedioGeneral).join(' - '),
+          text: promedioFinal,
+          bold: true,
+          fontSize: 14,
+        },
+      ]
+    );
+    return total;
+  }
+  asistencias(alumno) {
+    const total = [];
+    total.push([
       {
-        row: [
-          {
-            text: 'Cal. Parciales',
-            bold: true,
-            fontSize: 16,
-            alignment: 'left',
-            width: '100%',
-          },
-          {
-            // star-sized columns fill the remaining space
-            // if there's more than one star-column, available width is divided equally
-            text: 'Prom Final',
-            width: '50%',
-            bold: true,
-            fontSize: 16,
-            alignment: 'right',
-          },
+        table: {
+          body: [
+            [
+              {
+                text: 'Inasistencias',
+                bold: true,
+                fontSize: 12,
+                alignment: 'right',
+                width: '100%',
+              },
+            ],
+          ],
+        },
+        layout: {
+          defaultBorder: false,
+        },
+      },
+    ]);
+    if (alumno.inasistencias.length > 0) {
+      console.log('alumno.inasistencias.length', ...alumno.inasistencias.map((x) => ({ fecha: x.fecha })));
+    }
+    total.push({
+      table: {
+        widths: ['25%', '25%', '25%', '25%'],
+        body: [
+          [
+            {
+              colSpan: 4,
+              table: {
+                body: [alumno.inasistencias.map((x) => ({ text: x ? x.fecha : '' }))],
+              },
+            },
+            {},
+            {},
+            {},
+          ],
+          [
+            'Total de Clases:' + alumno.totalClases,
+            '(%) Asistencia:' + alumno.porcentajeAsistencias,
+            'Llegadas Tarde:' + alumno.llegadasTardes,
+            '(%) Inasistencia:' + alumno.porcentajeInasistencias,
+          ],
         ],
       },
-    ];
+    });
+
+    return total;
   }
   body() {
     const total = [];
@@ -129,13 +225,49 @@ export class AlumnosPorTallerPdf {
       };
       total.push(tablaCabecera);
       //   ================================
-      //   const tablaCalificaciones = {
-      //     table: {
-      //       widths: ['20%', '80%'],
-      //       body: this.calificaciones(x),
-      //     },
-      //   };
-      //   total.push([{ text: '', colSpan: 5 }, {}, {}, {}, {}]);
+      const tablaCalificaciones = {
+        table: {
+          widths: ['20%', '80%'],
+          body: [this.calificaciones(x)],
+        },
+        layout: {
+          hLineWidth: function (i, node) {
+            return i === 0 || i === node.table.body.length ? 2 : 0;
+          },
+          vLineWidth: function (i, node) {
+            return i === 0 || i === node.table.widths.length ? 2 : 0;
+          },
+          hLineColor: function (i, node) {
+            return i === 0 || i === node.table.body.length ? 'black' : 'white';
+          },
+          vLineColor: function (i, node) {
+            return i === 0 || i === node.table.widths.length ? 'black' : 'white';
+          },
+        },
+      };
+      total.push(tablaCalificaciones);
+
+      const tablaAsistencias = {
+        table: {
+          widths: ['20%', '80%'],
+          body: [this.asistencias(x)],
+        },
+        layout: {
+          hLineWidth: function (i, node) {
+            return i === 0 || i === node.table.body.length ? 2 : 0;
+          },
+          vLineWidth: function (i, node) {
+            return i === 0 || i === node.table.widths.length ? 2 : 0;
+          },
+          hLineColor: function (i, node) {
+            return i === 0 || i === node.table.body.length ? 'black' : 'white';
+          },
+          vLineColor: function (i, node) {
+            return i === 0 || i === node.table.widths.length ? 'black' : 'white';
+          },
+        },
+      };
+      total.push(tablaAsistencias);
     });
     console.log('total', total);
     return [...total];
