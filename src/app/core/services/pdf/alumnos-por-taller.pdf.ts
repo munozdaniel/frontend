@@ -48,23 +48,23 @@ export class AlumnosPorTallerPdf {
   }
   getDocumentDefinition() {
     return {
-      pageMargins: [40, 40, 20, 40],
-      pageOrientation: 'landscape',
-      width: 1344,
-      height: 'auto',
+      //   pageMargins: [40, 40, 20, 40],
+      //   width: 1344,
+      //   height: 'auto',
+      pageSize: 'A4',
       content: [
-        {
-          text: 'Informe de alumnos por taller',
-          bold: true,
-          fontSize: 20,
-          alignment: 'center',
-          margin: [0, 0, 0, 20],
-        },
+        // {
+        //   text: 'Informe de alumnos por taller',
+        //   bold: true,
+        //   fontSize: 20,
+        //   alignment: 'center',
+        //   margin: [0, 0, 0, 20],
+        // },
         ...this.body(),
       ],
       styles: {
-        tabla_cursadas: {
-          margin: [0, 20, 0, 0],
+        ultima: {
+          margin: [0, 0, 0, 10],
         },
         tableExample: {},
       },
@@ -77,18 +77,21 @@ export class AlumnosPorTallerPdf {
         bold: false,
         fontSize: 12,
         colSpan: 1,
+        fillColor: '#d9d6d6',
       },
       {
         text: alumno.alumnoNombre,
         bold: false,
         fontSize: 12,
         colSpan: 1,
+        fillColor: '#d9d6d6',
       },
       {
         text: `Curso: ${this.planilla.curso.curso} - Div.: ${this.planilla.curso.division} - Com.: ${this.planilla.curso.comision}`,
         bold: false,
         fontSize: 12,
         colSpan: 1,
+        fillColor: '#d9d6d6',
       },
     ];
   }
@@ -109,7 +112,6 @@ export class AlumnosPorTallerPdf {
     });
     const total = [];
     const promedio = suma ? (suma / totalCalificaciones).toFixed(2) : Number(0).toFixed(2);
-    console.log('promedio', promedio);
     const promedioFinal = promedio !== '0.00' ? (Math.ceil(Number(promedio) * 2) / 2).toFixed(2) : Number(0).toFixed(2);
     total.push(
       [
@@ -145,16 +147,24 @@ export class AlumnosPorTallerPdf {
       ],
       [
         {
-          //   text:  x.calificaciones.map((x) => x.promedioGeneral).join(' - '),
-          text: notas,
-          bold: true,
-          fontSize: 14,
-        },
-        {
-          //   text:  x.calificaciones.map((x) => x.promedioGeneral).join(' - '),
-          text: promedioFinal,
-          bold: true,
-          fontSize: 14,
+          layout: {
+            defaultBorder: false,
+          },
+          table: {
+            widths: ['100%'],
+            body: [
+              [
+                {
+                  text: notas,
+                },
+              ],
+              [
+                {
+                  text: promedioFinal,
+                },
+              ],
+            ],
+          },
         },
       ]
     );
@@ -182,18 +192,22 @@ export class AlumnosPorTallerPdf {
         },
       },
     ]);
-    if (alumno.inasistencias.length > 0) {
-      console.log('alumno.inasistencias.length', ...alumno.inasistencias.map((x) => ({ fecha: x.fecha })));
-    }
+
     total.push({
+      layout: {
+        defaultBorder: false,
+      },
       table: {
-        widths: ['25%', '25%', '25%', '25%'],
+        widths: ['20%', '28%', '18%', '32%'],
         body: [
           [
             {
               colSpan: 4,
+              layout: {
+                defaultBorder: false,
+              },
               table: {
-                body: [alumno.inasistencias.map((x) => ({ text: x ? x.fecha : '' }))],
+                body: [alumno.inasistencias.map((x) => ({ text: x ? x.fecha : '', fontSize: 12 }))],
               },
             },
             {},
@@ -201,10 +215,75 @@ export class AlumnosPorTallerPdf {
             {},
           ],
           [
-            'Total de Clases:' + alumno.totalClases,
-            '(%) Asistencia:' + alumno.porcentajeAsistencias,
-            'Llegadas Tarde:' + alumno.llegadasTardes,
-            '(%) Inasistencia:' + alumno.porcentajeInasistencias,
+            { text: 'Clases: ' + alumno.totalClases, fontSize: 12 },
+            { text: 'Asistencia: ' + alumno.porcentajeAsistencias + ' %', fontSize: 12 },
+            { text: 'Tarde: ' + alumno.llegadasTardes, fontSize: 12 },
+            { text: 'Inasistencia: ' + alumno.porcentajeInasistencias + ' %', fontSize: 12 },
+          ],
+        ],
+      },
+    });
+
+    return total;
+  }
+  taller(alumno) {
+    const total = [];
+    total.push([
+      {
+        table: {
+          body: [
+            [
+              {
+                text: 'Taller',
+                bold: true,
+                fontSize: 12,
+                alignment: 'right',
+                width: '100%',
+              },
+            ],
+            [
+              {
+                text: 'Profesor',
+                bold: true,
+                fontSize: 12,
+                alignment: 'right',
+                width: '100%',
+              },
+            ],
+          ],
+        },
+        layout: {
+          defaultBorder: false,
+        },
+      },
+    ]);
+
+    total.push({
+      layout: {
+        defaultBorder: false,
+      },
+      table: {
+        widths: ['50%', '50%'],
+        body: [
+          [
+            {
+              colSpan: 2,
+              text: this.planilla.asignatura.detalle,
+            },
+            {},
+          ],
+          [
+            {
+              colSpan: 1,
+              text: this.planilla.profesor.nombreCompleto,
+            },
+            {
+              colSpan: 1,
+              text: 'Firma',
+              alignment: 'center',
+              fontSize: 9,
+              border: [false, true, false, false],
+            },
           ],
         ],
       },
@@ -219,8 +298,30 @@ export class AlumnosPorTallerPdf {
       //   ================================
       const tablaCabecera = {
         table: {
-          widths: ['20%', '40%', '40%'],
+          heights: [35],
+          widths: ['20.5%', '44%', '*'],
           body: [this.cabecera(x)],
+        },
+        layout: {
+          hLineWidth: function (i, node) {
+            return i === 0 || i === node.table.body.length ? 2 : 1;
+          },
+          vLineWidth: function (i, node) {
+            return i === 0 || i === node.table.widths.length ? 2 : 1;
+          },
+          hLineColor: function (i, node) {
+            return i === 0 || i === node.table.body.length ? 'black' : 'gray';
+          },
+          vLineColor: function (i, node) {
+            return i === 0 || i === node.table.widths.length ? 'black' : 'gray';
+          },
+          // hLineStyle: function (i, node) { return {dash: { length: 10, space: 4 }}; },
+          // vLineStyle: function (i, node) { return {dash: { length: 10, space: 4 }}; },
+          // paddingLeft: function(i, node) { return 4; },
+          // paddingRight: function(i, node) { return 4; },
+          // paddingTop: function(i, node) { return 2; },
+          // paddingBottom: function(i, node) { return 2; },
+          // fillColor: function (rowIndex, node, columnIndex) { return null; }
         },
       };
       total.push(tablaCabecera);
@@ -230,20 +331,6 @@ export class AlumnosPorTallerPdf {
           widths: ['20%', '80%'],
           body: [this.calificaciones(x)],
         },
-        layout: {
-          hLineWidth: function (i, node) {
-            return i === 0 || i === node.table.body.length ? 2 : 0;
-          },
-          vLineWidth: function (i, node) {
-            return i === 0 || i === node.table.widths.length ? 2 : 0;
-          },
-          hLineColor: function (i, node) {
-            return i === 0 || i === node.table.body.length ? 'black' : 'white';
-          },
-          vLineColor: function (i, node) {
-            return i === 0 || i === node.table.widths.length ? 'black' : 'white';
-          },
-        },
       };
       total.push(tablaCalificaciones);
 
@@ -252,22 +339,17 @@ export class AlumnosPorTallerPdf {
           widths: ['20%', '80%'],
           body: [this.asistencias(x)],
         },
-        layout: {
-          hLineWidth: function (i, node) {
-            return i === 0 || i === node.table.body.length ? 2 : 0;
-          },
-          vLineWidth: function (i, node) {
-            return i === 0 || i === node.table.widths.length ? 2 : 0;
-          },
-          hLineColor: function (i, node) {
-            return i === 0 || i === node.table.body.length ? 'black' : 'white';
-          },
-          vLineColor: function (i, node) {
-            return i === 0 || i === node.table.widths.length ? 'black' : 'white';
-          },
-        },
       };
       total.push(tablaAsistencias);
+
+      const tablaTaller = {
+        style: 'ultima',
+        table: {
+          widths: ['20%', '80%'],
+          body: [this.taller(x)],
+        },
+      };
+      total.push(tablaTaller);
     });
     console.log('total', total);
     return [...total];
