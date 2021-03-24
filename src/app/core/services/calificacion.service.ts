@@ -43,4 +43,10 @@ export class CalificacionService {
 
     return this.http.post<any>(url, { planillaTaller });
   }
+  informeAlumnosPorTaller(planillaTaller: IPlanillaTaller): Observable<any> {
+    const query = `calificacion/informe-alumnos-por-taller`;
+    const url = this.url + query;
+
+    return this.http.post<any>(url, { planillaTaller });
+  }
 }
