@@ -1,5 +1,6 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { ICicloLectivo } from 'app/models/interface/iCicloLectivo';
 import { IPlanillaTaller } from 'app/models/interface/iPlanillaTaller';
 import { environment } from 'environments/environment';
 import { Observable } from 'rxjs';
@@ -93,10 +94,15 @@ export class PlanillaTallerService {
     return this.http.get<any>(url);
   }
   buscarTotalAsistenciaPorPlanilla(planillaId: string): Observable<any> {
-    console.log('planillaId', planillaId);
     const query = `planilla-taller/${planillaId}/total-asistencias`;
     const url = this.url + query;
 
     return this.http.get<any>(url);
+  }
+  obtenerPlanillasPorCursoCiclo(curso: number, comision: string, division: number, cicloLectivo: ICicloLectivo): Observable<any> {
+    const query = `planilla-taller/por-curso-ciclo`;
+    const url = this.url + query;
+
+    return this.http.post<any>(url, { curso, comision, division, cicloLectivo });
   }
 }

@@ -23,4 +23,10 @@ export class CicloLectivoService {
 
     return this.http.get<any>(url);
   }
+  obtenerCicloActual() {
+    const query = `ciclolectivos/actual`;
+    const url = this.url + query;
+
+    return this.http.get<any>(url);
+  }
 }

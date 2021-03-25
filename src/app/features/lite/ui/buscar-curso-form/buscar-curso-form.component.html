@@ -1,0 +1,53 @@
+<form
+  [formGroup]="form"
+  (ngSubmit)="enviarParametros()"
+  class="mat-card mat-elevation-z4 p-24"
+  fxLayout="column"
+  fxLayoutAlign="center start"
+
+>
+  <div class="w-100-p" fxLayout="row wrap" fxLayoutAlign="space-between center">
+    <!-- curso ============================= -->
+    <mat-form-field appearance="outline" fxFlex="100">
+      <mat-label class="lbl">Curso</mat-label>
+      <mat-select formControlName="curso">
+        <mat-option value="1">CURSO 1</mat-option>
+        <mat-option value="2">CURSO 2</mat-option>
+        <mat-option value="3">CURSO 3</mat-option>
+        <mat-option value="4">CURSO 4</mat-option>
+        <mat-option value="5">CURSO 5</mat-option>
+        <mat-option value="6">CURSO 6</mat-option>
+      </mat-select>
+      <mat-error *ngIf="form.controls.curso.hasError('required')"> Este campo es requerido. </mat-error>
+    </mat-form-field>
+    <!-- division ============================= -->
+    <mat-form-field appearance="outline" fxFlex="100">
+      <mat-label class="lbl">División</mat-label>
+      <mat-select formControlName="division">
+        <mat-option value="1">DIVISIÓN 1</mat-option>
+        <mat-option value="2">DIVISIÓN 2</mat-option>
+        <mat-option value="3">DIVISIÓN 3</mat-option>
+        <mat-option value="4">DIVISIÓN 4</mat-option>
+        <mat-option value="5">DIVISIÓN 5</mat-option>
+        <mat-option value="6">DIVISIÓN 6</mat-option>
+        <mat-option value="6">DIVISIÓN 7</mat-option>
+        <mat-option value="6">DIVISIÓN 8</mat-option>
+        <mat-option value="6">DIVISIÓN 9</mat-option>
+      </mat-select>
+      <mat-error *ngIf="form.controls.division.hasError('required')"> Este campo es requerido. </mat-error>
+    </mat-form-field>
+    <!-- tipoComision ============================= -->
+    <mat-form-field appearance="outline" fxFlex="100">
+      <mat-label class="lbl">Comision</mat-label>
+      <mat-select formControlName="comision">
+        <mat-option *ngFor="let tipo of tiposComision" [value]="tipo">{{ tipo }}</mat-option>
+      </mat-select>
+      <mat-error *ngIf="form.controls.comision.hasError('required')"> Este campo es requerido. </mat-error>
+    </mat-form-field>
+  </div>
+  <div fxLayout="row" fxLayoutAlign="center start" class="w-100-p">
+    <button mat-raised-button color="primary" type="submit" [disabled]="form.invalid">
+      <mat-icon class="mr-8">search</mat-icon>Buscar
+    </button>
+  </div>
+</form>

@@ -62,6 +62,13 @@ export const navigation: DesignNavigation[] = [
         icon: 'build',
         url: '/taller/planillas',
       },
+      {
+        id: 'taller_tomar_asistencia',
+        title: 'Tomar Asistencia',
+        type: 'item',
+        icon: 'pan_tool',
+        url: '/lite/tomar-asistencia',
+      },
     ],
   },
   {

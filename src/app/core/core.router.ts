@@ -44,6 +44,11 @@ const routes = [
     loadChildren: () => import('../features/auth/auth.module').then((m) => m.AuthModule),
     canActivate: [],
   },
+  {
+    path: 'lite',
+    loadChildren: () => import('../features/lite/lite.module').then((m) => m.LiteModule),
+    canActivate: [],
+  },
   // {
   //     path: "administrar",
   //     loadChildren: () =>
