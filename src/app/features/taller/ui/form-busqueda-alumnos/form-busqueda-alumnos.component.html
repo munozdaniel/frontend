@@ -29,15 +29,19 @@
     </mat-form-field>
     <!-- division ============================= -->
     <mat-form-field appearance="outline" fxFlex.gt-xs="30" fxFlex.xs="100">
-      <mat-label class="lbl">Division</mat-label>
-      <input matInput type="number" min="0" formControlName="division" autocomplete="off" />
+      <mat-label class="lbl">División</mat-label>
+      <mat-select formControlName="division">
+        <mat-option value="1">DIVISIÓN 1</mat-option>
+        <mat-option value="2">DIVISIÓN 2</mat-option>
+        <mat-option value="3">DIVISIÓN 3</mat-option>
+        <mat-option value="4">DIVISIÓN 4</mat-option>
+        <mat-option value="5">DIVISIÓN 5</mat-option>
+        <mat-option value="6">DIVISIÓN 6</mat-option>
+        <mat-option value="6">DIVISIÓN 7</mat-option>
+        <mat-option value="6">DIVISIÓN 8</mat-option>
+        <mat-option value="6">DIVISIÓN 9</mat-option>
+      </mat-select>
       <mat-error *ngIf="form.controls.division.hasError('required')"> Este campo es requerido. </mat-error>
-      <mat-error
-        *ngIf="
-          !form.controls.division.hasError('required') && (form.controls.division.hasError('min') || form.controls.division.hasError('max'))
-        "
-        >Ingrese un valor entre 0 y 6</mat-error
-      >
     </mat-form-field>
   </div>
   <div fxLayout="row" fxLayoutAlign="center start" class="w-100-p">

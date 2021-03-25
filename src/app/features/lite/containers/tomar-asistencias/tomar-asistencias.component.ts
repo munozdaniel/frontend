@@ -136,7 +136,7 @@ export class TomarAsistenciasComponent implements OnInit {
           } else {
             const dialogRef = this.dialog.open(PlanillasModalComponent, {
               width: this.isMobile ? '100%' : '80%',
-              data: { planillas: planillasTaller },
+              data: { planillas: planillasTaller, isMobile: this.isMobile },
             });
 
             dialogRef.afterClosed().subscribe((result) => {

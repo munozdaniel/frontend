@@ -17,36 +17,32 @@ import { DesignMaterialColorPickerModule } from '@design/components/material-col
 import { DesignSidebarModule } from '@design/components/sidebar/sidebar.module';
 
 import { DesignThemeOptionsComponent } from '@design/components/theme-options/theme-options.component';
+import { CookieService } from 'ngx-cookie-service';
 
 @NgModule({
-    declarations: [
-        DesignThemeOptionsComponent
-    ],
-    imports     : [
-        CommonModule,
-        FormsModule,
-        ReactiveFormsModule,
+  declarations: [DesignThemeOptionsComponent],
+  imports: [
+    CommonModule,
+    FormsModule,
+    ReactiveFormsModule,
 
-        FlexLayoutModule,
+    FlexLayoutModule,
 
-        MatButtonModule,
-        MatCheckboxModule,
-        MatDividerModule,
-        MatFormFieldModule,
-        MatIconModule,
-        MatOptionModule,
-        MatRadioModule,
-        MatSelectModule,
-        MatSlideToggleModule,
+    MatButtonModule,
+    MatCheckboxModule,
+    MatDividerModule,
+    MatFormFieldModule,
+    MatIconModule,
+    MatOptionModule,
+    MatRadioModule,
+    MatSelectModule,
+    MatSlideToggleModule,
 
-        DesignDirectivesModule,
-        DesignMaterialColorPickerModule,
-        DesignSidebarModule
-    ],
-    exports     : [
-        DesignThemeOptionsComponent
-    ]
+    DesignDirectivesModule,
+    DesignMaterialColorPickerModule,
+    DesignSidebarModule,
+  ],
+  exports: [DesignThemeOptionsComponent],
+  providers: [CookieService],
 })
-export class DesignThemeOptionsModule
-{
-}
+export class DesignThemeOptionsModule {}

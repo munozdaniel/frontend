@@ -1,7 +1,10 @@
+import { DOCUMENT } from '@angular/common';
+import { Inject, OnDestroy } from '@angular/core';
 import { ChangeDetectionStrategy, Component, Input, OnChanges, OnInit, SimpleChanges, ViewEncapsulation } from '@angular/core';
 import { CalendarEvent, CalendarMonthViewDay, CalendarView } from 'angular-calendar';
 import { ICalendario } from 'app/models/interface/iCalendario';
 import * as moment from 'moment';
+import { CookieService } from 'ngx-cookie-service';
 import { Subject } from 'rxjs';
 const colors: any = {
   red: {
@@ -26,7 +29,8 @@ const colors: any = {
   changeDetection: ChangeDetectionStrategy.OnPush,
   encapsulation: ViewEncapsulation.None,
 })
-export class CalendarioDatosComponent implements OnInit, OnChanges {
+export class CalendarioDatosComponent implements OnInit, OnChanges, OnDestroy {
+  private readonly darkThemeClass = 'dark-theme';
   refresh: Subject<any> = new Subject();
   activeDayIsOpen: boolean = false;
   view: CalendarView = CalendarView.Month;
@@ -36,7 +40,8 @@ export class CalendarioDatosComponent implements OnInit, OnChanges {
   events: CalendarEvent[] = [];
 
   viewDate: Date = new Date();
-  constructor() {}
+  constructor(@Inject(DOCUMENT) private document, private _cookieService: CookieService) {}
+
   ngOnChanges(changes: SimpleChanges): void {
     if (changes.calendario && changes.calendario.currentValue) {
       this.minDate = this.calendario[0].fecha;
@@ -81,7 +86,15 @@ export class CalendarioDatosComponent implements OnInit, OnChanges {
       return { title: 'COMISION H', color: 'rgb(55, 0, 255)' };
     }
   }
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    const cadena = this._cookieService.check('configuracion') ? this._cookieService.get('configuracion') : null;
+    if (cadena !== 'theme-default') {
+      this.document.body.classList.add(this.darkThemeClass);
+    }
+  }
+  ngOnDestroy(): void {
+    this.document.body.classList.remove(this.darkThemeClass);
+  }
   //   beforeMonthViewRender({ body }: { body: CalendarMonthViewDay[] }): void {
   //     body.forEach((day) => {
   //       if (!this.dateIsValid(day.date)) {

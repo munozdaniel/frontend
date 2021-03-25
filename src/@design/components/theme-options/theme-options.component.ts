@@ -8,6 +8,7 @@ import { designAnimations } from '@design/animations';
 import { DesignConfigService } from '@design/services/config.service';
 import { DesignNavigationService } from '@design/components/navigation/navigation.service';
 import { DesignSidebarService } from '@design/components/sidebar/sidebar.service';
+import { CookieService } from 'ngx-cookie-service';
 
 @Component({
   selector: 'design-theme-options',
@@ -42,7 +43,8 @@ export class DesignThemeOptionsComponent implements OnInit, OnDestroy {
     private _designConfigService: DesignConfigService,
     private _designNavigationService: DesignNavigationService,
     private _designSidebarService: DesignSidebarService,
-    private _renderer: Renderer2
+    private _renderer: Renderer2,
+    private _cookieService: CookieService
   ) {
     // Set the defaults
     this.barClosed = true;
@@ -98,6 +100,7 @@ export class DesignThemeOptionsComponent implements OnInit, OnDestroy {
     this._designConfigService.config.pipe(takeUntil(this._unsubscribeAll)).subscribe((config) => {
       // Update the stored config
       this.designConfig = config;
+      this._cookieService.set('configuracion', JSON.stringify(config));
 
       // Set the config form values without emitting an event
       // so that we don't end up with an infinite loop

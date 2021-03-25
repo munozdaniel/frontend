@@ -34,7 +34,7 @@ export class AlumnosTablaAsistenciasComponent implements OnInit, OnChanges {
         this.columnas = ['nombre', 'opciones'];
       } else {
         this.isMobile = false;
-        this.columnas = ['alumnoNro', 'nombre', 'email', 'dni', 'seguimientoEtap', 'opciones'];
+        this.columnas = ['alumnoNro', 'nombre', 'seguimientoEtap', 'opciones'];
       }
     });
   }

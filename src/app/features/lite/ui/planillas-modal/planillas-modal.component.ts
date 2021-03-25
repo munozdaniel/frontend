@@ -40,6 +40,12 @@ export class PlanillasModalComponent implements OnInit {
     public dialogRef: MatDialogRef<PlanillasModalComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any
   ) {
+    this.isMobile = data.isMobile;
+    if (this.isMobile) {
+      this.columnas = ['asignatura', 'mobile'];
+    } else {
+      this.columnas = ['asignatura', 'profesor', 'fechaInicio', 'fechaFinalizacion', 'opciones'];
+    }
     this.planillas = data.planillas;
     this.dataSource.data = data.planillas;
     this.mobileQuery = this._media.matchMedia('(max-width: 600px)');
