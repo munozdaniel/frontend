@@ -15,6 +15,8 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { InputAutocompleteComponent } from './components/input-autocomplete/input-autocomplete.component';
 import { AlumnoDatosPdfComponent } from './components/alumno-datos-pdf/alumno-datos-pdf.component';
 import { EmailAusenteModalComponent } from './components/email-ausente-modal/email-ausente-modal.component';
+import { BuscarPlanillaFormComponent } from './components/buscar-planilla-form/buscar-planilla-form.component';
+import { PlanillaTablaSimpleComponent } from './components/planilla-tabla-simple/planilla-tabla-simple.component';
 
 @NgModule({
   imports: [
@@ -42,6 +44,8 @@ import { EmailAusenteModalComponent } from './components/email-ausente-modal/ema
     FormCicloLectivoComponent,
     InputAutocompleteComponent,
     AlumnoDatosPdfComponent,
+    BuscarPlanillaFormComponent,
+    PlanillaTablaSimpleComponent,
   ],
   declarations: [
     Error401Component,
@@ -55,6 +59,8 @@ import { EmailAusenteModalComponent } from './components/email-ausente-modal/ema
     InputAutocompleteComponent,
     AlumnoDatosPdfComponent,
     EmailAusenteModalComponent,
+    BuscarPlanillaFormComponent,
+    PlanillaTablaSimpleComponent,
   ],
 })
 export class SharedModule {}

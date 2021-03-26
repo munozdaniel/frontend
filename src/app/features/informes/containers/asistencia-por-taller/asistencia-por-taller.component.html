@@ -9,5 +9,24 @@
     </div>
   </div>
   <!-- Contenido -->
-  <div></div>
+  <mat-accordion>
+    <mat-expansion-panel expanded (opened)="panelOpenState = true" (closed)="panelOpenState = false">
+      <mat-expansion-panel-header>
+        <mat-panel-title> Planillas de Taller</mat-panel-title>
+        <mat-panel-description> Buscar por curso y ciclo lectivo </mat-panel-description>
+      </mat-expansion-panel-header>
+      <app-buscar-planilla-form [cargando]="cargando" (retBuscarPlanilla)="setBuscarPlanilla($event)"> </app-buscar-planilla-form>
+    </mat-expansion-panel>
+  </mat-accordion>
+  <app-planilla-tabla-simple
+    [cargando]="cargando"
+    [planillas]="planillas"
+    (retInformeAsistenciasPorTaller)="setInformeAsistenciasPorTaller($event)"
+    (retInformeAsistenciasPorDia)="setInformeAsistenciasPorDia($event)"
+    (retInformeCalificacionesPorTaller)="setInformeCalificacionesPorTaller($event)"
+    (retInformeCalificacionesPorTallerResumido)="setInformeCalificacionesPorTallerResumido($event)"
+    (retInformeLibroTemas)="setInformeLibroTemas($event)"
+    (retInformeAlumnosPorTaller)="setInformeAlumnosPorTaller($event)"
+    (retInformeTallerPorAlumnos)="setInformeTallerPorAlumnos($event)"
+  ></app-planilla-tabla-simple>
 </div>

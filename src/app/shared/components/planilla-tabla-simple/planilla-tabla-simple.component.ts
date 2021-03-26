@@ -1,27 +1,16 @@
 import { trigger, state, style, transition, animate } from '@angular/animations';
-import { BreakpointObserver, Breakpoints, BreakpointState, MediaMatcher } from '@angular/cdk/layout';
-import {
-  Component,
-  ElementRef,
-  Input,
-  OnInit,
-  Output,
-  ViewChild,
-  EventEmitter,
-  OnChanges,
-  SimpleChanges,
-  AfterViewInit,
-  ChangeDetectorRef,
-} from '@angular/core';
-import { MatTableDataSource, MatSort, MatPaginator, PageEvent } from '@angular/material';
-import { Router } from '@angular/router';
+import { MediaMatcher, BreakpointObserver, Breakpoints, BreakpointState } from '@angular/cdk/layout';
+import { ChangeDetectorRef, Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges, ViewChild } from '@angular/core';
+import { MatTableDataSource, MatSort, MatPaginator } from '@angular/material';
 import { designAnimations } from '@design/animations';
+import { UntilDestroy } from '@ngneat/until-destroy';
 import { IPlanillaTaller } from 'app/models/interface/iPlanillaTaller';
 import * as moment from 'moment';
+@UntilDestroy()
 @Component({
-  selector: 'app-planillas-tabla',
-  templateUrl: './planillas-tabla.component.html',
-  styleUrls: ['./planillas-tabla.component.scss'],
+  selector: 'app-planilla-tabla-simple',
+  templateUrl: './planilla-tabla-simple.component.html',
+  styleUrls: ['./planilla-tabla-simple.component.scss'],
   animations: [
     designAnimations,
     trigger('detailExpand', [
@@ -31,26 +20,16 @@ import * as moment from 'moment';
     ]),
   ],
 })
-export class PlanillasTablaComponent implements OnInit, OnChanges {
-  @Input() planillas: IPlanillaTaller[];
+export class PlanillaTablaSimpleComponent implements OnInit, OnChanges {
   @Input() cargando: boolean;
-  columnas = [
-    'planillaTallerNro',
-    'cicloLectivo',
-    'fechaInicio',
-    'bimestre',
-    'asignatura',
-    // 'curso',
-    // 'div',
-    // 'comision',
-    'comisioncompleta',
-    // 'duracion',
-    'profesor',
-    'observacion',
-    'opciones',
-  ];
-
-  planillaTaller: IPlanillaTaller;
+  @Input() planillas: IPlanillaTaller[];
+  @Output() retInformeAsistenciasPorTaller = new EventEmitter<IPlanillaTaller>();
+  @Output() retInformeAsistenciasPorDia = new EventEmitter<IPlanillaTaller>();
+  @Output() retInformeCalificacionesPorTaller = new EventEmitter<IPlanillaTaller>();
+  @Output() retInformeCalificacionesPorTallerResumido = new EventEmitter<IPlanillaTaller>();
+  @Output() retInformeLibroTemas = new EventEmitter<IPlanillaTaller>();
+  @Output() retInformeAlumnosPorTaller = new EventEmitter<IPlanillaTaller>();
+  @Output() retInformeTallerPorAlumnos = new EventEmitter<IPlanillaTaller>();
   dataSource: MatTableDataSource<any> = new MatTableDataSource([]);
   @ViewChild('sort') set setSort(sort: MatSort) {
     this.dataSource.sort = sort;
@@ -58,37 +37,27 @@ export class PlanillasTablaComponent implements OnInit, OnChanges {
   @ViewChild('paginator') set setPaginator(paginator: MatPaginator) {
     this.dataSource.paginator = paginator;
   }
+  columnas = ['planillaTallerNro', 'fechaInicio', 'fechaFinalizacion', 'bimestre', 'asignatura', 'profesor', 'observacion', 'opciones'];
   expandedElement: IPlanillaTaller | null;
   // Mobile
   isMobile: boolean;
   private _mobileQueryListener: () => void;
   mobileQuery: MediaQueryList;
-  constructor(
-    private _router: Router,
-    private _changeDetectorRef: ChangeDetectorRef,
-    private _media: MediaMatcher,
-    public breakpointObserver: BreakpointObserver
-  ) {
+  constructor(private _changeDetectorRef: ChangeDetectorRef, private _media: MediaMatcher, public breakpointObserver: BreakpointObserver) {
     this.mobileQuery = this._media.matchMedia('(max-width: 600px)');
     this._mobileQueryListener = () => this._changeDetectorRef.detectChanges();
     this.breakpointObserver.observe([Breakpoints.Small, Breakpoints.HandsetPortrait]).subscribe((state: BreakpointState) => {
       if (state.matches) {
         this.isMobile = true;
-        this.columnas = ['comisioncompleta', 'bimestre', 'asignatura', 'opciones'];
+        this.columnas = ['asignatura', 'bimestre', 'opciones'];
       } else {
         this.isMobile = false;
-
         this.columnas = [
           'planillaTallerNro',
-          'cicloLectivo',
           'fechaInicio',
+          'fechaFinalizacion',
           'bimestre',
           'asignatura',
-          // 'curso',
-          // 'div',
-          // 'comision',
-          'comisioncompleta',
-          // 'duracion',
           'profesor',
           'observacion',
           'opciones',
@@ -96,15 +65,15 @@ export class PlanillasTablaComponent implements OnInit, OnChanges {
       }
     });
   }
-
   ngOnChanges(changes: SimpleChanges): void {
     if (changes.planillas && changes.planillas.currentValue) {
       this.dataSource.data = this.planillas;
-      this.customSearchSortTable();
     }
   }
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    this.customSearchSortTable();
+  }
   customSearchSortTable() {
     // Personalizar funcion busqueda en la tabla detalle
     this.dataSource.filterPredicate = (data: IPlanillaTaller, filters: string) => {
@@ -167,29 +136,26 @@ export class PlanillasTablaComponent implements OnInit, OnChanges {
       this.dataSource.paginator.firstPage();
     }
   }
-
-  verPlanillaDetalle(planilla: IPlanillaTaller) {
-    const anio = (planilla.cicloLectivo as any).anio;
-    this._router.navigate([`taller/planilla-ver/${planilla._id}/${anio}`]);
+  reporteAsistenciasPorTaller(planilla: IPlanillaTaller) {
+    console.log('planilla', planilla);
+    this.retInformeAsistenciasPorTaller.emit(planilla);
   }
-  editarPlanillaDetalle(planilla: IPlanillaTaller) {
-    const anio = (planilla.cicloLectivo as any).anio;
-    // http://localhost:4200/taller/planillas-administrar/60452df8acf1374130a1dc77
-    this._router.navigate([`taller/planillas-administrar/${planilla._id}`]);
+  reporteAsistenciasPorDia(planilla: IPlanillaTaller) {
+    this.retInformeAsistenciasPorDia.emit(planilla);
   }
-  tomarAsistencia(planilla: IPlanillaTaller) {
-    this._router.navigate([`taller/tomar-asistencia/${planilla._id}`]);
+  reporteCalificacionesPorTaller(planilla: IPlanillaTaller) {
+    this.retInformeCalificacionesPorTaller.emit(planilla);
   }
-  calificarAlumnos(planilla: IPlanillaTaller) {
-    this._router.navigate([`taller/planillas-administrar/${planilla._id}/calificaciones`]);
+  reporteCalificacionesPorTallerResumido(planilla: IPlanillaTaller) {
+    this.retInformeCalificacionesPorTallerResumido.emit(planilla);
   }
-  verLibroDeTemas(planilla: IPlanillaTaller) {
-    this._router.navigate([`taller/planillas-administrar/${planilla._id}/temas`]);
+  reporteLibroTemas(planilla: IPlanillaTaller) {
+    this.retInformeLibroTemas.emit(planilla);
   }
-  verSeguimientoDeAlumnos(planilla: IPlanillaTaller) {
-    this._router.navigate([`taller/planillas-administrar/${planilla._id}/seguimientos`]);
+  reporteAlumnosPorTaller(planilla: IPlanillaTaller) {
+    this.retInformeAlumnosPorTaller.emit(planilla);
   }
-  verInformes(planilla: IPlanillaTaller) {
-    this._router.navigate([`taller/planillas-administrar/${planilla._id}/informes`]);
+  reporteTallerPorAlumnos(planilla: IPlanillaTaller) {
+    this.retInformeTallerPorAlumnos.emit(planilla);
   }
 }
