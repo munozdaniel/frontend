@@ -52,11 +52,9 @@ export class AppComponent implements OnInit, OnDestroy {
   ) {
     // Get default navigation
     this.navigation = navigation;
-
-    // Register the navigation to the service
     this._designNavigationService.register('main', this.navigation);
-    this._designNavigationService.register('navigationEmpty', navigationEmpty);
-    this._designNavigationService.setCurrentNavigation('navigationEmpty');
+    this._designNavigationService.setCurrentNavigation('main');
+    // Register the navigation to the service
     this.comprobarLogin();
 
     /**
@@ -146,25 +144,21 @@ export class AppComponent implements OnInit, OnDestroy {
   // @ Public methods
   // -----------------------------------------------------------------------------------------------------
   comprobarLogin() {
-    this._authService.currentUser$
-      .pipe(untilDestroyed(this))
-      .pipe(untilDestroyed(this))
-      .subscribe(
-        (datos) => {
-          console.log('datos', datos);
-          if (!datos) {
-            this._router.navigate(['/auth/iniciar-sesion']);
-            this.isLogin = false;
-            this._designNavigationService.setCurrentNavigation('navigationEmpty');
-          } else {
-            this.isLogin = true; // Set the main navigation as our current navigation
-            this._designNavigationService.setCurrentNavigation('main');
-          }
-        },
-        (error) => {
-          console.log('[ERROR]', error);
+    this._authService.currentUser$.pipe(untilDestroyed(this)).subscribe(
+      (datos: any) => {
+        console.log('datos', datos);
+        if (!datos || !datos.success) {
+          this.isLogin = false;
+          this._router.navigate(['/auth/iniciar-sesion']);
+        } else {
+          console.log('main');
+          this.isLogin = true; // Set the main navigation as our current navigation
         }
-      );
+      },
+      (error) => {
+        console.log('[ERROR]', error);
+      }
+    );
     // this._auth.user$.pipe(untilDestroyed(this)).subscribe(
     //   (datos) => {
     //     console.log('auth user$', datos);

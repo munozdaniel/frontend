@@ -9,6 +9,7 @@ import { AuthenticationService } from 'app/core/services/helpers/authentication.
 import { Router } from '@angular/router';
 import { DesignProgressBarService } from '@design/components/progress-bar/progress-bar.service';
 import { DesignNavigationService } from '@design/components/navigation/navigation.service';
+import { navigation } from 'app/navigation/navigation';
 @UntilDestroy()
 @Component({
   selector: 'login',
@@ -85,6 +86,7 @@ export class LoginComponent implements OnInit {
       .subscribe(
         (datos) => {
           if (!datos || !datos.success) {
+            this._designProgressBar.hide();
             Swal.fire({
               title: 'Ingreso Incorrecto',
               text: datos.message,
@@ -93,18 +95,19 @@ export class LoginComponent implements OnInit {
               timerProgressBar: true,
             }).then(() => {});
             return;
+          } else {
+            // this._designNavigationService.unregister('navigationEmpty');
+            this._designProgressBar.hide();
+            Swal.fire({
+              title: 'Bienvenido ' + datos.nombre,
+              text: 'Recuperando datos...',
+              icon: 'success',
+              timer: 2000,
+              timerProgressBar: true,
+            }).then(() => {
+              this._router.navigate(['/']);
+            });
           }
-          this._designProgressBar.hide();
-          this._designNavigationService.setCurrentNavigation('main');
-          Swal.fire({
-            title: 'Bienvenido ' + datos.nombre,
-            text: 'Recuperando datos...',
-            icon: 'success',
-            timer: 2000,
-            timerProgressBar: true,
-          }).then(() => {
-            this._router.navigate(['/']);
-          });
         },
         (error) => {
           this._designProgressBar.hide();
