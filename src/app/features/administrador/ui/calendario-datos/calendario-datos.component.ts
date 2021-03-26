@@ -88,7 +88,9 @@ export class CalendarioDatosComponent implements OnInit, OnChanges, OnDestroy {
   }
   ngOnInit(): void {
     const cadena = this._cookieService.check('configuracion') ? this._cookieService.get('configuracion') : null;
-    if (cadena !== 'theme-default') {
+    const configuracion = JSON.parse(cadena);
+
+    if (configuracion.colorTheme !== 'theme-default') {
       this.document.body.classList.add(this.darkThemeClass);
     }
   }
