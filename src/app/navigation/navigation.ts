@@ -78,9 +78,9 @@ export const navigation: DesignNavigation[] = [
     children: [
       {
         id: 'informes_por_plailla',
-        title: 'Informes por Planilla',
+        title: 'Planilla Taller',
         type: 'item',
-        icon: 'users',
+        icon: 'assignment',
         url: '/informes/asistencia-por-taller',
       },
     ],

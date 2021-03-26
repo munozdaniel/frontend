@@ -32,7 +32,7 @@
             row_seleccionada: row.selected
           }"
         >
-          {{ row.nombreCompleto }}
+          {{ row.apellido }}, {{ row.nombre }}
         </span>
       </td>
     </ng-container>
@@ -69,7 +69,7 @@
     <ng-container matColumnDef="opciones">
       <th mat-header-cell *matHeaderCellDef mat-sort-header></th>
       <td mat-cell *matCellDef="let row">
-        <button mat-flat-button color="warn" [matMenuTriggerFor]="menu"><mat-icon>settings</mat-icon>Cambiar Rol</button>
+        <button mat-flat-button [matMenuTriggerFor]="menu"><mat-icon>more_vert</mat-icon></button>
         <mat-menu #menu="matMenu">
           <!-- Hay mil formas de hacerlo, voy a probar esta -->
           <!-- 'PROFESOR' | 'ADMIN' | 'DIRECTOR' | 'JEFETALLER' | 'PRECEPTOR' -->

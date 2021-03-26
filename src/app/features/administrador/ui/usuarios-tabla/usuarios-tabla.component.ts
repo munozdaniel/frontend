@@ -32,7 +32,7 @@ export class UsuariosTablaComponent implements OnInit, OnChanges {
     this.breakpointObserver.observe([Breakpoints.Small, Breakpoints.HandsetPortrait]).subscribe((state: BreakpointState) => {
       if (state.matches) {
         this.isMobile = true;
-        this.columnas = ['email', 'nombreCompleto', 'rol', 'opciones'];
+        this.columnas = ['nombreCompleto', 'rol', 'opciones'];
       } else {
         this.isMobile = false;
         this.columnas = ['email', 'nombre', 'apellido', 'rol', 'fechaCreacion', 'opciones'];
@@ -41,6 +41,7 @@ export class UsuariosTablaComponent implements OnInit, OnChanges {
   }
   ngOnChanges(changes: SimpleChanges): void {
     if (changes.usuarios && changes.usuarios.currentValue) {
+      console.log('usuarios', this.usuarios);
       this.dataSource.data = this.usuarios;
     }
   }

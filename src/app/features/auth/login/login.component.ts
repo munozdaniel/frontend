@@ -84,7 +84,6 @@ export class LoginComponent implements OnInit {
       .pipe(untilDestroyed(this))
       .subscribe(
         (datos) => {
-          console.log('datos', datos);
           if (!datos || !datos.success) {
             Swal.fire({
               title: 'Ingreso Incorrecto',
@@ -98,7 +97,7 @@ export class LoginComponent implements OnInit {
           this._designProgressBar.hide();
           this._designNavigationService.setCurrentNavigation('main');
           Swal.fire({
-            title: 'Bienvenido ' + datos.usuario.nombre,
+            title: 'Bienvenido ' + datos.nombre,
             text: 'Recuperando datos...',
             icon: 'success',
             timer: 2000,
