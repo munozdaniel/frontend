@@ -56,6 +56,7 @@ export class AlumnosEditarComponent implements OnInit {
     }
   }
   confirmarGuardar(alumno: IAlumno) {
+    alumno.incompleto = false;
     Swal.fire({
       title: '¿Está seguro de continuar?',
       html: 'Está a punto de actualizar el alumno: ' + alumno.nombreCompleto,
