@@ -9,7 +9,7 @@
     <div class="bar_image"></div>
     <!-- Titulo -->
     <div *ngIf="authService.currentUser$ | async as usuario; else cargando" class="barra_titulos" fxLayout="column">
-      <h1><strong>S</strong>istema <strong>E</strong>ducativo de <strong>G</strong>estión de <strong>   A</strong>lumnos</h1>
+      <h1><strong>S</strong>istema <strong>E</strong>ducativo de <strong>G</strong>estión de <strong> A</strong>lumnos</h1>
       <mat-chip-list>
         <mat-chip style="background-color: #0116292e; color: rgb(245 245 245)"
           ><mat-icon class="mr-4">account_circle</mat-icon> <span>{{ usuario.email }}</span></mat-chip
@@ -32,13 +32,9 @@
   <div class="seccion segunda_seccion p-24 w-100-p">
     <h2>Funciones agregadas</h2>
     <div fxLayout="row wrap" fxLayoutAlign="space-around start" class="w-100-p">
-      <mat-card class="m-24 mat-card primera_card card_funciones" fxFlex.xs="100" fxFlex.gt-xs="45">
+      <mat-card class="m-24 mat-card primera_card card_funciones" fxFlex.xs="100" fxFlex.gt-xs="45" (click)="abrirParametrizar()">
         <!---->
-        <img
-          alt=""
-          class="feature-card-image ng-star-inserted"
-          src="https://www.gstatic.com/mobilesdk/160505_mobilesdk/discoverycards/2x/auth.png"
-        />
+        <img alt="" class="feature-card-image ng-star-inserted" src="/assets/home/imagen1b.png" />
 
         <!---->
         <div class="feature-card-header">
@@ -46,13 +42,9 @@
           <div class="feature-card-subtitle">Administra los registros de los alumnos, profesores y asignaturas</div>
         </div>
       </mat-card>
-      <mat-card class="m-24 mat-card segunda_card card_funciones" fxFlex.xs="100" fxFlex.gt-xs="45">
+      <mat-card class="m-24 mat-card segunda_card card_funciones" fxFlex.xs="100" fxFlex.gt-xs="45" (click)="abrirTaller()">
         <!---->
-        <img
-          alt=""
-          class="feature-card-image ng-star-inserted"
-          src="https://www.gstatic.com/mobilesdk/200429_mobilesdk/cloud_firestore2x.png"
-        />
+        <img alt="" class="feature-card-image ng-star-inserted" src="/assets/home/imagen2b.png" />
 
         <!---->
         <div class="feature-card-header">
@@ -60,13 +52,9 @@
           <div class="feature-card-subtitle">Realiza un seguimiento de los alumnos, verifica las planillas del taller, etc</div>
         </div>
       </mat-card>
-      <mat-card class="m-24 mat-card tercera_card card_funciones" fxFlex.xs="100" fxFlex.gt-xs="45">
+      <mat-card class="m-24 mat-card tercera_card card_funciones" fxFlex.xs="100" fxFlex.gt-xs="45" (click)="abrirInformes()">
         <!---->
-        <img
-          alt=""
-          class="feature-card-image ng-star-inserted"
-          src="https://www.gstatic.com/mobilesdk/160921_mobilesdk/discoverycards/2x/cloudmessaging.png"
-        />
+        <img alt="" class="feature-card-image ng-star-inserted" src="/assets/home/imagen3b.png" />
 
         <!---->
         <div class="feature-card-header">
@@ -74,13 +62,9 @@
           <div class="feature-card-subtitle">Genera informes en pdf sobre los datos almacenados</div>
         </div>
       </mat-card>
-      <mat-card class="m-24 mat-card cuarta_card card_funciones" fxFlex.xs="100" fxFlex.gt-xs="45">
+      <mat-card class="m-24 mat-card cuarta_card card_funciones" fxFlex.xs="100" fxFlex.gt-xs="45" (click)="abrirConfiguracion()">
         <!---->
-        <img
-          alt=""
-          class="feature-card-image ng-star-inserted"
-          src="https://www.gstatic.com/mobilesdk/180326_mobilesdk/discoverycards/experiments.png"
-        />
+        <img alt="" class="feature-card-image ng-star-inserted" src="/assets/home/imagen4b.png" />
 
         <!---->
         <div class="feature-card-header">
@@ -91,3 +75,93 @@
     </div>
   </div>
 </div>
+
+<ng-template #parametrizacion>
+  <h2 matDialogTitle style="display: flex; align-items: center; justify-content: start">Parametrización</h2>
+  <mat-dialog-content>
+    <mat-list role="list">
+      <mat-list-item class="pointer opcion" role="listitem" [routerLink]="['/parametrizar/alumnos']">
+        <div class="w-100-p item" fxLayout="row" fxLayoutAlign="space-between start"><span>Alumnos</span><mat-icon>group</mat-icon></div>
+      </mat-list-item>
+      <mat-list-item class="pointer opcion" role="listitem" [routerLink]="['/parametrizar/asignaturas']">
+        <div class="w-100-p item" fxLayout="row" fxLayoutAlign="space-between start">
+          <span>Asignatura</span><mat-icon>assignment</mat-icon>
+        </div>
+      </mat-list-item>
+      <mat-list-item class="pointer opcion" role="listitem" [routerLink]="['/parametrizar/profesores']">
+        <div class="w-100-p item" fxLayout="row" fxLayoutAlign="space-between start">
+          <span>Profesores</span><mat-icon>school</mat-icon>
+        </div>
+      </mat-list-item>
+    </mat-list>
+  </mat-dialog-content>
+  <mat-dialog-actions align="center">
+    <button mat-flat-button matDialogClose color="primary">Cerrar</button>
+  </mat-dialog-actions>
+</ng-template>
+
+<ng-template #taller>
+  <h2 matDialogTitle style="display: flex; align-items: center; justify-content: start">Taller</h2>
+  <mat-dialog-content>
+    <mat-list role="list">
+      <mat-list-item class="pointer opcion" role="listitem" [routerLink]="['/taller/ficha-alumno']">
+        <div class="w-100-p item" fxLayout="row" fxLayoutAlign="space-between start">
+          <span>Ficha de Alumnos</span><mat-icon>portrait</mat-icon>
+        </div>
+      </mat-list-item>
+
+      <mat-list-item class="pointer opcion" role="listitem" [routerLink]="['/taller/seguimiento-alumnos']">
+        <div class="w-100-p item" fxLayout="row" fxLayoutAlign="space-between start">
+          <span>Seguimiento de Alumnos</span><mat-icon>supervised_user_circle</mat-icon>
+        </div>
+      </mat-list-item>
+      <mat-list-item class="pointer opcion" role="listitem" [routerLink]="['/taller/planillas']">
+        <div class="w-100-p item" fxLayout="row" fxLayoutAlign="space-between start">
+          <span>Planillas de Taller</span><mat-icon>build</mat-icon>
+        </div>
+      </mat-list-item>
+    </mat-list>
+  </mat-dialog-content>
+  <mat-dialog-actions align="center">
+    <button mat-flat-button matDialogClose color="primary">Cerrar</button>
+  </mat-dialog-actions>
+</ng-template>
+
+<ng-template #informes>
+  <h2 matDialogTitle style="display: flex; align-items: center; justify-content: start">Informes</h2>
+  <mat-dialog-content>
+    <mat-list role="list">
+      <mat-list-item class="pointer opcion" role="listitem" [routerLink]="['/informes/asistencia-por-taller']">
+        <div class="w-100-p item" fxLayout="row" fxLayoutAlign="space-between start">
+          <span>Planillas de Taller</span><mat-icon>assignment</mat-icon>
+        </div>
+      </mat-list-item>
+    </mat-list>
+  </mat-dialog-content>
+  <mat-dialog-actions align="center">
+    <button mat-flat-button matDialogClose color="primary">Cerrar</button>
+  </mat-dialog-actions>
+</ng-template>
+<ng-template #configuracion>
+  <h2 matDialogTitle style="display: flex; align-items: center; justify-content: start">Administrar</h2>
+  <mat-dialog-content>
+    <mat-list role="list">
+      <mat-list-item class="pointer opcion" role="listitem" [routerLink]="['/administrador/usuarios-roles']">
+        <div class="w-100-p item" fxLayout="row" fxLayoutAlign="space-between start">
+          <span>Usuarios</span><mat-icon>build_circle</mat-icon>
+        </div>
+      </mat-list-item>
+      <mat-list-item class="pointer opcion" role="listitem" [routerLink]="['/administrador/ciclo-lectivo']">
+        <div class="w-100-p item" fxLayout="row" fxLayoutAlign="space-between start">
+          <span>Ciclo Lectivo</span><mat-icon>warning</mat-icon>
+        </div>
+      </mat-list-item>
+      <mat-list-item class="pointer opcion" role="listitem" [routerLink]="['/administrador/calendario-academico']">
+        <div class="w-100-p item" fxLayout="row" fxLayoutAlign="space-between start"><span>Calendario</span><mat-icon>today</mat-icon></div>
+      </mat-list-item>
+    </mat-list>
+  </mat-dialog-content>
+  <mat-dialog-actions align="center">
+    <button mat-flat-button matDialogClose color="primary">Cerrar</button>
+  </mat-dialog-actions>
+</ng-template>

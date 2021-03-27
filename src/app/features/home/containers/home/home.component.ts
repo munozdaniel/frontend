@@ -1,4 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, TemplateRef, ViewChild } from '@angular/core';
+import { MatDialog } from '@angular/material';
 import { Title } from '@angular/platform-browser';
 import { designAnimations } from '@design/animations';
 import { DesignNavigationService } from '@design/components/navigation/navigation.service';
@@ -13,8 +14,17 @@ import { AuthenticationService } from 'app/core/services/helpers/authentication.
 })
 export class HomeComponent implements OnInit {
   pageTitle = 'Página de Inicio';
+  @ViewChild('parametrizacion', { static: false }) parametrizacionDialog: TemplateRef<any>;
+  @ViewChild('taller', { static: false }) tallerDialog: TemplateRef<any>;
+  @ViewChild('informes', { static: false }) informesDialog: TemplateRef<any>;
+  @ViewChild('configuracion', { static: false }) configuracionDialog: TemplateRef<any>;
 
-  constructor(private title: Title, public authService: AuthenticationService, private _designNavigationService: DesignNavigationService) {}
+  constructor(
+    private _dialog: MatDialog,
+    private title: Title,
+    public authService: AuthenticationService,
+    private _designNavigationService: DesignNavigationService
+  ) {}
 
   ngOnInit() {
     this.title.setTitle(this.pageTitle);
@@ -33,5 +43,33 @@ export class HomeComponent implements OnInit {
         }
       );
     }
+  }
+  abrirParametrizar() {
+    this._dialog.open(this.parametrizacionDialog, {
+      maxWidth: '40em',
+      width: '40em',
+      backdropClass: 'backdropBackground',
+    });
+  }
+  abrirTaller() {
+    this._dialog.open(this.tallerDialog, {
+      maxWidth: '40em',
+      width: '40em',
+      backdropClass: 'backdropBackground',
+    });
+  }
+  abrirInformes() {
+    this._dialog.open(this.informesDialog, {
+      maxWidth: '40em',
+      width: '40em',
+      backdropClass: 'backdropBackground',
+    });
+  }
+  abrirConfiguracion() {
+    this._dialog.open(this.configuracionDialog, {
+      maxWidth: '40em',
+      width: '40em',
+      backdropClass: 'backdropBackground',
+    });
   }
 }

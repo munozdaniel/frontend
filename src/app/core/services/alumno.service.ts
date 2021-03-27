@@ -151,7 +151,8 @@ export class AlumnoService {
     return this.http.post<any>(url, { curso, divisiones, cicloLectivo });
   }
   actualizarAlNuevoCiclo(curso: number, divisiones: number[], cicloAnterior: ICicloLectivo, ciclo: ICicloLectivo): Observable<any> {
-    const query = `alumnos/`;
+    // const query = `alumnos/actualizar-nuevo-ciclo`; // deberia ser esta pero en el backend no está
+    const query = `alumnos`;
     const url = this.url + query;
 
     return this.http.post<any>(url, { curso, divisiones, cicloAnterior, ciclo });

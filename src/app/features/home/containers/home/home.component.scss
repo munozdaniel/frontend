@@ -83,3 +83,22 @@
   font-size: 13px;
   line-height: 20px;
 }
+
+.opcion,
+.item {
+  animation: 0.3 ease all;
+}
+.opcion .item > mat-icon {
+  display: none;
+}
+.opcion:hover .item > span {
+  color: white !important;
+}
+.opcion:hover .item > mat-icon {
+  display: block !important;
+  color: white;
+}
+.opcion:hover {
+  background-color: #1e87da;
+  color: white;
+}
