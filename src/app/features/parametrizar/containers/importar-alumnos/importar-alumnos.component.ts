@@ -6,7 +6,7 @@ import * as _ from 'lodash';
 import Swal from 'sweetalert2';
 import * as XLSX from 'xlsx';
 import { BehaviorSubject, Observable, forkJoin, of, from } from 'rxjs';
-import { catchError, map, mergeMap, toArray } from 'rxjs/operators';
+import { catchError, map, mergeMap, tap, toArray } from 'rxjs/operators';
 import { AlumnoService } from 'app/core/services/alumno.service';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
@@ -48,6 +48,7 @@ import { ValidationService } from 'app/core/services/general/validation.services
 export class ImportarAlumnosComponent implements OnInit {
   formulario: FormGroup;
   alumnos: IAlumno[];
+  alumnosGuardados: IAlumno[];
   cargando = false;
   titulo = 'Importar Alumnos';
   constructor(private _fb: FormBuilder, private _excelService: ExcelService, private _alumnoService: AlumnoService) {}
@@ -115,19 +116,19 @@ export class ImportarAlumnosComponent implements OnInit {
         tipoDoc = documento[0].trim();
         doc = documento[1].trim();
       }
-      if (!x.estado || x.estado.toString().trim() === '') {
-        tieneError = true;
-        descripcionError.push('El estado es requerido');
-      }
+
       const row: any = {
         legajo: x.legajo, // Usar 1 solo
         nombreCompleto: _.capitalize(x.nombreCompleto),
         tipoDni: tipoDoc,
         dni: doc,
-        estado: x.estado,
         tieneError,
         descripcionError: descripcionError.join(' - '),
         selected: !tieneError,
+        nacionalidad: 'SIN REGISTRAR',
+        domicilio: 'SIN REGISTRAR',
+        cantidadIntegranteGrupoFamiliar: 0,
+        incompleto: true,
       };
       return row;
     });
@@ -142,7 +143,6 @@ export class ImportarAlumnosComponent implements OnInit {
     // Apellido y Nombres: "ACATAPPA Marcelo Tomás"
     // Documento: "DNI - 47283150"
     // Estado: ""
-    console.log('u', u);
     this.validacionesAsincronicas(u);
   }
   validacionesAsincronicas(usuariosFiltrados: any[]) {
@@ -154,15 +154,18 @@ export class ImportarAlumnosComponent implements OnInit {
             if (x.legajo && x.legajo !== '') {
               return this._alumnoService.disponibleLegajo(x.legajo).pipe(
                 map((i) => {
+                  console.log('i', i, typeof i === 'boolean' && i === true);
                   if (typeof i === 'boolean' && i === true) {
                     return { ...x, legajoDisponible: true };
                   } else {
+                    console.log('El legajo ya se encuentra en uso');
                     const mensaje = 'El legajo ya se encuentra en uso';
                     return {
                       ...x,
                       legajoDisponible: false,
                       tieneError: true,
                       checked: false,
+                      selected: false,
                       descripcionError: x.descripcionError !== '' ? x.descripcionError + ' - ' + mensaje : mensaje,
                     };
                   }
@@ -212,7 +215,7 @@ export class ImportarAlumnosComponent implements OnInit {
     const alumnosCheck = this.alumnos.filter((x) => x.selected);
     Swal.fire({
       title: '¿Está seguro de continuar?',
-      html: 'Está a punto de <strong>ELIMINAR PERMANENTEMENTE</strong> el tema',
+      html: 'Está a punto de <strong>GUARDAR</strong> ' + alumnosCheck.length + ' alumnos',
       icon: 'warning',
       focusConfirm: false,
       showCancelButton: true,
@@ -237,10 +240,10 @@ export class ImportarAlumnosComponent implements OnInit {
     }).then((result: any) => {
       if (result.isConfirmed) {
         if (result.value && result.value.status === 200) {
-          console.log('result', result);
+          this.alumnosGuardados = result.value.alumnos;
           Swal.fire({
             title: 'Operación Exitosa',
-            text: 'El tema ha sido actualizado correctamente.',
+            text: 'Los alumnos se han guardado correctamente correctamente.',
             icon: 'success',
           });
         } else {

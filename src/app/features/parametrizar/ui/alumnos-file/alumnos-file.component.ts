@@ -33,7 +33,7 @@ export class AlumnosFileComponent implements OnInit, OnChanges {
   @ViewChild('paginator', { static: false }) set setPaginator(paginator: MatPaginator) {
     this.dataSource.paginator = paginator;
   }
-  columnas: string[] = ['settings', 'legajo', 'nombreCompleto', 'tipoDni', 'dni', 'estado'];
+  columnas: string[] = ['settings', 'legajo', 'nombreCompleto', 'tipoDni', 'dni'];
   seleccion = new SelectionModel<any>(true, []);
   alumnosFallados: IAlumno[] = [];
   @Output() retAlumnosFallados = new EventEmitter<IAlumno[]>();

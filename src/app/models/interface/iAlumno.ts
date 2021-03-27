@@ -10,7 +10,7 @@ export interface IAlumno {
   adultos: IAdulto[];
   estadoCursadas: IEstadoCursada[];
   // comisiones?:IComision[];
-  
+
   tipoDni: string;
   dni: string;
   nombreCompleto: string;
@@ -40,6 +40,7 @@ export interface IAlumno {
   fechaCreacion: Date;
   fechaModificacion?: Date;
   activo: boolean;
+  incompleto?: boolean;
   // Ejecucion
   selected?: boolean;
 }
