@@ -146,12 +146,10 @@ export class AppComponent implements OnInit, OnDestroy {
   comprobarLogin() {
     this._authService.currentUser$.pipe(untilDestroyed(this)).subscribe(
       (datos: any) => {
-        console.log('datos', datos);
         if (!datos || !datos.success) {
           this.isLogin = false;
           this._router.navigate(['/auth/iniciar-sesion']);
         } else {
-          console.log('main');
           this.isLogin = true; // Set the main navigation as our current navigation
         }
       },

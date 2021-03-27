@@ -47,6 +47,7 @@ export class AlumnosFormComponent implements OnInit, OnChanges {
   ngOnInit(): void {
     this.formDatosPersonales = this._fb.group({
       tipoDni: [null, [Validators.required]],
+      legajo: [null, [Validators.required]],
       dni: [null, [Validators.required, Validators.minLength(7), Validators.maxLength(9)]],
       nombreCompleto: [null, [Validators.required, Validators.minLength(3), Validators.maxLength(250)]],
       sexo: [null, [Validators.required, Validators.minLength(4), Validators.maxLength(9)]],

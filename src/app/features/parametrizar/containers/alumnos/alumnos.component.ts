@@ -17,6 +17,7 @@ import Swal from 'sweetalert2';
       <app-alumnos-tabla-param
         [cargando]="cargando"
         [alumnos]="alumnos"
+        (retAgregarAlumno)="setAgregarAlumno($event)"
         (retEliminarAlumno)="setEliminarAlumno($event)"
       ></app-alumnos-tabla-param>
     </div>

@@ -35,13 +35,12 @@ export class AlumnosAgregarComponent implements OnInit {
 
   ngOnInit(): void {}
   setDatosForm(evento: IAlumno) {
-    console.log('setDatosForm', evento);
     if (evento) {
       this.confirmarGuardar(evento);
     }
   }
   confirmarGuardar(alumno: IAlumno) {
-    console.log('alumno length ', alumno.dni.length);
+    console.log('alumno length ', alumno);
     Swal.fire({
       title: '¿Está seguro de continuar?',
       html: 'Está a punto de guardar un nuevo alumno.',

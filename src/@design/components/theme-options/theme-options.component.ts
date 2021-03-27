@@ -9,9 +9,7 @@ import { DesignConfigService } from '@design/services/config.service';
 import { DesignNavigationService } from '@design/components/navigation/navigation.service';
 import { DesignSidebarService } from '@design/components/sidebar/sidebar.service';
 import { CookieService } from 'ngx-cookie-service';
-import { AuthenticationService } from 'app/core/services/helpers/authentication.service';
-import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
-@UntilDestroy()
+
 @Component({
   selector: 'design-theme-options',
   templateUrl: './theme-options.component.html',
@@ -46,7 +44,6 @@ export class DesignThemeOptionsComponent implements OnInit, OnDestroy {
     private _designNavigationService: DesignNavigationService,
     private _designSidebarService: DesignSidebarService,
     private _renderer: Renderer2,
-    private _authService: AuthenticationService,
     private _cookieService: CookieService
   ) {
     // Set the defaults
@@ -128,63 +125,59 @@ export class DesignThemeOptionsComponent implements OnInit, OnDestroy {
 
     // En tiempo de ejecucion. TODO: Verificar permisos
     // MENU ADMINISTRADOR EJECUCION. Menu dinamico
-    this._authService.currentUser$.pipe(untilDestroyed(this)).subscribe((datos: any) => {
-      if (datos && datos.success) {
-        const customFunctionNavItem = {
-          id: 'custom-function',
-          title: 'Administrar',
-          type: 'collapsable',
-          children: [
-            // {
-            //   id: 'migrar',
-            //   title: 'Migrador',
-            //   type: 'item',
-            //   icon: 'users',
-            //   url: '/administrador/migrar',
-            // },
-            {
-              id: 'usuarios',
-              title: 'Usuarios',
-              type: 'item',
-              icon: 'build_circle',
-              url: '/administrador/usuarios-roles',
-            },
-            {
-              id: 'ciclo-lectivo',
-              title: 'Ciclo Lectivo',
-              type: 'item',
-              icon: 'warning',
-              url: '/administrador/ciclo-lectivo',
-            },
-            // {
-            //   id: 'micuenta',
-            //   title: 'Mi Cuenta',
-            //   type: 'item',
-            //   icon: 'account',
-            //   url: '/administrador/mi-cuenta',
-            // },
-            {
-              id: 'calendario',
-              title: 'Calendario',
-              type: 'item',
-              icon: 'today',
-              url: '/administrador/calendario-academico',
-            },
-            {
-              id: 'customize',
-              title: 'Diseño',
-              type: 'item',
-              icon: 'settings',
-              function: () => {
-                this.toggleSidebarOpen('themeOptionsPanel');
-              },
-            },
-          ],
-        };
+    const customFunctionNavItem = {
+      id: 'custom-function',
+      title: 'Administrar',
+      type: 'collapsable',
+      children: [
+        // {
+        //   id: 'migrar',
+        //   title: 'Migrador',
+        //   type: 'item',
+        //   icon: 'users',
+        //   url: '/administrador/migrar',
+        // },
+        {
+          id: 'usuarios',
+          title: 'Usuarios',
+          type: 'item',
+          icon: 'build_circle',
+          url: '/administrador/usuarios-roles',
+        },
+        {
+          id: 'ciclo-lectivo',
+          title: 'Ciclo Lectivo',
+          type: 'item',
+          icon: 'warning',
+          url: '/administrador/ciclo-lectivo',
+        },
+        // {
+        //   id: 'micuenta',
+        //   title: 'Mi Cuenta',
+        //   type: 'item',
+        //   icon: 'account',
+        //   url: '/administrador/mi-cuenta',
+        // },
+        {
+          id: 'calendario',
+          title: 'Calendario',
+          type: 'item',
+          icon: 'today',
+          url: '/administrador/calendario-academico',
+        },
+        {
+          id: 'customize',
+          title: 'Diseño',
+          type: 'item',
+          icon: 'settings',
+          function: () => {
+            this.toggleSidebarOpen('themeOptionsPanel');
+          },
+        },
+      ],
+    };
 
-        this._designNavigationService.addNavigationItem(customFunctionNavItem, 'end');
-      }
-    });
+    this._designNavigationService.addNavigationItem(customFunctionNavItem, 'end');
   }
 
   /**

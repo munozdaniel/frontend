@@ -1,7 +1,10 @@
 <button mat-button color="primary" (click)="setDatosPersonalesTest()">SetDatos Personales</button>
 <mat-progress-bar *ngIf="cargando" mode="indeterminate" class="w-100-p"></mat-progress-bar>
+<div fxHide.gt-xs="true" fxLayout="row" fxLayoutAlign="center start">
+  <p>Esta pantalla no puede ser utilizada en dispositivos mobiles momentaneamente</p>
+</div>
 <div fxLayout="row" fxLayoutAlign="center start" class="w-100-p">
-  <mat-horizontal-stepper [linear]="true" #stepper>
+  <mat-horizontal-stepper [linear]="true" #stepper class="w-100-p">
     <mat-step [stepControl]="formDatosPersonales" label="Alumno">
       <div class="w-100-p mb-12" fxLayout="row" fxLayoutAlign="end start">
         <button mat-raised-button matStepperNext color="accent">Siguiente</button>
@@ -10,6 +13,20 @@
       <form [formGroup]="formDatosPersonales" fxLayout="column">
         <div class="w-100-p" fxLayout="row wrap" fxLayoutAlign="space-between start">
           <div fxFlex.gt-xs="42" fxFlex.xs="100" fxLayout="column">
+            <!-- Legajo ============================= -->
+            <mat-form-field appearance="outline" fxFlex="100">
+              <mat-label class="lbl">Legajo</mat-label>
+              <input matInput type="text" formControlName="legajo" minlength="3" maxlength="250" autocomplete="off" />
+              <mat-error *ngIf="formDatosPersonales.controls.legajo.hasError('required')"> Este campo es requerido. </mat-error>
+              <mat-error
+                *ngIf="
+                  !formDatosPersonales.get('legajo').hasError('required') &&
+                  (formDatosPersonales.get('legajo').hasError('minlength') || formDatosPersonales.get('legajo').hasError('maxlength'))
+                "
+              >
+                Minimo 3 caracteres y Máximo 250
+              </mat-error>
+            </mat-form-field>
             <div fxFlex="100" fxLayout="row" fxLayoutAlign="space-between start">
               <!-- TipoDni ============================= -->
               <mat-form-field appearance="outline" fxFlex.gt-xs="45" fxFlex.xs="100">
@@ -263,7 +280,6 @@
         <div class="w-100-p mb-12" fxLayout="row" fxLayoutAlign="end start">
           <button mat-raised-button matStepperNext color="accent">Siguiente</button>
         </div>
-        {{ formDatosPersonales.value | json }}
       </form>
     </mat-step>
     <!-- 2. PASO ADULTOS ==================================== -->
@@ -469,13 +485,13 @@
           <div class="border p-12">
             <h3><ins>Etap</ins></h3>
             <div *ngIf="formEtap.value as etap" class="resumen_etap">
-              <h3 *ngIf="!etap || !etap.seguimientoEtap || etap.nombreCompleto.length < 1; else etapData">Sin Seguimiento</h3>
+              <h3 *ngIf="!etap || !etap.seguimientoEtap || etap.nombreCompletoTae.length < 1; else etapData">Sin Seguimiento</h3>
               <ng-template #etapData>
                 <p>
-                  <strong>Nombre Completo Tae:</strong><span>{{ etap.nombreCompleto }}</span>
+                  <strong>Nombre Completo Tae:</strong><span>{{ etap.nombreCompletoTae }}</span>
                 </p>
                 <p>
-                  <strong>Email:</strong><span>{{ etap.emailEtap }}</span>
+                  <strong>Email:</strong><span>{{ etap.emailTae }}</span>
                 </p>
                 <p>
                   <strong>Diagnositico:</strong><span>{{ etap.archivoDiagnostico }}</span>
