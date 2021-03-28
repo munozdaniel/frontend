@@ -11,7 +11,7 @@ declare let pdfMake: any;
 export class FichaAlumnoPdf {
   alumno: IAlumno;
   constructor(private scriptService: ScriptService) {
-    this.scriptService.load('pdfMake', 'vfsFonts');
+    //  this.scriptService.load('pdfMake', 'vfsFonts');
   }
 
   generatePdf(alumno: IAlumno, action = 'open') {
@@ -125,7 +125,6 @@ export class FichaAlumnoPdf {
     const retorno = this.alumno.estadoCursadas.map((x: IEstadoCursada) => {
       return [x.cicloLectivo.anio, x.curso.curso, x.curso.comision, x.curso.division, x.condicion];
     });
-    console.log('return', retorno);
     return retorno;
   }
   getDatosEscolares() {

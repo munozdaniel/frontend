@@ -1,13 +1,17 @@
 import { Injectable } from '@angular/core';
-
+import pdfMake from 'pdfmake/build/pdfmake';
+import pdfFonts from 'pdfmake/build/vfs_fonts';
+pdfMake.vfs = pdfFonts.pdfMake.vfs;
 interface Scripts {
   name: string;
   src: string;
 }
 export const ScriptStore: Scripts[] = [
+  //   { name: 'pdfMakeMap', src: '/assets/pdfmake/pdfmake.min.js.map' },
+  //   { name: 'vfsFonts', src: '/assets/pdfmake/vfs_fonts.js' },
   { name: 'pdfMake', src: 'https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.59/pdfmake.min.js' },
   { name: 'vfsFonts', src: 'https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.59/vfs_fonts.js' },
-  { name: 'Roboto', src: 'https://fonts.googleapis.com/css2?family=Roboto:wght@300&display=swap' },
+  //   { name: 'Roboto', src: 'https://fonts.googleapis.com/css2?family=Roboto:wght@300&display=swap' },
 ];
 
 @Injectable({
