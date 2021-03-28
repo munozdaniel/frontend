@@ -50,7 +50,6 @@ export class AlumnosEditarComponent implements OnInit {
     });
   }
   setDatosForm(evento: IAlumno) {
-    console.log('setDatosForm', evento);
     if (evento) {
       this.confirmarGuardar(evento);
     }
