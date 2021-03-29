@@ -12,27 +12,15 @@ declare let pdfMake: any;
   providedIn: 'root',
 })
 export class FichaAsistenciaGeneralPdf {
-  alumnoAsistencias: any[];
+  asistenciasPorAlumno: any[];
   calendario: any[];
   planilla: IPlanillaTaller;
   constructor(private scriptService: ScriptService) {
     this.scriptService.load('pdfMake', 'vfsFonts');
   }
 
-  generatePdf(planilla: IPlanillaTaller, alumnoAsistencias: any[], action = 'open') {
-    this.alumnoAsistencias = alumnoAsistencias;
-    let fechaInicio = moment(planilla.fechaInicio, 'YYYY-MM-DD').utc();
-    let fechaFinal = moment(planilla.fechaFinalizacion, 'YYYY-MM-DD').utc();
-    const calendarioMaterias = [];
-    while (fechaFinal.utc().isSameOrAfter(fechaInicio)) {
-      calendarioMaterias.push({
-        planillaTaller: planilla,
-        fecha: fechaInicio,
-        activo: true,
-      });
-      fechaInicio = moment(fechaInicio).utc().add(1, 'day');
-    }
-    this.calendario = calendarioMaterias;
+  generatePdf(planilla: IPlanillaTaller, asistenciasPorAlumno: any[], action = 'open') {
+    this.asistenciasPorAlumno = asistenciasPorAlumno;
     this.planilla = planilla;
     const documentDefinition = this.getDocumentDefinition();
     switch (action) {
@@ -74,67 +62,96 @@ export class FichaAsistenciaGeneralPdf {
       },
     };
   }
+  asistencias(alumno: any) {
+    const a = alumno.asistenciasArray.map((x) => [
+      {
+        width: 15,
+        text: x.fecha,
+        bold: true,
+        fontSize: 9,
+      },
+      {
+        width: 15,
+        text: x.presente,
+        bold: false,
+        fontSize: 9,
+        alignment: 'center',
+      },
+    ]);
+    const r = _.chunk(a, 10);
+    return r;
+  }
   tablaAsistencias() {
-    const totalCol = this.calendario.length;
-    console.log(
-      [
-        '20%',
-        ...this.calendario.map((x) => 'auto'),
-        //   ((totalCol / 80) * 100).toString() + '%'
-      ].length,
-      'cosas',
-      this.calendario.map((x) => ((totalCol / 80) * 100).toString() + '%')
-    );
+    //
+
+    const asis = this.asistenciasPorAlumno.map((alumno) => {
+      const fila = [
+        {
+          text: alumno.alumnoNombre,
+          bold: true,
+          fontSize: 9,
+        },
+        {
+          table: { body: this.asistencias(alumno) },
+          layout: {
+            // fillColor: function (rowIndex, node, columnIndex) {
+            //   return rowIndex % 2 === 0 ? '#CCCCCC' : null;
+            // },
+            hLineWidth: function (i, node) {
+              return i === 0 || i === node.table.body.length ? 0 : 1;
+            },
+            vLineWidth: function (i, node) {
+              return i === 0 || i === node.table.widths.length ? 0 : 1;
+            },
+            hLineColor: function (i, node) {
+              return 'black';
+            },
+            vLineColor: function (i, node) {
+              return 'black';
+            },
+            hLineStyle: function (i, node) {
+              if (i === 0 || i === node.table.body.length) {
+                return null;
+              }
+              return { dash: { length: 10, space: 4 } };
+            },
+            vLineStyle: function (i, node) {
+              if (i === 0 || i === node.table.widths.length) {
+                return null;
+              }
+              return { dash: { length: 4 } };
+            },
+          },
+        },
+        // {
+        //   alignment: 'justify',
+        //   columns: this.asistencias(alumno),
+        // },
+
+        // ...alumno.asistenciasArray.map((x) => ({
+        //   text: x.fecha,
+        //   bold: true,
+        //   fontSize: 9,
+        // })),
+      ];
+      return fila;
+    });
     return {
       style: 'tabla1',
       table: {
-        widths: [
-          '20%',
-          ...this.calendario.map((x) => 'auto'),
-          //   ((totalCol / 80) * 100).toString() + '%'
-        ],
         body: [
-          [
-            {
-              text: 'Alumnos',
-              bold: true,
-              fontSize: 9,
-
-              //   fillColor: '#282936',
-              //   color: '#ffffff',
-            },
-            ...this.calendario.map((x) => ({ text: moment.utc(x.fecha).format('DD/MM/YYYY'), fontSize: 9, bold: false })),
-          ],
-          ...this.contenido(),
+          ...asis,
+          //   [
+          //     {
+          //       text: 'Alumnos',
+          //       bold: true,
+          //       fontSize: 9,
+          //     },
+          //     ...this.calendario.map((x) => ({ text: moment.utc(x.fecha).format('DD/MM/YYYY'), fontSize: 9, bold: false })),
+          //   ],
+          //   ...this.contenido(),
         ],
       },
     };
-  }
-  contenido() {
-    const contenido = this.alumnoAsistencias.map((x) => {
-      const alumno = {
-        text: x.alumno,
-        fontSize: 9,
-        bold: true,
-      };
-      const asistenciasCol = [];
-      for (let index = 0; index < this.calendario.length; index++) {
-        const fechaCalendario = this.calendario[index].fecha;
-        const i = x.asistencias.findIndex((a) => moment(fechaCalendario).utc().isSame(a.fecha));
-        if (i === -1) {
-          asistenciasCol.push({ text: '' });
-        } else {
-          // moment.utc(x.asistencias[i]).format('DD/MM')
-          console.log('x.asistencias', x.asistencias[i]);
-          asistenciasCol.push({
-            text: x.asistencias[i].presente ? 'SI' : 'NO',
-            fontSize: 9,
-          });
-        }
-      }
-      return [alumno, ...asistenciasCol];
-    });
-    console.log('contenido', contenido);
-    return contenido;
   }
 }

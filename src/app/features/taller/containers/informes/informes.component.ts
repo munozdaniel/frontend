@@ -42,13 +42,17 @@ export class InformesComponent implements OnInit, OnChanges {
     private _designProgressBarService: DesignProgressBarService,
     private _asistenciaService: AsistenciaService,
     private _alumnoService: AlumnoService,
+    //
     private _fichaAsistenciaGeneralPdf: FichaAsistenciaGeneralPdf,
     private _fichaAsistenciaDiaPdf: FichaAsistenciaDiaPdf,
+    //
     private _calificacioService: CalificacionService,
     private _calificacionesDetalladoPdf: CalificacionesDetalladoPdf,
     private _calificacionesResumidoPdf: CalificacionesResumidoPdf,
+    //
     private _temaService: TemaService,
     private _libroTemasPdf: LibroTemasPdf,
+    //
     private _alumnosPorTallerPdf: AlumnosPdf,
     private _alumnosPorTallerResumidoPdf: AlumnosPorTallerPdf
   ) {}
@@ -59,9 +63,9 @@ export class InformesComponent implements OnInit, OnChanges {
   }
 
   ngOnInit(): void {}
+  //   GENERAL
   setInformeAsistenciaPorTaller(evento) {
-    alert('TRABAJO EN PROGRESO... NO USAR');
-
+    // FIXME:
     this.cargando = true;
     // this._designProgressBarService.show();
 
@@ -94,17 +98,17 @@ export class InformesComponent implements OnInit, OnChanges {
       this.cargando = false;
       if (result.isConfirmed) {
         if (result.value) {
-          if (!result.value.success) {
+          if (!result.value.asistenciasPorAlumno || result.value.asistenciasPorAlumno.length < 1) {
             Swal.fire({
-              title: 'Oops! Ocurrió un error',
-              text: result.value.message,
+              title: 'Informe cancelado',
+              text: 'NO hay registros cargados',
               icon: 'error',
             });
             return;
           }
           this.cargando = false;
           this._designProgressBarService.hide();
-          this._fichaAsistenciaGeneralPdf.generatePdf(this.planillaTaller, result.value.asistencias);
+          this._fichaAsistenciaGeneralPdf.generatePdf(this.planillaTaller, result.value.asistenciasPorAlumno);
         } else {
           Swal.fire({
             title: 'Oops! Ocurrió un error',
@@ -115,6 +119,7 @@ export class InformesComponent implements OnInit, OnChanges {
       }
     });
   }
+  //   POR DIA
   setInformeAsistenciaPorDia(evento) {
     this.cargando = true;
     // this._designProgressBarService.show();

@@ -37,7 +37,6 @@ export class ReportesService {
     private _alumnosPorTallerResumidoPdf: AlumnosPorTallerPdf
   ) {}
   setInformeAsistenciasPorTaller() {
-    alert('TRABAJO EN PROGRESO... NO USAR');
 
     this._designProgressBarService.show();
     // this._designProgressBarService.show();

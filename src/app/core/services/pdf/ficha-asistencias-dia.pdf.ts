@@ -20,7 +20,6 @@ export class FichaAsistenciaDiaPdf {
   }
 
   generatePdf(planilla: IPlanillaTaller, asistenciasPorAlumno: any[], action = 'open') {
-    console.log('asistenciasPorAlumno', asistenciasPorAlumno);
     this.asistenciasPorAlumno = asistenciasPorAlumno;
     let fechaInicio = moment(planilla.fechaInicio, 'YYYY-MM-DD').utc();
     let fechaFinal = moment(planilla.fechaFinalizacion, 'YYYY-MM-DD').utc();
