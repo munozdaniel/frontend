@@ -57,15 +57,15 @@ export class SeguimientoFormComponent implements OnInit, OnChanges {
     this.form = this._fb.group({
       fecha: [f, [Validators.required]],
       alumno: [null, [Validators.required]],
-      planillaTaller: [null, [Validators.required]],
+      planillaTaller: [null, []],
       cicloLectivo: [null, [Validators.required]],
       tipoSeguimiento: [null, [Validators.required, Validators.minLength(7), Validators.maxLength(100)]],
-      resuelto: [null, [Validators.required]],
+      resuelto: [null, []],
       observacion: [null, [Validators.required, Validators.minLength(7), Validators.maxLength(100)]],
       observacion2: [null, [Validators.minLength(7), Validators.maxLength(100)]],
       observacionJefe: [null, [Validators.minLength(7), Validators.maxLength(100)]],
       fechaCreacion: [null, Validators.required],
-      activo: [null, [Validators.required]],
+      activo: [true, [Validators.required]],
     });
   }
   setFormulario() {
