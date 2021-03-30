@@ -37,7 +37,6 @@ export class ReportesService {
     private _alumnosPorTallerResumidoPdf: AlumnosPorTallerPdf
   ) {}
   setInformeAsistenciasPorTaller() {
-
     this._designProgressBarService.show();
     // this._designProgressBarService.show();
 
@@ -70,7 +69,7 @@ export class ReportesService {
       this._designProgressBarService.hide();
       if (result.isConfirmed) {
         if (result.value) {
-          if (!result.value.success) {
+          if (!result.value.asistenciasPorAlumno || result.value.asistenciasPorAlumno.length < 1) {
             Swal.fire({
               title: 'Oops! Ocurrió un error',
               text: result.value.message,
@@ -80,7 +79,7 @@ export class ReportesService {
           }
           this._designProgressBarService.hide();
           this._designProgressBarService.hide();
-          this._fichaAsistenciaGeneralPdf.generatePdf(this.planillaTaller, result.value.asistencias);
+          this._fichaAsistenciaGeneralPdf.generatePdf(this.planillaTaller, result.value.asistenciasPorAlumno);
         } else {
           Swal.fire({
             title: 'Oops! Ocurrió un error',

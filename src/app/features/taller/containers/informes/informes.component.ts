@@ -65,7 +65,6 @@ export class InformesComponent implements OnInit, OnChanges {
   ngOnInit(): void {}
   //   GENERAL
   setInformeAsistenciaPorTaller(evento) {
-    // FIXME:
     this.cargando = true;
     // this._designProgressBarService.show();
 
