@@ -648,7 +648,6 @@ export class PlanillaTallerAdministrarComponent implements OnInit {
     });
   }
   setTemasCalendario(tipo: string) {
-    console.log('tipo', tipo);
     this.cargando = true;
     this._temaService
       .obtenerTemasCalendario(tipo, this.planillaId)
@@ -660,8 +659,6 @@ export class PlanillaTallerAdministrarComponent implements OnInit {
             const temasDelCalendario = [...datos.temasDelCalendario];
             const merge = temasDelCalendario.map((x) => {
               const index = this.temas.findIndex((t) => {
-                console.log('1', t.fecha);
-                console.log('2', moment.utc(t.fecha));
                 return moment.utc(t.fecha).isSame(moment.utc(x.fecha));
               });
               if (index === -1) {
@@ -696,7 +693,6 @@ export class PlanillaTallerAdministrarComponent implements OnInit {
       .subscribe(
         (datos) => {
           this.seguimientos = [...datos];
-          console.log('obtenerPorPlanillaYAlumno', this.seguimientos);
           this.cargandoSeguimiento = false;
         },
         (error) => {
@@ -720,7 +716,6 @@ export class PlanillaTallerAdministrarComponent implements OnInit {
     });
 
     dialogRef.afterClosed().subscribe((resultado) => {
-      console.log('resultado', resultado);
       if (resultado) {
         this.setBuscarSeguimientosPorAlumno(this.alumnoSeleccionado);
       }
@@ -748,7 +743,6 @@ export class PlanillaTallerAdministrarComponent implements OnInit {
     });
 
     dialogRef.afterClosed().subscribe((resultado) => {
-      console.log('resultado', resultado);
       if (resultado) {
         this.setBuscarSeguimientosPorAlumno(this.alumnoSeleccionado);
       }

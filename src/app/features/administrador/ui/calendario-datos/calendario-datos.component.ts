@@ -43,7 +43,7 @@ export class CalendarioDatosComponent implements OnInit, OnChanges, OnDestroy {
   constructor(@Inject(DOCUMENT) private document, private _cookieService: CookieService) {}
 
   ngOnChanges(changes: SimpleChanges): void {
-    if (changes.calendario && changes.calendario.currentValue) {
+    if (changes.calendario && changes.calendario.currentValue && changes.calendario.currentValue.length > 0) {
       this.minDate = this.calendario[0].fecha;
       this.maxDate = this.calendario[this.calendario.length - 1].fecha;
       this.events = this.calendario.map((x) => {
