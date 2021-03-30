@@ -25,7 +25,12 @@
     </div>
   </div>
 
-  <div fxLayout="row wrap" fxLayoutAlign="space-between start" class="mat-card mat-elevation-z4 p-24 mb-24">
+  <div
+    *ngIf="template?.toString() == TemplateEnum.EDICION.toString()"
+    fxLayout="row wrap"
+    fxLayoutAlign="space-between start"
+    class="mat-card mat-elevation-z4 p-24 mb-24"
+  >
     <button mat-raised-button color="primary" fxFlex.xs="100" ngClass.xs="mb-12" (click)="cargarCalendario('TALLER')">
       <span class="iconify" data-icon="mdi:calendar-refresh" data-inline="false" style="font-size: 26px"></span
       ><span> Calendario Taller</span>

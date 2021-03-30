@@ -22,10 +22,13 @@ import { EmailAusenteModalComponent } from 'app/shared/components/email-ausente-
   template: `
     <button-volver></button-volver>
     <div fxLayout="column" class="w-100-p p-24 mt-50" fxLayoutGap="20px">
-      <div fxLayout="column" class="mat-card mat-elevation-z4 p-24">
-        <div fxLayout fxLayoutAlign="start center" class="w-100-p mb-12" style="border-bottom: 2px solid #80808057;">
-          <h1 [@animate]="{ value: '*', params: { x: '50px' } }" class="px-12">{{ titulo }}</h1>
-          <mat-spinner *ngIf="cargando" matSuffix class="ml-10" diameter="20"></mat-spinner>
+      <div fxLayout="column" class="mat-card mat-elevation-z4 p-24" style="border: 2px solid #2196f34a;">
+        <div fxLayout fxLayoutAlign="space-between center" class="w-100-p mb-12" style="border-bottom: 2px solid #80808057;">
+          <div>
+            <h1 [@animate]="{ value: '*', params: { x: '50px' } }" class="px-12">{{ titulo }}</h1>
+            <mat-spinner *ngIf="cargando" matSuffix class="ml-10" diameter="20"></mat-spinner>
+          </div>
+          <h3>Solo Lectura</h3>
         </div>
         <mat-tab-group (selectedTabChange)="controlTabs($event)">
           <mat-tab label="General">
