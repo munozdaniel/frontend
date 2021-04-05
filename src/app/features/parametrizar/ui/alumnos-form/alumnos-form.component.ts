@@ -56,19 +56,19 @@ export class AlumnosFormComponent implements OnInit, OnChanges {
       observacionTelefono: [null, [Validators.minLength(3), Validators.maxLength(50)]],
       telefono: [null, [Validators.minLength(7), Validators.maxLength(20)]],
       celular: [null, [Validators.minLength(7), Validators.maxLength(20)]],
-
       email: [null, [Validators.required, Validators.email, Validators.minLength(4), Validators.maxLength(50)]],
-      fechaIngreso: [null, [Validators.required]],
-      procedenciaColegioPrimario: [null, [Validators.required, Validators.minLength(4), Validators.maxLength(50)]],
+    
+      fechaIngreso: [null, []],
+      procedenciaColegioPrimario: [null, [ Validators.minLength(4), Validators.maxLength(50)]],
       procedenciaColegioSecundario: [null, [Validators.minLength(4), Validators.maxLength(50)]],
       fechaDeBaja: [null, []],
       motivoDeBaja: [null, [Validators.minLength(4), Validators.maxLength(50)]],
       domicilio: [null, [Validators.required, Validators.minLength(4), Validators.maxLength(50)]],
-      cantidadIntegranteGrupoFamiliar: [null, [Validators.required]],
+      cantidadIntegranteGrupoFamiliar: [null, []],
 
       observacion: [null, [Validators.minLength(4), Validators.maxLength(100)]],
       activo: [true],
-    });
+    });      
     this.formEtap = this._fb.group({
       nombreCompletoTae: [null, [Validators.required]],
       emailTae: [null, [Validators.required, Validators.email]],
