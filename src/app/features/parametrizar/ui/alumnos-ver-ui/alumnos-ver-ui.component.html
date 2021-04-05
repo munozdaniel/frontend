@@ -16,7 +16,10 @@
             <strong>Sexo:</strong><span>{{ alumno.sexo ? alumno.sexo : 'SIN ESPECIFICAR' }}</span>
           </p>
           <p>
-            <strong>Fecha de Nacimiento:</strong><span>{{ alumno.fechaNacimiento | date: 'dd/MM/yyyy':'GMT' }}</span>
+            <strong>Fecha de Nacimiento:</strong
+            ><span>{{
+              alumno.fechaNacimiento == 'Sin Registrar' ? alumno.fechaNacimiento : (alumno.fechaNacimiento | date: 'dd/MM/yyyy':'GMT')
+            }}</span>
           </p>
           <p>
             <strong>Nacionalidad:</strong><span>{{ alumno.nacionalidad }}</span>
