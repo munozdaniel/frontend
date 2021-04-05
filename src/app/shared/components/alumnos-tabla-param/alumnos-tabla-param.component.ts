@@ -9,6 +9,7 @@ import { SeguimientoAlumnoPdf } from 'app/core/services/pdf/seguimiento-alumno.p
 import { SeguimientoAlumnoService } from 'app/core/services/seguimientoAlumno.service';
 import { ALUMNO_OPERACION } from 'app/models/constants/alumno-operacion.enum';
 import { IAlumno } from 'app/models/interface/iAlumno';
+import * as moment from 'moment';
 @UntilDestroy()
 @Component({
   selector: 'app-alumnos-tabla-param',
@@ -55,7 +56,44 @@ export class AlumnosTablaParamComponent implements OnInit, OnChanges {
     });
   }
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    this.customSearchSortTable();
+  }
+  customSearchSortTable() {
+    // Personalizar funcion busqueda en la tabla detalle
+    this.dataSource.filterPredicate = (data: IAlumno, filters: string) => {
+      const matchFilter = [];
+      const filterArray = filters.split(',');
+      const columns = [data.alumnoNro, data.nombreCompleto, data.email, data.dni, data.seguimientoEtap ? 'SI' : 'NO'];
+
+      filterArray.forEach((filter) => {
+        const customFilter = [];
+        columns.forEach((column) => {
+          if (column) {
+            customFilter.push(column.toString().toLowerCase().includes(filter));
+          }
+        });
+        matchFilter.push(customFilter.some(Boolean)); // OR
+      });
+      return matchFilter.every(Boolean); // AND
+    };
+
+    this.dataSource.sortingDataAccessor = (item: IAlumno, property) => {
+      switch (property) {
+        case 'alumnoNro':
+          return item.alumnoNro.toString();
+        case 'nombre':
+          return item.nombreCompleto;
+        case 'email':
+          return item.email;
+        case 'dni':
+          return item.dni;
+
+        default:
+          return item[property];
+      }
+    };
+  }
   ngOnChanges(changes: SimpleChanges): void {
     if (changes.alumnos && changes.alumnos.currentValue) {
       this.dataSource.data = changes.alumnos.currentValue;
