@@ -23,7 +23,7 @@ export class AsignaturasFormComponent implements OnInit, OnChanges {
     'Formacion Tecnica - Especifica',
   ];
   ciclos = ['1RO BASICO', '1RO SUPERIOR', '2DO BASICO', '2DO SUPERIOR', '3RO SUPERIOR', '4TO SUPERIOR'];
-  tiposAsignatura = ['Materia', 'Taller'];
+  tiposAsignatura = ['Aula', 'Taller'];
   form: FormGroup;
   constructor(private _fb: FormBuilder) {}
   ngOnChanges(changes: SimpleChanges): void {
