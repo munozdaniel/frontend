@@ -1,5 +1,5 @@
-import { MediaMatcher, BreakpointObserver, Breakpoints, BreakpointState } from '@angular/cdk/layout';
-import { ChangeDetectorRef, Component, Input, OnChanges, OnInit, SimpleChanges, ViewChild } from '@angular/core';
+import { MediaMatcher, BreakpointObserver, Breakpoints, BreakpointState} from '@angular/cdk/layout';
+import { ChangeDetectorRef, Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges, ViewChild } from '@angular/core';
 import { MatTableDataSource, MatSort, MatPaginator } from '@angular/material';
 import { IAlumno } from 'app/models/interface/iAlumno';
 import { IEstadoCursada } from 'app/models/interface/iEstadoCursada';
@@ -10,7 +10,8 @@ import { IEstadoCursada } from 'app/models/interface/iEstadoCursada';
   styleUrls: ['./alumnos-ver-ui.component.scss'],
 })
 export class AlumnosVerUiComponent implements OnInit, OnChanges {
-  @Input() alumno: IAlumno;
+    @Output() retAgregarCursada = new EventEmitter<boolean>();
+   @Input() alumno: IAlumno;
   @Input() cargando: boolean;
   //   Cursadas
   dataSource: MatTableDataSource<any> = new MatTableDataSource([]);
@@ -32,10 +33,10 @@ export class AlumnosVerUiComponent implements OnInit, OnChanges {
     this.breakpointObserver.observe([Breakpoints.Small, Breakpoints.HandsetPortrait]).subscribe((state: BreakpointState) => {
       if (state.matches) {
         this.isMobile = true;
-        this.columnas = ['cicloLectivo', 'curso', 'condicion'];
+        this.columnas = ['cicloLectivo', 'curso', 'condicion', 'opciones'];
       } else {
         this.isMobile = false;
-        this.columnas = ['cicloLectivo', 'curso', 'division', 'comision', 'condicion'];
+        this.columnas = ['cicloLectivo', 'curso', 'division', 'comision', 'condicion', 'opciones'];
       }
     });
   }
@@ -46,4 +47,7 @@ export class AlumnosVerUiComponent implements OnInit, OnChanges {
   }
 
   ngOnInit(): void {}
+  agregarCursada() {
+    this.retAgregarCursada.emit(true);
+  }
 }

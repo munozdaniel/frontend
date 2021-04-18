@@ -3,9 +3,34 @@
     <h1 class="px-12">{{ titulo }}</h1>
     <mat-spinner *ngIf="cargando" matSuffix class="ml-10" diameter="20"></mat-spinner>
   </div>
-  <div fxLayout fxLayoutAlign="end center" fxLayoutGap="10px">
-      <button mat-raised-button (click)="importarMasivo()" color="primary">Importar Alumnos</button>
-      <button mat-raised-button (click)="agregar()" color="primary">Agregar Alumno</button>
-    <button *ngIf="soloLectura" mat-raised-button color="primary" (click)="editarAlumno()">Editar Alumno</button>
+  <div [fxHide.xs]="true" fxLayout="row wrap" fxLayoutAlign="end center" fxLayoutGap.gt-xs="10px">
+    <button fxFlex.xs="100" ngClass.xs="mb-12" mat-raised-button (click)="importarMasivo()" color="accent">Importar Alumnos</button>
+    <button fxFlex.xs="100" ngClass.xs="mb-12" mat-raised-button (click)="agregar()" color="primary">Agregar Alumno</button>
+    <button fxFlex.xs="100" ngClass.xs="mb-12" *ngIf="soloLectura" mat-raised-button color="warn" (click)="editarAlumno()">
+      Editar Alumno
+    </button>
   </div>
+  <button
+    [fxHide.gt-xs]="true"
+    mat-icon-button
+    [matMenuTriggerFor]="menu"
+    aria-label="Menu de Opciones"
+    style="right: 15px; position: absolute"
+  >
+    <mat-icon>more_vert</mat-icon>
+  </button>
+  <mat-menu #menu="matMenu">
+    <button mat-menu-item>
+      <mat-icon>import_contacts</mat-icon>
+      <span>Importar Alumnos</span>
+    </button>
+    <button mat-menu-item>
+      <mat-icon>add_circle</mat-icon>
+      <span>Agregar Alumno</span>
+    </button>
+    <button mat-menu-item>
+      <mat-icon>create</mat-icon>
+      <span>Editar Alumno</span>
+    </button>
+  </mat-menu>
 </div>
