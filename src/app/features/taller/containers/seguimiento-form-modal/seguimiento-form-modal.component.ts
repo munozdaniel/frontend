@@ -26,7 +26,6 @@ import Swal from 'sweetalert2';
       >
         <div fxLayout.xs="column" class="w-100-p" fxLayout.gt-xs="row wrap" fxLayoutAlign.gt-xs="space-between start">
           <!-- Fecha -->
-          {{ this.form.value | json }}
           <mat-form-field appearance="outline" fxFlex.xs="100" fxFlex.gt-xs="45">
             <mat-label>Fecha</mat-label>
             <input [max]="maximo" [min]="minimo" autocomplete="off" matInput [matDatepicker]="picker" formControlName="fecha" />

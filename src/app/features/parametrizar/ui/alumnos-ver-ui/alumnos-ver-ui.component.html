@@ -40,7 +40,9 @@
           <p>
             <strong>Fecha de Ingreso:</strong>
             <span *ngIf="alumno.fechaIngreso">{{
-              alumno.fechaIngreso === 'SIN REGISTRAR' ? alumno.fechaIngreso : (alumno.fechaIngreso | date: 'dd/MM/yyyy':'GMT')
+              alumno.fechaIngreso === 'SIN REGISTRAR' || alumno.fechaIngreso === 'Sin Registrar'
+                ? alumno.fechaIngreso
+                : (alumno.fechaIngreso | date: 'dd/MM/yyyy':'GMT')
             }}</span>
           </p>
           <p>

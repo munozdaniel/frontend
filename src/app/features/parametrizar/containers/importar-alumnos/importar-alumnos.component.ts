@@ -26,6 +26,10 @@ import { ValidationService } from 'app/core/services/general/validation.services
           <button mat-raised-button color="accent" fxFlex.xs="100" (click)="setExcelEjemplo()">Excel Ejemplo</button>
         </div>
       </div>
+
+      <div class="message-box warning">
+        Antes de importar los alumnos verifique que el archivo excel tenga el formato requerido (Ver Excel de Ejemplo)
+      </div>
       <div fxLayout="row wrap" fxLayoutAlign="center start">
         <app-alumnos-file
           fxFlex="100"
@@ -86,7 +90,8 @@ export class ImportarAlumnosComponent implements OnInit {
   validacionesDeCampo(alumnosArchivo) {
     this.cargando = true;
     const u = alumnosArchivo.map((x) => {
-      console.log('¿x', x);
+      console.log('¿x', x.TURNO);
+      console.log('¿x', x['APELLIDO Y NOMBRES']);
       const descripcionError = [];
       let doc = null;
       let tipoDoc = null;
@@ -118,15 +123,27 @@ export class ImportarAlumnosComponent implements OnInit {
       }
 
       const row: any = {
-        legajo: x.legajo, // Usar 1 solo
-        nombreCompleto: _.capitalize(x.nombreCompleto),
-        tipoDni: tipoDoc,
-        dni: doc,
+        TURNO: x.TURNO,
+        DIVISION: x.DIVISION,
+        DOCUMENTO: x.DOCUMENTO,
+        'APELLIDO Y NOMBRES': _.capitalize(x['APELLIDO Y NOMBRES']),
+        'FECHA NACIMIENTO': x['FECHA NACIMIENTO'],
+        'LUGAR DE NACIMIENTO': x['LUGAR DE NACIMIENTO'],
+        'ES REPITENTE': x['ES REPITENTE'],
+        TELEFONO: x.TELEFONO,
+        'TELEFONO DE URGENCIA': x['TELEFONO DE URGENCIA'],
+        DOMICILIO: x.DOMICILIO,
+        LOCALIDAD: x.LOCALIDAD,
+
+        // legajo: x.legajo, // Usar 1 solo
+        // nombreCompleto: _.capitalize(x.nombreCompleto),
+        // tipoDni: tipoDoc,
+        // dni: doc,
         tieneError,
         descripcionError: descripcionError.join(' - '),
         selected: !tieneError,
-        nacionalidad: 'SIN REGISTRAR',
-        domicilio: 'SIN REGISTRAR',
+        // nacionalidad: 'SIN REGISTRAR',
+        // domicilio: 'SIN REGISTRAR',
         cantidadIntegranteGrupoFamiliar: 0,
         incompleto: true,
       };
@@ -151,18 +168,17 @@ export class ImportarAlumnosComponent implements OnInit {
         toArray(),
         mergeMap((datos: any) => {
           const observables = datos.map((x) => {
-            if (x.legajo && x.legajo !== '') {
-              return this._alumnoService.disponibleLegajo(x.legajo).pipe(
+            if (x.dni && x.dni !== '') {
+              return this._alumnoService.disponibleDni(x.dni).pipe(
                 map((i) => {
-                  console.log('i', i, typeof i === 'boolean' && i === true);
                   if (typeof i === 'boolean' && i === true) {
-                    return { ...x, legajoDisponible: true };
+                    return { ...x, dniDisponible: true };
                   } else {
-                    console.log('El legajo ya se encuentra en uso');
-                    const mensaje = 'El legajo ya se encuentra en uso';
+                    console.log('El dni ya se encuentra en uso');
+                    const mensaje = 'El dni ya se encuentra en uso';
                     return {
                       ...x,
-                      legajoDisponible: false,
+                      dniDisponible: false,
                       tieneError: true,
                       checked: false,
                       selected: false,
@@ -172,7 +188,7 @@ export class ImportarAlumnosComponent implements OnInit {
                 })
               );
             } else {
-              return of({ ...x, legajoDisponible: false }); // Se analiza en el paso anterior
+              return of({ ...x, dniDisponible: false }); // Se analiza en el paso anterior
             }
           });
 
@@ -196,11 +212,17 @@ export class ImportarAlumnosComponent implements OnInit {
   setExcelEjemplo(evento?) {
     const ejemplo = [
       {
-        legajo: '123456',
-        documento: 'DNI - 1234567', // TIPODNI - NUMERO (este formato si o si con "-")
-        nombreCompleto: 'Nombre Apellido',
-        ce: '',
-        estado: '',
+        TURNO: 'TARDE',
+        DIVISION: '1 - Ciclo Básico - 137/13 Anexo II',
+        DOCUMENTO: 'Nombre Apellido', // TIPODNI - NUMERO (este formato si o si con "-")
+        'APELLIDO Y NOMBRES': 'AGUILERA LOPEZ JAVIER BENJAMÃN',
+        'FECHA NACIMIENTO': '31/12/2007',
+        'LUGAR DE NACIMIENTO': 'CIPOLLETTI',
+        'ES REPITENTE': '',
+        TELEFONO: '155794652',
+        'TELEFONO DE URGENCIA': '155182549',
+        DOMICILIO: 'CAPITAN GOMEZ 1578',
+        LOCALIDAD: 'CIPOLLETTI',
       },
     ];
 
