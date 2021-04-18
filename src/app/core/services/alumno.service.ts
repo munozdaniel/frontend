@@ -163,6 +163,12 @@ export class AlumnoService {
 
     return this.http.get<any>(url);
   }
+  disponibleDni(legajo: any) {
+    const query = `alumnos/disponible-dni/${legajo}`;
+    const url = this.url + query;
+
+    return this.http.get<any>(url);
+  }
   guardarMasivo(alumnosCheck: IAlumno[]): Observable<any> {
     const query = `alumnos/guardar-masivo`;
     const url = this.url + query;
