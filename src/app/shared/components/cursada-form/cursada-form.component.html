@@ -1,6 +1,10 @@
-<div class="mat-elevation-z4 mat-card p-12">
-  <h1 *ngIf="esModal">Agregar Comision</h1>
-  <form [formGroup]="form" fxLayout="column" (ngSubmit)="guardarComision()">
+<div [class.mat-elevation-z4]="!esModal" [class.mat-card]="!esModal" class="p-12">
+  <h1 *ngIf="esModal">Agregar Cursada</h1>
+  <mat-spinner *ngIf="cargando" matSuffix class="ml-10" diameter="20"></mat-spinner>
+  <div *ngIf="!form" fxLayout="row" fxLayoutAlign="center start">
+    <span>Cargando formulario</span>
+  </div>
+  <form *ngIf="form" [formGroup]="form" fxLayout="column" (ngSubmit)="guardarComision()">
     <div class="w-100-p" fxLayout="row wrap" fxLayoutAlign="space-between start">
       <div fxFlex.gt-xs="42" fxFlex.xs="100" fxLayout="column">
         <!-- tipoComision ============================= -->
@@ -15,7 +19,7 @@
         <mat-form-field appearance="outline" fxFlex.gt-xs="45" fxFlex.xs="100">
           <mat-label class="lbl">Ciclo Lectivo</mat-label>
           <mat-select formControlName="cicloLectivo">
-            <mat-option *ngFor="let anio of anios" [value]="anio">{{ anio }}</mat-option>
+            <mat-option *ngFor="let ciclo of ciclosLectivos" [value]="ciclo">{{ ciclo.anio }}</mat-option>
           </mat-select>
           <mat-error *ngIf="form.controls.cicloLectivo.hasError('required')"> Este campo es requerido. </mat-error>
         </mat-form-field>
@@ -35,17 +39,18 @@
       </div>
       <div fxFlex.gt-xs="42" fxFlex.xs="100" fxLayout="column">
         <!-- division ============================= -->
-        <mat-form-field appearance="outline">
-          <mat-label class="lbl">DIVISION</mat-label>
-          <input matInput type="number" min="0" formControlName="division" autocomplete="off" />
+
+        <mat-form-field appearance="outline" fxFlex.gt-xs="45" fxFlex.xs="100">
+          <mat-label class="lbl">División</mat-label>
+          <mat-select formControlName="division">
+            <mat-option value="1">DIVISION 1</mat-option>
+            <mat-option value="2">DIVISION 2</mat-option>
+            <mat-option value="3">DIVISION 3</mat-option>
+            <mat-option value="4">DIVISION 4</mat-option>
+            <mat-option value="5">DIVISION 5</mat-option>
+            <mat-option value="6">DIVISION 6</mat-option>
+          </mat-select>
           <mat-error *ngIf="form.controls.division.hasError('required')"> Este campo es requerido. </mat-error>
-          <mat-error
-            *ngIf="
-              !form.controls.division.hasError('required') &&
-              (form.controls.division.hasError('min') || form.controls.division.hasError('max'))
-            "
-            >Ingrese un valor entre 0 y 6</mat-error
-          >
         </mat-form-field>
         <!-- condicion ============================= -->
         <mat-form-field appearance="outline" fxFlex.gt-xs="45" fxFlex.xs="100">
@@ -60,7 +65,7 @@
       </div>
     </div>
     <div fxLayout="row" fxLayoutAlign="center start">
-      <button *ngIf="!soloLectura" mat-raised-button color="accent">Guardar Comision</button>
+      <button *ngIf="!soloLectura" mat-raised-button color="accent">Guardar Cursada</button>
     </div>
   </form>
 </div>

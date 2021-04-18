@@ -69,7 +69,6 @@ export class ActualizarCicloLectivoComponent implements OnInit {
     this.alumnos = [];
   }
   setBuscarAlumnos({ curso, divisiones, cicloLectivo }) {
-    console.log('cicloLectivo', cicloLectivo);
     const indexAnterior = this.ciclosLectivos.findIndex((x) => x.anio === cicloLectivo - 1);
     if (indexAnterior === -1) {
       Swal.fire({
@@ -95,7 +94,6 @@ export class ActualizarCicloLectivoComponent implements OnInit {
       );
   }
   setActualizarCiclo({ cicloLectivo, curso, divisiones }) {
-    console.log('cicloLectivo.anio', cicloLectivo);
     const indexAnterior = this.ciclosLectivos.findIndex((x) => x.anio === cicloLectivo - 1);
     if (indexAnterior === -1) {
       Swal.fire({
@@ -120,7 +118,6 @@ export class ActualizarCicloLectivoComponent implements OnInit {
       .pipe(untilDestroyed(this))
       .subscribe(
         (datos) => {
-          console.log('datos dinales', datos);
           this.ultimosActualizados = datos.alumnosActualizados;
           this.ultimosNoActualizados = datos.alumnosNoActualizados;
           this.abrirActualizados();

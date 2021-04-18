@@ -16,7 +16,7 @@
   background: linear-gradient(90deg, rgba(26, 115, 232, 1) 0%, rgba(0, 147, 252, 1) 100%);
 }
 .primera_seccion > .bar_image {
-  background-image: url('/assets/home/banner1.png');
+  //   background-image: url('/assets/home/banner1.png');
   background-position-x: 37%;
   position: absolute;
   width: 100%;
@@ -28,7 +28,7 @@
   background-size: auto 100%;
 }
 .barra_titulos {
-  min-height: 536px;
+  //   min-height: 536px;
   padding-left: 0;
   z-index: 3;
 }

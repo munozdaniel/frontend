@@ -3,13 +3,6 @@
     <h1 class="px-12">{{ titulo }}</h1>
     <mat-spinner *ngIf="cargando" matSuffix class="ml-10" diameter="20"></mat-spinner>
   </div>
-  <div [fxHide.xs]="true" fxLayout="row wrap" fxLayoutAlign="end center" fxLayoutGap.gt-xs="10px">
-    <button fxFlex.xs="100" ngClass.xs="mb-12" mat-raised-button (click)="importarMasivo()" color="accent">Importar Alumnos</button>
-    <button fxFlex.xs="100" ngClass.xs="mb-12" mat-raised-button (click)="agregar()" color="primary">Agregar Alumno</button>
-    <button fxFlex.xs="100" ngClass.xs="mb-12" *ngIf="soloLectura" mat-raised-button color="warn" (click)="editarAlumno()">
-      Editar Alumno
-    </button>
-  </div>
   <button
     [fxHide.gt-xs]="true"
     mat-icon-button
@@ -33,4 +26,11 @@
       <span>Editar Alumno</span>
     </button>
   </mat-menu>
+  <div [fxHide.xs]="true" fxLayout="row wrap" fxLayoutAlign="end center" fxLayoutGap.gt-xs="10px">
+    <button fxFlex.xs="100" ngClass.xs="mb-12" mat-raised-button (click)="importarMasivo()" color="accent">Importar Alumnos</button>
+    <button fxFlex.xs="100" ngClass.xs="mb-12" mat-raised-button (click)="agregar()" color="primary">Agregar Alumno</button>
+    <button fxFlex.xs="100" ngClass.xs="mb-12" *ngIf="soloLectura" mat-raised-button color="warn" (click)="editarAlumno()">
+      Editar Alumno
+    </button>
+  </div>
 </div>

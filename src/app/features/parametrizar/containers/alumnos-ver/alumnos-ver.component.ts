@@ -1,17 +1,19 @@
 import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material';
 import { ActivatedRoute, Router } from '@angular/router';
+import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { AlumnoService } from 'app/core/services/alumno.service';
 import { IAlumno } from 'app/models/interface/iAlumno';
-import { AgregarCursadaComponent } from 'app/shared/components/agregar-cursada/agregar-cursada.component';
-import { Observable } from 'rxjs';
+import { IEstadoCursada } from 'app/models/interface/iEstadoCursada';
+import { CursadaFormComponent } from 'app/shared/components/cursada-form/cursada-form.component';
+import { BehaviorSubject, Observable } from 'rxjs';
 import { finalize } from 'rxjs/operators';
-
+@UntilDestroy()
 @Component({
   selector: 'app-alumnos-ver',
   template: `
     <button-volver></button-volver>
-    <div *ngIf="alumno$ | async as alumno; else cargandoAlumno" fxLayout="column" class="w-100-p p-12 mt-16">
+    <div *ngIf="alumno; else cargandoAlumno" fxLayout="column" class="w-100-p p-12 mt-16">
       <div class="w-100-p p-24" fxLayout="column">
         <app-alumnos-menu-param
           [titulo]="'Ver Alumno'"
@@ -20,7 +22,12 @@ import { finalize } from 'rxjs/operators';
           (retHabilitarEdicion)="habilitarEdicion($event)"
         >
         </app-alumnos-menu-param>
-        <app-alumnos-ver-ui [cargando]="cargando" [alumno]="alumno" (retAgregarCursada)="setAgregarCursada($event)"></app-alumnos-ver-ui>
+        <app-alumnos-ver-ui
+          [cargando]="cargando"
+          [alumno]="alumno"
+          (retAgregarCursada)="setAgregarCursada($event)"
+          (retEditarCursada)="setEditarCursada($event)"
+        ></app-alumnos-ver-ui>
       </div>
     </div>
     <ng-template #cargandoAlumno>
@@ -40,7 +47,7 @@ import { finalize } from 'rxjs/operators';
 export class AlumnosVerComponent implements OnInit {
   cargando = false;
   resetear = false;
-  alumno$: Observable<IAlumno>;
+  alumno: IAlumno;
   alumnoId: string;
   constructor(
     private _dialog: MatDialog,
@@ -54,19 +61,82 @@ export class AlumnosVerComponent implements OnInit {
   }
   recuperarDatos() {
     this._activeRoute.params.subscribe((params) => {
+      this.cargando = true;
       this.alumnoId = params['id'];
-      this.alumno$ = this._alumnoService.obtenerAlumnoPorId(this.alumnoId).pipe(finalize(() => (this.cargando = false)));
+      this._alumnoService
+        .obtenerAlumnoPorId(this.alumnoId)
+        .pipe(untilDestroyed(this))
+        .subscribe(
+          (datos) => {
+            this.cargando = false;
+            this.alumno = datos;
+          },
+          (error) => {
+            console.log('[ERROR]', error);
+          }
+        );
     });
   }
   habilitarEdicion() {
     this._router.navigate(['/parametrizar/alumnos-editar/' + this.alumnoId]);
   }
   setAgregarCursada() {
-    const dialogRef = this._dialog.open(AgregarCursadaComponent);
+    const dialogRef = this._dialog.open(CursadaFormComponent, {
+      width: '50%',
+      data: { esModal: true },
+    });
 
     dialogRef.afterClosed().subscribe((result) => {
       if (result) {
-        console.log(`Dialog result: ${result}`);
+        // this.recuperarDatos();
+        this.guardarEstadoCursada(result.estadoCursada);
+      }
+    });
+  }
+  guardarEstadoCursada(estadoCursada: IEstadoCursada) {
+    console.log('estadoCursada', estadoCursada);
+    this._alumnoService
+      .agregarEstadoCursada(estadoCursada, this.alumnoId)
+      .pipe(untilDestroyed(this))
+      .subscribe(
+        (datos) => {
+          console.log('Resultado agregar', datos);
+          //   this.alumno.estadoCursadas.push(estadoCursada);
+          this.recuperarDatos();
+        },
+        (error) => {
+          console.log('[ERROR]', error);
+        }
+      );
+  }
+  actualizarEstadoCursada(estadoCursada: IEstadoCursada, _id: string) {
+    console.log('¿estadoCursada', estadoCursada);
+    this._alumnoService
+      .actualizarEstadoCursada(estadoCursada, _id)
+      .pipe(untilDestroyed(this))
+      .subscribe(
+        (datos) => {
+          //   const index = this.alumno.estadoCursadas.findIndex((x) => x._id.toString() === estadoCursada._id.toString());
+          //   if (index === -1) {
+          //     this.alumno.estadoCursadas = [estadoCursada];
+          //   } else {
+          //     this.alumno.estadoCursadas[index] = estadoCursada;
+          //   }
+        },
+        (error) => {
+          console.log('[ERROR]', error);
+        }
+      );
+  }
+  setEditarCursada(evento: IEstadoCursada) {
+    const dialogRef = this._dialog.open(CursadaFormComponent, {
+      width: '50%',
+      data: { esModal: true, estadoCursada: evento },
+    });
+
+    dialogRef.afterClosed().subscribe((result) => {
+      if (result) {
+        this.actualizarEstadoCursada(result.estadoCursada, evento._id);
       }
     });
   }

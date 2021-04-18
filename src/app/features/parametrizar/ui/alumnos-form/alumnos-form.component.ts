@@ -5,11 +5,11 @@ import { NACIONALIDADES } from 'app/models/constants/nacionalidad';
 import { ALUMNO_DATA } from 'app/models/data/alumnoData';
 import { IAdulto } from 'app/models/interface/iAdulto';
 import { IAlumno } from 'app/models/interface/iAlumno';
-import { IComision } from 'app/models/interface/iComision';
+import { IEstadoCursada } from 'app/models/interface/iEstadoCursada';
+import { CursadaFormComponent } from 'app/shared/components/cursada-form/cursada-form.component';
 import { CONFIG_PROVIDER } from 'app/shared/config.provider';
 import Swal from 'sweetalert2';
 import { AdultosFormComponent } from '../adultos-form/adultos-form.component';
-import { ComisionesFormComponent } from '../comisiones-form/comisiones-form.component';
 
 @Component({
   selector: 'app-alumnos-form',
@@ -29,7 +29,7 @@ export class AlumnosFormComponent implements OnInit, OnChanges {
   nacionalidades = NACIONALIDADES;
 
   adultos: IAdulto[] = [];
-  comisiones: IComision[] = [];
+  estadoCursadas: IEstadoCursada[] = [];
   alumnoData = ALUMNO_DATA;
   seguimientoEtap = false;
   constructor(private _fb: FormBuilder, private _dialog: MatDialog) {}
@@ -57,9 +57,9 @@ export class AlumnosFormComponent implements OnInit, OnChanges {
       telefono: [null, [Validators.minLength(7), Validators.maxLength(20)]],
       celular: [null, [Validators.minLength(7), Validators.maxLength(20)]],
       email: [null, [Validators.required, Validators.email, Validators.minLength(4), Validators.maxLength(50)]],
-    
+
       fechaIngreso: [null, []],
-      procedenciaColegioPrimario: [null, [ Validators.minLength(4), Validators.maxLength(50)]],
+      procedenciaColegioPrimario: [null, [Validators.minLength(4), Validators.maxLength(50)]],
       procedenciaColegioSecundario: [null, [Validators.minLength(4), Validators.maxLength(50)]],
       fechaDeBaja: [null, []],
       motivoDeBaja: [null, [Validators.minLength(4), Validators.maxLength(50)]],
@@ -68,7 +68,7 @@ export class AlumnosFormComponent implements OnInit, OnChanges {
 
       observacion: [null, [Validators.minLength(4), Validators.maxLength(100)]],
       activo: [true],
-    });      
+    });
     this.formEtap = this._fb.group({
       nombreCompletoTae: [null, [Validators.required]],
       emailTae: [null, [Validators.required, Validators.email]],
@@ -119,7 +119,6 @@ export class AlumnosFormComponent implements OnInit, OnChanges {
   }
   setEliminarAdulto(adulto: IAdulto) {
     const index = this.adultos.findIndex((x) => x.index === adulto.index);
-    console.log('index', index);
     if (index !== -1) {
       this.adultos.splice(index, 1);
     }
@@ -135,8 +134,6 @@ export class AlumnosFormComponent implements OnInit, OnChanges {
     }
   }
   guardarAlumno() {
-    console.log('this.formDatosPersonales.valid', this.formDatosPersonales.valid);
-    console.log('this.formEtap.valid', this.formEtap.valid);
     if (this.formDatosPersonales.invalid) {
       Swal.fire({
         title: 'Oops! Datos incorrectos',
@@ -166,50 +163,45 @@ export class AlumnosFormComponent implements OnInit, OnChanges {
       ...this.formDatosPersonales.value,
       ...this.formEtap.value,
       adultos: this.adultos,
-      comisiones: this.comisiones,
+      estadoCursadas: this.estadoCursadas,
       telefono: this.formDatosPersonales.controls.telefono.value ? this.formDatosPersonales.controls.telefono.value.toString() : null,
       celular: this.formDatosPersonales.controls.celular.value ? this.formDatosPersonales.controls.celular.value.toString() : null,
       seguimientoEtap: this.seguimientoEtap ? 'SI' : 'NO',
     };
-    console.log('alumno', alumno);
     this.retDatosForm.emit(alumno);
   }
   abrirModalComision() {
-    const dialogRef = this._dialog.open(ComisionesFormComponent, {
+    const dialogRef = this._dialog.open(CursadaFormComponent, {
       data: { esModal: true },
       width: '50%',
     });
 
     dialogRef.afterClosed().subscribe(({ comision }: any) => {
       comision.index = Math.random();
-      this.comisiones = [...this.comisiones, comision];
+      this.estadoCursadas = [...this.estadoCursadas, comision];
     });
   }
-  setEliminarComision(evento: IComision) {
+  setEliminarComision(evento: IEstadoCursada) {
     if (evento) {
-      const index = this.comisiones.findIndex((x) => x.index === evento.index);
-      console.log('index', index);
+      const index = this.estadoCursadas.findIndex((x) => x.index === evento.index);
       if (index !== -1) {
-        this.comisiones.splice(index, 1);
-        this.comisiones = [...this.comisiones];
+        this.estadoCursadas.splice(index, 1);
+        this.estadoCursadas = [...this.estadoCursadas];
       }
     }
   }
-  setEditarComision(evento: IComision) {
+  setEditarComision(evento: IEstadoCursada) {
     if (evento) {
-      console.log('evento', evento);
-      const dialogRef = this._dialog.open(ComisionesFormComponent, {
-        data: { esModal: true, comision: evento },
+      const dialogRef = this._dialog.open(CursadaFormComponent, {
+        data: { esModal: true, estadoCursada: evento },
         width: '50%',
       });
 
       dialogRef.afterClosed().subscribe(({ comision }: any) => {
-        console.log('setEditarComisionindex', comision);
-        const index = this.comisiones.findIndex((x) => x.index === evento.index);
-        console.log('setEditarComisionindex', index);
+        const index = this.estadoCursadas.findIndex((x) => x.index === evento.index);
         if (index !== -1) {
-          this.comisiones[index] = comision;
-          this.comisiones = [...this.comisiones];
+          this.estadoCursadas[index] = comision;
+          this.estadoCursadas = [...this.estadoCursadas];
         }
       });
     }

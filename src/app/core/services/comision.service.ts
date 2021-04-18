@@ -1,69 +1,67 @@
-import { HttpClient, HttpParams } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { IAlumno } from 'app/models/interface/iAlumno';
-import { IComision } from 'app/models/interface/iComision';
-import { IQueryPag } from 'app/models/interface/iQueryPag';
+import { ICurso } from 'app/models/interface/iCurso';
 import { environment } from 'environments/environment';
 import { Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
 })
-export class ComisionService {
+export class CursoService {
   protected url = environment.apiURI;
   constructor(private http: HttpClient) {}
 
-  obtenerComisionPorId(comisionId: string): Observable<IComision> {
-    const query = `comisiones/${comisionId}`;
+  obtenerComisionPorId(comisionId: string): Observable<ICurso> {
+    const query = `cursos/${comisionId}`;
     const url = this.url + query;
 
     return this.http.get<any>(url);
   }
-  obtenerComisiones(): Observable<IComision[]> {
-    const query = `comisiones`;
+  obtenerComisiones(): Observable<ICurso[]> {
+    const query = `cursos`;
     const url = this.url + query;
 
     return this.http.get<any>(url);
   }
-  obtenerComisionesHabilitadas(): Observable<IComision[]> {
-    const query = `comisiones/habilitados`;
+  obtenerComisionesHabilitadas(): Observable<ICurso[]> {
+    const query = `cursos/habilitados`;
     const url = this.url + query;
 
     return this.http.get<any>(url);
   }
-  agregarComision(comision: IComision): Observable<IComision> {
-    const query = `comisiones`;
+  agregarComision(comision: ICurso): Observable<ICurso> {
+    const query = `cursos`;
     const url = this.url + query;
 
     return this.http.put<any>(url, comision);
   }
 
-  actualizarComision(comisionId: string, comision: IComision): Observable<any> {
-    const query = `comisiones/${comisionId}`;
+  actualizarComision(comisionId: string, comision: ICurso): Observable<any> {
+    const query = `cursos/${comisionId}`;
     const url = this.url + query;
 
     return this.http.patch<any>(url, comision);
   }
   eliminarComision(comisionId: string): Observable<any> {
-    const query = `comisiones/${comisionId}`;
+    const query = `cursos/${comisionId}`;
     const url = this.url + query;
 
     return this.http.delete<any>(url);
   }
   deshabilitarComision(comisionId: string, activo: boolean): Observable<any> {
-    const query = `comisiones/deshabilitar/${comisionId}`;
+    const query = `cursos/deshabilitar/${comisionId}`;
     const url = this.url + query;
 
     return this.http.put<any>(url, { activo });
   }
   habilitarComision(comisionId: string, activo: boolean): Observable<any> {
-    const query = `comisiones/habilitar/${comisionId}`;
+    const query = `cursos/habilitar/${comisionId}`;
     const url = this.url + query;
 
     return this.http.put<any>(url, { activo });
   }
-  obtenerComisionPorParametros(comision: IComision): Observable<IComision> {
-    const query = `comisiones/parametros`;
+  obtenerComisionPorParametros(comision: ICurso): Observable<ICurso> {
+    const query = `cursos/parametros`;
     const url = this.url + query;
 
     return this.http.post<any>(url, { comision });

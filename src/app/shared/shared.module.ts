@@ -17,8 +17,8 @@ import { AlumnoDatosPdfComponent } from './components/alumno-datos-pdf/alumno-da
 import { EmailAusenteModalComponent } from './components/email-ausente-modal/email-ausente-modal.component';
 import { BuscarPlanillaFormComponent } from './components/buscar-planilla-form/buscar-planilla-form.component';
 import { PlanillaTablaSimpleComponent } from './components/planilla-tabla-simple/planilla-tabla-simple.component';
-import { AgregarCursadaComponent } from './components/agregar-cursada/agregar-cursada.component';
-
+import { CursadaFormComponent } from './components/cursada-form/cursada-form.component';
+ 
 @NgModule({
   imports: [
     CommonModule,
@@ -47,7 +47,7 @@ import { AgregarCursadaComponent } from './components/agregar-cursada/agregar-cu
     AlumnoDatosPdfComponent,
     BuscarPlanillaFormComponent,
     PlanillaTablaSimpleComponent,
-    AgregarCursadaComponent,
+    CursadaFormComponent,
   ],
   declarations: [
     Error401Component,
@@ -63,7 +63,7 @@ import { AgregarCursadaComponent } from './components/agregar-cursada/agregar-cu
     EmailAusenteModalComponent,
     BuscarPlanillaFormComponent,
     PlanillaTablaSimpleComponent,
-    AgregarCursadaComponent,
+    CursadaFormComponent,
   ],
 })
 export class SharedModule {}

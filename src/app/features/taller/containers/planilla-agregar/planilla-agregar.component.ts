@@ -1,17 +1,12 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { designAnimations } from '@design/animations';
 import { AsignaturaService } from 'app/core/services/asignatura.service';
-import { ComisionService } from 'app/core/services/comision.service';
+import { CursoService } from 'app/core/services/comision.service';
 import { PlanillaTallerService } from 'app/core/services/planillaTaller.service';
 import { ProfesorService } from 'app/core/services/profesor.service';
 import { IAsignatura } from 'app/models/interface/iAsignatura';
-import { IComision } from 'app/models/interface/iComision';
-import { ICurso } from 'app/models/interface/iCurso';
-import { IPlanillaTaller } from 'app/models/interface/iPlanillaTaller';
 import { IProfesor } from 'app/models/interface/iProfesor';
-import * as moment from 'moment';
 import { BehaviorSubject, Observable, of } from 'rxjs';
 import { catchError, finalize } from 'rxjs/operators';
 import Swal from 'sweetalert2';
@@ -37,7 +32,7 @@ export class PlanillaAgregarComponent implements OnInit {
     private _planillaTallerService: PlanillaTallerService,
     private _profesorService: ProfesorService,
     private _asignaturaService: AsignaturaService,
-    private _comisionService: ComisionService,
+    private _cursoService: CursoService,
     private _router: Router
   ) {}
 
@@ -72,30 +67,7 @@ export class PlanillaAgregarComponent implements OnInit {
         cicloLectivo: evento.cicloLectivo, // set en el back
         activo: true,
       };
-      //   const curso: ICurso = {
-      //     activo: true,
-      //     curso: evento.curso,
-      //     division: evento.division,
-      //     comision: evento.comision,
-      //   };
-      console.log('evento', evento);
-      //   this._comisionService.obtenerComisionPorParametros(comision).subscribe(
-      //     (unaComision: IComision) => {
-      //       if (!unaComision) {
-      //         Swal.fire({
-      //           title: 'Oops! Ocurrió un error',
-      //           text: 'Hubo un problema en el servidor. Si el problema persiste comuniquese con el soporte técnico.',
-      //           icon: 'error',
-      //         });
-      //       } else {
-      //         planilla.curso = unaComision._id;
-      //         this.guardarPlanillaTaller(planilla);
-      //       }
-      //     },
-      //     (error) => {
-      //       console.log('[ERROR]', error);
-      //     }
-      //   );
+      
       this.guardarPlanillaTaller(evento);
     }
   }
@@ -134,7 +106,7 @@ export class PlanillaAgregarComponent implements OnInit {
             text: 'Espere un momento, está siendo redireccionado.',
             icon: 'success',
           });
-        this._router.navigate(['/taller/planillas-administrar/' + result.value._id]);
+          this._router.navigate(['/taller/planillas-administrar/' + result.value._id]);
         } else {
           Swal.fire({
             title: 'Oops! Ocurrió un error',

@@ -5,6 +5,7 @@ import { IAlumnoPaginado } from 'app/models/interface/iAlumnoPaginado';
 import { IAsignatura } from 'app/models/interface/iAsignatura';
 import { IAsistencia } from 'app/models/interface/iAsistencia';
 import { ICicloLectivo } from 'app/models/interface/iCicloLectivo';
+import { IEstadoCursada } from 'app/models/interface/iEstadoCursada';
 import { IFichaAlumnoParam } from 'app/models/interface/iFichaAlumnoParam';
 import { IPlanillaTaller } from 'app/models/interface/iPlanillaTaller';
 import { IQueryPag } from 'app/models/interface/iQueryPag';
@@ -208,5 +209,18 @@ export class AlumnoService {
     const url = this.url + query;
 
     return this.http.get<any>(url);
+  }
+  //   Estado de Cursada
+  agregarEstadoCursada(estadoCursada: IEstadoCursada, alumnoId: string): Observable<IAlumno[]> {
+    const query = `alumnos/agregar-estado-cursada/${alumnoId}`;
+    const url = this.url + query;
+
+    return this.http.post<any>(url, { estadoCursada });
+  }
+  actualizarEstadoCursada(estadoCursada: IEstadoCursada, estadoCursadaId: string): Observable<IAlumno[]> {
+    const query = `alumnos/actualizar-estado-cursada/${estadoCursadaId}`;
+    const url = this.url + query;
+
+    return this.http.post<any>(url, { estadoCursada });
   }
 }

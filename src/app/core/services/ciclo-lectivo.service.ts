@@ -11,11 +11,21 @@ import { shareReplay } from 'rxjs/operators';
 export class CicloLectivoService {
   private cicloLectivoSubject = new BehaviorSubject<number>(null);
   public cicloLectivo$ = this.cicloLectivoSubject.asObservable().pipe(shareReplay(1));
+ 
+  private ciclosLectivoSubject = new BehaviorSubject<ICicloLectivo[]>([]);
+  public ciclosLectivo$ = this.ciclosLectivoSubject.asObservable().pipe(shareReplay(1));
+ 
   protected url = environment.apiURI;
   constructor(private http: HttpClient) {}
 
   setCicloLectivo(cicloLectivo: number) {
     this.cicloLectivoSubject.next(cicloLectivo);
+  }
+  setCiclosLectivos(): Observable<ICicloLectivo[]> {
+    const query = `ciclolectivos`;
+    const url = this.url + query;
+
+    return this.http.get<any>(url);
   }
   obtenerCiclosLectivos(): Observable<ICicloLectivo[]> {
     const query = `ciclolectivos`;

@@ -3,10 +3,8 @@ import { designAnimations } from '@design/animations';
 import { ScriptService } from 'app/core/services/plugins/script-excel.service';
 import { IAdulto } from 'app/models/interface/iAdulto';
 import { IAlumno } from 'app/models/interface/iAlumno';
-import { ICurso } from 'app/models/interface/iCurso';
 import { IEstadoCursada } from 'app/models/interface/iEstadoCursada';
 import * as moment from 'moment';
-import Swal from 'sweetalert2';
 declare let pdfMake: any;
 
 @Component({

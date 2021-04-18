@@ -3,7 +3,7 @@ import { designAnimations } from '@design/animations';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { AlumnoService } from 'app/core/services/alumno.service';
 import { AsignaturaService } from 'app/core/services/asignatura.service';
-import { ComisionService } from 'app/core/services/comision.service';
+import { CursoService } from 'app/core/services/comision.service';
 import { PlanillaTallerService } from 'app/core/services/planillaTaller.service';
 import { ProfesorService } from 'app/core/services/profesor.service';
 @UntilDestroy()
@@ -18,7 +18,7 @@ export class MigrarComponent implements OnInit {
   cargando = false;
   resultado: any;
   constructor(
-    private _comisionService: ComisionService,
+    private _cursoService: CursoService,
     private _alumnoService: AlumnoService,
     private _asignaturaService: AsignaturaService,
     private _profesorService: ProfesorService,
@@ -45,17 +45,19 @@ export class MigrarComponent implements OnInit {
   }
   eliminarAlumnos() {
     this.cargando = true;
-    this._alumnoService.eliminarColeccion().pipe(untilDestroyed(this))
-    .subscribe(
-      (datos) => {
-        this.resultado = datos;
-        this.cargando = false;
-      },
-      (error) => {
-        this.cargando = false;
-        console.log('[ERROR]', error);
-      }
-    );;
+    this._alumnoService
+      .eliminarColeccion()
+      .pipe(untilDestroyed(this))
+      .subscribe(
+        (datos) => {
+          this.resultado = datos;
+          this.cargando = false;
+        },
+        (error) => {
+          this.cargando = false;
+          console.log('[ERROR]', error);
+        }
+      );
   }
   migrarAlumnos() {
     this.cargando = true;

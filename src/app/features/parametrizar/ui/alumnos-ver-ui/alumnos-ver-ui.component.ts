@@ -1,7 +1,8 @@
-import { MediaMatcher, BreakpointObserver, Breakpoints, BreakpointState} from '@angular/cdk/layout';
+import { MediaMatcher, BreakpointObserver, Breakpoints, BreakpointState } from '@angular/cdk/layout';
 import { ChangeDetectorRef, Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges, ViewChild } from '@angular/core';
 import { MatTableDataSource, MatSort, MatPaginator } from '@angular/material';
 import { IAlumno } from 'app/models/interface/iAlumno';
+import { ICurso } from 'app/models/interface/iCurso';
 import { IEstadoCursada } from 'app/models/interface/iEstadoCursada';
 
 @Component({
@@ -10,8 +11,9 @@ import { IEstadoCursada } from 'app/models/interface/iEstadoCursada';
   styleUrls: ['./alumnos-ver-ui.component.scss'],
 })
 export class AlumnosVerUiComponent implements OnInit, OnChanges {
-    @Output() retAgregarCursada = new EventEmitter<boolean>();
-   @Input() alumno: IAlumno;
+  @Output() retAgregarCursada = new EventEmitter<boolean>();
+  @Output() retEditarCursada = new EventEmitter<IEstadoCursada>();
+  @Input() alumno: IAlumno;
   @Input() cargando: boolean;
   //   Cursadas
   dataSource: MatTableDataSource<any> = new MatTableDataSource([]);
@@ -49,5 +51,9 @@ export class AlumnosVerUiComponent implements OnInit, OnChanges {
   ngOnInit(): void {}
   agregarCursada() {
     this.retAgregarCursada.emit(true);
+  }
+  editarCursada(estadoCursada: IEstadoCursada) {
+    console.log(':_di', estadoCursada._id);
+    this.retEditarCursada.emit(estadoCursada);
   }
 }

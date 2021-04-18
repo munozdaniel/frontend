@@ -2,7 +2,8 @@ import { Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChange
 import { MatTableDataSource, MatSort, MatPaginator } from '@angular/material';
 import { Router } from '@angular/router';
 import { designAnimations } from '@design/animations';
-import { IComision } from 'app/models/interface/iComision';
+import { ICurso } from 'app/models/interface/iCurso';
+import { IEstadoCursada } from 'app/models/interface/iEstadoCursada';
 
 @Component({
   selector: 'app-comisiones-tabla-param',
@@ -13,7 +14,7 @@ import { IComision } from 'app/models/interface/iComision';
 export class ComisionesTablaParamComponent implements OnInit, OnChanges {
   @Input() soloLectura: boolean = false;
   @Input() cargando: boolean;
-  @Input() comisiones: IComision[];
+  @Input() estadoCursadas: IEstadoCursada[];
   // ALUMNOS ________________________________
   dataSource: MatTableDataSource<any> = new MatTableDataSource([]);
   @ViewChild('sort') set setSort(sort: MatSort) {
@@ -22,18 +23,18 @@ export class ComisionesTablaParamComponent implements OnInit, OnChanges {
   @ViewChild('paginator') set setPaginator(paginator: MatPaginator) {
     this.dataSource.paginator = paginator;
   }
-  columnas: string[] = [ 'comision', 'alumno', 'cicloLectivo', 'curso', 'division', 'condicion', 'opciones'];
+  columnas: string[] = ['comision', 'alumno', 'cicloLectivo', 'curso', 'division', 'condicion', 'opciones'];
   // Output
-  @Output() retEditarComision = new EventEmitter<IComision>();
-  @Output() retEliminarComision = new EventEmitter<IComision>();
-  @Output() retDeshabilitarComision = new EventEmitter<IComision>();
-  @Output() retHabilitarComision = new EventEmitter<IComision>();
+  @Output() retEditarComision = new EventEmitter<ICurso>();
+  @Output() retEliminarComision = new EventEmitter<ICurso>();
+  @Output() retDeshabilitarComision = new EventEmitter<ICurso>();
+  @Output() retHabilitarComision = new EventEmitter<ICurso>();
   constructor(private _router: Router) {}
 
   ngOnInit(): void {}
   ngOnChanges(changes: SimpleChanges): void {
-    if (changes.comisiones && changes.comisiones.currentValue) {
-      this.dataSource.data = changes.comisiones.currentValue;
+    if (changes.estadoCursadas && changes.estadoCursadas.currentValue) {
+      this.dataSource.data = changes.estadoCursadas.currentValue;
     }
   }
   filtroRapido(filterValue: string) {
@@ -42,22 +43,21 @@ export class ComisionesTablaParamComponent implements OnInit, OnChanges {
       this.dataSource.paginator.firstPage();
     }
   }
-  eliminar(row: IComision) {
+  eliminar(row: ICurso) {
     this.retEliminarComision.emit(row);
   }
-  editar(row: IComision) {
-    console.log('row editar', row);
+  editar(row: ICurso) {
     this.retEditarComision.emit(row);
 
     //   this._router.navigate(['/parametrizar/comisiones-editar/' + row._id]);
   }
-  ver(row: IComision) {
+  ver(row: ICurso) {
     this._router.navigate(['/parametrizar/comisiones-ver/' + row._id]);
   }
-  deshabilitar(row: IComision) {
+  deshabilitar(row: ICurso) {
     this.retDeshabilitarComision.emit(row);
   }
-  habilitar(row: IComision) {
+  habilitar(row: ICurso) {
     this.retHabilitarComision.emit(row);
   }
 }

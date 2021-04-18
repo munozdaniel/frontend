@@ -359,14 +359,14 @@
       <div fxLayout="row" fxLayoutAlign="center start" class="w-100-p">
         <div fxLayout="column" fxFlex.xs="100" fxFlex.gt-xs="80">
           <h2 fxLayout="row" fxLayoutAlign="space-between center">
-            Comisiones <span>{{ comisiones?.length }}</span>
+            Cursadas <span>{{ estadoCursadas?.length }}</span>
           </h2>
           <div>
             <button mat-raised-button color="primary" type="button" (click)="abrirModalComision()">Agregar Comisión</button>
           </div>
-          <p *ngIf="!comisiones || comisiones.length < 1">No se ha ingresado ningún registro</p>
+          <p *ngIf="!estadoCursadas || estadoCursadas.length < 1">No se ha ingresado ningún registro</p>
           <app-comisiones-tabla-param
-            [comisiones]="comisiones"
+            [estadoCursadas]="estadoCursadas"
             (retEliminarComision)="setEliminarComision($event)"
             (retEditarComision)="setEditarComision($event)"
             class="w-100-p"

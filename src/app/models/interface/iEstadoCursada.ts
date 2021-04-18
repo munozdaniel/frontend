@@ -10,4 +10,6 @@ export interface IEstadoCursada {
   fechaCreacion: string;
   fechaModificacion?: Date;
   activo: boolean;
+  //
+  index?: number;
 }

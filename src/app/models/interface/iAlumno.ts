@@ -1,5 +1,5 @@
 import { IAdulto } from './iAdulto';
-import { IComision } from './iComision';
+import { ICurso } from './iCurso';
 import { IEstadoCursada } from './iEstadoCursada';
 
 export interface IAlumno {
@@ -9,7 +9,6 @@ export interface IAlumno {
   alumnoId: number; // para migrar
   adultos: IAdulto[];
   estadoCursadas: IEstadoCursada[];
-  // comisiones?:IComision[];
 
   tipoDni: string;
   dni: string;

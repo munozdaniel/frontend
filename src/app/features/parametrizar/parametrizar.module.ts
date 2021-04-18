@@ -24,13 +24,8 @@ import { ProfesoresFormComponent } from './ui/profesores-form/profesores-form.co
 import { ProfesoresTablaParamComponent } from './ui/profesores-tabla-param/profesores-tabla-param.component';
 import { ProfesoresMenuParamComponent } from './ui/profesores-menu-param/profesores-menu-param.component';
 import { AlumnosComisionesComponent } from './ui/alumnos-comisiones/alumnos-comisiones.component';
-import { ComisionesComponent } from './containers/comisiones/comisiones.component';
-import { ComisionesAgregarComponent } from './containers/comisiones-agregar/comisiones-agregar.component';
-import { ComisionesEditarComponent } from './containers/comisiones-editar/comisiones-editar.component';
-import { ComisionesVerComponent } from './containers/comisiones-ver/comisiones-ver.component';
 import { ComisionesMenuParamComponent } from './ui/comisiones-menu-param/comisiones-menu-param.component';
 import { ComisionesTablaParamComponent } from './ui/comisiones-tabla-param/comisiones-tabla-param.component';
-import { ComisionesFormComponent } from './ui/comisiones-form/comisiones-form.component';
 import { AlumnosVerUiComponent } from './ui/alumnos-ver-ui/alumnos-ver-ui.component';
 import { AdultosFormComponent } from './ui/adultos-form/adultos-form.component';
 import { AdultosTablaParamComponent } from './ui/adultos-table-param/adultos-tabla-param.component';
@@ -60,20 +55,15 @@ import { AlumnosFileComponent } from './ui/alumnos-file/alumnos-file.component';
     ProfesoresTablaParamComponent,
     ProfesoresMenuParamComponent,
     AlumnosComisionesComponent,
-    ComisionesComponent,
-    ComisionesAgregarComponent,
-    ComisionesEditarComponent,
-    ComisionesVerComponent,
     ComisionesMenuParamComponent,
     ComisionesTablaParamComponent,
-    ComisionesFormComponent,
     AlumnosVerUiComponent,
     AdultosFormComponent,
     AdultosTablaParamComponent,
     ImportarAlumnosComponent,
     AlumnosFileComponent,
   ],
-  entryComponents: [ComisionesFormComponent, AdultosFormComponent],
+  entryComponents: [AdultosFormComponent],
   imports: [CommonModule, ParametrizarRoutingModule, SharedModule, DesignSharedModule],
 })
 export class ParametrizarModule {}
