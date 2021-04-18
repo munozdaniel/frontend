@@ -65,7 +65,7 @@ import Swal from 'sweetalert2';
           <!-- promedioGeneral ============================= -->
           <mat-form-field appearance="outline" fxFlex.gt-xs="45" fxFlex.xs="100">
             <mat-label class="lbl">Calificación</mat-label>
-            <input matInput type="number" formControlName="promedioGeneral" min="0" max="10" autocomplete="off" />
+            <input matInput type="number" formControlName="promedioGeneral" min="1" max="10" autocomplete="off" />
             <mat-error *ngIf="form.controls.promedioGeneral.hasError('required')"> Este campo es requerido. </mat-error>
             <mat-error
               *ngIf="
@@ -152,7 +152,6 @@ export class CalificacionFormModalComponent implements OnInit, OnDestroy {
     @Inject(MAT_DIALOG_DATA) public data: any,
     private _calificacionService: CalificacionService
   ) {
-    console.log('cinstr', data.planillaTaller);
     this.planillaTaller = data.planillaTaller;
     this.minimo = new Date(this.planillaTaller.fechaInicio);
     this.maximo = new Date(this.planillaTaller.fechaFinalizacion);
@@ -171,7 +170,7 @@ export class CalificacionFormModalComponent implements OnInit, OnDestroy {
       promedia: [this.calificacion ? this.calificacion.promedia : false, []],
       promedioGeneral: [
         this.calificacion ? this.calificacion.promedioGeneral : null,
-        [Validators.required, Validators.min(0), Validators.max(10)],
+        [Validators.required, Validators.min(1), Validators.max(10)],
       ],
       observaciones: [this.calificacion ? this.calificacion.observaciones : '', [Validators.minLength(3), Validators.maxLength(50)]],
       profesor: [this.planillaTaller.profesor.nombreCompleto, [Validators.required]],
