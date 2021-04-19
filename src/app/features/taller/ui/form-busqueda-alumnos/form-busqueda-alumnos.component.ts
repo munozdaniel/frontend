@@ -2,8 +2,6 @@ import { Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChange
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { ICicloLectivo } from 'app/models/interface/iCicloLectivo';
 import { IFichaAlumnoParam } from 'app/models/interface/iFichaAlumnoParam';
-import { timeStamp } from 'console';
-import * as moment from 'moment';
 import Swal from 'sweetalert2';
 
 @Component({

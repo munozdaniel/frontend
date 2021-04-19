@@ -37,6 +37,7 @@ import { SeguimientoEditarComponent } from './containers/seguimiento-editar/segu
 import { SeguimientoFormComponent } from './ui/seguimiento-form/seguimiento-form.component';
 import { FichaAlumnoDetalleComponent } from './containers/ficha-alumno-detalle/ficha-alumno-detalle.component';
 import { InformesComponent } from './containers/informes/informes.component';
+import { InasistenciasAlumnosComponent } from './containers/inasistencias-alumnos/inasistencias-alumnos.component';
 
 @NgModule({
   declarations: [
@@ -74,6 +75,7 @@ import { InformesComponent } from './containers/informes/informes.component';
     SeguimientoFormComponent,
     FichaAlumnoDetalleComponent,
     InformesComponent,
+    InasistenciasAlumnosComponent,
   ],
   imports: [CommonModule, TallerRoutingModule, SharedModule, DesignSharedModule],
 })

@@ -6,8 +6,6 @@ import { AlumnoService } from 'app/core/services/alumno.service';
 import { IAlumno } from 'app/models/interface/iAlumno';
 import { IEstadoCursada } from 'app/models/interface/iEstadoCursada';
 import { CursadaFormComponent } from 'app/shared/components/cursada-form/cursada-form.component';
-import { BehaviorSubject, Observable } from 'rxjs';
-import { finalize } from 'rxjs/operators';
 @UntilDestroy()
 @Component({
   selector: 'app-alumnos-ver',

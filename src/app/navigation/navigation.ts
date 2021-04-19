@@ -62,6 +62,13 @@ export const navigation: DesignNavigation[] = [
         icon: 'build',
         url: '/taller/planillas',
       },
+      {
+        id: 'taller_inasistencias_alumnos',
+        title: 'Inasistencias de Alumnos',
+        type: 'item',
+        icon: 'portrait',
+        url: '/taller/inasistencias-alumno',
+      },
       //   {
       //     id: 'taller_tomar_asistencia',
       //     title: 'Tomar Asistencia',

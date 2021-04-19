@@ -223,4 +223,10 @@ export class AlumnoService {
 
     return this.http.post<any>(url, { estadoCursada });
   }
+  enviarEmailMasivo(alumnos: IAlumno[], fecha: any): Observable<IAlumno[]> {
+    const query = `alumnos/enviar-email-masivo`;
+    const url = this.url + query;
+
+    return this.http.post<any>(url, { alumnos, fecha });
+  }
 }

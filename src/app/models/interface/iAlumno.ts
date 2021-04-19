@@ -42,4 +42,5 @@ export interface IAlumno {
   incompleto?: boolean;
   // Ejecucion
   selected?: boolean;
+  nombreAdulto?:string;
 }

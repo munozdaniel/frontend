@@ -31,7 +31,6 @@ export class AsignaturasFormComponent implements OnInit, OnChanges {
       this.form.reset();
     }
     if (changes.asignatura && changes.asignatura.currentValue) {
-      console.log('this.asoi', this.asignatura);
       this.setFormularios();
     }
   }
@@ -54,7 +53,6 @@ export class AsignaturasFormComponent implements OnInit, OnChanges {
       }, 1000);
       return;
     }
-    console.log('this.asignatura', this.asignatura);
     this.form.patchValue(this.asignatura);
     // this.form.controls.tipoFormacion.setValue(this.asignatura.tipoFormacion);
     this.form.controls.curso.setValue(this.asignatura.curso.toString());
@@ -66,7 +64,6 @@ export class AsignaturasFormComponent implements OnInit, OnChanges {
     this.form.patchValue(this.asignaturaData);
   }
   guardarAsignatura() {
-    console.log('this.form.valid', this.form.valid);
     if (this.form.invalid) {
       Swal.fire({
         title: 'Oops! Datos incorrectos',
@@ -81,7 +78,6 @@ export class AsignaturasFormComponent implements OnInit, OnChanges {
       activo: true,
       curso: Number(this.form.controls.curso.value),
     };
-    console.log('asignatura', asignatura);
     this.retDatosForm.emit(asignatura);
   }
 }

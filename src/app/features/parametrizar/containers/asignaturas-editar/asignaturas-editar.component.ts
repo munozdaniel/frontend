@@ -47,8 +47,6 @@ export class AsignaturasEditarComponent implements OnInit {
   recuperarDatos() {
     this._activeRoute.params.subscribe((params) => {
       this.asignaturaId = params['id'];
-      console.log(' this.asignaturaId', this.asignaturaId);
-      console.log(' this.asignaturaId', this.asignaturaId);
       this.obtenerAsignaturaPorId();
     });
   }
@@ -101,7 +99,6 @@ export class AsignaturasEditarComponent implements OnInit {
       allowOutsideClick: () => !Swal.isLoading(),
     }).then((result: any) => {
       if (result.isConfirmed) {
-        console.log('result1', result);
         if (result.value) {
           Swal.fire({
             title: 'Operación Exitosa',
