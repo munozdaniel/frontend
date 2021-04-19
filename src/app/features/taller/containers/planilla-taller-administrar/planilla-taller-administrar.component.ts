@@ -18,6 +18,7 @@ import { IPlanillaTaller } from 'app/models/interface/iPlanillaTaller';
 import { ISeguimientoAlumno } from 'app/models/interface/iSeguimientoAlumno';
 import { ITema } from 'app/models/interface/iTema';
 import { EmailAusenteModalComponent } from 'app/shared/components/email-ausente-modal/email-ausente-modal.component';
+import { TomarAsistenciaModalComponent } from 'app/shared/components/tomar-asistencia-modal/tomar-asistencia-modal.component';
 import * as moment from 'moment';
 import { of } from 'rxjs';
 import { catchError } from 'rxjs/operators';
@@ -65,6 +66,7 @@ import { TemaFormModalComponent } from '../tema-form-modal/tema-form-modal.compo
               [asistencias]="asistencias"
               (retBuscarAsistenciaPorAlumno)="setBuscarAsistenciaPorAlumno($event)"
               (retAbrirModalAsistencias)="setAbrirModalAsistencias($event)"
+              (retTomarAsistencias)="setTomarAsistencias($event)"
               (retEditarAsistencia)="setEditarAsistencia($event)"
               (retEliminarAsistencia)="setEliminarAsistencia($event)"
               (retEnviarEmail)="setEnviarEmail($event)"
@@ -229,7 +231,6 @@ export class PlanillaTallerAdministrarComponent implements OnInit {
       .pipe(untilDestroyed(this))
       .subscribe(
         (datos) => {
-          console.log('obtenerAlumnosPorCursoEspecifico');
           this.alumnos = datos;
           this.cargandoAlumnos = false;
         },
@@ -269,7 +270,6 @@ export class PlanillaTallerAdministrarComponent implements OnInit {
       .pipe(untilDestroyed(this))
       .subscribe(
         (datos) => {
-          console.log('datos', datos);
           this.totalClases = datos.total;
         },
         (error) => {
@@ -314,14 +314,7 @@ export class PlanillaTallerAdministrarComponent implements OnInit {
         break;
       case 4:
         this.titulo = 'Seguimiento del Alumno';
-        // if (
-        //   (!this.seguimientos && this.alumnoSeleccionado) ||
-        //   (this.seguimientos && this.seguimientos.length > 0 && this.alumnoSeleccionado._id !== this.seguimientos[0].alumno._id)
-        // ) {
-        //   console.log('buscando seguimientos');
 
-        //   this.setBuscarSeguimientosPorAlumno(this.alumnoSeleccionado);
-        // }
         break;
       case 5:
         this.titulo = 'Informes';
@@ -341,7 +334,6 @@ export class PlanillaTallerAdministrarComponent implements OnInit {
       .subscribe(
         (datos) => {
           this.temas = [...datos];
-          console.log('temas', this.temas);
           this.cargandoTemas = false;
         },
         (error) => {
@@ -352,7 +344,6 @@ export class PlanillaTallerAdministrarComponent implements OnInit {
   }
   //   Output Asistencias
   setBuscarAsistenciaPorAlumno(alumno: IAlumno) {
-    console.log('1');
     this.alumnoSeleccionado = alumno; // cuando viene por output se actualiza
     this.cargandoAsistencias = true;
     this._asistenciaService
@@ -385,6 +376,41 @@ export class PlanillaTallerAdministrarComponent implements OnInit {
     dialogRef.afterClosed().subscribe((resultado) => {
       if (resultado) {
         this.setBuscarAsistenciaPorAlumno(this.alumnoSeleccionado);
+      }
+    });
+  }
+  setTomarAsistencias(evento: boolean) {
+    this.cargando = true;
+    this._asistenciaService
+      .obtenerAsistenciasHoyPorPlanilla(this.planillaTaller, this.alumnos)
+      .pipe(untilDestroyed(this))
+      .subscribe(
+        (datos) => {
+          this.cargando = false;
+          datos.map((x: any) => {
+            const index = this.alumnos.findIndex((i) => i._id === x.alumno);
+            if (index !== -1) {
+              this.alumnos[index].presente = x.presente;
+              this.alumnos[index].tarde = x.llegoTarde;
+            }
+          });
+          this.abrirModalParaTomarAsistencias();
+        },
+        (error) => {
+          this.cargando = false;
+          console.log('[ERROR]', error);
+        }
+      );
+  }
+  abrirModalParaTomarAsistencias() {
+    const dialogRef = this._dialog.open(TomarAsistenciaModalComponent, {
+      data: { planillaTaller: this.planillaTaller, alumnos: this.alumnos },
+    });
+
+    dialogRef.afterClosed().subscribe((resultado) => {
+      if (resultado) {
+        this.alumnoSeleccionado = null;
+        // this.setBuscarAsistenciaPorAlumno(this.alumnoSeleccionado);
       }
     });
   }

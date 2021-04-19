@@ -48,6 +48,7 @@ export class PlanillaDetalleAsistenciasComponent implements OnInit, OnChanges {
   columnasAsistencia = ['fecha', 'presente', 'llegoTarde'];
   @Output() retBuscarAsistenciaPorAlumno = new EventEmitter<IAlumno>();
   @Output() retAbrirModalAsistencias = new EventEmitter<boolean>();
+  @Output() retTomarAsistencias = new EventEmitter<boolean>();
   @Output() retEditarAsistencia = new EventEmitter<IAsistencia>();
   @Output() retEliminarAsistencia = new EventEmitter<IAsistencia>();
   @Output() retEnviarEmail = new EventEmitter<{ asistencia: IAsistencia; faltas: number }>();
@@ -134,6 +135,9 @@ export class PlanillaDetalleAsistenciasComponent implements OnInit, OnChanges {
   realizarBusqueda(alumno: IAlumno) {}
   mostrarModalAsistencias() {
     this.retAbrirModalAsistencias.emit(true);
+  }
+  tomarAsistencias() {
+    this.retTomarAsistencias.emit(true);
   }
   editarAsistencia(asistencia: IAsistencia) {
     this.retEditarAsistencia.emit(asistencia);

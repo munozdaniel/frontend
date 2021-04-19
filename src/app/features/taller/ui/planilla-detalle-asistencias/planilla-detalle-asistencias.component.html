@@ -25,10 +25,13 @@
           fxFlex.xs="100"
           fxFlex.gt-xs="45"
         >
-          <!-- <p *ngIf="isMobile">Haga doble click sobre el/la alumno/a para tomar asistencia</p> -->
-          <button mat-raised-button color="accent" (click)="mostrarModalAsistencias()" class="w-100-p">
-            <mat-icon>settings</mat-icon>Agregar Asistencia
+          <button mat-raised-button color="accent" (click)="tomarAsistencias()" class="w-100-p">
+            <mat-icon>settings</mat-icon>Tomar Asistencia
           </button>
+          <!-- <p *ngIf="isMobile">Haga doble click sobre el/la alumno/a para tomar asistencia</p> -->
+          <!-- <button mat-raised-button color="accent" (click)="mostrarModalAsistencias()" class="w-100-p">
+            <mat-icon>settings</mat-icon>Agregar Asistencia
+          </button> -->
         </div>
       </div>
       <table

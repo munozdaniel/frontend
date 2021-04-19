@@ -153,5 +153,13 @@ export class InasistenciasAlumnosComponent implements OnInit {
       }
     });
   }
-  generarReporte() {}
+  generarReporte() {
+    Swal.fire({
+      title: 'En construccion',
+      text: 'Generar informes toma tiempo, muy pronto tendrá novedades',
+      icon: 'success',
+      timer: 2000,
+      timerProgressBar: true,
+    }).then(() => {});
+  }
 }

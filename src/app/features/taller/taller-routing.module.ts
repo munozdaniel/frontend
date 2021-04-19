@@ -12,7 +12,6 @@ import { SeguimientoAgregarComponent } from './containers/seguimiento-agregar/se
 import { SeguimientoAlumnosComponent } from './containers/seguimiento-alumnos/seguimiento-alumnos.component';
 import { SeguimientoEditarComponent } from './containers/seguimiento-editar/seguimiento-editar.component';
 import { TomarAsistenciaComponent } from './containers/tomar-asistencia/tomar-asistencia.component';
-import { AdministrarAsistenciasComponent } from './ui/administrar-asistencias/administrar-asistencias.component';
 
 // taller
 const routes: Routes = [
