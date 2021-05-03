@@ -3,7 +3,7 @@ import { IPlanillaTaller } from './iPlanillaTaller';
 export interface ITema {
   _id: string;
   temaNro: number;
-  id_planilla_temas: number; // solo para migrar
+  id_planilla_temas?: number; // solo para migrar
   planillaTaller: IPlanillaTaller;
   fecha: Date;
   temaDelDia?: string;

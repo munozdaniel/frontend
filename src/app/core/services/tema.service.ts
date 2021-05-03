@@ -24,7 +24,7 @@ export class TemaService {
 
     return this.http.put<any>(url, { ...tema });
   }
-  actualizarTema(id: string, tema: ITema): Observable<ITema> {
+  actualizarTema(id: string, tema: ITema): Observable<any> {
     const query = `tema/${id}`;
     const url = this.url + query;
 

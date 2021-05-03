@@ -84,7 +84,6 @@ export class PlanillaEditarComponent implements OnInit, OnChanges {
         activo: true,
       };
 
-      console.log('evento', planilla);
 
       this.actualizarPlanillaTaller(planilla);
     }

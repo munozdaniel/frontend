@@ -185,7 +185,7 @@
         <tr
           mat-row
           *matRowDef="let row; columns: columnas"
-          [class.selected]="row.selected"
+          [class.selected]="temaSeleccionado && row.fecha === temaSeleccionado?.fecha"
           [ngClass]="{
             hovered: row.hovered,
             highlighted: row.highlighted

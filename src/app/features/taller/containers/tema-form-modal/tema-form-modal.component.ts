@@ -9,14 +9,19 @@ import { IPlanillaTaller } from 'app/models/interface/iPlanillaTaller';
 import { ITema } from 'app/models/interface/iTema';
 import { CONFIG_PROVIDER } from 'app/shared/config.provider';
 import * as moment from 'moment';
+import { of } from 'rxjs';
+import { catchError } from 'rxjs/operators';
 import Swal from 'sweetalert2';
 @UntilDestroy()
 @Component({
   selector: 'app-tema-form-modal',
   template: `
     <div fxLayout="row wrap" fxLayoutAlign="space-between start" class="p-12">
-      <h1 mat-dialog-title>{{ tema && tema.nroClase ? 'Editar clase N° ' + tema.nroClase : 'Completar tema de la clase' }}</h1>
-      <h3>{{ fechaNombre | diaDeLaSemana }}</h3>
+      <div>
+        <h1 mat-dialog-title>{{ tema && tema.nroClase ? 'Editar clase N° ' + tema.nroClase : 'Completar tema de la clase' }}</h1>
+        <h3>{{ fechaNombre | diaDeLaSemana }} {{ tema?._id }}</h3>
+      </div>
+      <button color="warn" mat-raised-button (click)="sinDictar()">SIN DICTAR</button>
     </div>
     <div mat-dialog-content class="px-24">
       <form
@@ -322,11 +327,11 @@ export class TemaFormModalComponent implements OnInit, OnDestroy, OnChanges {
 
     const temaForm: ITema = {
       ...this.form.value,
+      _id: this.tema._id,
       fecha: this.form.controls.fecha.value,
       activo: true,
       fechaCreacion: new Date(),
     };
-    console.log('tema', temaForm);
     this._temaService
       .actualizarTema(this.tema._id, temaForm)
       .pipe(untilDestroyed(this))
@@ -337,6 +342,7 @@ export class TemaFormModalComponent implements OnInit, OnDestroy, OnChanges {
             text: 'Los datos fueron actualizados correctamente',
             icon: 'success',
           });
+          this.tema._id = datos.tema._id;
           this.cargando = false;
           if (this.dialogRef) {
             this.dialogRef.close(true);
@@ -354,5 +360,73 @@ export class TemaFormModalComponent implements OnInit, OnDestroy, OnChanges {
           });
         }
       );
+  }
+  sinDictar() {
+    const tema: ITema = {
+      _id: this.tema._id,
+      temaNro: this.tema.temaNro,
+      planillaTaller: this.planillaTaller,
+      fecha: this.tema.fecha,
+      temaDelDia: null,
+      tipoDesarrollo: null,
+      temasProximaClase: null,
+      nroClase: null,
+      unidad: null,
+      caracterClase: 'SIN DICTAR',
+      observacionJefe: this.tema.observacionJefe,
+      activo: this.tema.activo,
+    };
+    Swal.fire({
+      title: '¿Está seguro de continuar?',
+      html:
+        'Se eliminarán los datos que hayan sido almacenados anteriormente para la fecha: ' +
+        moment.utc(this.tema.fecha).format('DD/MM/YYYY'),
+      icon: 'warning',
+      focusConfirm: false,
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      confirmButtonText: 'Si, estoy seguro',
+      cancelButtonText: 'Cancelar',
+      showLoaderOnConfirm: true,
+      input: 'text',
+      inputAttributes: {
+        autocapitalize: 'off',
+        required: 'true',
+        placeholder: 'Observacion',
+      },
+      preConfirm: (observacionJefe) => {
+        this.tema.observacionJefe = observacionJefe;
+        return this._temaService.actualizarTema(this.tema._id, tema).pipe(
+          catchError((error) => {
+            console.log('[ERROR]', error);
+            Swal.fire({
+              title: 'Oops! Ocurrió un error',
+              text: error && error.error ? error.error.message : 'Error de conexion',
+              icon: 'error',
+            });
+            return of(error);
+          })
+        );
+      },
+      allowOutsideClick: () => !Swal.isLoading(),
+    }).then((result: any) => {
+      if (result.isConfirmed) {
+        if (result.value) {
+          Swal.fire({
+            title: 'Operación Exitosa',
+            text: 'La planilla de taller ha sido actualizada',
+            icon: 'success',
+          });
+          this.form.reset();
+          this.retActualizarLibro.emit(true);
+        } else {
+          Swal.fire({
+            title: 'Oops! Ocurrió un error',
+            text: 'Intentelo nuevamente. Si el problema persiste comuniquese con el soporte técnico.',
+            icon: 'error',
+          });
+        }
+      }
+    });
   }
 }
