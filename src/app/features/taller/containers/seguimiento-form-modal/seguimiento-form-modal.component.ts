@@ -4,6 +4,7 @@ import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 import { designAnimations } from '@design/animations';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { SeguimientoAlumnoService } from 'app/core/services/seguimientoAlumno.service';
+import { DescripcionSeguimiento } from 'app/models/constants/descripcion-seguimiento.const';
 import { IAlumno } from 'app/models/interface/iAlumno';
 import { ICicloLectivo } from 'app/models/interface/iCicloLectivo';
 import { IPlanillaTaller } from 'app/models/interface/iPlanillaTaller';
@@ -35,18 +36,13 @@ import Swal from 'sweetalert2';
           </mat-form-field>
           <!-- tipoSeguimiento -->
           <mat-form-field appearance="outline" fxFlex.gt-xs="45" fxFlex.xs="100">
-            <mat-label class="lbl">Tipo de Seguimiento </mat-label>
-            <input matInput type="text" formControlName="tipoSeguimiento" maxlength="100" minlength="7" autocomplete="off" />
+            <mat-label class="lbl">Tipo de Seguimiento</mat-label>
+            <mat-select formControlName="tipoSeguimiento">
+              <mat-option *ngFor="let tipo of descripcionSeguimientos" [value]="tipo">{{ tipo }}</mat-option>
+            </mat-select>
             <mat-error *ngIf="form.controls.tipoSeguimiento.hasError('required')"> Este campo es requerido. </mat-error>
-            <mat-error
-              *ngIf="
-                !form.get('tipoSeguimiento').hasError('required') &&
-                (form.get('tipoSeguimiento').hasError('minlength') || form.get('tipoSeguimiento').hasError('maxlength'))
-              "
-            >
-              Entre 7 y 100 caracteres
-            </mat-error>
           </mat-form-field>
+
           <!-- resuelto -->
           <div *ngIf="isUpdate" fxFlex.xs="100" fxFlex.gt-xs="45" class="border p-12 mb-12">
             <mat-slide-toggle formControlName="resuelto">{{ form.controls.resuelto.value ? 'RESUELTO' : 'NO RESUELTO' }}</mat-slide-toggle>
@@ -106,14 +102,14 @@ import Swal from 'sweetalert2';
         </div>
       </form>
       <div fxLayout="row wrap" fxLayoutAlign="space-between start" class="mt-12">
-        <button mat-raised-button ngClass.xs="" class="mt-8 w-100-p" fxFlex.xs="100" (click)="cerrar()" color="warn">Cerrar</button>
+        <button mat-raised-button ngClass.xs="" class="mt-8 " fxFlex.xs="100" (click)="cerrar()" color="warn">Cerrar</button>
         <button
           [disabled]="cargando"
           *ngIf="!isUpdate"
           mat-raised-button
           [disabled]="form.invalid"
           ngClass.xs=""
-          class="mt-8 w-100-p"
+          class="mt-8"
           fxFlex.xs="100"
           (click)="guardar()"
           color="primary"
@@ -125,7 +121,7 @@ import Swal from 'sweetalert2';
           mat-raised-button
           [disabled]="form.invalid"
           ngClass.xs=""
-          class="mt-8 w-100-p"
+          class="mt-8 "
           fxFlex.xs="100"
           [disabled]="cargando"
           (click)="actualizar()"
@@ -141,6 +137,7 @@ import Swal from 'sweetalert2';
   providers: CONFIG_PROVIDER,
 })
 export class SeguimientoFormModalComponent implements OnInit {
+  descripcionSeguimientos = DescripcionSeguimiento;
   cicloLectivo: ICicloLectivo; // solo va a tner datos cuando venga por planilla
   alumno: IAlumno;
   cargando = false;

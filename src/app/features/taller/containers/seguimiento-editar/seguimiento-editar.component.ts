@@ -45,7 +45,6 @@ export class SeguimientoEditarComponent implements OnInit {
       .pipe(untilDestroyed(this))
       .subscribe(
         (datos) => {
-          console.log('>>>', this.seguimiento);
           this.seguimiento = { ...datos.seguimiento };
           this.cargando = false;
         },
