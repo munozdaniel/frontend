@@ -1,11 +1,10 @@
 export const environment = {
   production: true,
   hmr: false,
-  apiURI: 'http://165.232.137.17:8083/api/',
+  apiURI: 'http://app.cet30.edu.ar:8083/api/',
   BASE_URI: () => {
     const protocol = window.location.protocol;
     const host = window.location.host;
     return `${protocol}//${host}`;
   },
- 
 };
