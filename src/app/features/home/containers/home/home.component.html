@@ -28,6 +28,26 @@
       </div>
     </ng-template>
   </div>
+  <div class="barra_titulos" fxLayout="column">
+    <mat-accordion>
+      <mat-expansion-panel>
+        <mat-expansion-panel-header>
+          <mat-panel-title>Seguimiento de Alumnos</mat-panel-title>
+          <mat-panel-description>
+            <span>{{ cantidadSeguimientos }} Seguimiento/s sin Resolver</span></mat-panel-description
+          >
+        </mat-expansion-panel-header>
+        <div class="border p-12" *ngFor="let seguimiento of seguimientoAlumnos" fxLayout="row wrap" fxLayoutAlign="space-between start">
+          <span fxFlex="25"> <strong>Fecha: </strong>{{ seguimiento.fecha | date: 'dd/MM/yyyy':'GMT' }}</span>
+          <span fxFlex="30"
+            ><strong>{{ seguimiento.alumno.nombreCompleto }} </strong></span
+          >
+          <span fxFlex="30"><strong>Tipo: </strong>{{ seguimiento.tipoSeguimiento }}</span>
+          <button fxFlex="15" mat-icon-button color="accent" matTooltip="Ver detalle" (click)="verSeguimiento(seguimiento)"><mat-icon>remove_red_eye</mat-icon></button>
+        </div>
+      </mat-expansion-panel>
+    </mat-accordion>
+  </div>
   <div class="separador"></div>
   <div class="seccion segunda_seccion p-24 w-100-p">
     <h2>Funciones agregadas</h2>

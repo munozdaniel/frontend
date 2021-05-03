@@ -1,10 +1,13 @@
 import { Component, OnInit, TemplateRef, ViewChild } from '@angular/core';
 import { MatDialog } from '@angular/material';
 import { Title } from '@angular/platform-browser';
+import { Router } from '@angular/router';
 import { designAnimations } from '@design/animations';
 import { DesignNavigationService } from '@design/components/navigation/navigation.service';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { AuthenticationService } from 'app/core/services/helpers/authentication.service';
+import { SeguimientoAlumnoService } from 'app/core/services/seguimientoAlumno.service';
+import { ISeguimientoAlumno } from 'app/models/interface/iSeguimientoAlumno';
 @UntilDestroy()
 @Component({
   selector: 'app-home',
@@ -18,12 +21,16 @@ export class HomeComponent implements OnInit {
   @ViewChild('taller', { static: false }) tallerDialog: TemplateRef<any>;
   @ViewChild('informes', { static: false }) informesDialog: TemplateRef<any>;
   @ViewChild('configuracion', { static: false }) configuracionDialog: TemplateRef<any>;
-
+  cantidadSeguimientos = 0;
+  cargandoSeguimientos = false;
+  seguimientoAlumnos: ISeguimientoAlumno[];
   constructor(
     private _dialog: MatDialog,
     private title: Title,
     public authService: AuthenticationService,
-    private _designNavigationService: DesignNavigationService
+    private _designNavigationService: DesignNavigationService,
+    private _seguimientoAlumnoService: SeguimientoAlumnoService,
+    private _router: Router
   ) {}
 
   ngOnInit() {
@@ -42,6 +49,25 @@ export class HomeComponent implements OnInit {
         }
       );
     }
+    this.obtenerSeguimientos();
+  }
+  obtenerSeguimientos() {
+    this.cargandoSeguimientos = true;
+    this._seguimientoAlumnoService
+      .buscarAlumnosPorSeguimiento(false)
+      .pipe(untilDestroyed(this))
+      .subscribe(
+        (datos) => {
+          console.log('Datos', datos);
+          this.cargandoSeguimientos = false;
+          this.seguimientoAlumnos = [...datos];
+          this.cantidadSeguimientos = this.seguimientoAlumnos.length;
+        },
+        (error) => {
+          console.log('[ERROR]', error);
+          this.cargandoSeguimientos = false;
+        }
+      );
   }
   abrirParametrizar() {
     this._dialog.open(this.parametrizacionDialog, {
@@ -70,5 +96,8 @@ export class HomeComponent implements OnInit {
       width: '40em',
       backdropClass: 'backdropBackground',
     });
+  }
+  verSeguimiento(seguimiento: ISeguimientoAlumno) {
+    this._router.navigate(['/taller/seguimiento-edicion-single/' + seguimiento._id]);
   }
 }
