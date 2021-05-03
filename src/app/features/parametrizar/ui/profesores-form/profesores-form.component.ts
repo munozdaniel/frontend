@@ -23,7 +23,6 @@ export class ProfesoresFormComponent implements OnInit {
       this.form.reset();
     }
     if (changes.profesor && changes.profesor.currentValue) {
-      console.log('this.asoi', this.profesor);
       this.setFormularios();
     }
   }

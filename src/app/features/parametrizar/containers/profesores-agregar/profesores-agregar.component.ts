@@ -35,7 +35,6 @@ export class ProfesoresAgregarComponent implements OnInit {
 
   ngOnInit(): void {}
   setDatosForm(evento: IProfesor) {
-    console.log('setDatosForm', evento);
     if (evento) {
       this.confirmarGuardar(evento);
     }

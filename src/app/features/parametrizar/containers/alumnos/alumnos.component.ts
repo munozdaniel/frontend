@@ -88,7 +88,6 @@ export class AlumnosComponent implements OnInit {
       },
       allowOutsideClick: () => !Swal.isLoading(),
     }).then((result: any) => {
-      console.log('[result]', result);
       if (result && result.value.error) {
         Swal.fire({
           title: 'Oops! Ocurrió un error',
@@ -98,7 +97,6 @@ export class AlumnosComponent implements OnInit {
       }
       if (result.isConfirmed) {
         const resultado = result.value;
-        console.log('result1', resultado);
         if (!resultado.error) {
           if (resultado.success) {
             Swal.fire({

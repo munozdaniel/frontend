@@ -41,7 +41,6 @@ export class UsuariosTablaComponent implements OnInit, OnChanges {
   }
   ngOnChanges(changes: SimpleChanges): void {
     if (changes.usuarios && changes.usuarios.currentValue) {
-      console.log('usuarios', this.usuarios);
       this.dataSource.data = this.usuarios;
     }
   }

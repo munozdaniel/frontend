@@ -105,7 +105,6 @@ export class CalendarioAcademicoComponent implements OnInit {
       .pipe(untilDestroyed(this))
       .subscribe(
         (datos) => {
-          console.log('calendario por ciclo', datos);
           this.cargando = false;
           this.calendario = [...datos];
         },

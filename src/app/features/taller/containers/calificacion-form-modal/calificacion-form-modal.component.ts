@@ -243,7 +243,6 @@ export class CalificacionFormModalComponent implements OnInit, OnDestroy {
       activo: true,
       fechaCreacion: new Date(),
     };
-    console.log('calificacion', calificacionForm);
     this._calificacionService
       .actualizarCalificacion(this.calificacion._id, calificacionForm)
       .pipe(untilDestroyed(this))

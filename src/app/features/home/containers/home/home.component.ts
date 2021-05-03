@@ -29,7 +29,6 @@ export class HomeComponent implements OnInit {
   ngOnInit() {
     this.title.setTitle(this.pageTitle);
     const menuExiste = this._designNavigationService.getCurrentNavigation();
-    console.log('this._designNavigationService.getCurrentNavigation();', menuExiste);
     if (!menuExiste || menuExiste.length < 1) {
       // No hay menu cargado, verificamos si está logueado y seteamos el menu
       this.authService.currentUser$.pipe(untilDestroyed(this)).subscribe(

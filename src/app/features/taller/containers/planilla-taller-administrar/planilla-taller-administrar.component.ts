@@ -321,7 +321,6 @@ export class PlanillaTallerAdministrarComponent implements OnInit {
         break;
       case 5:
         this.titulo = 'Informes';
-        console.log('INFORMES');
         break;
 
       default:

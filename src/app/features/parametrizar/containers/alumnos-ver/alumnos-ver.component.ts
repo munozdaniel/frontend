@@ -92,13 +92,11 @@ export class AlumnosVerComponent implements OnInit {
     });
   }
   guardarEstadoCursada(estadoCursada: IEstadoCursada) {
-    console.log('estadoCursada', estadoCursada);
     this._alumnoService
       .agregarEstadoCursada(estadoCursada, this.alumnoId)
       .pipe(untilDestroyed(this))
       .subscribe(
         (datos) => {
-          console.log('Resultado agregar', datos);
           //   this.alumno.estadoCursadas.push(estadoCursada);
           this.recuperarDatos();
         },
@@ -108,7 +106,6 @@ export class AlumnosVerComponent implements OnInit {
       );
   }
   actualizarEstadoCursada(estadoCursada: IEstadoCursada, _id: string) {
-    console.log('¿estadoCursada', estadoCursada);
     this._alumnoService
       .actualizarEstadoCursada(estadoCursada, _id)
       .pipe(untilDestroyed(this))

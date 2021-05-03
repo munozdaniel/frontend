@@ -53,7 +53,6 @@ export class AlumnosVerUiComponent implements OnInit, OnChanges {
     this.retAgregarCursada.emit(true);
   }
   editarCursada(estadoCursada: IEstadoCursada) {
-    console.log(':_di', estadoCursada._id);
     this.retEditarCursada.emit(estadoCursada);
   }
 }

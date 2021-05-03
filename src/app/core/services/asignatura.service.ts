@@ -24,13 +24,10 @@ export class AsignaturaService {
   //     let query = `asignaturas/paginado`;
   //     if (consulta) {
   //       // page: 1, limit: 1,
-  //       console.log('consulta.page', consulta.page);
 
   //       if (consulta.page || consulta.page > 0) {
-  //         console.log('OK');
   //         query += `?page=${consulta.page + 1}`; // +1 porque el mat-paginator anda raro
   //       } else {
-  //         console.log('NOOOO');
   //         query += `?page=1`;
   //       }
   //       if (consulta.limit) {

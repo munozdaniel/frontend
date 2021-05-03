@@ -67,7 +67,6 @@ export class AsignaturasEditarComponent implements OnInit {
       );
   }
   setDatosForm(evento: IAsignatura) {
-    console.log('setDatosForm', evento);
     if (evento) {
       this.confirmarGuardar(evento);
     }

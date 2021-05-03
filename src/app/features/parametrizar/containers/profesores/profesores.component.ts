@@ -50,7 +50,6 @@ export class ProfesoresComponent implements OnInit {
         .pipe(untilDestroyed(this))
         .subscribe(
           (datos) => {
-            console.log('datos', datos);
             this.cargando = false;
             this.profesores = datos;
           },
@@ -114,7 +113,6 @@ export class ProfesoresComponent implements OnInit {
         },
         allowOutsideClick: () => !Swal.isLoading(),
       }).then((result: any) => {
-        console.log('[result]', result);
         if (result && result.value.error) {
           Swal.fire({
             title: 'Oops! Ocurrió un error',
@@ -124,7 +122,6 @@ export class ProfesoresComponent implements OnInit {
         }
         if (result.isConfirmed) {
           const resultado = result.value;
-          console.log('result1', resultado);
           if (!resultado.error) {
             if (resultado.success) {
               Swal.fire({
@@ -176,7 +173,6 @@ export class ProfesoresComponent implements OnInit {
         },
         allowOutsideClick: () => !Swal.isLoading(),
       }).then((result: any) => {
-        console.log('[result]', result);
         if (result && result.value.error) {
           Swal.fire({
             title: 'Oops! Ocurrió un error',
@@ -186,7 +182,6 @@ export class ProfesoresComponent implements OnInit {
         }
         if (result.isConfirmed) {
           const resultado = result.value;
-          console.log('result1', resultado);
           if (!resultado.error) {
             if (resultado.success) {
               Swal.fire({

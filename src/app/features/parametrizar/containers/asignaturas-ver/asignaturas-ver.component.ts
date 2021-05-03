@@ -93,8 +93,6 @@ export class AsignaturasVerComponent implements OnInit {
   recuperarDatos() {
     this._activeRoute.params.subscribe((params) => {
       this.asignaturaId = params['id'];
-      console.log(' this.asignaturaId', this.asignaturaId);
-      console.log(' this.asignaturaId', this.asignaturaId);
       this.obtenerAsignaturaPorId();
     });
   }

@@ -35,7 +35,6 @@ export class AsignaturasAgregarComponent implements OnInit {
 
   ngOnInit(): void {}
   setDatosForm(evento: IAsignatura) {
-    console.log('setDatosForm', evento);
     if (evento) {
       this.confirmarGuardar(evento);
     }
@@ -67,7 +66,6 @@ export class AsignaturasAgregarComponent implements OnInit {
       allowOutsideClick: () => !Swal.isLoading(),
     }).then((result: any) => {
       if (result.isConfirmed) {
-        console.log('result1', result);
         if (result.value) {
           Swal.fire({
             title: 'Operación Exitosa!',
@@ -80,7 +78,6 @@ export class AsignaturasAgregarComponent implements OnInit {
             cancelButtonText: 'Agregar otra asignatura',
             showLoaderOnConfirm: true,
           }).then((result2) => {
-            console.log('result2', result2);
             if (result2.isConfirmed) {
               this._router.navigate(['parametrizar/asignaturas-editar/' + result.value._id]);
             } else {

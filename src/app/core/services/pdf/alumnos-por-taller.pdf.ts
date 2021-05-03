@@ -351,7 +351,6 @@ export class AlumnosPorTallerPdf {
       };
       total.push(tablaTaller);
     });
-    console.log('total', total);
     return [...total];
   }
 }

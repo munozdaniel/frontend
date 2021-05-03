@@ -90,8 +90,6 @@ export class ImportarAlumnosComponent implements OnInit {
   validacionesDeCampo(alumnosArchivo) {
     this.cargando = true;
     const u = alumnosArchivo.map((x) => {
-      console.log('¿x', x.TURNO);
-      console.log('¿x', x['APELLIDO Y NOMBRES']);
       const descripcionError = [];
       let doc = null;
       let tipoDoc = null;
@@ -200,7 +198,6 @@ export class ImportarAlumnosComponent implements OnInit {
       .subscribe(
         (datos: any) => {
           this.alumnos = [...datos];
-          console.log('>', this.alumnos);
           this.cargando = false;
         },
         (error) => {

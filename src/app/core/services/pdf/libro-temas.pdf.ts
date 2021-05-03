@@ -147,7 +147,6 @@ export class LibroTemasPdf {
     const total = [];
     const subtotal = [];
     this.temasPorFecha.forEach((x) => {
-      console.log('x', x);
       const zeroLinea = [
         {
           text: x.fecha,

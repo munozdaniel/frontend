@@ -79,7 +79,6 @@ export class ActualizarAlumnosCicloComponent implements OnInit, OnChanges {
   actualizarCiclo() {
     if (this.form.valid) {
       const { curso, cicloLectivo, divisiones } = this.form.value;
-      console.log('cicloLectivo, ', cicloLectivo);
       this.retActualizarCiclo.emit({ cicloLectivo, curso, divisiones });
     } else {
       Swal.fire({

@@ -220,7 +220,6 @@ export class SeguimientoAlumnoPdf {
     const retorno = this.seguimientos.map((x: ISeguimientoAlumno) => {
       return [x.cicloLectivo.anio, moment.utc(x.fecha).format('DD/MM/YYYY'), x.tipoSeguimiento, x.observacion];
     });
-    console.log('return', retorno);
     return retorno;
   }
   private getDatosEscolares() {

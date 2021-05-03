@@ -20,7 +20,6 @@ export class AsistenciaPorTallerComponent implements OnInit {
 
   ngOnInit(): void {}
   setBuscarPlanilla(evento) {
-    console.log('evento', evento);
     if (evento) {
       this.cargando = true;
       const { curso, comision, division, cicloLectivo } = evento;

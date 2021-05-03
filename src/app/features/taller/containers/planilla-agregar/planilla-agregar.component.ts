@@ -99,7 +99,6 @@ export class PlanillaAgregarComponent implements OnInit {
       allowOutsideClick: () => !Swal.isLoading(),
     }).then((result: any) => {
       if (result.isConfirmed) {
-        console.log('guaraddo', result);
         if (result.value) {
           Swal.fire({
             title: 'Operación Exitosa',

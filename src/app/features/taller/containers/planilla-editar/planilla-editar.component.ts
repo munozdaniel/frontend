@@ -115,7 +115,6 @@ export class PlanillaEditarComponent implements OnInit, OnChanges {
       allowOutsideClick: () => !Swal.isLoading(),
     }).then((result: any) => {
       if (result.isConfirmed) {
-        console.log('guaraddo', result);
         if (result.value) {
           Swal.fire({
             title: 'Operación Exitosa',

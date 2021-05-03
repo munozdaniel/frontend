@@ -40,7 +40,6 @@ export class AlumnosAgregarComponent implements OnInit {
     }
   }
   confirmarGuardar(alumno: IAlumno) {
-    console.log('alumno length ', alumno);
     Swal.fire({
       title: '¿Está seguro de continuar?',
       html: 'Está a punto de guardar un nuevo alumno.',
@@ -67,7 +66,6 @@ export class AlumnosAgregarComponent implements OnInit {
       allowOutsideClick: () => !Swal.isLoading(),
     }).then((result: any) => {
       if (result.isConfirmed) {
-        console.log('result1', result);
         if (result.value) {
           Swal.fire({
             title: 'Operación Exitosa!',
@@ -80,7 +78,6 @@ export class AlumnosAgregarComponent implements OnInit {
             cancelButtonText: 'Agregar otro alumno',
             showLoaderOnConfirm: true,
           }).then((result2) => {
-            console.log('result2', result2);
             if (result2.isConfirmed) {
               this._router.navigate(['parametrizar/alumnos-editar/' + result.value._id]);
             } else {
