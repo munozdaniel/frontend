@@ -165,15 +165,15 @@ export class DesignThemeOptionsComponent implements OnInit, OnDestroy {
           icon: 'today',
           url: '/administrador/calendario-academico',
         },
-        {
-          id: 'customize',
-          title: 'Diseño',
-          type: 'item',
-          icon: 'settings',
-          function: () => {
-            this.toggleSidebarOpen('themeOptionsPanel');
-          },
-        },
+        // {
+        //   id: 'customize',
+        //   title: 'Diseño',
+        //   type: 'item',
+        //   icon: 'settings',
+        //   function: () => {
+        //     this.toggleSidebarOpen('themeOptionsPanel');
+        //   },
+        // },
       ],
     };
 
