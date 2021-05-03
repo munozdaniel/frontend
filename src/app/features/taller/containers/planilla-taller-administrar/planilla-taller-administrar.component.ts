@@ -91,12 +91,15 @@ import { TemaFormModalComponent } from '../tema-form-modal/tema-form-modal.compo
             <app-planilla-detalle-temas
               [template]="template"
               [temas]="temas"
+              [isUpdate]="true"
+              [planillaTaller]="planillaTaller"
               [cargandoTemas]="cargandoTemas"
               (retAbrirModalTemas)="setAbrirModalTemas($event)"
               (retEditarTema)="setEditarTema($event)"
               (retEliminarTema)="setEliminarTema($event)"
-              (retTemasCalendario)="setTemasCalendario($event)"
+              (retCargarLista)="setCargarLista($event)"
             >
+              <!-- (retTemasCalendario)="setTemasCalendario($event)" -->
             </app-planilla-detalle-temas>
           </mat-tab>
           <mat-tab label="Seguimiento de Alumnos">
@@ -327,13 +330,15 @@ export class PlanillaTallerAdministrarComponent implements OnInit {
   }
   //   Temas
   obtenerLibroDeTemas() {
+    console.log('this.planillaTaller.asignatura', this.planillaTaller.asignatura);
     this.cargandoTemas = true;
     this._temaService
-      .obtenerTemaPorPlanillaTaller(this.planillaId)
+      .obtenerTemasCalendario('TALLER', this.planillaId)
       .pipe(untilDestroyed(this))
       .subscribe(
         (datos) => {
-          this.temas = [...datos];
+          console.log('datos', datos);
+          this.temas = [...datos.temasDelCalendario];
           this.cargandoTemas = false;
         },
         (error) => {
@@ -672,6 +677,9 @@ export class PlanillaTallerAdministrarComponent implements OnInit {
         }
       }
     });
+  }
+  setCargarLista(event) {
+    this.obtenerLibroDeTemas();
   }
   setTemasCalendario(tipo: string) {
     this.cargando = true;

@@ -5,6 +5,7 @@ import { MatTableDataSource, MatSort, MatPaginator } from '@angular/material';
 import { Router } from '@angular/router';
 import { designAnimations } from '@design/animations';
 import { TemplateEnum } from 'app/models/constants/tipo-template.const';
+import { IPlanillaTaller } from 'app/models/interface/iPlanillaTaller';
 import { ITema } from 'app/models/interface/iTema';
 
 @Component({
@@ -22,13 +23,17 @@ import { ITema } from 'app/models/interface/iTema';
 })
 export class PlanillaDetalleTemasComponent implements OnInit, OnChanges {
   TemplateEnum = TemplateEnum;
+  @Input() isUpdate?: boolean;
+  @Input() planillaTaller?: IPlanillaTaller;
   @Input() template?: TemplateEnum;
   @Input() temas: ITema[];
+  temaSeleccionado: ITema = null;
   @Input() cargandoTemas: boolean;
   @Output() retAbrirModalTemas = new EventEmitter<boolean>();
   @Output() retEditarTema = new EventEmitter<ITema>();
   @Output() retEliminarTema = new EventEmitter<ITema>();
   @Output() retTemasCalendario = new EventEmitter<string>();
+  @Output() retCargarLista = new EventEmitter<boolean>();
 
   dataSource: MatTableDataSource<any> = new MatTableDataSource([]);
   @ViewChild('sort') set setSort(sort: MatSort) {
@@ -37,7 +42,7 @@ export class PlanillaDetalleTemasComponent implements OnInit, OnChanges {
   @ViewChild('paginator') set setPaginator(paginator: MatPaginator) {
     this.dataSource.paginator = paginator;
   }
-  columnas = ['fecha', 'nroClase', 'unidad', 'caracterClase', 'temaDelDia', 'temasProximaClase'];
+  columnas = ['fecha', 'nroClase', 'opciones'];
   // Mobile
   expandedElement: ITema | null;
   isMobile: boolean;
@@ -54,27 +59,26 @@ export class PlanillaDetalleTemasComponent implements OnInit, OnChanges {
     this.breakpointObserver.observe([Breakpoints.Small, Breakpoints.HandsetPortrait]).subscribe((state: BreakpointState) => {
       if (state.matches) {
         this.isMobile = true;
-        this.columnas = ['fecha', 'temaDelDia'];
+        this.columnas = ['fecha', 'nroClase', 'opciones'];
       } else {
         this.isMobile = false;
-
-        this.columnas = ['fecha', 'nroClase', 'unidad', 'caracterClase', 'temaDelDia', 'temasProximaClase'];
+        this.columnas = ['fecha', 'nroClase', 'opciones'];
       }
-      if (this.template === TemplateEnum.EDICION) {
-        this.columnas = [...this.columnas, 'opciones'];
-      }
+      //   if (this.template === TemplateEnum.EDICION) {
+      //     this.columnas = [...this.columnas, 'opciones'];
+      //   }
     });
   }
 
   ngOnChanges(changes: SimpleChanges): void {
     if (changes.temas && changes.temas.currentValue) {
       this.dataSource.data = this.temas;
-      if (this.template === TemplateEnum.EDICION) {
-        const index = this.columnas.findIndex((x) => x === 'opciones');
-        if (index === -1) {
-          this.columnas = [...this.columnas, 'opciones'];
-        }
-      }
+      //   if (this.template === TemplateEnum.EDICION) {
+      //     const index = this.columnas.findIndex((x) => x === 'opciones');
+      //     if (index === -1) {
+      //       this.columnas = [...this.columnas, 'opciones'];
+      //     }
+      //   }
     }
   }
 
@@ -94,7 +98,17 @@ export class PlanillaDetalleTemasComponent implements OnInit, OnChanges {
   eliminarTema(tema: ITema) {
     this.retEliminarTema.emit(tema);
   }
+  //   sinDictar(tema: ITema) {
+  //     this.retEliminarTema.emit(tema);
+  //   }
   cargarCalendario(tipo: string) {
     this.retTemasCalendario.emit(tipo);
+  }
+  mostrarDetalles(tema: ITema) {
+    console.log('temaSeleccionado', tema);
+    this.temaSeleccionado = { ...tema };
+  }
+  setActualizarLibro(event) {
+    this.retCargarLista.emit(true);
   }
 }

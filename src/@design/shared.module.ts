@@ -8,27 +8,7 @@ import { DesignDirectivesModule } from '@design/directives/directives';
 import { DesignPipesModule } from '@design/pipes/pipes.module';
 
 @NgModule({
-    imports  : [
-        CommonModule,
-        FormsModule,
-        ReactiveFormsModule,
-
-        FlexLayoutModule,
-
-        DesignDirectivesModule,
-        DesignPipesModule
-    ],
-    exports  : [
-        CommonModule,
-        FormsModule,
-        ReactiveFormsModule,
-
-        FlexLayoutModule,
-
-        DesignDirectivesModule,
-        DesignPipesModule
-    ]
+  imports: [CommonModule, FormsModule, ReactiveFormsModule, FlexLayoutModule, DesignDirectivesModule, DesignPipesModule],
+  exports: [CommonModule, FormsModule, ReactiveFormsModule, FlexLayoutModule, DesignDirectivesModule, DesignPipesModule],
 })
-export class DesignSharedModule
-{
-}
+export class DesignSharedModule {}

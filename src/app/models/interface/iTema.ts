@@ -6,10 +6,10 @@ export interface ITema {
   id_planilla_temas: number; // solo para migrar
   planillaTaller: IPlanillaTaller;
   fecha: Date;
-  temaDelDia: string;
-  tipoDesarrollo: string;
+  temaDelDia?: string;
+  tipoDesarrollo?: string;
   temasProximaClase: string;
-  nroClase: number;
+  nroClase?: number;
   unidad: number;
   caracterClase: string;
   observacionJefe: string;
