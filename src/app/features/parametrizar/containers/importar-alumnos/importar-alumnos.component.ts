@@ -5,12 +5,14 @@ import { IAlumno } from 'app/models/interface/iAlumno';
 import * as _ from 'lodash';
 import Swal from 'sweetalert2';
 import * as XLSX from 'xlsx';
-import { BehaviorSubject, Observable, forkJoin, of, from } from 'rxjs';
+import { forkJoin, of, from } from 'rxjs';
 import { catchError, map, mergeMap, tap, toArray } from 'rxjs/operators';
 import { AlumnoService } from 'app/core/services/alumno.service';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { ValidationService } from 'app/core/services/general/validation.services';
+import * as moment from 'moment';
+import { Router } from '@angular/router';
 @UntilDestroy()
 @Component({
   selector: 'app-importar-alumnos',
@@ -25,10 +27,23 @@ import { ValidationService } from 'app/core/services/general/validation.services
           </div>
           <button mat-raised-button color="accent" fxFlex.xs="100" (click)="setExcelEjemplo()">Excel Ejemplo</button>
         </div>
+        <div class="message-box danger">
+          <span> Versión no disponible para dispositivos móviles </span>
+        </div>
       </div>
 
       <div class="message-box warning">
-        Antes de importar los alumnos verifique que el archivo excel tenga el formato requerido (Ver Excel de Ejemplo)
+        <span>
+          Antes de importar los alumnos verifique que el archivo excel tenga el formato requerido<strong> (Ver Excel de Ejemplo)</strong>
+        </span>
+      </div>
+      <div class="message-box info">
+        <span
+          >Para guardar el estado de la cursada del alumno los datos obligatorios son:
+          <strong>Ciclo Lectivo, Division y Curso</strong>.</span
+        >
+        <br />
+        <span>Si no se ingresa la condición de la cursada por defecto el alumno se seteará en <strong>'REGULAR'</strong></span>
       </div>
       <div fxLayout="row wrap" fxLayoutAlign="center start">
         <app-alumnos-file
@@ -38,11 +53,12 @@ import { ValidationService } from 'app/core/services/general/validation.services
           [cargando]="cargando"
           (retArchivo)="setArchivo($event)"
           (retExcelEjemplo)="setExcelEjemplo($event)"
+          (retSeleccion)="setSeleccion($event)"
           (retUsuariosFallados)="setUsuariosFallados($event)"
         ></app-alumnos-file>
-        <div fxFlex="100" fxLayout="row" fxLayoutAlign="center start" class="mt-24">
+        <!-- <div fxFlex="100" fxLayout="row" fxLayoutAlign="center start" class="mt-24">
           <button mat-raised-button color="primary" (click)="guardar()">GUARDAR ALUMNOS</button>
-        </div>
+        </div> -->
       </div>
     </div>
   `,
@@ -55,7 +71,12 @@ export class ImportarAlumnosComponent implements OnInit {
   alumnosGuardados: IAlumno[];
   cargando = false;
   titulo = 'Importar Alumnos';
-  constructor(private _fb: FormBuilder, private _excelService: ExcelService, private _alumnoService: AlumnoService) {}
+  constructor(
+    private _router: Router,
+    private _fb: FormBuilder,
+    private _excelService: ExcelService,
+    private _alumnoService: AlumnoService
+  ) {}
 
   ngOnInit(): void {
     this.formulario = this._fb.group({
@@ -99,39 +120,43 @@ export class ImportarAlumnosComponent implements OnInit {
       //     tieneError = true;
       //     descripcionError.push('Email Inválido');
       //   }
-      if (!x.legajo || x.legajo.toString().trim() === '') {
-        tieneError = true;
-        descripcionError.push('El legajo es requerido');
-      }
-      if (!x.nombreCompleto || x.nombreCompleto.toString().trim() === '') {
+      //   if (!x.legajo || x.legajo.toString().trim() === '') {
+      //     tieneError = true;
+      //     descripcionError.push('El legajo es requerido');
+      //   }
+      if (!x['APELLIDO Y NOMBRES'] || x['APELLIDO Y NOMBRES'].toString().trim() === '') {
         tieneError = true;
         descripcionError.push('El nombre y el apellido son requeridos');
       }
-      if (!x.documento || x.documento.toString().trim() === '') {
+      if (!x.DOCUMENTO || x.DOCUMENTO.toString().trim() === '') {
         tieneError = true;
         descripcionError.push('El documento y tipo de documento es requerido');
-      } else {
-        const documento = x.documento.split('-');
-        if (documento.length !== 2) {
-          tieneError = true;
-          descripcionError.push('El documento y tipo de documento no tiene el formato adecuado: Ej: DNI - 12345678 ');
-        }
-        tipoDoc = documento[0].trim();
-        doc = documento[1].trim();
+        //   } else {
+        // const documento = x.DOCUMENTO.split('-');
+        // if (documento.length !== 2) {
+        //   tieneError = true;
+        //   descripcionError.push('El documento y tipo de documento no tiene el formato adecuado: Ej: DNI - 12345678 ');
+        // }
+        // tipoDoc = documento[0].trim();
+        // doc = documento[1].trim();
       }
 
       const row: any = {
-        TURNO: x.TURNO,
-        DIVISION: x.DIVISION,
-        DOCUMENTO: x.DOCUMENTO,
-        'APELLIDO Y NOMBRES': _.capitalize(x['APELLIDO Y NOMBRES']),
-        'FECHA NACIMIENTO': x['FECHA NACIMIENTO'],
-        'LUGAR DE NACIMIENTO': x['LUGAR DE NACIMIENTO'],
-        'ES REPITENTE': x['ES REPITENTE'],
-        TELEFONO: x.TELEFONO,
-        'TELEFONO DE URGENCIA': x['TELEFONO DE URGENCIA'],
-        DOMICILIO: x.DOMICILIO,
-        LOCALIDAD: x.LOCALIDAD,
+        turno: x.TURNO,
+        curso: x.CURSO,
+        division: x.DIVISION,
+        comision: x.COMISION,
+        condicion: x.CONDICION ? x.CONDICION : 'REGULAR',
+        cicloLectivo: x['CICLO LECTIVO'],
+        dni: x.DOCUMENTO,
+        nombreCompleto: _.capitalize(x['APELLIDO Y NOMBRES']),
+        fechaNacimiento: moment(x['FECHA NACIMIENTO'], 'DD/MM/YYYY').utc().format('YYYY-MM-DD'),
+        // 'LUGAR DE NACIMIENTO': x['LUGAR DE NACIMIENTO'],
+        // 'ES REPITENTE': x['ES REPITENTE'],
+        telefono: x.TELEFONO,
+        celular: x['TELEFONO DE URGENCIA'],
+        domicilio: x.DOMICILIO,
+        // LOCALIDAD: x.LOCALIDAD,
 
         // legajo: x.legajo, // Usar 1 solo
         // nombreCompleto: _.capitalize(x.nombreCompleto),
@@ -145,6 +170,7 @@ export class ImportarAlumnosComponent implements OnInit {
         cantidadIntegranteGrupoFamiliar: 0,
         incompleto: true,
       };
+      console.log('row', row);
       return row;
     });
     // " ": 304470
@@ -210,20 +236,28 @@ export class ImportarAlumnosComponent implements OnInit {
     const ejemplo = [
       {
         TURNO: 'TARDE',
-        DIVISION: '1 - Ciclo Básico - 137/13 Anexo II',
-        DOCUMENTO: 'Nombre Apellido', // TIPODNI - NUMERO (este formato si o si con "-")
-        'APELLIDO Y NOMBRES': 'AGUILERA LOPEZ JAVIER BENJAMÃN',
+        CURSO: 1,
+        DIVISION: 1,
+        COMISION: 'A',
+        'CICLO LECTIVO': 2021,
+        CONDICION: 'REGULAR',
+        DOCUMENTO: 12345678, // TIPODNI - NUMERO (este formato si o si con "-")
+        'APELLIDO Y NOMBRES': 'PRUEBA JAVIER BENJAMIN',
         'FECHA NACIMIENTO': '31/12/2007',
-        'LUGAR DE NACIMIENTO': 'CIPOLLETTI',
-        'ES REPITENTE': '',
-        TELEFONO: '155794652',
-        'TELEFONO DE URGENCIA': '155182549',
+        'LUGAR DE NACIMIENTO': 'No se usa',
+        'ES REPITENTE': 'No se usa',
+        TELEFONO: '111111111',
+        'TELEFONO DE URGENCIA': '222222222',
         DOMICILIO: 'CAPITAN GOMEZ 1578',
         LOCALIDAD: 'CIPOLLETTI',
       },
     ];
 
     this._excelService.exportAsExcelFile(ejemplo, 'Plantilla de alumnos - Ejemplo');
+  }
+  setSeleccion(evento) {
+    this.alumnos = [...evento];
+    this.guardar();
   }
   setUsuariosFallados(evento: IAlumno[]) {
     if (evento) {
@@ -260,10 +294,15 @@ export class ImportarAlumnosComponent implements OnInit {
       if (result.isConfirmed) {
         if (result.value && result.value.status === 200) {
           this.alumnosGuardados = result.value.alumnos;
+
           Swal.fire({
             title: 'Operación Exitosa',
             text: 'Los alumnos se han guardado correctamente correctamente.',
             icon: 'success',
+            timer: 2000,
+            timerProgressBar: true,
+          }).then(() => {
+            this._router.navigate(['/parametrizar/alumnos']);
           });
         } else {
           Swal.fire({

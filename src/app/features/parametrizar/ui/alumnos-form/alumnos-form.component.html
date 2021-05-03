@@ -180,7 +180,6 @@
               <input matInput [matDatepicker]="pickerIngreso" formControlName="fechaIngreso" />
               <mat-datepicker-toggle matSuffix [for]="pickerIngreso"></mat-datepicker-toggle>
               <mat-datepicker #pickerIngreso></mat-datepicker>
-              <mat-error *ngIf="formDatosPersonales.controls.fechaIngreso.hasError('required')"> Este campo es requerido. </mat-error>
             </mat-form-field>
             <!-- procedencia colegio primario ============================= -->
             <mat-form-field appearance="outline">

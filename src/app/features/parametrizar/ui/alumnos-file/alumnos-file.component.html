@@ -45,13 +45,13 @@
   >
     <ng-container matColumnDef="settings">
       <th mat-header-cell *matHeaderCellDef>
-        <mat-checkbox
+        <!-- <mat-checkbox
           (change)="$event ? masterToggle() : null"
           [checked]="seleccion.hasValue() && todosSeleccionados()"
           [indeterminate]="seleccion.hasValue() && !todosSeleccionados()"
           color="primary"
         >
-        </mat-checkbox>
+        </mat-checkbox> -->
       </th>
       <td mat-cell *matCellDef="let row">
         <mat-checkbox
@@ -64,11 +64,21 @@
         </mat-checkbox>
       </td>
     </ng-container>
-    <!--'settings', 'legajo', 'nombreCompleto', 'tipoDni', 'dni', 'estado'  -->
-    <ng-container matColumnDef="legajo">
-      <th mat-header-cell *matHeaderCellDef mat-sort-header>Legajo *</th>
+    <!--
+        'dni',
+        'nombreCompleto',
+        'fechaNacimiento',
+        'telefono',
+        'celular',
+        'domicilio',
+    
+        'curso',
+        'division','estado'
+     -->
+    <ng-container matColumnDef="dni">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header>Dni *</th>
       <td mat-cell *matCellDef="let row">
-        <strong>{{ row.legajo }}</strong>
+        <strong>{{ row.dni }}</strong>
       </td>
     </ng-container>
 
@@ -79,47 +89,55 @@
     </ng-container>
 
     <!-- Progress NOMBRE -->
-    <ng-container matColumnDef="tipoDni">
-      <th mat-header-cell *matHeaderCellDef mat-sort-header>Tipo Doc *</th>
-      <td mat-cell *matCellDef="let row">{{ row.tipoDni }}</td>
+    <ng-container matColumnDef="fechaNacimiento">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header>Fecha Nacimiento</th>
+      <td mat-cell *matCellDef="let row">{{ row.fechaNacimiento }}</td>
     </ng-container>
 
-    <!-- Progress EMAIL -->
-    <ng-container matColumnDef="dni">
-      <th mat-header-cell *matHeaderCellDef mat-sort-header>Documento *</th>
+    <!-- Progress   -->
+    <ng-container matColumnDef="telefono">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header>Telefono</th>
       <td mat-cell *matCellDef="let row">
-        <strong>{{ row.dni }}</strong>
+        <strong>{{ row.telefono }}</strong>
+      </td>
+    </ng-container>
+    <!-- Progress   -->
+    <ng-container matColumnDef="celular">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header>Celular</th>
+      <td mat-cell *matCellDef="let row">
+        <strong>{{ row.celular }}</strong>
+      </td>
+    </ng-container>
+    <ng-container matColumnDef="domicilio">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header>Domicilio</th>
+      <td mat-cell *matCellDef="let row">
+        <strong>{{ row.domicilio }}</strong>
+      </td>
+    </ng-container>
+    <ng-container matColumnDef="curso">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header>Curso/Div./Com.</th>
+      <td mat-cell *matCellDef="let row">
+        <strong>{{ row.curso }} / {{ row.division }} / {{ row.comision }}</strong>
       </td>
     </ng-container>
 
     <!-- Progress TELEFONO -->
-    <ng-container matColumnDef="estado">
-      <th mat-header-cell *matHeaderCellDef mat-sort-header>Estado</th>
+    <ng-container matColumnDef="condicion">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header>Condicion</th>
       <td mat-cell *matCellDef="let row">
         <div *ngIf="isMobile" fxLayout="row" fxLayoutAlign="end start">
-          <span> {{ row.estado }}</span>
+          <span> {{ row.condicion }}</span>
         </div>
-        <span *ngIf="!isMobile"> {{ row.estado }}</span>
-      </td>
-    </ng-container>
-
-    <!-- Progress CELULAR -->
-    <ng-container matColumnDef="documento">
-      <th mat-header-cell *matHeaderCellDef mat-sort-header>Doc</th>
-      <td mat-cell *matCellDef="let row">
-        <div fxLayout="column">
-          <span>{{ row.tipoDni }}</span>
-          <span>{{ row.dni }}</span>
-        </div>
+        <span *ngIf="!isMobile"> {{ row.condicion }}</span>
       </td>
     </ng-container>
 
     <!-- Progress DNI -->
-    <ng-container matColumnDef="nombreLegajo">
+    <ng-container matColumnDef="nombreDni">
       <th mat-header-cell *matHeaderCellDef mat-sort-header>Alumno/a</th>
       <td mat-cell *matCellDef="let row">
         <div fxLayout="column" class="ml-8">
-          <span>{{ row.legajo }}</span>
+          <span>{{ row.dni }}</span>
           <span>{{ row.nombreCompleto }}</span>
         </div>
       </td>
@@ -139,4 +157,9 @@
   <!-- Paginado -------------------------------------------------- -->
   <mat-paginator class="w-100-p border-paginador paginator mat-elevation-z2" #paginator [pageSize]="5" [pageSizeOptions]="[5, 10, 25, 100]">
   </mat-paginator>
+  <div fxFlex="100" fxLayout="row" fxLayoutAlign="center start" class="mt-24">
+    <button [disabled]="!seleccion || seleccion.selected.length < 1" mat-raised-button color="primary" (click)="guardar()">
+      GUARDAR ALUMNOS
+    </button>
+  </div>
 </div>

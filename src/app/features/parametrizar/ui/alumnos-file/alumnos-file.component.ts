@@ -20,6 +20,7 @@ export class AlumnosFileComponent implements OnInit, OnChanges {
   @Input() cantidadLogin: number;
   @Output() retArchivo = new EventEmitter<any>();
   @Output() retExcelEjemplo = new EventEmitter<boolean>();
+  @Output() retSeleccion = new EventEmitter<any>();
 
   //
   // file
@@ -33,7 +34,7 @@ export class AlumnosFileComponent implements OnInit, OnChanges {
   @ViewChild('paginator', { static: false }) set setPaginator(paginator: MatPaginator) {
     this.dataSource.paginator = paginator;
   }
-  columnas: string[] = ['settings', 'legajo', 'nombreCompleto', 'tipoDni', 'dni'];
+  columnas: string[] = ['settings', 'dni', 'nombreCompleto', 'fechaNacimiento', 'telefono', 'celular', 'domicilio', 'curso', 'condicion'];
   seleccion = new SelectionModel<any>(true, []);
   alumnosFallados: IAlumno[] = [];
   @Output() retAlumnosFallados = new EventEmitter<IAlumno[]>();
@@ -52,10 +53,10 @@ export class AlumnosFileComponent implements OnInit, OnChanges {
     this.breakpointObserver.observe([Breakpoints.Small, Breakpoints.HandsetPortrait]).subscribe((state: BreakpointState) => {
       if (state.matches) {
         this.isMobile = true;
-        this.columnas = ['settings', 'nombreLegajo', 'documento', 'estado'];
+        this.columnas = ['settings', 'nombreDni', 'dni', 'curso'];
       } else {
         this.isMobile = false;
-        this.columnas = ['settings', 'legajo', 'nombreCompleto', 'tipoDni', 'dni', 'estado'];
+        this.columnas = ['settings', 'dni', 'nombreCompleto', 'fechaNacimiento', 'telefono', 'celular', 'domicilio', 'curso', 'condicion'];
       }
     });
   }
@@ -109,5 +110,8 @@ export class AlumnosFileComponent implements OnInit, OnChanges {
   /** Operacion checkbox A */
   masterToggle() {
     this.todosSeleccionados() ? this.seleccion.clear() : this.dataSource.data.forEach((row) => this.seleccion.select(row));
+  }
+  guardar(){
+      this.retSeleccion.emit(this.seleccion.selected)
   }
 }

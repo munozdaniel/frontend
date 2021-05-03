@@ -1,5 +1,4 @@
 import { IAdulto } from './iAdulto';
-import { ICurso } from './iCurso';
 import { IEstadoCursada } from './iEstadoCursada';
 
 export interface IAlumno {

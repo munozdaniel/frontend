@@ -8,6 +8,7 @@ import { IAlumno } from 'app/models/interface/iAlumno';
 import { IEstadoCursada } from 'app/models/interface/iEstadoCursada';
 import { CursadaFormComponent } from 'app/shared/components/cursada-form/cursada-form.component';
 import { CONFIG_PROVIDER } from 'app/shared/config.provider';
+import * as moment from 'moment';
 import Swal from 'sweetalert2';
 import { AdultosFormComponent } from '../adultos-form/adultos-form.component';
 
@@ -46,17 +47,17 @@ export class AlumnosFormComponent implements OnInit, OnChanges {
 
   ngOnInit(): void {
     this.formDatosPersonales = this._fb.group({
-      tipoDni: [null, [Validators.required]],
-      legajo: [null, [Validators.required]],
+      tipoDni: [null, []],
+      legajo: [null, []],
       dni: [null, [Validators.required, Validators.minLength(7), Validators.maxLength(9)]],
       nombreCompleto: [null, [Validators.required, Validators.minLength(3), Validators.maxLength(250)]],
-      sexo: [null, [Validators.required, Validators.minLength(4), Validators.maxLength(9)]],
-      fechaNacimiento: [null, [Validators.required]],
+      sexo: [null, [Validators.minLength(4), Validators.maxLength(9)]],
+      fechaNacimiento: [null, []],
       nacionalidad: [null, [Validators.required]],
       observacionTelefono: [null, [Validators.minLength(3), Validators.maxLength(50)]],
       telefono: [null, [Validators.minLength(7), Validators.maxLength(20)]],
       celular: [null, [Validators.minLength(7), Validators.maxLength(20)]],
-      email: [null, [Validators.required, Validators.email, Validators.minLength(4), Validators.maxLength(50)]],
+      email: [null, [Validators.email, Validators.minLength(4), Validators.maxLength(50)]],
 
       fechaIngreso: [null, []],
       procedenciaColegioPrimario: [null, [Validators.minLength(4), Validators.maxLength(50)]],
@@ -85,6 +86,8 @@ export class AlumnosFormComponent implements OnInit, OnChanges {
     }
 
     this.formDatosPersonales.patchValue(this.alumno);
+    this.formDatosPersonales.controls.fechaIngreso.setValue(moment.utc(this.alumno.fechaIngreso));
+    this.formDatosPersonales.controls.fechaNacimiento.setValue(moment.utc(this.alumno.fechaNacimiento));
     if (this.alumno.seguimientoEtap === 'SI') {
       this.formEtap.patchValue(this.alumno);
     } else {
@@ -177,8 +180,10 @@ export class AlumnosFormComponent implements OnInit, OnChanges {
     });
 
     dialogRef.afterClosed().subscribe(({ comision }: any) => {
-      comision.index = Math.random();
-      this.estadoCursadas = [...this.estadoCursadas, comision];
+      if (comision) {
+        comision.index = Math.random();
+        this.estadoCursadas = [...this.estadoCursadas, comision];
+      }
     });
   }
   setEliminarComision(evento: IEstadoCursada) {
