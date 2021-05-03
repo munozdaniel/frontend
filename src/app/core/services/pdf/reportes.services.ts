@@ -41,7 +41,7 @@ export class ReportesService {
     // this._designProgressBarService.show();
 
     Swal.fire({
-      title: 'Generar Informe',
+      title: 'Generar Informe s',
       html: 'El proceso puede tardar varios minutos debido a la cantidad de datos que se procesan. <br> <strong>¿Desea continuar?</strong>',
       icon: 'warning',
       focusConfirm: false,
@@ -77,6 +77,9 @@ export class ReportesService {
             });
             return;
           }
+//           asistenciasPorAlumno
+// calendario
+// alumnos
           this._designProgressBarService.hide();
           this._designProgressBarService.hide();
           this._fichaAsistenciaGeneralPdf.generatePdf(this.planillaTaller, result.value.asistenciasPorAlumno);

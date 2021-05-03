@@ -66,19 +66,19 @@ export class FichaAsistenciaGeneralPdf {
     const a = alumno.asistenciasArray.map((x) => [
       {
         width: 15,
-        text: x.fecha,
+        text: x.fecha ? x.fecha : '',
         bold: true,
         fontSize: 9,
       },
       {
         width: 15,
-        text: x.presente,
+        text: x.presente ? x.presente : '',
         bold: false,
         fontSize: 9,
         alignment: 'center',
       },
     ]);
-    const r = _.chunk(a, 10);
+    const r = _.chunk(a, 4);
     return r;
   }
   tablaAsistencias() {
@@ -92,7 +92,7 @@ export class FichaAsistenciaGeneralPdf {
           fontSize: 9,
         },
         {
-          table: { body: this.asistencias(alumno) },
+          table: { body: [this.asistencias(alumno)] },
           layout: {
             // fillColor: function (rowIndex, node, columnIndex) {
             //   return rowIndex % 2 === 0 ? '#CCCCCC' : null;
@@ -123,22 +123,13 @@ export class FichaAsistenciaGeneralPdf {
             },
           },
         },
-        // {
-        //   alignment: 'justify',
-        //   columns: this.asistencias(alumno),
-        // },
-
-        // ...alumno.asistenciasArray.map((x) => ({
-        //   text: x.fecha,
-        //   bold: true,
-        //   fontSize: 9,
-        // })),
       ];
       return fila;
     });
     return {
       style: 'tabla1',
       table: {
+        widths: ['20%', '80%'],
         body: [
           ...asis,
           //   [
