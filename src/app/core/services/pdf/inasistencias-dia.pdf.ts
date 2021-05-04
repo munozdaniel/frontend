@@ -7,7 +7,7 @@ declare let pdfMake: any;
 @Injectable({
   providedIn: 'root',
 })
-export class FichaAsistenciaDiaPdf {
+export class InasistenciaDiaPdf {
   asistenciasPorAlumno: any[];
   calendario: any[];
   planilla: IPlanillaTaller;

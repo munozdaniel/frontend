@@ -64,8 +64,7 @@ export class AsignaturasComponent implements OnInit {
       .pipe(untilDestroyed(this))
       .subscribe(
         (datos) => {
-          console.log('datos', datos);
-          this.cargando = false;
+           this.cargando = false;
           this.asignaturas = datos;
         },
         (error) => {

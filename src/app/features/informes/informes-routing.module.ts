@@ -5,6 +5,8 @@ import { AsistenciaPorDiaComponent } from './containers/asistencia-por-dia/asist
 import { AsistenciaPorTallerComponent } from './containers/asistencia-por-taller/asistencia-por-taller.component';
 import { CalificacionesPorTallerResumenComponent } from './containers/calificaciones-por-taller-resumen/calificaciones-por-taller-resumen.component';
 import { CalificacionesPorTallerComponent } from './containers/calificaciones-por-taller/calificaciones-por-taller.component';
+import { InasistenciaDiariaComponent } from './containers/inasistencia-diaria/inasistencia-diaria.component';
+import { InasistenciaSemanalComponent } from './containers/inasistencia-semanal/inasistencia-semanal.component';
 import { LibroTemasComponent } from './containers/libro-temas/libro-temas.component';
 import { TallerPorAlumnosTutoresComponent } from './containers/taller-por-alumnos-tutores/taller-por-alumnos-tutores.component';
 
@@ -43,6 +45,16 @@ const routes: Routes = [
   {
     path: 'taller-por-alumnos-tutores',
     component: TallerPorAlumnosTutoresComponent,
+    //  DEBE estar autenticados
+  },
+  {
+    path: 'inasistencias-diarias',
+    component: InasistenciaDiariaComponent,
+    //  DEBE estar autenticados
+  },
+  {
+    path: 'inasistencias-semanal',
+    component: InasistenciaSemanalComponent,
     //  DEBE estar autenticados
   },
 ];

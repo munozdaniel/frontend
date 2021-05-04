@@ -207,6 +207,12 @@ export class AlumnoService {
 
     return this.http.get<any>(url);
   }
+  obtenerInasistenciasPorDia(fecha: any): Observable<any> {
+    const query = `alumnos/informe-inasistencia-por-dia`;
+    const url = this.url + query;
+
+    return this.http.post<any>(url, { fecha });
+  }
   //   Estado de Cursada
   agregarEstadoCursada(estadoCursada: IEstadoCursada, alumnoId: string): Observable<IAlumno[]> {
     const query = `alumnos/agregar-estado-cursada/${alumnoId}`;

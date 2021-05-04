@@ -10,6 +10,8 @@ import { TallerPorAlumnosTutoresComponent } from './containers/taller-por-alumno
 import { DesignSharedModule } from '@design/shared.module';
 import { SharedModule } from 'app/shared/shared.module';
 import { InformesRoutingModule } from './informes-routing.module';
+import { InasistenciaDiariaComponent } from './containers/inasistencia-diaria/inasistencia-diaria.component';
+import { InasistenciaSemanalComponent } from './containers/inasistencia-semanal/inasistencia-semanal.component';
 
 @NgModule({
   declarations: [
@@ -20,6 +22,8 @@ import { InformesRoutingModule } from './informes-routing.module';
     LibroTemasComponent,
     AlumnosPorTallerComponent,
     TallerPorAlumnosTutoresComponent,
+    InasistenciaDiariaComponent,
+    InasistenciaSemanalComponent,
   ],
   imports: [CommonModule, InformesRoutingModule, SharedModule, DesignSharedModule],
 })

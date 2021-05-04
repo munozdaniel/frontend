@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core'; 
+import { Injectable } from '@angular/core';
 import { IPlanillaTaller } from 'app/models/interface/iPlanillaTaller';
 import * as _ from 'lodash';
 import * as moment from 'moment';
@@ -7,7 +7,7 @@ declare let pdfMake: any;
 @Injectable({
   providedIn: 'root',
 })
-export class FichaAsistenciaDiaPdf {
+export class InasistenciaSemanalPdf {
   asistenciasPorAlumno: any[];
   calendario: any[];
   planilla: IPlanillaTaller;
