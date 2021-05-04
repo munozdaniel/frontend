@@ -10,12 +10,12 @@ import { SeguimientoAlumnoService } from 'app/core/services/seguimientoAlumno.se
 import { IAlumno } from 'app/models/interface/iAlumno';
 @UntilDestroy()
 @Component({
-  selector: 'app-alumnos-tabla-param',
-  templateUrl: './alumnos-tabla-param.component.html',
-  styleUrls: ['./alumnos-tabla-param.component.scss'],
+  selector: 'app-alumnos-tabla-cursada',
+  templateUrl: './alumnos-tabla-cursada.component.html',
+  styleUrls: ['./alumnos-tabla-cursada.component.scss'],
   animations: designAnimations,
 })
-export class AlumnosTablaParamComponent implements OnInit, OnChanges {
+export class AlumnosTablaCursadaComponent implements OnInit, OnChanges {
   @Input() cargando: boolean;
   // ALUMNOS ________________________________
   dataSource: MatTableDataSource<any> = new MatTableDataSource([]);
@@ -25,7 +25,7 @@ export class AlumnosTablaParamComponent implements OnInit, OnChanges {
   @ViewChild('paginator') set setPaginator(paginator: MatPaginator) {
     this.dataSource.paginator = paginator;
   }
-  columnas: string[] = ['alumnoNro', 'nombre', 'email', 'dni', 'seguimientoEtap', 'opciones'];
+  columnas: string[] = ['alumnoNro', 'nombre', 'email', 'dni', 'seguimientoEtap', 'cursada', 'opciones'];
   // Input
   @Input() alumnos: IAlumno[];
   // Mobile
@@ -49,7 +49,7 @@ export class AlumnosTablaParamComponent implements OnInit, OnChanges {
         this.columnas = ['nombre', 'seguimientoEtap', 'opciones'];
       } else {
         this.isMobile = false;
-        this.columnas = ['alumnoNro', 'nombre', 'email', 'dni', 'seguimientoEtap', 'opciones'];
+        this.columnas = ['alumnoNro', 'nombre', 'email', 'dni', 'cursada', 'seguimientoEtap', 'opciones'];
       }
     });
   }
@@ -94,6 +94,7 @@ export class AlumnosTablaParamComponent implements OnInit, OnChanges {
   }
   ngOnChanges(changes: SimpleChanges): void {
     if (changes.alumnos && changes.alumnos.currentValue) {
+      console.log('changes.alumnos.currentValue', changes.alumnos.currentValue);
       this.dataSource.data = changes.alumnos.currentValue;
     }
   }

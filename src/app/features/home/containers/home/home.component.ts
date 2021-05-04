@@ -58,7 +58,6 @@ export class HomeComponent implements OnInit {
       .pipe(untilDestroyed(this))
       .subscribe(
         (datos) => {
-          console.log('Datos', datos);
           this.cargandoSeguimientos = false;
           this.seguimientoAlumnos = [...datos];
           this.cantidadSeguimientos = this.seguimientoAlumnos.length;

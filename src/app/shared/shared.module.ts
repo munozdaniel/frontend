@@ -20,6 +20,7 @@ import { PlanillaTablaSimpleComponent } from './components/planilla-tabla-simple
 import { CursadaFormComponent } from './components/cursada-form/cursada-form.component';
 import { AlumnosTablaEmailComponent } from './components/alumnos-tabla-email/alumnos-tabla-email.component';
 import { TomarAsistenciaModalComponent } from './components/tomar-asistencia-modal/tomar-asistencia-modal.component';
+import { AlumnosTablaCursadaComponent } from './components/alumnos-tabla-cursada/alumnos-tabla-cursada.component';
 
 @NgModule({
   imports: [
@@ -52,6 +53,7 @@ import { TomarAsistenciaModalComponent } from './components/tomar-asistencia-mod
     CursadaFormComponent,
     AlumnosTablaEmailComponent,
     TomarAsistenciaModalComponent,
+    AlumnosTablaCursadaComponent,
   ],
   declarations: [
     Error401Component,
@@ -70,6 +72,7 @@ import { TomarAsistenciaModalComponent } from './components/tomar-asistencia-mod
     CursadaFormComponent,
     AlumnosTablaEmailComponent,
     TomarAsistenciaModalComponent,
+    AlumnosTablaCursadaComponent,
   ],
 })
 export class SharedModule {}
