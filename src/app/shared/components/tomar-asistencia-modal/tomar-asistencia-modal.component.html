@@ -51,7 +51,7 @@
   </table>
   <app-empty-data *ngIf="!alumnos || alumnos.length < 1"></app-empty-data>
   <!-- Paginado -------------------------------------------------- -->
-  <mat-paginator class="border-paginador paginator mat-elevation-z2" #paginator [pageSize]="5" [pageSizeOptions]="[5, 10, 25, 100]">
+  <mat-paginator class="border-paginador paginator mat-elevation-z2" #paginator [pageSize]="20" [pageSizeOptions]="[5, 10, 25, 100]">
   </mat-paginator>
 </div>
 <div mat-dialog-actions class="w-100-p" fxLayout="row" fxLayoutAlign="center start">
