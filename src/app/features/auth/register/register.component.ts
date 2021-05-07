@@ -147,7 +147,7 @@ export class RegisterComponent implements OnInit, OnDestroy {
       .subscribe(
         (datos) => {
           this._designProgressBar.hide();
-          this._designNavigationService.setCurrentNavigation('main');
+        //   this._designNavigationService.setCurrentNavigation('main');
           Swal.fire({
             title: 'Bienvenido ' + datos.usuario.apellido + ' ' + datos.usuario.nombre,
             text: 'Redireccionando...',

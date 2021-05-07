@@ -41,7 +41,7 @@ export class HomeComponent implements OnInit {
       this.authService.currentUser$.pipe(untilDestroyed(this)).subscribe(
         (datos) => {
           if (datos) {
-            this._designNavigationService.setCurrentNavigation('main');
+            // this._designNavigationService.setCurrentNavigation('main');
           }
         },
         (error) => {
