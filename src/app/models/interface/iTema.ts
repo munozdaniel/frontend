@@ -13,7 +13,7 @@ export interface ITema {
   unidad: number;
   caracterClase: string;
   observacionJefe: string;
-
+  motivoSinDictar?: string;
   fechaCreacion?: Date;
   fechaModificacion?: Date;
   activo: boolean;

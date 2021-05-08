@@ -84,6 +84,11 @@ tr.fila_seleccionada:not(.example-expanded-row):active {
 }
 .n_clases_no {
   width: 95px !important;
+  background: linear-gradient(-135deg, #515579, #1f1a35);
+  color: white;
+}
+.n_clases_sin_dictar {
+  width: 95px !important;
   background: linear-gradient(-135deg, #f44336, #ab0600);
   color: white;
 }

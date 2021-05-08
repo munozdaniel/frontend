@@ -72,7 +72,14 @@ export class PlanillaDetalleTemasComponent implements OnInit, OnChanges {
 
   ngOnChanges(changes: SimpleChanges): void {
     if (changes.temas && changes.temas.currentValue) {
-      this.dataSource.data = this.temas;
+      this.dataSource.data = [...this.temas];
+      console.log('temaSeleccionado', this.temaSeleccionado);
+      if (this.temaSeleccionado) {
+        const index = this.temas.findIndex((x) => x._id === this.temaSeleccionado._id);
+        if (index !== -1) {
+          this.temaSeleccionado = { ...this.temas[index] };
+        }
+      }
       //   if (this.template === TemplateEnum.EDICION) {
       //     const index = this.columnas.findIndex((x) => x === 'opciones');
       //     if (index === -1) {

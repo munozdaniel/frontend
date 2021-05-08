@@ -26,7 +26,8 @@
           <td mat-cell *matCellDef="let row">
             <div class="td" fxLayout="row" fxLayoutAlign="center start">
               <span *ngIf="row.nroClase" class="nav-link-badge text-center n_clases"> {{ row.nroClase }} </span>
-              <span *ngIf="!row.nroClase" class="nav-link-badge text-center n_clases_no"> SIN DICTAR</span>
+              <span *ngIf="!row.nroClase && !row.motivoSinDictar" class="nav-link-badge text-center n_clases_no"> INCOMPLETO </span>
+              <span *ngIf="!row.nroClase && row.motivoSinDictar" class="nav-link-badge text-center n_clases_sin_dictar"> SIN DICTAR </span>
             </div>
           </td>
         </ng-container>
@@ -208,7 +209,12 @@
       </div>
       <app-empty-data *ngIf="!temas || temas.length < 1"></app-empty-data>
       <!-- Paginado -------------------------------------------------- -->
-      <mat-paginator class="border-paginador paginator mat-elevation-z2" #paginator [pageSize]="10" [pageSizeOptions]="[5, 10, 25, 100]">
+      <mat-paginator
+        class="border-paginador paginator mat-elevation-z2"
+        #paginator
+        [pageSize]="15"
+        [pageSizeOptions]="[5, 15, 25, 50, 100]"
+      >
       </mat-paginator>
     </div>
     <!-- <div fxLayout="column" *ngIf="temaSeleccionado && temaSeleccionado.temaDelDia" fxFlex.xs="100" fxFlex.gt-xs="70">

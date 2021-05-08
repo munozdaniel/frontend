@@ -16,14 +16,24 @@ import Swal from 'sweetalert2';
 @Component({
   selector: 'app-tema-form-modal',
   template: `
-    <div fxLayout="row wrap" fxLayoutAlign="space-between start" class="p-12">
+    <div *ngIf="!tema?.motivoSinDictar" fxLayout="row wrap" fxLayoutAlign="space-between start" class="p-12">
       <div>
         <h1 mat-dialog-title>{{ tema && tema.nroClase ? 'Editar clase N° ' + tema.nroClase : 'Completar tema de la clase' }}</h1>
-        <h3>{{ fechaNombre | diaDeLaSemana }} {{ tema?._id }}</h3>
+        <h3>{{ fechaNombre | diaDeLaSemana }}</h3>
       </div>
       <button color="warn" mat-raised-button (click)="sinDictar()">SIN DICTAR</button>
     </div>
-    <div mat-dialog-content class="px-24">
+    <div
+      *ngIf="tema?.motivoSinDictar"
+      class="border mat-card mat-elevation-z4 p-24 mb-12"
+      style="    border: 3px dashed #e00000;
+    background-color: #f4433633;"
+    >
+      <h3>{{ fechaNombre | diaDeLaSemana }}</h3>
+      <h2 class="text-red">No se dictó clases</h2>
+      <h2><strong>Motivo: </strong>{{ tema.motivoSinDictar }}</h2>
+    </div>
+    <div mat-dialog-content class="border mat-card mat-elevation-z4 px-24">
       <form
         [formGroup]="form"
         [@animate]="{ value: '*', params: { delay: '50ms', scale: '0.2' } }"
@@ -253,6 +263,7 @@ export class TemaFormModalComponent implements OnInit, OnDestroy, OnChanges {
         [Validators.required, Validators.minLength(7), Validators.maxLength(100)],
       ],
       planillaTaller: [this.planillaTaller, [Validators.required]],
+      motivoSinDictar: [this.tema ? this.tema.motivoSinDictar : null, [Validators.minLength(4), Validators.maxLength(100)]],
       observacionJefe: [this.tema ? this.tema.observacionJefe : null, [Validators.minLength(4), Validators.maxLength(100)]],
       fechaCreacion: [new Date(moment().format('YYYY-MM-DD')), Validators.required],
       activo: [true],
@@ -276,6 +287,7 @@ export class TemaFormModalComponent implements OnInit, OnDestroy, OnChanges {
       ...this.form.value,
       activo: true,
       fechaCreacion: new Date(),
+      motivoSinDictar: null,
     };
     this._temaService
       .guardarTema(tema)
@@ -331,6 +343,7 @@ export class TemaFormModalComponent implements OnInit, OnDestroy, OnChanges {
       fecha: this.form.controls.fecha.value,
       activo: true,
       fechaCreacion: new Date(),
+      motivoSinDictar: null,
     };
     this._temaService
       .actualizarTema(this.tema._id, temaForm)
@@ -392,10 +405,12 @@ export class TemaFormModalComponent implements OnInit, OnDestroy, OnChanges {
       inputAttributes: {
         autocapitalize: 'off',
         required: 'true',
-        placeholder: 'Observacion',
+        placeholder: 'Ingrese el motivo',
       },
-      preConfirm: (observacionJefe) => {
-        this.tema.observacionJefe = observacionJefe;
+      preConfirm: (motivoSinDictar) => {
+        console.log('motiv1', motivoSinDictar);
+        tema.motivoSinDictar = motivoSinDictar;
+        console.log(motivoSinDictar, 'motiv2', tema.motivoSinDictar);
         return this._temaService.actualizarTema(this.tema._id, tema).pipe(
           catchError((error) => {
             console.log('[ERROR]', error);
