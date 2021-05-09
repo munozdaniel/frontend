@@ -23,7 +23,7 @@ export class ComisionesTablaParamComponent implements OnInit, OnChanges {
   @ViewChild('paginator') set setPaginator(paginator: MatPaginator) {
     this.dataSource.paginator = paginator;
   }
-  columnas: string[] = ['comision', 'alumno', 'cicloLectivo', 'curso', 'division', 'condicion', 'opciones'];
+  columnas: string[] = ['cicloLectivo', 'curso', 'division', 'comision', 'condicion', 'opciones'];
   // Output
   @Output() retEditarComision = new EventEmitter<ICurso>();
   @Output() retEliminarComision = new EventEmitter<ICurso>();
@@ -34,6 +34,7 @@ export class ComisionesTablaParamComponent implements OnInit, OnChanges {
   ngOnInit(): void {}
   ngOnChanges(changes: SimpleChanges): void {
     if (changes.estadoCursadas && changes.estadoCursadas.currentValue) {
+      console.log('estadoCursadas', this.estadoCursadas);
       this.dataSource.data = changes.estadoCursadas.currentValue;
     }
   }

@@ -53,7 +53,7 @@ export class AlumnosFormComponent implements OnInit, OnChanges {
       nombreCompleto: [null, [Validators.required, Validators.minLength(3), Validators.maxLength(250)]],
       sexo: [null, [Validators.minLength(4), Validators.maxLength(9)]],
       fechaNacimiento: [null, []],
-      nacionalidad: [null, [Validators.required]],
+      nacionalidad: [null, []],
       observacionTelefono: [null, [Validators.minLength(3), Validators.maxLength(50)]],
       telefono: [null, [Validators.minLength(7), Validators.maxLength(20)]],
       celular: [null, [Validators.minLength(7), Validators.maxLength(20)]],
@@ -84,10 +84,12 @@ export class AlumnosFormComponent implements OnInit, OnChanges {
       }, 1000);
       return;
     }
-
+    this.estadoCursadas = this.alumno.estadoCursadas;
     this.formDatosPersonales.patchValue(this.alumno);
     this.formDatosPersonales.controls.fechaIngreso.setValue(moment.utc(this.alumno.fechaIngreso));
-    this.formDatosPersonales.controls.fechaNacimiento.setValue(moment.utc(this.alumno.fechaNacimiento));
+    if (this.alumno.fechaNacimiento) {
+      this.formDatosPersonales.controls.fechaNacimiento.setValue(moment.utc(this.alumno.fechaNacimiento));
+    }
     if (this.alumno.seguimientoEtap === 'SI') {
       this.formEtap.patchValue(this.alumno);
     } else {

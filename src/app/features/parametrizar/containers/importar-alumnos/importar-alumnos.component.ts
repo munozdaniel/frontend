@@ -124,6 +124,15 @@ export class ImportarAlumnosComponent implements OnInit {
       //     tieneError = true;
       //     descripcionError.push('El legajo es requerido');
       //   }
+      if (x['FECHA NACIMIENTO']) {
+        console.log('fechanacimiento1', x['FECHA NACIMIENTO']);
+        const f = moment(x['FECHA NACIMIENTO']);
+        console.log('f.isValid()', f.isValid());
+        if (!f.isValid()) {
+          x['FECHA NACIMIENTO'] = null;
+        }
+        console.log('fechanacimiento2', x['FECHA NACIMIENTO']);
+      }
       if (!x['APELLIDO Y NOMBRES'] || x['APELLIDO Y NOMBRES'].toString().trim() === '') {
         tieneError = true;
         descripcionError.push('El nombre y el apellido son requeridos');
@@ -150,7 +159,7 @@ export class ImportarAlumnosComponent implements OnInit {
         cicloLectivo: x['CICLO LECTIVO'],
         dni: x.DOCUMENTO,
         nombreCompleto: _.capitalize(x['APELLIDO Y NOMBRES']),
-        fechaNacimiento: moment(x['FECHA NACIMIENTO'], 'DD/MM/YYYY').utc().format('YYYY-MM-DD'),
+        fechaNacimiento: x['FECHA NACIMIENTO'] ? moment(x['FECHA NACIMIENTO'], 'DD/MM/YYYY').utc().format('YYYY-MM-DD') : null,
         // 'LUGAR DE NACIMIENTO': x['LUGAR DE NACIMIENTO'],
         // 'ES REPITENTE': x['ES REPITENTE'],
         telefono: x.TELEFONO,

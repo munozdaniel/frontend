@@ -34,7 +34,7 @@
       <th mat-header-cell *matHeaderCellDef mat-sort-header>Comisión</th>
       <td mat-cell *matCellDef="let row">
         <div fxLayout="row" fxLayoutAlign="center center">
-          {{ row.comision }}
+          {{ row.curso.comision }}
         </div>
       </td>
     </ng-container>
@@ -46,16 +46,16 @@
     <!--  -->
     <ng-container matColumnDef="cicloLectivo">
       <th mat-header-cell *matHeaderCellDef mat-sort-header>Ciclo</th>
-      <td mat-cell *matCellDef="let row">{{ row.cicloLectivo }}</td>
+      <td mat-cell *matCellDef="let row">{{ row.cicloLectivo.anio }}</td>
     </ng-container>
     <ng-container matColumnDef="curso">
       <th mat-header-cell *matHeaderCellDef mat-sort-header>Curso</th>
-      <td mat-cell *matCellDef="let row">{{ row.curso }}</td>
+      <td mat-cell *matCellDef="let row">{{ row.curso.curso }}</td>
     </ng-container>
     <ng-container matColumnDef="division">
       <th mat-header-cell *matHeaderCellDef mat-sort-header>División</th>
       <td mat-cell *matCellDef="let row">
-        <div fxLayout="row" fxLayoutAlign="center center">{{ row.division }}</div>
+        <div fxLayout="row" fxLayoutAlign="center center">{{ row.curso.division }}</div>
       </td>
     </ng-container>
 

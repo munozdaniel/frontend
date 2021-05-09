@@ -95,7 +95,7 @@
               <input matInput [matDatepicker]="picker" formControlName="fechaNacimiento" />
               <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
               <mat-datepicker #picker></mat-datepicker>
-              <mat-error *ngIf="formDatosPersonales.controls.fechaNacimiento.hasError('required')"> Este campo es requerido. </mat-error>
+              <!-- <mat-error *ngIf="formDatosPersonales.controls.fechaNacimiento.hasError('required')"> Este campo es requerido. </mat-error> -->
             </mat-form-field>
             <!-- Nacionalidad ============================= -->
             <mat-form-field appearance="outline" fxFlex.gt-xs="45" fxFlex.xs="100">
@@ -363,7 +363,7 @@
           <div>
             <button mat-raised-button color="primary" type="button" (click)="abrirModalComision()">Agregar Comisión</button>
           </div>
-          <p *ngIf="!estadoCursadas || estadoCursadas.length < 1">No se ha ingresado ningún registro</p>
+          <p *ngIf="!estadoCursadas || estadoCursadas.length < 1">No se ha agregado ningún registro</p>
           <app-comisiones-tabla-param
             [estadoCursadas]="estadoCursadas"
             (retEliminarComision)="setEliminarComision($event)"
