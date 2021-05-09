@@ -21,7 +21,7 @@
           </p>
           <p>
             <strong>Fecha de Nacimiento:</strong
-            ><span>{{
+            ><span *ngIf="alumno.fechaNacimiento != 'Invalid date'">{{
               alumno.fechaNacimiento == 'Sin Registrar' ? alumno.fechaNacimiento : (alumno.fechaNacimiento | date: 'dd/MM/yyyy':'GMT')
             }}</span>
           </p>
