@@ -91,7 +91,11 @@
     <!-- Progress NOMBRE -->
     <ng-container matColumnDef="fechaNacimiento">
       <th mat-header-cell *matHeaderCellDef mat-sort-header>Fecha Nacimiento</th>
-      <td mat-cell *matCellDef="let row">{{ row.fechaNacimiento }}</td>
+      <td mat-cell *matCellDef="let row">
+        <div *ngIf="row.fechaNacimiento">
+          {{ row.fechaNacimiento | date: 'dd/MM/yyyy':'GMT' }}
+        </div>
+      </td>
     </ng-container>
 
     <!-- Progress   -->
