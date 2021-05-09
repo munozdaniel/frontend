@@ -30,20 +30,47 @@
   </div>
   <div class="barra_titulos" fxLayout="column">
     <mat-accordion>
-      <mat-expansion-panel>
+      <mat-expansion-panel style="border: 2px dashed red; border-radius: 0">
         <mat-expansion-panel-header>
-          <mat-panel-title>Seguimiento de Alumnos</mat-panel-title>
-          <mat-panel-description>
-            <span>{{ cantidadSeguimientos }} Seguimiento/s sin Resolver</span></mat-panel-description
+          <mat-panel-title fxLayout="row" fxLayoutAlign="start center">
+            <span
+              class="iconify pulsar"
+              data-icon="ic:twotone-circle-notifications"
+              data-inline="false"
+              style="font-size: 55px; color: red"
+            ></span>
+            <span> Seguimiento de Alumnos </span>
+          </mat-panel-title>
+          <mat-panel-description fxLayout="row" fxLayoutAlign="start center">
+            <strong>{{ cantidadSeguimientos }} Seguimiento/s sin Resolver</strong></mat-panel-description
           >
         </mat-expansion-panel-header>
         <div class="border p-12" *ngFor="let seguimiento of seguimientoAlumnos" fxLayout="row wrap" fxLayoutAlign="space-between start">
-          <span fxFlex="25"> <strong>Fecha: </strong>{{ seguimiento.fecha | date: 'dd/MM/yyyy':'GMT' }}</span>
-          <span fxFlex="30"
+          <span fxFlex.gt-xs="25"> <strong>Fecha: </strong>{{ seguimiento.fecha | date: 'dd/MM/yyyy':'GMT' }}</span>
+          <span fxFlex.gt-xs="30"
             ><strong>{{ seguimiento.alumno.nombreCompleto }} </strong></span
           >
-          <span fxFlex="30"><strong>Tipo: </strong>{{ seguimiento.tipoSeguimiento }}</span>
-          <button fxFlex="15" mat-icon-button color="accent" matTooltip="Ver detalle" (click)="verSeguimiento(seguimiento)"><mat-icon>remove_red_eye</mat-icon></button>
+          <span fxFlex.gt-xs="30" fxFlex.xs="100"><strong>Tipo: </strong>{{ seguimiento.tipoSeguimiento }}</span>
+          <button
+            fxHide.xs="true"
+            fxFlex.gt-xs="15"
+            mat-icon-button
+            color="accent"
+            matTooltip="Ver detalle"
+            (click)="verSeguimiento(seguimiento)"
+          >
+            <mat-icon>remove_red_eye</mat-icon>
+          </button>
+          <button
+            fxHide.gt-xs="true"
+            fxFlex.xs="100"
+            mat-raised-button
+            color="accent"
+            matTooltip="Ver detalle"
+            (click)="verSeguimiento(seguimiento)"
+          >
+            <mat-icon>remove_red_eye</mat-icon> Abrir Seguimiento
+          </button>
         </div>
       </mat-expansion-panel>
     </mat-accordion>

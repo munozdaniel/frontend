@@ -8,7 +8,7 @@ import { IAsignatura } from 'app/models/interface/iAsignatura';
   selector: 'app-asignaturas-tabla-param',
   templateUrl: './asignaturas-tabla-param.component.html',
   styleUrls: ['./asignaturas-tabla-param.component.scss'],
-  animations:designAnimations
+  animations: designAnimations,
 })
 export class AsignaturasTablaParamComponent implements OnInit, OnChanges {
   @Input() cargando: boolean;
