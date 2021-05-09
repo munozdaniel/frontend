@@ -179,7 +179,6 @@ export class FichaAsistenciaDiaPdf {
       total.push([{}, {}, {}, {}]);
       //
     });
-    console.log('toal', total);
     return total;
   }
 }

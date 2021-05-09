@@ -141,7 +141,6 @@ export class PlanillaVerComponent implements OnInit {
       .pipe(untilDestroyed(this))
       .subscribe(
         (datos) => {
-          console.log('datos', datos);
           this.alumnos = datos;
           this.cargandoAlumnos = false;
         },
@@ -152,15 +151,12 @@ export class PlanillaVerComponent implements OnInit {
       );
   }
   controlTabs(evento) {
-    console.log('controlTabs', evento);
     this.indiceTab = evento.index;
     switch (evento.index) {
       case 0:
-        console.log('GENERAL');
         this.titulo = 'Planilla de Taller';
         break;
       case 1:
-        console.log('ASISTENCIAS');
         this.titulo = 'Asistencias del Alumno';
         // Si hay asistencias entonces hay alumnoSeleccionado. Controlamos para no repetir la consulta
         if (
@@ -175,7 +171,6 @@ export class PlanillaVerComponent implements OnInit {
         break;
       case 2:
         this.titulo = 'Calificaciones del Alumno';
-        console.log('CALIFICACIONES');
         if (
           (!this.calificaciones && this.alumnoSeleccionado) ||
           (this.calificaciones && this.calificaciones.length > 0 && this.alumnoSeleccionado._id !== this.calificaciones[0].alumno._id)
@@ -185,14 +180,12 @@ export class PlanillaVerComponent implements OnInit {
         break;
       case 3:
         this.titulo = 'Libro de Temas del Profesor';
-        console.log('LIBRO DE TEMAS');
         if (!this.temas) {
           this.obtenerLibroDeTemas();
         }
         break;
       case 4:
         this.titulo = 'Seguimiento del Alumno';
-        console.log('SEGUIMIENTO DE ALUMNOS');
         if (
           (!this.seguimientos && this.alumnoSeleccionado) ||
           (this.seguimientos && this.seguimientos.length > 0 && this.alumnoSeleccionado._id !== this.seguimientos[0].alumno._id)
@@ -202,7 +195,6 @@ export class PlanillaVerComponent implements OnInit {
         break;
       case 5:
         this.titulo = 'Informes';
-        console.log('INFORMES');
         break;
 
       default:
@@ -210,13 +202,11 @@ export class PlanillaVerComponent implements OnInit {
     }
   }
   buscarTotalesPorPlanilla() {
-    console.log('this.planillaId', this.planillaId);
     this._planillaTallerService
       .buscarTotalAsistenciaPorPlanilla(this.planillaId)
       .pipe(untilDestroyed(this))
       .subscribe(
         (datos) => {
-          console.log('datos', datos);
           this.totalClases = datos.total;
         },
         (error) => {
@@ -228,7 +218,6 @@ export class PlanillaVerComponent implements OnInit {
   //   Output Asistencias
 
   setBuscarAsistenciaPorAlumno(alumno: IAlumno) {
-    console.log('1');
     this.cargandoAsistencias = true;
     this._asistenciaService
       .obtenerAsistenciasPorAlumnoId(alumno._id, this.planillaId)
@@ -254,7 +243,6 @@ export class PlanillaVerComponent implements OnInit {
   }
   //   Output Calificaciones
   setBuscarCalificacionesPorAlumno(alumno: IAlumno) {
-    console.log('2');
     this.cargandoCalificaciones = true;
     this._calificacionService
       .obtenerCalificacionesPorAlumnoId(alumno._id, this.planillaId)
@@ -279,7 +267,6 @@ export class PlanillaVerComponent implements OnInit {
       .subscribe(
         (datos) => {
           this.temas = datos;
-          console.log('temas', this.temas);
           this.cargandoTemas = false;
         },
         (error) => {
@@ -298,7 +285,6 @@ export class PlanillaVerComponent implements OnInit {
       .subscribe(
         (datos) => {
           this.seguimientos = datos;
-          console.log('obtenerSeguimientoAlumnoPorPlanillaCiclo', this.temas);
           this.cargandoSeguimiento = false;
         },
         (error) => {

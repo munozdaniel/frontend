@@ -46,7 +46,6 @@ export class FichaAlumnoDetalleComponent implements OnInit {
       .pipe(untilDestroyed(this))
       .subscribe(
         (datos) => {
-          console.log('>>>', datos);
           this.alumno = { ...datos };
           this.cargando = false;
         },

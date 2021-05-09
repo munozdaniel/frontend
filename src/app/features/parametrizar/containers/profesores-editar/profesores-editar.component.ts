@@ -46,12 +46,10 @@ export class ProfesoresEditarComponent implements OnInit {
   recuperarDatos() {
     this._activeRoute.params.subscribe((params) => {
       this.profesorId = params['id'];
-      console.log(' this.profesorId', this.profesorId);
       this.profesor$ = this._profesorService.obtenerProfesorPorId(this.profesorId).pipe(finalize(() => (this.cargando = false)));
     });
   }
   setDatosForm(evento: IProfesor) {
-    console.log('setDatosForm', evento);
     if (evento) {
       this.confirmarGuardar(evento);
     }

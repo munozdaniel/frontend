@@ -80,7 +80,6 @@ export class SeguimientoAlumnosComponent implements OnInit {
       .pipe(untilDestroyed(this))
       .subscribe(
         (datos) => {
-          console.log('Datos', datos);
           this.cargando = false;
           this.seguimientoAlumnos = [...datos];
         },

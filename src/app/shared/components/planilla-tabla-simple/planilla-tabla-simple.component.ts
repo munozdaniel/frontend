@@ -137,7 +137,6 @@ export class PlanillaTablaSimpleComponent implements OnInit, OnChanges {
     }
   }
   reporteAsistenciasPorTaller(planilla: IPlanillaTaller) {
-    console.log('planilla', planilla);
     this.retInformeAsistenciasPorTaller.emit(planilla);
   }
   reporteAsistenciasPorDia(planilla: IPlanillaTaller) {

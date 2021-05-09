@@ -179,7 +179,6 @@ export class InasistenciaDiaPdf {
       total.push([{}, {}, {}, {}]);
       //
     });
-    console.log('toal', total);
     return total;
   }
 }

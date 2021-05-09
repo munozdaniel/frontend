@@ -58,7 +58,6 @@ export class InformesComponent implements OnInit, OnChanges {
   ) {}
   ngOnChanges(changes: SimpleChanges): void {
     if (changes.planillaTaller && changes.planillaTaller.currentValue) {
-      console.log('this.planillaTaller', this.planillaTaller);
     }
   }
 

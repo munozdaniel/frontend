@@ -212,7 +212,6 @@ export class SeguimientoFormModalComponent implements OnInit {
   buscarCicloLectivo() {
     const { fecha } = this.form.value;
     const anio: string = moment.utc(fecha).format('YYYY');
-    console.log('anio', anio);
     const index = this.ciclosLectivos.findIndex((x) => x.anio === Number(anio));
     if (index !== -1) {
       this.form.controls.cicloLectivo.setValue(this.ciclosLectivos[index]);
@@ -222,7 +221,6 @@ export class SeguimientoFormModalComponent implements OnInit {
   }
   guardar() {
     const hayCiclo = this.buscarCicloLectivo();
-    console.log(hayCiclo);
     if (!hayCiclo) {
       Swal.fire({
         title: 'Error en el Formulario',
@@ -231,7 +229,6 @@ export class SeguimientoFormModalComponent implements OnInit {
       });
       return;
     }
-    console.log('form valid?');
     if (!this.form.valid) {
       Swal.fire({
         title: 'Error en el Formulario',
@@ -304,7 +301,6 @@ export class SeguimientoFormModalComponent implements OnInit {
       activo: true,
       fechaCreacion: new Date(),
     };
-    console.log('seguimiento', seguimientoForm);
     this._seguimientoAlumnoService
       .actualizarSeguimientoAlumno(this.seguimiento._id, seguimientoForm)
       .pipe(untilDestroyed(this))

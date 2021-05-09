@@ -497,7 +497,6 @@ export class PlanillaTallerAdministrarComponent implements OnInit {
   }
   // Output Calificaciones
   setBuscarCalificacionesPorAlumno(alumno: IAlumno) {
-    console.log('2');
     this.alumnoSeleccionado = alumno; // cuando viene por output se actualiza
     this.cargandoCalificaciones = true;
     this._calificacionService

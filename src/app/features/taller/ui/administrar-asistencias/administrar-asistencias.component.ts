@@ -58,7 +58,6 @@ export class AdministrarAsistenciasComponent implements OnInit, OnChanges {
   }
   ngOnChanges(changes: SimpleChanges): void {
     if (changes.alumnos && changes.alumnos.currentValue) {
-      console.log('this.alumnos', this.alumnos);
       this.dataSource.data = this.alumnos;
     }
   }

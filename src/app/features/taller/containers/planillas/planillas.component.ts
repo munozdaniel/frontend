@@ -63,14 +63,12 @@ export class PlanillasComponent implements OnInit, OnDestroy {
     // this.recuperarPlanillasPorCiclo(this.cicloActual);
   }
   recuperarPlanillasPorCiclo(cicloLectivo: number) {
-    console.log('cicloLectivo', cicloLectivo);
     this._planillaTallerService
       //   .obtenerPlanillaTalleresPorCiclo( this.cicloActual)
       .obtenerPlanillaTalleresPorCiclo(cicloLectivo)
       .pipe(untilDestroyed(this))
       .subscribe(
         (datos) => {
-          console.log('datos', datos);
           this.planillas = [...datos];
         },
         (error) => {

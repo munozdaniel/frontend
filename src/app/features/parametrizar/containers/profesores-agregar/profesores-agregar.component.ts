@@ -66,7 +66,6 @@ export class ProfesoresAgregarComponent implements OnInit {
       allowOutsideClick: () => !Swal.isLoading(),
     }).then((result: any) => {
       if (result.isConfirmed) {
-        console.log('result1', result);
         if (result.value) {
           Swal.fire({
             title: 'Operación Exitosa!',
@@ -79,7 +78,6 @@ export class ProfesoresAgregarComponent implements OnInit {
             cancelButtonText: 'Agregar otro profesor',
             showLoaderOnConfirm: true,
           }).then((result2) => {
-            console.log('result2', result2);
             if (result2.isConfirmed) {
               this._router.navigate(['parametrizar/profesores-editar/' + result.value._id]);
             } else {

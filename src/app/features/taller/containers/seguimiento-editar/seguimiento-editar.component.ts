@@ -68,7 +68,6 @@ export class SeguimientoEditarComponent implements OnInit {
       activo: true,
       fechaCreacion: new Date(),
     };
-    console.log('seguimiento', seguimiento);
     this._seguimientoAlumnoService
       .actualizarSeguimientoAlumno(this.seguimiento._id, seguimiento)
       .pipe(untilDestroyed(this))

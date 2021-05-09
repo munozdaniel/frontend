@@ -133,7 +133,6 @@ export class AlumnoDatosPdfComponent implements OnInit {
     const retorno = this.alumno.estadoCursadas.map((x: IEstadoCursada) => {
       return [x.cicloLectivo.anio, x.curso.curso, x.curso.comision, x.curso.division, x.condicion];
     });
-    console.log('return', retorno);
     return retorno;
   }
   getDatosEscolares() {

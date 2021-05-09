@@ -179,7 +179,6 @@ export class InasistenciaSemanalPdf {
       total.push([{}, {}, {}, {}]);
       //
     });
-    console.log('toal', total);
     return total;
   }
 }

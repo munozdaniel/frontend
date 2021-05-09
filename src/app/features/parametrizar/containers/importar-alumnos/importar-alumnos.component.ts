@@ -125,13 +125,10 @@ export class ImportarAlumnosComponent implements OnInit {
       //     descripcionError.push('El legajo es requerido');
       //   }
       if (x['FECHA NACIMIENTO']) {
-        console.log('fechanacimiento1', x['FECHA NACIMIENTO']);
         const f = moment(x['FECHA NACIMIENTO']);
-        console.log('f.isValid()', f.isValid());
         if (!f.isValid()) {
           x['FECHA NACIMIENTO'] = null;
         }
-        console.log('fechanacimiento2', x['FECHA NACIMIENTO']);
       }
       if (!x['APELLIDO Y NOMBRES'] || x['APELLIDO Y NOMBRES'].toString().trim() === '') {
         tieneError = true;
@@ -270,7 +267,7 @@ export class ImportarAlumnosComponent implements OnInit {
   }
   setUsuariosFallados(evento: IAlumno[]) {
     if (evento) {
-      console.log('ALUMNOS FALLADOS', evento);
+    //   console.log('ALUMNOS FALLADOS', evento);
     }
   }
   guardar() {
