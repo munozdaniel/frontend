@@ -1,6 +1,5 @@
 import { EventEmitter, Component, Input, OnInit, Output, OnChanges, SimpleChanges } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { untilDestroyed } from '@ngneat/until-destroy';
 import { ValidationService } from 'app/core/services/general/validation.services';
 import { ASIGNATURA_KEY, IAsignatura } from 'app/models/interface/iAsignatura';
 import { IPlanillaTaller } from 'app/models/interface/iPlanillaTaller';
@@ -70,6 +69,7 @@ export class PlanillaFormComponent implements OnInit, OnChanges {
         bimestre: [null, [Validators.required]],
         asignatura: [null, [Validators.required]],
         profesor: [null, [Validators.required]],
+        turno: [null, [Validators.required]],
         observacion: [null, [Validators.maxLength(150), Validators.minLength(5)]],
       },
       {

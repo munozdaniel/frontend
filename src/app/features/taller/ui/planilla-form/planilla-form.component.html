@@ -64,6 +64,15 @@
           >
           </input-autocomplete>
         </div>
+        <mat-form-field appearance="outline" fxFlex.gt-xs="45" fxFlex.xs="100">
+          <mat-label class="lbl">Turno</mat-label>
+          <mat-select formControlName="turno">
+            <mat-option value="1">MAÑANA</mat-option>
+            <mat-option value="2">TARDE</mat-option>
+            <mat-option value="3">VESPERTINO</mat-option>
+          </mat-select>
+          <mat-error *ngIf="form.controls.turno.hasError('required')"> Este campo es requerido. </mat-error>
+        </mat-form-field>
       </div>
       <div fxFlex.gt-xs="42" fxFlex.xs="100" fxLayout="column">
         <!-- curso ============================= -->
@@ -117,6 +126,7 @@
           </mat-select>
           <mat-error *ngIf="form.controls.bimestre.hasError('required')"> Este campo es requerido. </mat-error>
         </mat-form-field>
+
         <!-- Observacion ============================= -->
         <mat-form-field appearance="outline" fxFlex.gt-xs="45" fxFlex.xs="100">
           <mat-label class="lbl">Observación</mat-label>
