@@ -4,7 +4,9 @@
 
 // Import app.theme.scss
 @import 'app/app.theme';
-
+.checkbox_invisible > label > .mat-checkbox-inner-container-no-side-margin {
+  opacity: 0 !important;
+}
 .mt-50 {
   margin-top: 50px;
 }

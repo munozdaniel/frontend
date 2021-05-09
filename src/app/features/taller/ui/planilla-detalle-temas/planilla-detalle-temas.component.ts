@@ -73,7 +73,6 @@ export class PlanillaDetalleTemasComponent implements OnInit, OnChanges {
   ngOnChanges(changes: SimpleChanges): void {
     if (changes.temas && changes.temas.currentValue) {
       this.dataSource.data = [...this.temas];
-      console.log('temaSeleccionado', this.temaSeleccionado);
       if (this.temaSeleccionado) {
         const index = this.temas.findIndex((x) => x._id === this.temaSeleccionado._id);
         if (index !== -1) {
@@ -112,7 +111,6 @@ export class PlanillaDetalleTemasComponent implements OnInit, OnChanges {
     this.retTemasCalendario.emit(tipo);
   }
   mostrarDetalles(tema: ITema) {
-    console.log('temaSeleccionado', tema);
     this.temaSeleccionado = { ...tema };
   }
   setActualizarLibro(event) {

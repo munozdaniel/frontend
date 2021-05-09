@@ -329,14 +329,12 @@ export class PlanillaTallerAdministrarComponent implements OnInit {
   }
   //   Temas
   obtenerLibroDeTemas() {
-    console.log('this.planillaTaller.asignatura', this.planillaTaller.asignatura);
     this.cargandoTemas = true;
     this._temaService
       .obtenerTemasCalendario('TALLER', this.planillaId)
       .pipe(untilDestroyed(this))
       .subscribe(
         (datos) => {
-          console.log('datos', datos);
           this.temas = [...datos.temasDelCalendario];
           this.cargandoTemas = false;
         },
@@ -408,7 +406,7 @@ export class PlanillaTallerAdministrarComponent implements OnInit {
   }
   abrirModalParaTomarAsistencias() {
     const dialogRef = this._dialog.open(TomarAsistenciaModalComponent, {
-      data: { planillaTaller: this.planillaTaller, alumnos: this.alumnos },
+      data: {isMobile:this.isMobile, planillaTaller: this.planillaTaller, alumnos: this.alumnos },
     });
 
     dialogRef.afterClosed().subscribe((resultado) => {
@@ -435,7 +433,6 @@ export class PlanillaTallerAdministrarComponent implements OnInit {
       });
       return;
     }
-    console.log('evento', evento);
     const dialogRef = this._dialog.open(AsistenciaFormModalComponent, {
       data: { asistencia: evento, planillaTaller: this.planillaTaller, alumno: this.alumnoSeleccionado },
     });
@@ -558,7 +555,6 @@ export class PlanillaTallerAdministrarComponent implements OnInit {
     });
 
     dialogRef.afterClosed().subscribe((resultado) => {
-      console.log('resultado', resultado);
       if (resultado) {
         this.setBuscarCalificacionesPorAlumno(this.alumnoSeleccionado);
       }
@@ -615,7 +611,6 @@ export class PlanillaTallerAdministrarComponent implements OnInit {
     });
 
     dialogRef.afterClosed().subscribe((resultado) => {
-      console.log('resultado', resultado);
       if (resultado) {
         this.obtenerLibroDeTemas();
       }
@@ -627,7 +622,6 @@ export class PlanillaTallerAdministrarComponent implements OnInit {
     });
 
     dialogRef.afterClosed().subscribe((resultado) => {
-      console.log('resultado', resultado);
       if (resultado) {
         this.obtenerLibroDeTemas();
       }
@@ -717,7 +711,6 @@ export class PlanillaTallerAdministrarComponent implements OnInit {
   }
   //
   setBuscarSeguimientosPorAlumno(alumno: IAlumno) {
-    console.log('alumno', alumno);
     this.alumnoSeleccionado = alumno; // cuando viene por output se actualiza
     this.cargandoSeguimiento = true;
     this._seguimientoAlumnoService
