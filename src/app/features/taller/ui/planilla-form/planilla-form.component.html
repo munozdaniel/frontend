@@ -94,20 +94,22 @@
           <mat-select formControlName="comision">
             <mat-option *ngFor="let tipo of tiposComision" [value]="tipo">{{ tipo }}</mat-option>
           </mat-select>
-          <mat-error *ngIf="form.controls.comision.hasError('required')"> Este campo es requerido. </mat-error>
         </mat-form-field>
         <!-- division ============================= -->
-        <mat-form-field appearance="outline">
+        <mat-form-field appearance="outline" fxFlex="100">
           <mat-label class="lbl">División</mat-label>
-          <input matInput type="number" min="0" formControlName="division" autocomplete="off" />
+          <mat-select formControlName="division">
+            <mat-option value="1">DIVISIÓN 1</mat-option>
+            <mat-option value="2">DIVISIÓN 2</mat-option>
+            <mat-option value="3">DIVISIÓN 3</mat-option>
+            <mat-option value="4">DIVISIÓN 4</mat-option>
+            <mat-option value="5">DIVISIÓN 5</mat-option>
+            <mat-option value="6">DIVISIÓN 6</mat-option>
+            <mat-option value="6">DIVISIÓN 7</mat-option>
+            <mat-option value="6">DIVISIÓN 8</mat-option>
+            <mat-option value="6">DIVISIÓN 9</mat-option>
+          </mat-select>
           <mat-error *ngIf="form.controls.division.hasError('required')"> Este campo es requerido. </mat-error>
-          <mat-error
-            *ngIf="
-              !form.controls.division.hasError('required') &&
-              (form.controls.division.hasError('min') || form.controls.division.hasError('max'))
-            "
-            >Ingrese un valor entre 0 y 6</mat-error
-          >
         </mat-form-field>
         <!-- cantidad de meses ============================= -->
         <mat-form-field appearance="outline" fxFlex.gt-xs="45" fxFlex.xs="100">
@@ -127,25 +129,60 @@
           <mat-error *ngIf="form.controls.bimestre.hasError('required')"> Este campo es requerido. </mat-error>
         </mat-form-field>
 
-        <!-- Observacion ============================= -->
-        <mat-form-field appearance="outline" fxFlex.gt-xs="45" fxFlex.xs="100">
-          <mat-label class="lbl">Observación</mat-label>
-          <input matInput type="text" formControlName="observacion" autocomplete="off" minlength="5" maxlength="150" />
-          <mat-error *ngIf="form.controls.observacion.hasError('required')"> Este campo es requerido. </mat-error>
-          <mat-error
-            *ngIf="
-              !form.controls.observacion.hasError('required') &&
-              (form.controls.observacion.hasError('minlength') || form.controls.observacion.hasError('maxlength'))
-            "
+        <!--  ============================= -->
+        <div fxLayout="column">
+          <strong fxLayout="row wrap" fxLayoutAlign="start center">
+            <mat-icon
+              matTooltip="Si ya se han cargado TEMAS a la planilla, al cambiar el tipo de calendario se adicionarán las fechas a las existentes."
+              style="color: rgb(0, 153, 255); cursor: pointer"
+              >info</mat-icon
+            >
+            <span> Tipo de Calendario</span></strong
           >
-            Ingrese entre 5 y 150 caracteres
-          </mat-error>
-        </mat-form-field>
+          <mat-radio-group
+            formControlName="tipoCalendario"
+            fxLayout="row wrap"
+            fxLayoutAlign="space-between start"
+            fxFlex.xs="100"
+            fxFlex.gt-xs="45"
+            fxLayoutGap="10px"
+            class="border p-12"
+          >
+            <mat-radio-button value="1" class="mb-12" (click)="habilitarCalendarioPorComision()"> Calendario por comision</mat-radio-button>
+            <mat-radio-button value="2" class="mb-12" (click)="habilitarCalendarioPersonalizado()"
+              >Calendario Personalizado</mat-radio-button
+            >
+          </mat-radio-group>
+          <mat-form-field [fxHide]="!personalizarDias" appearance="outline" class="w-100-p">
+            <mat-label class="lbl">Días</mat-label>
+            <mat-select formControlName="diasHabilitados" multiple>
+              <mat-option value="Monday">Lunes</mat-option>
+              <mat-option value="Tuesday">Martes</mat-option>
+              <mat-option value="Wednesday">Miércoles</mat-option>
+              <mat-option value="Thursday">Jueves</mat-option>
+              <mat-option value="Friday">Viernes</mat-option>
+              <mat-option value="Saturday">Sábado</mat-option>
+              <mat-option value="Sunday">Domingo</mat-option>
+            </mat-select>
+            <mat-error *ngIf="form.controls.diasHabilitados.hasError('required')"> Este campo es requerido. </mat-error>
+          </mat-form-field>
+        </div>
       </div>
     </div>
+
+    <!-- BTN =========================== -->
     <div fxLayout="column">
       <div fxLayout="row" fxLayoutAlign="center start">
-        <button [disabled]="cargando || form.invalid" mat-raised-button color="accent" type="submit">
+        <button
+          [disabled]="
+            cargando ||
+            form.invalid ||
+            (personalizarDias && this.form.controls.diasHabilitados.value && this.form.controls.diasHabilitados.value.length < 1)
+          "
+          mat-raised-button
+          color="accent"
+          type="submit"
+        >
           {{ actualizar ? 'ACTUALIZAR' : 'GUARDAR' }}
         </button>
       </div>

@@ -16,6 +16,7 @@ import Swal from 'sweetalert2';
   providers: CONFIG_PROVIDER,
 })
 export class PlanillaFormComponent implements OnInit, OnChanges {
+  personalizarDias = false;
   @Input() planillaTaller?: IPlanillaTaller;
   @Input() cargando: boolean;
   @Input() cargandoProfesores: boolean;
@@ -24,7 +25,7 @@ export class PlanillaFormComponent implements OnInit, OnChanges {
   @Input() asignaturas: IAsignatura[];
   @Output() retPlanilla = new EventEmitter<IPlanillaTaller>();
   form: FormGroup;
-  tiposComision = [0, 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H'];
+  tiposComision = ['', 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H'];
   today = new Date();
   anios = [];
   //   Autocomplete profesores
@@ -63,14 +64,16 @@ export class PlanillaFormComponent implements OnInit, OnChanges {
         cicloLectivo: [moment().year(), [Validators.required]],
         fechaInicio: [null, [Validators.required]],
         fechaFinalizacion: [null, [Validators.required]],
-        curso: [null, [Validators.required]],
+        curso: [null, []],
         comision: [null, [Validators.required]],
         division: [null, [Validators.required]],
         bimestre: [null, [Validators.required]],
         asignatura: [null, [Validators.required]],
         profesor: [null, [Validators.required]],
         turno: [null, [Validators.required]],
-        observacion: [null, [Validators.maxLength(150), Validators.minLength(5)]],
+        tipoCalendario: [null],
+        diasHabilitados: [null],
+        // observacion: [null, [Validators.maxLength(150), Validators.minLength(5)]],
       },
       {
         validator: [ValidationService.desdeMenorEstrictoHasta('fechaInicio', 'fechaFinalizacion')], // validator: ValidationService.restriccionFechaConHoras('fechaDesde', 'fechaHasta', 'horaDesde', 'horaHasta')
@@ -95,7 +98,7 @@ export class PlanillaFormComponent implements OnInit, OnChanges {
       this.form.controls.cicloLectivo.disable();
       this.form.controls.curso.setValue(this.planillaTaller.curso.curso.toString());
       this.form.controls.comision.setValue(this.planillaTaller.curso.comision.toString());
-      this.form.controls.division.setValue(this.planillaTaller.curso.division);
+      this.form.controls.division.setValue(this.planillaTaller.curso.division.toString());
       this.form.controls.asignatura.setValue(this.planillaTaller.asignatura);
       this.form.controls.profesor.setValue(this.planillaTaller.profesor);
     }
@@ -155,5 +158,16 @@ export class PlanillaFormComponent implements OnInit, OnChanges {
       return;
     }
     this.retPlanilla.emit(this.form.value);
+  }
+  habilitarCalendarioPorComision() {
+    this.personalizarDias = false;
+    this.form.controls.diasHabilitados.setValidators([]);
+    this.form.controls.diasHabilitados.setValue(null);
+    this.form.controls.tipoCalendario.setValue('POR COMISION');
+  }
+  habilitarCalendarioPersonalizado() {
+    this.personalizarDias = true;
+    this.form.controls.diasHabilitados.setValidators([Validators.required]);
+    this.form.controls.tipoCalendario.setValue('PERSONALIZADO');
   }
 }

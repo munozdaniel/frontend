@@ -90,12 +90,12 @@ export class CalendarioDatosComponent implements OnInit, OnChanges, OnDestroy {
     const cadena = this._cookieService.check('configuracion') ? this._cookieService.get('configuracion') : null;
     const configuracion = JSON.parse(cadena);
 
-    if (configuracion.colorTheme !== 'theme-default') {
-      this.document.body.classList.add(this.darkThemeClass);
-    }
+    // if (configuracion.colorTheme !== 'theme-default') {
+    //   this.document.body.classList.add(this.darkThemeClass);
+    // }
   }
   ngOnDestroy(): void {
-    this.document.body.classList.remove(this.darkThemeClass);
+    // this.document.body.classList.remove(this.darkThemeClass);
   }
   //   beforeMonthViewRender({ body }: { body: CalendarMonthViewDay[] }): void {
   //     body.forEach((day) => {

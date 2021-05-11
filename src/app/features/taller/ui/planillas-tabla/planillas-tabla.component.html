@@ -38,6 +38,15 @@ profesor: "6021bb72c18fc750b87b0a12"
       </td>
     </ng-container>
     <!-- -->
+    <ng-container matColumnDef="turno">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header>Turno</th>
+      <td mat-cell *matCellDef="let row" class="fila_hover">
+        <div fxLayout="row" fxLayoutAlign="center center" [matTooltip]="!row.turno ? 'SIN DEFINIR' : row.turno">
+          {{ row.turno ? row.turno : 'S/D' }}
+        </div>
+      </td>
+    </ng-container>
+    <!-- -->
     <ng-container matColumnDef="cicloLectivo">
       <th mat-header-cell *matHeaderCellDef mat-sort-header>Ciclo</th>
       <td mat-cell *matCellDef="let row" class="fila_hover">
@@ -141,6 +150,9 @@ profesor: "6021bb72c18fc750b87b0a12"
       <td mat-cell *matCellDef="let element" [attr.colspan]="columnas.length">
         <div class="detalle_expansible" [@detailExpand]="element == expandedElement ? 'expanded' : 'collapsed'">
           <div fxLayout="column" class="p-24" style="width: 100%; color: white; background: rgb(30 33 41 / 87%)">
+            <p *ngIf="element.turno" fxFlex="row" fxLayoutAlign="start center" fxLayoutGap="10px">
+              <strong>Turno: </strong><span style="color: orange">{{ element.turno }}</span>
+            </p>
             <p fxFlex="row" fxLayoutAlign="start center" fxLayoutGap="10px">
               <strong>Ciclo Lectivo: </strong><span style="color: orange">{{ element.cicloLectivo.anio }}</span>
             </p>

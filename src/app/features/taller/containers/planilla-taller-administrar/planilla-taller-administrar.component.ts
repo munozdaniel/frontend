@@ -6,6 +6,7 @@ import { designAnimations } from '@design/animations';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { AlumnoService } from 'app/core/services/alumno.service';
 import { AsistenciaService } from 'app/core/services/asistencia.service';
+import { CalendarioService } from 'app/core/services/calendario.service';
 import { CalificacionService } from 'app/core/services/calificacion.service';
 import { PlanillaTallerService } from 'app/core/services/planillaTaller.service';
 import { SeguimientoAlumnoService } from 'app/core/services/seguimientoAlumno.service';
@@ -13,6 +14,7 @@ import { TemaService } from 'app/core/services/tema.service';
 import { TemplateEnum } from 'app/models/constants/tipo-template.const';
 import { IAlumno } from 'app/models/interface/iAlumno';
 import { IAsistencia } from 'app/models/interface/iAsistencia';
+import { ICalendario } from 'app/models/interface/iCalendario';
 import { ICalificacion } from 'app/models/interface/iCalificacion';
 import { IPlanillaTaller } from 'app/models/interface/iPlanillaTaller';
 import { ISeguimientoAlumno } from 'app/models/interface/iSeguimientoAlumno';
@@ -39,6 +41,7 @@ import { TemaFormModalComponent } from '../tema-form-modal/tema-form-modal.compo
             <h1 [@animate]="{ value: '*', params: { x: '50px' } }" class="px-12">{{ titulo }}</h1>
             <mat-spinner *ngIf="cargando" matSuffix class="ml-10" diameter="20"></mat-spinner>
           </div>
+          {{ planillaTaller | json }}
           <div *ngIf="alumnoSeleccionado" fxFlex.xs="100">
             <h3
               [@animate]="{ value: '*', params: { x: '50px' } }"
@@ -56,6 +59,7 @@ import { TemaFormModalComponent } from '../tema-form-modal/tema-form-modal.compo
             <!-- Componente Smart podria ser UI pero no D: -->
             <app-planilla-editar [cargando]="cargando" [planillaTaller]="planillaTaller"></app-planilla-editar>
           </mat-tab>
+
           <mat-tab label="Asistencias">
             <app-planilla-detalle-asistencias
               [totalClases]="totalClases"
@@ -101,6 +105,11 @@ import { TemaFormModalComponent } from '../tema-form-modal/tema-form-modal.compo
             >
               <!-- (retTemasCalendario)="setTemasCalendario($event)" -->
             </app-planilla-detalle-temas>
+          </mat-tab>
+          <mat-tab label="Calendario">
+            <!-- Componente Smart podria ser UI pero no D: -->
+            <app-planilla-calendario [cargando]="cargando" [planillaTaller]="planillaTaller" [calendario]="calendario">
+            </app-planilla-calendario>
           </mat-tab>
           <mat-tab label="Seguimiento de Alumnos">
             <app-planilla-detalle-seguimiento
@@ -151,6 +160,8 @@ export class PlanillaTallerAdministrarComponent implements OnInit {
   cargandoAlumnos = false;
   alumnos: IAlumno[];
   alumnoSeleccionado: IAlumno;
+  //   Calendario
+  calendario: ICalendario[];
   //   Asistencias
   totalClases;
   asistencias: IAsistencia[];
@@ -173,6 +184,7 @@ export class PlanillaTallerAdministrarComponent implements OnInit {
   constructor(
     private _activeRoute: ActivatedRoute,
     private _alumnoService: AlumnoService,
+    private _calendarioService: CalendarioService,
     private _temaService: TemaService,
     private _asistenciaService: AsistenciaService,
     private _calificacionService: CalificacionService,
@@ -287,6 +299,7 @@ export class PlanillaTallerAdministrarComponent implements OnInit {
       case 0:
         this.titulo = 'Planilla de Taller';
         break;
+
       case 1:
         this.titulo = 'Asistencias del Alumno';
         // Si hay asistencias entonces hay alumnoSeleccionado. Controlamos para no repetir la consulta
@@ -316,10 +329,16 @@ export class PlanillaTallerAdministrarComponent implements OnInit {
         }
         break;
       case 4:
+        this.titulo = 'Calendario ';
+        if (!this.calendario) {
+          this.setBuscarCalendario();
+        }
+        break;
+      case 5:
         this.titulo = 'Seguimiento del Alumno';
 
         break;
-      case 5:
+      case 6:
         this.titulo = 'Informes';
         break;
 
@@ -327,6 +346,40 @@ export class PlanillaTallerAdministrarComponent implements OnInit {
         break;
     }
   }
+  //   Calendario
+  setBuscarCalendario() {
+    // if (this.planillaTaller.planillaTallerId) {
+    //   this.buscarFechasDeLosTemas();
+    // } else {
+    //   if (this.planillaTaller.asignatura.tipoAsignatura === 'TALLER') {
+    //     this.obtenerCalendarioTallerPorPlanilla();
+    //   } else {
+    //     this.obtenerCalendarioAulaPorDiasYPlanilla();
+    //   }
+    // }
+    this.buscarFechasDeLosTemas();
+  }
+  buscarFechasDeLosTemas() {
+    if (!this.temas || this.temas.length < 1) {
+      this.obtenerLibroDeTemas();
+    } else {
+      console.log('deberia existir el cal', this.calendario);
+    }
+  }
+  obtenerCalendarioTallerPorPlanilla() {
+    this._calendarioService
+      .obtenerCalendarioTallerPorPlanilla(this.planillaTaller)
+      .pipe(untilDestroyed(this))
+      .subscribe(
+        (datos) => {
+          this.calendario = [...datos];
+        },
+        (error) => {
+          console.log('[ERROR]', error);
+        }
+      );
+  }
+  obtenerCalendarioAulaPorDiasYPlanilla() {}
   //   Temas
   obtenerLibroDeTemas() {
     this.cargandoTemas = true;
@@ -336,6 +389,59 @@ export class PlanillaTallerAdministrarComponent implements OnInit {
       .subscribe(
         (datos) => {
           this.temas = [...datos.temasDelCalendario];
+          this.calendario = this.temas.map((x) => {
+            const comisiones = {
+              comisionA: 0,
+              comisionB: 0,
+              comisionC: 0,
+              comisionD: 0,
+              comisionE: 0,
+              comisionF: 0,
+              comisionG: 0,
+              comisionH: 0,
+            };
+            switch (this.planillaTaller.curso.comision) {
+              case 'A':
+                comisiones.comisionA = 1;
+                break;
+              case 'B':
+                comisiones.comisionB = 1;
+                break;
+              case 'C':
+                comisiones.comisionC = 1;
+                break;
+              case 'D':
+                comisiones.comisionD = 1;
+                break;
+              case 'E':
+                comisiones.comisionE = 1;
+                break;
+              case 'F':
+                comisiones.comisionF = 1;
+                break;
+              case 'G':
+                comisiones.comisionG = 1;
+                break;
+              case 'H':
+                comisiones.comisionH = 1;
+                break;
+
+              default:
+                break;
+            }
+            const unCalendario: ICalendario = {
+              fecha: x.fecha,
+              cicloLectivo: this.planillaTaller.cicloLectivo,
+              activo: true,
+              titulo: x.temaDelDia
+                ? x.temaDelDia
+                : x.motivoSinDictar
+                ? 'MOTIVO POR EL CUAL NO SE DICTÓ LA CLASE: ' + x.motivoSinDictar
+                : 'SIN DEFINIR',
+              ...comisiones,
+            };
+            return unCalendario;
+          });
           this.cargandoTemas = false;
         },
         (error) => {
@@ -406,7 +512,7 @@ export class PlanillaTallerAdministrarComponent implements OnInit {
   }
   abrirModalParaTomarAsistencias() {
     const dialogRef = this._dialog.open(TomarAsistenciaModalComponent, {
-      data: {isMobile:this.isMobile, planillaTaller: this.planillaTaller, alumnos: this.alumnos },
+      data: { isMobile: this.isMobile, planillaTaller: this.planillaTaller, alumnos: this.alumnos },
     });
 
     dialogRef.afterClosed().subscribe((resultado) => {

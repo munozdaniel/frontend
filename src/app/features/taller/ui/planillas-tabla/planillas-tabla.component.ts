@@ -36,6 +36,7 @@ export class PlanillasTablaComponent implements OnInit, OnChanges {
   @Input() cargando: boolean;
   columnas = [
     'planillaTallerNro',
+    'turno',
     'cicloLectivo',
     'fechaInicio',
     'bimestre',
@@ -80,6 +81,7 @@ export class PlanillasTablaComponent implements OnInit, OnChanges {
 
         this.columnas = [
           'planillaTallerNro',
+          'turno',
           'cicloLectivo',
           'fechaInicio',
           'bimestre',

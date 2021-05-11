@@ -67,7 +67,7 @@ export class PlanillaAgregarComponent implements OnInit {
         cicloLectivo: evento.cicloLectivo, // set en el back
         activo: true,
       };
-      
+
       this.guardarPlanillaTaller(evento);
     }
   }

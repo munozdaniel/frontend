@@ -2,6 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { ICalendario } from 'app/models/interface/iCalendario';
 import { ICicloLectivo } from 'app/models/interface/iCicloLectivo';
+import { IPlanillaTaller } from 'app/models/interface/iPlanillaTaller';
 import { environment } from 'environments/environment';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { shareReplay } from 'rxjs/operators';
@@ -18,6 +19,18 @@ export class CalendarioService {
     const url = this.url + query;
 
     return this.http.get<any>(url);
+  }
+  obtenerCalendarioTallerPorPlanilla(planillaTaller: IPlanillaTaller): Observable<ICalendario[]> {
+    const query = `calendario/por-planilla`;
+    const url = this.url + query;
+
+    return this.http.post<any>(url, { planillaTaller });
+  }
+  obtenerCalendarioAulaPorPlanilla(planillaTaller: IPlanillaTaller, dias: string[]): Observable<ICalendario[]> {
+    const query = `calendario/por-planilla`;
+    const url = this.url + query;
+
+    return this.http.post<any>(url, { planillaTaller });
   }
   obtenerCalendario(ciclo: number): Observable<ICalendario[]> {
     const query = `calendario`;

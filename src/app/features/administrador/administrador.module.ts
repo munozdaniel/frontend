@@ -38,5 +38,6 @@ export function momentAdapterFactory() {
     DesignSharedModule,
     CalendarModule.forRoot({ provide: DateAdapter, useFactory: momentAdapterFactory }),
   ],
+  exports: [CalendarHeaderComponent],
 })
 export class AdministradorModule {}

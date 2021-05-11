@@ -18,7 +18,7 @@ export interface IPlanillaTaller {
   fechaFinalizacion: Date;
   observacion?: string;
   bimestre: string;
-
+  tipoCalendario?: 'POR COMISION' | 'PERSONALIZADO';
   fechaCreacion?: Date;
   fechaModificacion?: Date;
   activo: boolean;

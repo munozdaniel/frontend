@@ -2,7 +2,7 @@ import { ICicloLectivo } from './iCicloLectivo';
 
 export interface ICalendario {
   _id?: number;
-  id_calendario: number; // para migrar
+  id_calendario?: number; // para migrar
   fecha: Date;
   cicloLectivo: ICicloLectivo;
   comisionA: number;
@@ -16,4 +16,6 @@ export interface ICalendario {
 
   fechaCreacion?: Date;
   activo: boolean;
+  //
+  titulo?: string;
 }

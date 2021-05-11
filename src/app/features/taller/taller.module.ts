@@ -38,6 +38,9 @@ import { SeguimientoFormComponent } from './ui/seguimiento-form/seguimiento-form
 import { FichaAlumnoDetalleComponent } from './containers/ficha-alumno-detalle/ficha-alumno-detalle.component';
 import { InformesComponent } from './containers/informes/informes.component';
 import { InasistenciasAlumnosComponent } from './containers/inasistencias-alumnos/inasistencias-alumnos.component';
+import { PlanillaCalendarioComponent } from './ui/planilla-calendario/planilla-calendario.component';
+import { CalendarModule, DateAdapter } from 'angular-calendar';
+import { AdministradorModule, momentAdapterFactory } from '../administrador/administrador.module';
 
 @NgModule({
   declarations: [
@@ -76,7 +79,15 @@ import { InasistenciasAlumnosComponent } from './containers/inasistencias-alumno
     FichaAlumnoDetalleComponent,
     InformesComponent,
     InasistenciasAlumnosComponent,
+    PlanillaCalendarioComponent,
   ],
-  imports: [CommonModule, TallerRoutingModule, SharedModule, DesignSharedModule],
+  imports: [
+    CommonModule,
+    TallerRoutingModule,
+    SharedModule,
+    DesignSharedModule,
+    CalendarModule.forRoot({ provide: DateAdapter, useFactory: momentAdapterFactory }),
+    AdministradorModule,
+  ],
 })
 export class TallerModule {}
