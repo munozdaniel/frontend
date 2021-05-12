@@ -77,6 +77,10 @@ export class PlanillaDetalleCalificacionesComponent implements OnInit, OnChanges
       }
     }
     if (changes.calificaciones && changes.calificaciones.currentValue) {
+      this.totalCalificaciones = 0;
+      this.totalPromedios = 0;
+      this.promedio = null;
+      this.promedioFinal = null;
       this.dataSourceCalificacion.data = this.calificaciones;
       if (this.calificaciones.length > 0) {
         let suma = 0;
@@ -85,10 +89,11 @@ export class PlanillaDetalleCalificacionesComponent implements OnInit, OnChanges
         this.calificaciones.forEach((x) => {
           if (x.promedia) {
             this.totalPromedios += 1;
+            suma += x.promedioGeneral;
           }
-          suma += x.promedioGeneral;
         });
-        this.promedio = (suma / this.totalCalificaciones).toFixed(2);
+        // this.promedio = (suma / this.totalCalificaciones).toFixed(2);
+        this.promedio = (suma / this.totalPromedios).toFixed(2);
         this.promedioFinal = (Math.ceil(Number(this.promedio) * 2) / 2).toFixed(2);
       }
     }

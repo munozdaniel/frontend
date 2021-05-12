@@ -25,26 +25,24 @@ import Swal from 'sweetalert2';
         fxLayout="row wrap"
       >
         <div fxLayout="column" class="w-100-p">
-          <mat-accordion class="mb-12 border">
+          <!-- <mat-accordion class="mb-12 border">
             <mat-expansion-panel>
               <mat-expansion-panel-header>
                 <mat-panel-title> Información </mat-panel-title>
                 <mat-panel-description> Profesor/Alumno </mat-panel-description>
               </mat-expansion-panel-header>
               <div fxLayout="column" class="w-100-p">
-                <!-- Profesor -->
                 <mat-form-field appearance="outline" fxFlex="100">
                   <mat-label>Profesor/a</mat-label>
                   <input matInput class="" readonly formControlName="profesor" />
                 </mat-form-field>
-                <!-- Alumno -->
                 <mat-form-field appearance="outline" fxFlex="100">
                   <mat-label>Alumno/a</mat-label>
                   <input matInput class="" readonly formControlName="alumno" />
                 </mat-form-field>
               </div>
             </mat-expansion-panel>
-          </mat-accordion>
+          </mat-accordion> -->
 
           <!-- tipoExame ============================= -->
           <mat-form-field appearance="outline" fxFlex.gt-xs="45" fxFlex.xs="100">
@@ -170,6 +168,7 @@ export class CalificacionFormModalComponent implements OnInit, OnDestroy {
         text: 'Verifique de haber ingresado todos los datos requeridos en el formulario de calificacion.',
         icon: 'error',
       });
+      this.form.markAllAsTouched();
       return;
     }
     this.cargando = true;

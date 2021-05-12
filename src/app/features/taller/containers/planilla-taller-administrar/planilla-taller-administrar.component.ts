@@ -658,6 +658,7 @@ export class PlanillaTallerAdministrarComponent implements OnInit {
     }
     const dialogRef = this._dialog.open(CalificacionFormModalComponent, {
       data: { planillaTaller: this.planillaTaller, alumno: this.alumnoSeleccionado },
+      width: '30%',
     });
 
     dialogRef.afterClosed().subscribe((resultado) => {
@@ -685,6 +686,7 @@ export class PlanillaTallerAdministrarComponent implements OnInit {
     }
     const dialogRef = this._dialog.open(CalificacionFormModalComponent, {
       data: { calificacion: evento, planillaTaller: this.planillaTaller, alumno: this.alumnoSeleccionado },
+      width: '30%',
     });
 
     dialogRef.afterClosed().subscribe((resultado) => {
