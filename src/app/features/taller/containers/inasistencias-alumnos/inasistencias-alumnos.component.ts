@@ -5,6 +5,7 @@ import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { AlumnoService } from 'app/core/services/alumno.service';
 import { AsistenciaService } from 'app/core/services/asistencia.service';
 import { IAlumno } from 'app/models/interface/iAlumno';
+import * as moment from 'moment';
 import { of } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 import Swal from 'sweetalert2';
@@ -19,23 +20,30 @@ import Swal from 'sweetalert2';
           <h1 [@animate]="{ value: '*', params: { x: '50px' } }" class="px-12">{{ titulo }}</h1>
           <mat-spinner *ngIf="cargando" matSuffix class="ml-10" diameter="20"></mat-spinner>
         </div>
-        <form
-          *ngIf="form"
-          [formGroup]="form"
-          fxLayout="row wrap"
-          fxLayoutAlign.xs="center start"
-          fxLayoutAlign.gt-xs="start baseline"
-          fxLayoutGap.gt-xs="10px"
-          (ngSubmit)="buscarInasistencias()"
-        >
-          <mat-form-field appearance="outline" fxFlex.xs="100">
-            <mat-label>Fecha</mat-label>
-            <input matInput [matDatepicker]="picker" formControlName="fecha" />
-            <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-            <mat-datepicker #picker></mat-datepicker>
-            <mat-error *ngIf="form.controls.fecha.hasError('required')"> Este campo es requerido. </mat-error>
-          </mat-form-field>
-          <button mat-raised-button color="primary"><mat-icon>search</mat-icon> Buscar</button>
+        <form *ngIf="form" [formGroup]="form" fxLayout="row" fxLayoutAlign="center start" (ngSubmit)="buscarInasistencias()">
+          <div fxLayout="column">
+            <div fxLayout="row wrap" fxLayoutAlign.xs="center start" fxLayoutAlign.gt-xs="start baseline" fxLayoutGap.gt-xs="10px">
+              <mat-form-field appearance="outline" fxFlex.xs="100">
+                <mat-label>Fecha Desde </mat-label>
+                <input matInput [matDatepicker]="picker" formControlName="fechaDesde" />
+                <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                <mat-datepicker #picker></mat-datepicker>
+                <mat-error *ngIf="form.controls.fechaDesde.hasError('required')"> Este campo es requerido. </mat-error>
+              </mat-form-field>
+              <mat-form-field *ngIf="rangoHabilitado" appearance="outline" fxFlex.xs="100">
+                <mat-label>Fecha Hasta</mat-label>
+                <input matInput [matDatepicker]="pickerHasta" formControlName="fechaHasta" />
+                <mat-datepicker-toggle matSuffix [for]="pickerHasta"></mat-datepicker-toggle>
+                <mat-datepicker #pickerHasta></mat-datepicker>
+                <mat-error *ngIf="form.controls.fechaHasta.hasError('required')"> Este campo es requerido. </mat-error>
+              </mat-form-field>
+              <mat-error *ngIf="form.errors?.fechas">{{ form.errors.fechas }}</mat-error>
+            </div>
+            <mat-checkbox class="mb-12" (click)="habilitarRango()">Buscar por rango</mat-checkbox>
+            <button *ngIf="!form.errors?.fechas" [disabled]="form.invalid" mat-raised-button color="primary">
+              <mat-icon>search</mat-icon> Buscar
+            </button>
+          </div>
         </form>
       </div>
       <!--  -->
@@ -68,13 +76,58 @@ export class InasistenciasAlumnosComponent implements OnInit {
   alumnos: IAlumno[];
   alumnosNoRegistrados: IAlumno[] = [];
   form: FormGroup;
+  rangoHabilitado = false;
   constructor(private _fb: FormBuilder, private _asistenciaService: AsistenciaService, private _alumnoService: AlumnoService) {}
 
   ngOnInit(): void {
     const today = new Date();
-    this.form = this._fb.group({
-      fecha: [today, Validators.required],
-    });
+    const horasD = '00:00';
+    const horasH = '23:59';
+    this.form = this._fb.group(
+      {
+        fechaDesde: [today, Validators.required],
+        fechaHasta: [today],
+        horaDesde: [horasD, Validators.required],
+        horaHasta: [horasH, Validators.required],
+      },
+      {
+        validator: this.restriccionFecha('fechaDesde', 'fechaHasta', 'horaDesde', 'horaHasta'),
+      }
+    );
+  }
+  restriccionFecha(desde: string, hasta: string, horaDesde: string, horaHasta: string) {
+    return (group: FormGroup): { [key: string]: any } => {
+      let result = {};
+      const hD = '00:00';
+      const hH = '23:59';
+      const horasD = group.controls[horaDesde].value ? group.controls[horaDesde].value.toString().split(':') : hD.split(':');
+      const horasH = group.controls[horaHasta].value ? group.controls[horaHasta].value.toString().split(':') : hH.split(':');
+      if (this.rangoHabilitado) {
+        if (group.controls[desde].value && group.controls[hasta].value) {
+          let d = moment(group.controls[desde].value).clone().hour(horasD[0]).minutes(horasD[1]);
+          let h = moment(group.controls[hasta].value).clone().hour(horasH[0]).minutes(horasH[1]);
+          if (h.diff(d) < 0) {
+            return {
+              fechas: '* La Fecha Hasta no puede ser menor a la Fecha Desde',
+            };
+          }
+        } else {
+          result = {
+            fechas: '* Ingrese fechas válidas',
+          };
+        }
+      }
+      return result;
+    };
+  }
+  habilitarRango() {
+    this.rangoHabilitado = !this.rangoHabilitado;
+    if (this.rangoHabilitado) {
+      this.form.controls.fechaHasta.setValidators([Validators.required]);
+    } else {
+      this.form.controls.fechaHasta.setValidators([]);
+      this.form.controls.fechaHasta.setValue(null);
+    }
   }
   buscarInasistencias() {
     this.alumnosNoRegistrados = [];
@@ -89,7 +142,7 @@ export class InasistenciasAlumnosComponent implements OnInit {
     }
     //   Buscar todas las plantillas
     this._asistenciaService
-      .buscarInasistencias(this.form.controls.fecha.value)
+      .buscarInasistencias(this.form.controls.fechaDesde.value, this.form.controls.fechaHasta.value)
       .pipe(untilDestroyed(this))
       .subscribe(
         (datos: any) => {
@@ -112,8 +165,7 @@ export class InasistenciasAlumnosComponent implements OnInit {
     });
     Swal.fire({
       title: '¿Está seguro de continuar?',
-      html:
-        'Está a punto de enviar un email informando la inasistencia de los alumnos. Como criterio se utilizará al primer tutor/padre/madre que tenga un email registrado.',
+      html: 'Está a punto de enviar un email informando la inasistencia de los alumnos. Como criterio se utilizará al primer tutor/padre/madre que tenga un email registrado.',
       icon: 'warning',
       focusConfirm: false,
       showCancelButton: true,
