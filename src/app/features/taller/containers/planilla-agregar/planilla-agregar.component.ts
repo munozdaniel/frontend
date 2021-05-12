@@ -65,6 +65,8 @@ export class PlanillaAgregarComponent implements OnInit {
         asignatura: evento.asignatura,
         curso: evento.curso, // set en el back
         cicloLectivo: evento.cicloLectivo, // set en el back
+        tipoCalendario: evento.tipoCalendario,
+        diasHabilitados: evento.diasHabilitados,
         activo: true,
       };
 

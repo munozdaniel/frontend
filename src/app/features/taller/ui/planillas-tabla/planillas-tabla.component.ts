@@ -2,15 +2,11 @@ import { trigger, state, style, transition, animate } from '@angular/animations'
 import { BreakpointObserver, Breakpoints, BreakpointState, MediaMatcher } from '@angular/cdk/layout';
 import {
   Component,
-  ElementRef,
   Input,
   OnInit,
-  Output,
   ViewChild,
-  EventEmitter,
   OnChanges,
   SimpleChanges,
-  AfterViewInit,
   ChangeDetectorRef,
 } from '@angular/core';
 import { MatTableDataSource, MatSort, MatPaginator, PageEvent } from '@angular/material';

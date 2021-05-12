@@ -57,7 +57,11 @@ import { TemaFormModalComponent } from '../tema-form-modal/tema-form-modal.compo
         <mat-tab-group [selectedIndex]="indiceTab" (selectedTabChange)="controlTabs($event)">
           <mat-tab label="General">
             <!-- Componente Smart podria ser UI pero no D: -->
-            <app-planilla-editar [cargando]="cargando" [planillaTaller]="planillaTaller"></app-planilla-editar>
+            <app-planilla-editar
+              [cargando]="cargando"
+              [planillaTaller]="planillaTaller"
+              (retPlanillaActualizada)="setPlanillaActualizada($event)"
+            ></app-planilla-editar>
           </mat-tab>
 
           <mat-tab label="Asistencias">
@@ -329,6 +333,7 @@ export class PlanillaTallerAdministrarComponent implements OnInit {
         }
         break;
       case 4:
+        console.log('this.calendario', this.calendario);
         this.titulo = 'Calendario ';
         if (!this.calendario) {
           this.setBuscarCalendario();
@@ -346,24 +351,26 @@ export class PlanillaTallerAdministrarComponent implements OnInit {
         break;
     }
   }
-  //   Calendario
+  //   Calendario (Al buscar el calendario se encuentran los temas y viceversa)
   setBuscarCalendario() {
-    // if (this.planillaTaller.planillaTallerId) {
-    //   this.buscarFechasDeLosTemas();
-    // } else {
-    //   if (this.planillaTaller.asignatura.tipoAsignatura === 'TALLER') {
-    //     this.obtenerCalendarioTallerPorPlanilla();
-    //   } else {
-    //     this.obtenerCalendarioAulaPorDiasYPlanilla();
-    //   }
-    // }
-    this.buscarFechasDeLosTemas();
+    console.log('this.planillaTaller.tipoCalendario', this.planillaTaller.tipoCalendario);
+    if (!this.planillaTaller.tipoCalendario) {
+      // No tiene asignado un tipo de calendario, se formara el calendario con las fechas creadas en los temas.
+      this.buscarFechasDeLosTemas();
+    } else {
+      if (this.planillaTaller.tipoCalendario === 'POR COMISION') {
+        //   Obtiene el calendario por la comision (seria calendario de taller)
+        this.obtenerCalendarioTallerPorPlanilla();
+      } else {
+        //   Es un calendario personalizado, busca todos los dias seleccionados entre las fechas de ini y fin. Y los temas que contengan esas fechas
+        this.obtenerCalendarioAulaPorDiasYPlanilla();
+      }
+    }
   }
   buscarFechasDeLosTemas() {
+    // nno hace falta preguntar porque si no existe el calendario entonces no existen los temas y viceversa
     if (!this.temas || this.temas.length < 1) {
       this.obtenerLibroDeTemas();
-    } else {
-      console.log('deberia existir el cal', this.calendario);
     }
   }
   obtenerCalendarioTallerPorPlanilla() {
@@ -372,6 +379,7 @@ export class PlanillaTallerAdministrarComponent implements OnInit {
       .pipe(untilDestroyed(this))
       .subscribe(
         (datos) => {
+          console.log('DAtos temas de la plantilla', datos);
           this.calendario = [...datos];
         },
         (error) => {
@@ -380,7 +388,7 @@ export class PlanillaTallerAdministrarComponent implements OnInit {
       );
   }
   obtenerCalendarioAulaPorDiasYPlanilla() {}
-  //   Temas
+  // Temas (Al buscar el calendario se encuentra el calendario y viceversa)
   obtenerLibroDeTemas() {
     this.cargandoTemas = true;
     this._temaService
@@ -923,5 +931,8 @@ export class PlanillaTallerAdministrarComponent implements OnInit {
         }
       }
     });
+  }
+  setPlanillaActualizada(evento) {
+    this.calendario = this.temas = null;
   }
 }

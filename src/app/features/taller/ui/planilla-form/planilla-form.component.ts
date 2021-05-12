@@ -101,6 +101,11 @@ export class PlanillaFormComponent implements OnInit, OnChanges {
       this.form.controls.division.setValue(this.planillaTaller.curso.division.toString());
       this.form.controls.asignatura.setValue(this.planillaTaller.asignatura);
       this.form.controls.profesor.setValue(this.planillaTaller.profesor);
+      this.form.controls.diasHabilitados.setValue(this.planillaTaller.diasHabilitados);
+      this.form.controls.tipoCalendario.setValue(this.planillaTaller.tipoCalendario);
+      if (this.planillaTaller.tipoCalendario === 'PERSONALIZADO') {
+        this.personalizarDias = true;
+      }
     }
   }
   _configurarProfesoresAutocomplete(profesoresList: IProfesor[]) {

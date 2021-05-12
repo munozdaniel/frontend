@@ -19,6 +19,7 @@ export interface IPlanillaTaller {
   observacion?: string;
   bimestre: string;
   tipoCalendario?: 'POR COMISION' | 'PERSONALIZADO';
+  diasHabilitados: string[], // Lunes,Martes,Miercoles... (En ingles)
   fechaCreacion?: Date;
   fechaModificacion?: Date;
   activo: boolean;

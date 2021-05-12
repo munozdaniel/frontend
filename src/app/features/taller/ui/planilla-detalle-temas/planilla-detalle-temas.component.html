@@ -14,7 +14,12 @@
         <ng-container matColumnDef="fecha">
           <th mat-header-cell *matHeaderCellDef mat-sort-header>Fecha</th>
           <td mat-cell *matCellDef="let row">
-            <div *ngIf="!isMobile" fxLayout="row" fxLayoutAlign.xs="start start">{{ row.fecha | date: 'dd/MM/yyyy':'GMT' }}</div>
+            <div *ngIf="!isMobile" fxLayout="column" fxLayoutAlign.xs="start start">
+              <small>{{ row?.fecha | fechaADia }}</small>
+              <span>
+                {{ row.fecha | date: 'dd/MM/yyyy':'GMT' }}
+              </span>
+            </div>
             <div *ngIf="isMobile" fxLayout="column">
               <span>{{ row.fecha | date: 'dd/MM':'GMT' }}</span>
               <span>{{ row.fecha | date: 'yyyy':'GMT' }}</span>
@@ -136,7 +141,7 @@
                     fxLayout="row"
                     fxLayoutAlign="start center"
                     *ngIf="!element.temasProximaClase"
-                    class=" "
+                    class=""
                     matTooltip="NO REGISTRA DATOS"
                   >
                     <!-- <span
@@ -160,7 +165,7 @@
                     fxLayout="row"
                     fxLayoutAlign="start center"
                     *ngIf="!element.caracterClase"
-                    class=" "
+                    class=""
                     matTooltip="NO REGISTRA DATOS"
                   >
                     <!-- <span

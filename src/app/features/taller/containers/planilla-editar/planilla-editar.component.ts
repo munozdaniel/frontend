@@ -29,7 +29,7 @@ import Swal from 'sweetalert2';
 export class PlanillaEditarComponent implements OnInit, OnChanges {
   @Input() cargando: boolean;
   @Input() planillaTaller: IPlanillaTaller;
-
+  @Output() retPlanillaActualizada = new EventEmitter<boolean>();
   profesores$: Observable<IProfesor[]>;
   asignaturas$: Observable<IAsignatura[]>;
 
@@ -68,6 +68,7 @@ export class PlanillaEditarComponent implements OnInit, OnChanges {
   }
   setPlanilla(evento) {
     if (evento) {
+      console.log('evento', evento);
       const anio = moment(evento.fechaInicio).utc().format('YYYY');
       const planilla: any = {
         ...evento,
@@ -81,9 +82,10 @@ export class PlanillaEditarComponent implements OnInit, OnChanges {
         division: Number(evento.division), // set en el back
         cursoNro: Number(evento.curso), // set en el back
         anio: Number(anio), // set en el back
+        tipoCalendario: evento.tipoCalendario,
+        diasHabilitados: evento.diasHabilitados,
         activo: true,
       };
-
 
       this.actualizarPlanillaTaller(planilla);
     }
@@ -121,6 +123,7 @@ export class PlanillaEditarComponent implements OnInit, OnChanges {
             text: 'La planilla de taller ha sido actualizada',
             icon: 'success',
           });
+          this.retPlanillaActualizada.emit(true);
         } else {
           Swal.fire({
             title: 'Oops! Ocurrió un error',
