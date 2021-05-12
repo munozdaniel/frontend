@@ -100,35 +100,15 @@ import Swal from 'sweetalert2';
           </mat-form-field>
         </div>
       </form>
-      <div fxLayout="row wrap" fxLayoutAlign="space-between start" class="mt-12">
-        <button mat-raised-button ngClass.xs="" class="mt-8 w-100-p" fxFlex.xs="100" (click)="cerrar()" color="warn">Cerrar</button>
-        <button
-          *ngIf="!isUpdate"
-          mat-raised-button
-          [disabled]="form.invalid"
-          ngClass.xs=""
-          class="mt-8 w-100-p"
-          fxFlex.xs="100"
-          (click)="guardar()"
-          color="primary"
-          [disabled]="cargando"
-        >
-          Guardar
-        </button>
-        <button
-          *ngIf="isUpdate"
-          mat-raised-button
-          [disabled]="form.invalid"
-          ngClass.xs=""
-          class="mt-8 w-100-p"
-          fxFlex.xs="100"
-          (click)="actualizar()"
-          [disabled]="cargando"
-          color="primary"
-        >
-          Actualizar
-        </button>
-      </div>
+    </div>
+    <div mat-dialog-actions fxLayout="row wrap" fxLayoutAlign="space-between start" class=" mt-12 w-100-p">
+      <button mat-raised-button (click)="cerrar()" color="warn">Cerrar</button>
+      <button *ngIf="!isUpdate" mat-raised-button [disabled]="form.invalid" (click)="guardar()" color="primary" [disabled]="cargando">
+        Guardar
+      </button>
+      <button *ngIf="isUpdate" mat-raised-button [disabled]="form.invalid" (click)="actualizar()" [disabled]="cargando" color="primary">
+        Actualizar
+      </button>
     </div>
   `,
   styles: [],
