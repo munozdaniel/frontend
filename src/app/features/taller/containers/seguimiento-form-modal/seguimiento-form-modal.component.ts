@@ -1,8 +1,9 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
+import { MatDialogRef, MAT_DIALOG_DATA, throwToolbarMixedModesError } from '@angular/material';
 import { designAnimations } from '@design/animations';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
+import { CicloLectivoService } from 'app/core/services/ciclo-lectivo.service';
 import { SeguimientoAlumnoService } from 'app/core/services/seguimientoAlumno.service';
 import { DescripcionSeguimiento } from 'app/models/constants/descripcion-seguimiento.const';
 import { IAlumno } from 'app/models/interface/iAlumno';
@@ -151,18 +152,20 @@ export class SeguimientoFormModalComponent implements OnInit {
   constructor(
     private _fb: FormBuilder,
     private _seguimientoAlumnoService: SeguimientoAlumnoService,
+    private _cicloLectivoService: CicloLectivoService,
     public dialogRef: MatDialogRef<SeguimientoFormModalComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any
   ) {
+    console.log('data', data);
     if (data.planillaTaller) {
       this.planillaTaller = data.planillaTaller;
       this.minimo = new Date(this.planillaTaller.fechaInicio);
       this.maximo = new Date(this.planillaTaller.fechaFinalizacion);
       this.cicloLectivo = this.planillaTaller.cicloLectivo;
     }
-    if (data.ciclosLectivos) {
-      this.ciclosLectivos = data.ciclosLectivos;
-    }
+    // if (data.ciclosLectivos) {
+    //   this.ciclosLectivos = data.ciclosLectivos;
+    // }
 
     this.alumno = data.alumno;
     if (data.seguimiento) {
@@ -172,6 +175,7 @@ export class SeguimientoFormModalComponent implements OnInit {
   }
   ngOnDestroy(): void {}
   ngOnInit(): void {
+    this.obtenerCiclos();
     const fechaHoy = moment();
     let f = fechaHoy;
     if (this.planillaTaller && !fechaHoy.isSameOrBefore(moment.utc(this.planillaTaller.fechaFinalizacion))) {
@@ -205,6 +209,19 @@ export class SeguimientoFormModalComponent implements OnInit {
       this.form.get('cicloLectivo').clearValidators();
       this.form.get('cicloLectivo').updateValueAndValidity();
     }
+  }
+  obtenerCiclos() {
+    this._cicloLectivoService
+      .obtenerCiclosLectivos()
+      .pipe(untilDestroyed(this))
+      .subscribe(
+        (datos) => {
+          this.ciclosLectivos = datos;
+        },
+        (error) => {
+          console.log('[ERROR]', error);
+        }
+      );
   }
   cerrar(): void {
     this.dialogRef.close();
