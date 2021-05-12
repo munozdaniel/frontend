@@ -41,7 +41,6 @@ import { TemaFormModalComponent } from '../tema-form-modal/tema-form-modal.compo
             <h1 [@animate]="{ value: '*', params: { x: '50px' } }" class="px-12">{{ titulo }}</h1>
             <mat-spinner *ngIf="cargando" matSuffix class="ml-10" diameter="20"></mat-spinner>
           </div>
-          {{ planillaTaller | json }}
           <div *ngIf="alumnoSeleccionado" fxFlex.xs="100">
             <h3
               [@animate]="{ value: '*', params: { x: '50px' } }"
@@ -283,20 +282,20 @@ export class PlanillaTallerAdministrarComponent implements OnInit {
         break;
     }
   }
-  buscarTotalesPorPlanilla() {
-    this._planillaTallerService
-      .buscarTotalAsistenciaPorPlanilla(this.planillaId)
-      .pipe(untilDestroyed(this))
-      .subscribe(
-        (datos) => {
-          this.totalClases = datos.total;
-        },
-        (error) => {
-          console.log('[ERROR]', error);
-          this.cargandoAsistencias = false;
-        }
-      );
-  }
+  //   buscarTotalesPorPlanilla() {
+  //     this._planillaTallerService
+  //       .buscarTotalAsistenciaPorPlanilla(this.planillaId)
+  //       .pipe(untilDestroyed(this))
+  //       .subscribe(
+  //         (datos) => {
+  //           this.totalClases = datos.total;
+  //         },
+  //         (error) => {
+  //           console.log('[ERROR]', error);
+  //           this.cargandoAsistencias = false;
+  //         }
+  //       );
+  //   }
   controlTabs(evento) {
     this.indiceTab = evento.index;
     switch (evento.index) {
@@ -314,7 +313,7 @@ export class PlanillaTallerAdministrarComponent implements OnInit {
           this.setBuscarAsistenciaPorAlumno(this.alumnoSeleccionado);
         }
         if (!this.totalClases) {
-          this.buscarTotalesPorPlanilla();
+          this.obtenerClasesDetalle();
         }
         break;
       case 2:
@@ -329,14 +328,14 @@ export class PlanillaTallerAdministrarComponent implements OnInit {
       case 3:
         this.titulo = 'Libro de Temas del Profesor';
         if (!this.temas) {
-          this.obtenerLibroDeTemas();
+          this.obtenerClasesDetalle();
         }
         break;
       case 4:
         console.log('this.calendario', this.calendario);
         this.titulo = 'Calendario ';
         if (!this.calendario) {
-          this.setBuscarCalendario();
+          this.obtenerClasesDetalle();
         }
         break;
       case 5:
@@ -351,113 +350,134 @@ export class PlanillaTallerAdministrarComponent implements OnInit {
         break;
     }
   }
-  //   Calendario (Al buscar el calendario se encuentran los temas y viceversa)
-  setBuscarCalendario() {
-    console.log('this.planillaTaller.tipoCalendario', this.planillaTaller.tipoCalendario);
-    if (!this.planillaTaller.tipoCalendario) {
-      // No tiene asignado un tipo de calendario, se formara el calendario con las fechas creadas en los temas.
-      this.buscarFechasDeLosTemas();
-    } else {
-      if (this.planillaTaller.tipoCalendario === 'POR COMISION') {
-        //   Obtiene el calendario por la comision (seria calendario de taller)
-        this.obtenerCalendarioTallerPorPlanilla();
-      } else {
-        //   Es un calendario personalizado, busca todos los dias seleccionados entre las fechas de ini y fin. Y los temas que contengan esas fechas
-        this.obtenerCalendarioAulaPorDiasYPlanilla();
-      }
-    }
-  }
-  buscarFechasDeLosTemas() {
-    // nno hace falta preguntar porque si no existe el calendario entonces no existen los temas y viceversa
-    if (!this.temas || this.temas.length < 1) {
-      this.obtenerLibroDeTemas();
-    }
-  }
-  obtenerCalendarioTallerPorPlanilla() {
-    this._calendarioService
-      .obtenerCalendarioTallerPorPlanilla(this.planillaTaller)
-      .pipe(untilDestroyed(this))
-      .subscribe(
-        (datos) => {
-          console.log('DAtos temas de la plantilla', datos);
-          this.calendario = [...datos];
-        },
-        (error) => {
-          console.log('[ERROR]', error);
-        }
-      );
-  }
-  obtenerCalendarioAulaPorDiasYPlanilla() {}
-  // Temas (Al buscar el calendario se encuentra el calendario y viceversa)
-  obtenerLibroDeTemas() {
+  obtenerClasesDetalle() {
     this.cargandoTemas = true;
+    this.cargando = true;
     this._temaService
-      .obtenerTemasCalendario('TALLER', this.planillaId)
+      .obtenerTemasCalendario(this.planillaTaller._id)
       .pipe(untilDestroyed(this))
       .subscribe(
         (datos) => {
-          this.temas = [...datos.temasDelCalendario];
-          this.calendario = this.temas.map((x) => {
-            const comisiones = {
-              comisionA: 0,
-              comisionB: 0,
-              comisionC: 0,
-              comisionD: 0,
-              comisionE: 0,
-              comisionF: 0,
-              comisionG: 0,
-              comisionH: 0,
-            };
-            switch (this.planillaTaller.curso.comision) {
-              case 'A':
-                comisiones.comisionA = 1;
-                break;
-              case 'B':
-                comisiones.comisionB = 1;
-                break;
-              case 'C':
-                comisiones.comisionC = 1;
-                break;
-              case 'D':
-                comisiones.comisionD = 1;
-                break;
-              case 'E':
-                comisiones.comisionE = 1;
-                break;
-              case 'F':
-                comisiones.comisionF = 1;
-                break;
-              case 'G':
-                comisiones.comisionG = 1;
-                break;
-              case 'H':
-                comisiones.comisionH = 1;
-                break;
-
-              default:
-                break;
-            }
-            const unCalendario: ICalendario = {
-              fecha: x.fecha,
-              cicloLectivo: this.planillaTaller.cicloLectivo,
-              activo: true,
-              titulo: x.temaDelDia
-                ? x.temaDelDia
-                : x.motivoSinDictar
-                ? 'MOTIVO POR EL CUAL NO SE DICTÓ LA CLASE: ' + x.motivoSinDictar
-                : 'SIN DEFINIR',
-              ...comisiones,
-            };
-            return unCalendario;
-          });
+          this.temas = [...datos.temas];
+          this.calendario = [...datos.calendario];
+          this.totalClases = datos.totalClases;
+          this.cargando = false;
           this.cargandoTemas = false;
         },
         (error) => {
-          this.cargandoTemas = false;
           console.log('[ERROR]', error);
+          this.cargando = false;
+          this.cargandoTemas = false;
         }
       );
   }
+  //   Calendario (Al buscar el calendario se encuentran los temas y viceversa)
+  //   setBuscarCalendario() {
+  //     console.log('this.planillaTaller.tipoCalendario', this.planillaTaller.tipoCalendario);
+  //     if (!this.planillaTaller.tipoCalendario) {
+  //       // No tiene asignado un tipo de calendario, se formara el calendario con las fechas creadas en los temas.
+  //       this.buscarFechasDeLosTemas();
+  //     } else {
+  //       if (this.planillaTaller.tipoCalendario === 'POR COMISION') {
+  //         //   Obtiene el calendario por la comision (seria calendario de taller)
+  //         this.obtenerCalendarioTallerPorPlanilla();
+  //       } else {
+  //         //   Es un calendario personalizado, busca todos los dias seleccionados entre las fechas de ini y fin. Y los temas que contengan esas fechas
+  //         this.obtenerCalendarioAulaPorDiasYPlanilla();
+  //       }
+  //     }
+  //   }
+  //   buscarFechasDeLosTemas() {
+  //     // nno hace falta preguntar porque si no existe el calendario entonces no existen los temas y viceversa
+  //     if (!this.temas || this.temas.length < 1) {
+  //       this.obtenerLibroDeTemas();
+  //     }
+  //   }
+  //   obtenerCalendarioTallerPorPlanilla() {
+  //     this._calendarioService
+  //       .obtenerCalendarioTallerPorPlanilla(this.planillaTaller)
+  //       .pipe(untilDestroyed(this))
+  //       .subscribe(
+  //         (datos) => {
+  //           console.log('DAtos temas de la plantilla', datos);
+  //           this.calendario = [...datos];
+  //         },
+  //         (error) => {
+  //           console.log('[ERROR]', error);
+  //         }
+  //       );
+  //   }
+  //   obtenerCalendarioAulaPorDiasYPlanilla() {}
+  // Temas (Al buscar el calendario se encuentra el calendario y viceversa)
+  //   obtenerLibroDeTemas() {
+  //     this.cargandoTemas = true;
+  //     this._temaService
+  //       .obtenerTemasCalendario('TALLER', this.planillaId)
+  //       .pipe(untilDestroyed(this))
+  //       .subscribe(
+  //         (datos) => {
+  //           this.temas = [...datos.temasDelCalendario];
+  //           this.calendario = this.temas.map((x) => {
+  //             const comisiones = {
+  //               comisionA: 0,
+  //               comisionB: 0,
+  //               comisionC: 0,
+  //               comisionD: 0,
+  //               comisionE: 0,
+  //               comisionF: 0,
+  //               comisionG: 0,
+  //               comisionH: 0,
+  //             };
+  //             switch (this.planillaTaller.curso.comision) {
+  //               case 'A':
+  //                 comisiones.comisionA = 1;
+  //                 break;
+  //               case 'B':
+  //                 comisiones.comisionB = 1;
+  //                 break;
+  //               case 'C':
+  //                 comisiones.comisionC = 1;
+  //                 break;
+  //               case 'D':
+  //                 comisiones.comisionD = 1;
+  //                 break;
+  //               case 'E':
+  //                 comisiones.comisionE = 1;
+  //                 break;
+  //               case 'F':
+  //                 comisiones.comisionF = 1;
+  //                 break;
+  //               case 'G':
+  //                 comisiones.comisionG = 1;
+  //                 break;
+  //               case 'H':
+  //                 comisiones.comisionH = 1;
+  //                 break;
+
+  //               default:
+  //                 break;
+  //             }
+  //             const unCalendario: ICalendario = {
+  //               fecha: x.fecha,
+  //               cicloLectivo: this.planillaTaller.cicloLectivo,
+  //               activo: true,
+  //               titulo: x.temaDelDia
+  //                 ? x.temaDelDia
+  //                 : x.motivoSinDictar
+  //                 ? 'MOTIVO POR EL CUAL NO SE DICTÓ LA CLASE: ' + x.motivoSinDictar
+  //                 : 'SIN DEFINIR',
+  //               ...comisiones,
+  //             };
+  //             return unCalendario;
+  //           });
+  //           this.cargandoTemas = false;
+  //         },
+  //         (error) => {
+  //           this.cargandoTemas = false;
+  //           console.log('[ERROR]', error);
+  //         }
+  //       );
+  //   }
   //   Output Asistencias
   setBuscarAsistenciaPorAlumno(alumno: IAlumno) {
     this.alumnoSeleccionado = alumno; // cuando viene por output se actualiza
@@ -725,7 +745,8 @@ export class PlanillaTallerAdministrarComponent implements OnInit {
 
     dialogRef.afterClosed().subscribe((resultado) => {
       if (resultado) {
-        this.obtenerLibroDeTemas();
+        this.obtenerClasesDetalle();
+        // this.obtenerLibroDeTemas();
       }
     });
   }
@@ -736,7 +757,9 @@ export class PlanillaTallerAdministrarComponent implements OnInit {
 
     dialogRef.afterClosed().subscribe((resultado) => {
       if (resultado) {
-        this.obtenerLibroDeTemas();
+        this.obtenerClasesDetalle();
+
+        // this.obtenerLibroDeTemas();
       }
     });
   }
@@ -773,7 +796,8 @@ export class PlanillaTallerAdministrarComponent implements OnInit {
             text: 'El tema ha sido actualizado correctamente.',
             icon: 'success',
           });
-          this.obtenerLibroDeTemas();
+          this.obtenerClasesDetalle();
+          //   this.obtenerLibroDeTemas();
         } else {
           Swal.fire({
             title: 'Oops! Ocurrió un error',
@@ -785,43 +809,43 @@ export class PlanillaTallerAdministrarComponent implements OnInit {
     });
   }
   setCargarLista(event) {
-    this.obtenerLibroDeTemas();
+    this.obtenerClasesDetalle();
   }
-  setTemasCalendario(tipo: string) {
-    this.cargando = true;
-    this._temaService
-      .obtenerTemasCalendario(tipo, this.planillaId)
-      .pipe(untilDestroyed(this))
-      .subscribe(
-        (datos) => {
-          if (datos.status === 200) {
-            this.cargando = false;
-            const temasDelCalendario = [...datos.temasDelCalendario];
-            const merge = temasDelCalendario.map((x) => {
-              const index = this.temas.findIndex((t) => {
-                return moment.utc(t.fecha).isSame(moment.utc(x.fecha));
-              });
-              if (index === -1) {
-                return { ...x, incompleto: true };
-              } else {
-                return this.temas[index];
-              }
-            });
-            this.temas = [...merge];
-          } else {
-            Swal.fire({
-              title: '',
-              text: datos.message,
-              icon: 'error',
-            });
-          }
-        },
-        (error) => {
-          this.cargando = false;
-          console.log('[ERROR]', error);
-        }
-      );
-  }
+  //   setTemasCalendario(tipo: string) {
+  //     this.cargando = true;
+  //     this._temaService
+  //       .obtenerTemasCalendario(tipo, this.planillaId)
+  //       .pipe(untilDestroyed(this))
+  //       .subscribe(
+  //         (datos) => {
+  //           if (datos.status === 200) {
+  //             this.cargando = false;
+  //             const temasDelCalendario = [...datos.temasDelCalendario];
+  //             const merge = temasDelCalendario.map((x) => {
+  //               const index = this.temas.findIndex((t) => {
+  //                 return moment.utc(t.fecha).isSame(moment.utc(x.fecha));
+  //               });
+  //               if (index === -1) {
+  //                 return { ...x, incompleto: true };
+  //               } else {
+  //                 return this.temas[index];
+  //               }
+  //             });
+  //             this.temas = [...merge];
+  //           } else {
+  //             Swal.fire({
+  //               title: '',
+  //               text: datos.message,
+  //               icon: 'error',
+  //             });
+  //           }
+  //         },
+  //         (error) => {
+  //           this.cargando = false;
+  //           console.log('[ERROR]', error);
+  //         }
+  //       );
+  //   }
   //
   setBuscarSeguimientosPorAlumno(alumno: IAlumno) {
     this.alumnoSeleccionado = alumno; // cuando viene por output se actualiza

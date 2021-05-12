@@ -56,44 +56,18 @@ export class PlanillaCalendarioComponent implements OnInit, OnChanges {
   ngOnInit(): void {}
   setCalendario() {
     this.events = this.calendario.map((x) => {
-      const comision: any = this.retornarComision(x);
       const fecha = x.fecha.toString().split('T')[0]; // Esto para que no cambie la fecha al pasar a date
       return {
-        title: comision.title,
+        title: x.titulo,
         //   start: moment(fecha).utc().add(1, 'day').toDate(),
         start: moment(fecha).clone().toDate(),
-        color: comision.color,
+        color: { primary: x.color, secondary: 'red' },
         allDay: true,
       };
     });
     this.refresh.next();
   }
-  retornarComision(x: ICalendario) {
-    if (x.comisionA) {
-      return { title: x.titulo, color: 'rgb(0, 153, 255)' };
-    }
-    if (x.comisionB) {
-      return { title: x.titulo, color: 'rgb(0, 255, 106)' };
-    }
-    if (x.comisionC) {
-      return { title: x.titulo, color: 'rgb(187, 255, 0)' };
-    }
-    if (x.comisionD) {
-      return { title: x.titulo, color: 'rgb(255, 208, 0)' };
-    }
-    if (x.comisionE) {
-      return { title: x.titulo, color: 'rgb(255, 94, 0);' };
-    }
-    if (x.comisionF) {
-      return { title: x.titulo, color: 'rgb(255, 0, 0);' };
-    }
-    if (x.comisionG) {
-      return { title: x.titulo, color: 'rgb(255, 0, 128)' };
-    }
-    if (x.comisionH) {
-      return { title: x.titulo, color: 'rgb(55, 0, 255)' };
-    }
-  }
+  
   dateIsValid(date: Date): boolean {
     return date >= this.minDate && date <= this.maxDate;
   }

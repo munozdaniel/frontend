@@ -93,6 +93,7 @@ export class PlanillaTallerService {
 
     return this.http.get<any>(url);
   }
+//   NO SE DEBERIA USAR MAS, COMPROBAR
   buscarTotalAsistenciaPorPlanilla(planillaId: string): Observable<any> {
     const query = `planilla-taller/${planillaId}/total-asistencias`;
     const url = this.url + query;

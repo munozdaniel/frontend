@@ -18,4 +18,5 @@ export interface ICalendario {
   activo: boolean;
   //
   titulo?: string;
+  color?: string;
 }

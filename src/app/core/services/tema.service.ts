@@ -36,11 +36,11 @@ export class TemaService {
 
     return this.http.delete<any>(url);
   }
-  obtenerTemasCalendario(tipo: string, planillaId: string): Observable<any> {
+  obtenerTemasCalendario(planillaId: string): Observable<any> {
     const query = `tema/temas-calendario`;
     const url = this.url + query;
 
-    return this.http.post<any>(url, { tipo, planillaId });
+    return this.http.post<any>(url, { planillaId });
   }
   //   Informes
   informeTemasPorPlanillaTaller(planillaTaller: IPlanillaTaller): Observable<any> {
