@@ -65,7 +65,7 @@ export class AlumnosComponent implements OnInit {
   confirmarEliminar(unAlumno: IAlumno) {
     Swal.fire({
       title: '¿Está seguro de continuar?',
-      html: 'Está a punto de <strong>ELIMINAR</eliminar> el alumno',
+      html: 'Está a punto de <strong>ELIMINAR</strong> el alumno',
       icon: 'warning',
       focusConfirm: false,
       showCancelButton: true,
@@ -74,7 +74,7 @@ export class AlumnosComponent implements OnInit {
       cancelButtonText: 'Cancelar',
       showLoaderOnConfirm: true,
       preConfirm: () => {
-        return this._alumnoService.deshabilitarAlumno(unAlumno._id, !unAlumno.activo).pipe(
+        return this._alumnoService.toggleEstadoAlumno(unAlumno._id, !unAlumno.activo).pipe(
           catchError((error) => {
             console.log('[ERROR]', error);
             Swal.fire({

@@ -28,6 +28,7 @@ export class AlumnosTablaParamComponent implements OnInit, OnChanges {
   columnas: string[] = ['alumnoNro', 'nombre', 'email', 'dni', 'seguimientoEtap', 'opciones'];
   // Input
   @Input() alumnos: IAlumno[];
+  @Output() retEliminarAlumno = new EventEmitter<IAlumno>();
   // Mobile
   isMobile: boolean;
   private _mobileQueryListener: () => void;
@@ -126,5 +127,8 @@ export class AlumnosTablaParamComponent implements OnInit, OnChanges {
           console.log('[ERROR]', error);
         }
       );
+  }
+  eliminarAlumno(alumno: IAlumno) {
+    this.retEliminarAlumno.emit(alumno);
   }
 }

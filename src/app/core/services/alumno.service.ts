@@ -10,6 +10,7 @@ import { IFichaAlumnoParam } from 'app/models/interface/iFichaAlumnoParam';
 import { IPlanillaTaller } from 'app/models/interface/iPlanillaTaller';
 import { IQueryPag } from 'app/models/interface/iQueryPag';
 import { environment } from 'environments/environment';
+import { StringifyOptions } from 'querystring';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { shareReplay, tap } from 'rxjs/operators';
 
@@ -92,11 +93,12 @@ export class AlumnoService {
 
     return this.http.delete<any>(url);
   }
-  deshabilitarAlumno(alumnoId: string, activo: boolean): Observable<any> {
-    const query = `alumnos/estado/${alumnoId}`;
+
+  toggleEstadoAlumno(alumnoId: string, activo: boolean): Observable<any> {
+    const query = `alumnos/toggle-estado/${alumnoId}`;
     const url = this.url + query;
 
-    return this.http.put<any>(url, { activo });
+    return this.http.post<any>(url, { activo });
   }
   obtenerFichaAlumnos(cicloLectivo: ICicloLectivo, division: number, curso: number): Observable<IAlumno[]> {
     const query = `alumnos/ficha`;
