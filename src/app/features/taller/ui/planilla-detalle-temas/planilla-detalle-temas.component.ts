@@ -25,7 +25,7 @@ export class PlanillaDetalleTemasComponent implements OnInit, OnChanges {
   TemplateEnum = TemplateEnum;
   @Input() isUpdate?: boolean;
   @Input() planillaTaller?: IPlanillaTaller;
-  @Input() template?: TemplateEnum;
+  @Input() template?: string;
   @Input() temas: ITema[];
   temaSeleccionado: ITema = null;
   @Input() cargandoTemas: boolean;
@@ -64,9 +64,7 @@ export class PlanillaDetalleTemasComponent implements OnInit, OnChanges {
         this.isMobile = false;
         this.columnas = ['fecha', 'nroClase', 'opciones'];
       }
-      //   if (this.template === TemplateEnum.EDICION) {
-      //     this.columnas = [...this.columnas, 'opciones'];
-      //   }
+     
     });
   }
 
@@ -79,12 +77,7 @@ export class PlanillaDetalleTemasComponent implements OnInit, OnChanges {
           this.temaSeleccionado = { ...this.temas[index] };
         }
       }
-      //   if (this.template === TemplateEnum.EDICION) {
-      //     const index = this.columnas.findIndex((x) => x === 'opciones');
-      //     if (index === -1) {
-      //       this.columnas = [...this.columnas, 'opciones'];
-      //     }
-      //   }
+     
     }
   }
 

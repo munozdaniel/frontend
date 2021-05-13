@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { designAnimations } from '@design/animations';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { AlumnoService } from 'app/core/services/alumno.service';
@@ -11,11 +11,13 @@ import { SeguimientoAlumnoService } from 'app/core/services/seguimientoAlumno.se
 import { TemaService } from 'app/core/services/tema.service';
 import { IAlumno } from 'app/models/interface/iAlumno';
 import { IAsistencia } from 'app/models/interface/iAsistencia';
+import { ICalendario } from 'app/models/interface/iCalendario';
 import { ICalificacion } from 'app/models/interface/iCalificacion';
 import { IPlanillaTaller } from 'app/models/interface/iPlanillaTaller';
 import { ISeguimientoAlumno } from 'app/models/interface/iSeguimientoAlumno';
 import { ITema } from 'app/models/interface/iTema';
 import { EmailAusenteModalComponent } from 'app/shared/components/email-ausente-modal/email-ausente-modal.component';
+import Swal from 'sweetalert2';
 @UntilDestroy()
 @Component({
   selector: 'app-planilla-ver',
@@ -36,13 +38,12 @@ import { EmailAusenteModalComponent } from 'app/shared/components/email-ausente-
           </mat-tab>
           <mat-tab label="Asistencias">
             <app-planilla-detalle-asistencias
-              [cargandoAsistencias]="cargandoAsistencias"
               [totalClases]="totalClases"
+              [cargandoAsistencias]="cargandoAsistencias"
               [cargandoAlumnos]="cargandoAlumnos"
               [alumnos]="alumnos"
               [asistencias]="asistencias"
               (retBuscarAsistenciaPorAlumno)="setBuscarAsistenciaPorAlumno($event)"
-              (retEnviarEmail)="setEnviarEmail($event)"
             ></app-planilla-detalle-asistencias
           ></mat-tab>
           <mat-tab label="Calificaciones">
@@ -55,7 +56,17 @@ import { EmailAusenteModalComponent } from 'app/shared/components/email-ausente-
             ></app-planilla-detalle-calificaciones>
           </mat-tab>
           <mat-tab label="Libro de Temas">
-            <app-planilla-detalle-temas [temas]="temas" [cargandoTemas]="cargandoTemas"></app-planilla-detalle-temas>
+            <app-planilla-detalle-temas
+              [temas]="temas"
+              [isUpdate]="!deshabilitarEdicion"
+              [planillaTaller]="planillaTaller"
+              [cargandoTemas]="cargandoTemas"
+            ></app-planilla-detalle-temas>
+          </mat-tab>
+          <mat-tab label="Calendario">
+            <!-- Componente Smart podria ser UI pero no D: -->
+            <app-planilla-calendario [cargando]="cargando" [planillaTaller]="planillaTaller" [calendario]="calendario">
+            </app-planilla-calendario>
           </mat-tab>
           <mat-tab label="Seguimiento de Alumnos">
             <app-planilla-detalle-seguimiento
@@ -78,6 +89,10 @@ import { EmailAusenteModalComponent } from 'app/shared/components/email-ausente-
   animations: [designAnimations],
 })
 export class PlanillaVerComponent implements OnInit {
+  anioActual = new Date().getFullYear();
+  deshabilitarEdicion = false;
+  //   Calendario
+  calendario: ICalendario[];
   indiceTab = 0;
   titulo = 'Planilla';
   cargando = false;
@@ -85,6 +100,7 @@ export class PlanillaVerComponent implements OnInit {
   planillaId: string;
   ciclo: number;
   planillaTaller: IPlanillaTaller;
+  tipoPantalla;
   alumnos: IAlumno[];
   //   Asistencias
   asistencias: IAsistencia[];
@@ -102,6 +118,7 @@ export class PlanillaVerComponent implements OnInit {
   seguimientos: ISeguimientoAlumno[];
   cargandoSeguimiento: boolean;
   constructor(
+    private _router: Router,
     private _dialog: MatDialog,
     private _activeRoute: ActivatedRoute,
     private _alumnoService: AlumnoService,
@@ -115,29 +132,43 @@ export class PlanillaVerComponent implements OnInit {
   ngOnInit(): void {
     this._activeRoute.params.subscribe((params) => {
       this.planillaId = params['id'];
+      this.tipoPantalla = params['tipo'];
       this.ciclo = params['ciclo'];
       this.cargando = true;
-      this._planillaTallerService
-        .obtenerPlanillaTallerPorIdCiclo(this.planillaId, this.ciclo)
-        .pipe(untilDestroyed(this))
-        .subscribe(
-          (datos) => {
-            this.planillaTaller = datos;
-            this.obtenerAlumnosPorCurso();
-            this.cargando = false;
-          },
-          (error) => {
-            this.cargando = false;
-            console.log('[ERROR]', error);
-          }
-        );
+      this.obtenerPlanilla();
     });
   }
-  obtenerAlumnosPorCurso() {
+  obtenerPlanilla() {
+    this.cargando = true;
+    this._planillaTallerService
+      .obtenerPlanillaTallerPorId(this.planillaId)
+      .pipe(untilDestroyed(this))
+      .subscribe(
+        (datos) => {
+          this.planillaTaller = { ...datos };
+          if (this.planillaTaller.cicloLectivo.anio < this.anioActual) {
+            this.deshabilitarEdicion = true;
+          }
+          this.obtenerAlumnosPorCursoEspecifico();
+          this.cargando = false;
+        },
+        (error) => {
+          this.cargando = false;
+          Swal.fire({
+            title: 'Planilla de Taller no encontrada',
+            text: 'Puede que el registro que busca ya no se encuentre disponible',
+            icon: 'error',
+          });
+          this._router.navigate(['taller/planillas']);
+          console.log('[ERROR]', error);
+        }
+      );
+  }
+  obtenerAlumnosPorCursoEspecifico() {
     this.cargandoAlumnos = true;
-    const { curso, comision, division } = this.planillaTaller.curso;
+    const { curso, division, comision } = this.planillaTaller.curso;
     this._alumnoService
-      .obtenerAlumnosPorCursoCiclo(curso, division, comision, this.ciclo)
+      .obtenerAlumnosPorCursoEspecifico(curso, comision, division, this.planillaTaller.cicloLectivo)
       .pipe(untilDestroyed(this))
       .subscribe(
         (datos) => {
@@ -150,12 +181,36 @@ export class PlanillaVerComponent implements OnInit {
         }
       );
   }
+  seleccionarTab() {
+    switch (this.tipoPantalla) {
+      case 'asistencias':
+        this.indiceTab = 1;
+
+        break;
+      case 'calificaciones':
+        this.indiceTab = 2;
+        break;
+      case 'seguimientos':
+        this.indiceTab = 3;
+        break;
+      case 'temas':
+        this.indiceTab = 4;
+        break;
+      case 'informes':
+        this.indiceTab = 5;
+        break;
+      default:
+        this.indiceTab = 0;
+        break;
+    }
+  }
   controlTabs(evento) {
     this.indiceTab = evento.index;
     switch (evento.index) {
       case 0:
         this.titulo = 'Planilla de Taller';
         break;
+
       case 1:
         this.titulo = 'Asistencias del Alumno';
         // Si hay asistencias entonces hay alumnoSeleccionado. Controlamos para no repetir la consulta
@@ -166,7 +221,7 @@ export class PlanillaVerComponent implements OnInit {
           this.setBuscarAsistenciaPorAlumno(this.alumnoSeleccionado);
         }
         if (!this.totalClases) {
-          this.buscarTotalesPorPlanilla();
+          this.obtenerClasesDetalle();
         }
         break;
       case 2:
@@ -181,25 +236,47 @@ export class PlanillaVerComponent implements OnInit {
       case 3:
         this.titulo = 'Libro de Temas del Profesor';
         if (!this.temas) {
-          this.obtenerLibroDeTemas();
+          this.obtenerClasesDetalle();
         }
         break;
       case 4:
-        this.titulo = 'Seguimiento del Alumno';
-        if (
-          (!this.seguimientos && this.alumnoSeleccionado) ||
-          (this.seguimientos && this.seguimientos.length > 0 && this.alumnoSeleccionado._id !== this.seguimientos[0].alumno._id)
-        ) {
-          this.setBuscarSeguimientosPorAlumno(this.alumnoSeleccionado);
+        this.titulo = 'Calendario ';
+        if (!this.calendario) {
+          this.obtenerClasesDetalle();
         }
         break;
       case 5:
+        this.titulo = 'Seguimiento del Alumno';
+
+        break;
+      case 6:
         this.titulo = 'Informes';
         break;
 
       default:
         break;
     }
+  }
+  obtenerClasesDetalle() {
+    this.cargandoTemas = true;
+    this.cargando = true;
+    this._temaService
+      .obtenerTemasCalendario(this.planillaTaller._id)
+      .pipe(untilDestroyed(this))
+      .subscribe(
+        (datos) => {
+          this.temas = [...datos.temas];
+          this.calendario = [...datos.calendario];
+          this.totalClases = datos.totalClases;
+          this.cargando = false;
+          this.cargandoTemas = false;
+        },
+        (error) => {
+          console.log('[ERROR]', error);
+          this.cargando = false;
+          this.cargandoTemas = false;
+        }
+      );
   }
   buscarTotalesPorPlanilla() {
     this._planillaTallerService

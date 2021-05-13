@@ -2,7 +2,6 @@ import { MediaMatcher, BreakpointObserver, Breakpoints, BreakpointState } from '
 import { ChangeDetectorRef, Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges, ViewChild } from '@angular/core';
 import { MatTableDataSource, MatSort, MatPaginator } from '@angular/material';
 import { designAnimations } from '@design/animations';
-import { DesignThemeOptionsModule } from '@design/components';
 import { TemplateEnum } from 'app/models/constants/tipo-template.const';
 import { IAlumno } from 'app/models/interface/iAlumno';
 import { IAsistencia } from 'app/models/interface/iAsistencia';
@@ -23,7 +22,7 @@ export class PlanillaDetalleAsistenciasComponent implements OnInit, OnChanges {
   totalPresentes = { valor: 0, porcentaje: 0 };
   @Input() deshabilitarEdicion: boolean;
   @Input() totalClases: number;
-  @Input() template: TemplateEnum;
+  @Input() template: string;
   @Input() cargandoAsistencias: boolean;
   @Input() cargandoAlumnos: boolean;
   @Input() alumnos: IAlumno[];

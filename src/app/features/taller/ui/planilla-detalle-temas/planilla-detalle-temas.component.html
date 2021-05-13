@@ -77,7 +77,7 @@
               <span class="iconify" data-icon="ant-design:right-circle-outlined" data-inline="false" style="transform: scale(1.5)"></span>
             </button>
             <!-- <button
-              *ngIf="template?.toString() == TemplateEnum.EDICION.toString()"
+              *ngIf="template?.toString() == 'EDICION'"
               mat-icon-button
               [matMenuTriggerFor]="menu"
               matTooltip="Mostrar opciones"
@@ -230,6 +230,7 @@
     </div> -->
     <div fxLayout="column" *ngIf="temaSeleccionado" fxFlex.xs="100" fxFlex.gt-xs="70">
       <app-tema-form-modal
+        [template]="template"
         [isUpdate]="isUpdate"
         [planillaTaller]="planillaTaller"
         [tema]="temaSeleccionado"

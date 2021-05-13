@@ -44,7 +44,6 @@ export class PlanillaCalendarioComponent implements OnInit, OnChanges {
   }
   ngOnChanges(changes: SimpleChanges): void {
     if (changes.calendario && changes.calendario.currentValue) {
-      console.log(' changes.calendario.currentValue', changes.calendario.currentValue);
       this.setCalendario();
     }
     if (changes.planillaTaller && changes.planillaTaller.currentValue) {
@@ -67,7 +66,7 @@ export class PlanillaCalendarioComponent implements OnInit, OnChanges {
     });
     this.refresh.next();
   }
-  
+
   dateIsValid(date: Date): boolean {
     return date >= this.minDate && date <= this.maxDate;
   }

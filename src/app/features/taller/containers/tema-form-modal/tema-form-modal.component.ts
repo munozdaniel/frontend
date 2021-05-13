@@ -21,7 +21,7 @@ import Swal from 'sweetalert2';
         <h1 mat-dialog-title>{{ tema && tema.nroClase ? 'Editar clase N° ' + tema.nroClase : 'Completar tema de la clase' }}</h1>
         <h3>{{ fechaNombre | diaDeLaSemana }}</h3>
       </div>
-      <button color="warn" mat-raised-button (click)="sinDictar()">SIN DICTAR</button>
+      <button *ngIf="template" [disabled]="!isUpdate" color="warn" mat-raised-button (click)="sinDictar()">SIN DICTAR</button>
     </div>
     <div
       *ngIf="tema?.motivoSinDictar"
@@ -34,7 +34,48 @@ import Swal from 'sweetalert2';
       <h2><strong>Motivo: </strong>{{ tema.motivoSinDictar }}</h2>
     </div>
     <div mat-dialog-content class="border mat-card mat-elevation-z4 px-24">
+      <div *ngIf="!template" fxLayout="row wrap" fxLayoutAlign="space-between start">
+        <h4 fxFlex.xs="100" fxFlex.gt-xs="45">
+          <strong>Fecha: </strong>
+          <span> {{ tema.fecha | date: 'dd/MM/yyyy':'GMT' }}</span>
+        </h4>
+        <h4 fxFlex.xs="100" fxFlex.gt-xs="45">
+          <strong>Tema del Día: </strong>
+          <span> {{ tema.temaDelDia }}</span>
+        </h4>
+        <h4 fxFlex.xs="100" fxFlex.gt-xs="45">
+          <strong>Motivo por el cual no se dictó la clase: </strong>
+          <span> {{ tema.motivoSinDictar }}</span>
+        </h4>
+        <h4 fxFlex.xs="100" fxFlex.gt-xs="45">
+          <strong>Tipo de Desarrollo: </strong>
+          <span> {{ tema.tipoDesarrollo }}</span>
+        </h4>
+        <h4 fxFlex.xs="100" fxFlex.gt-xs="45">
+          <strong>Tema de la Próxima Clase: </strong>
+          <span> {{ tema.temasProximaClase }}</span>
+        </h4>
+        <h4 fxFlex.xs="100" fxFlex.gt-xs="45">
+          <strong>Caracter Clase: </strong>
+          <span> {{ tema.caracterClase }}</span>
+        </h4>
+        <h4 fxFlex.xs="100" fxFlex.gt-xs="45">
+          <strong>Observación del Jefe de Taller: </strong>
+          <span> {{ tema.observacionJefe }}</span>
+        </h4>
+
+        <h4 fxFlex.xs="100" fxFlex.gt-xs="45">
+          <strong>Nro Clase: </strong>
+          <span> {{ tema.nroClase }}</span>
+          <br />
+        </h4>
+        <h4 fxFlex.xs="100" fxFlex.gt-xs="45">
+          <strong>Unidad: </strong>
+          <span> {{ tema.unidad }}</span>
+        </h4>
+      </div>
       <form
+        *ngIf="template"
         [formGroup]="form"
         [@animate]="{ value: '*', params: { delay: '50ms', scale: '0.2' } }"
         class="mt-20 p-0"
@@ -144,7 +185,7 @@ import Swal from 'sweetalert2';
           </mat-form-field>
         </div>
       </form>
-      <div fxLayout="row wrap" fxLayoutAlign="space-between start" class="mt-12">
+      <div *ngIf="isUpdate && template" fxLayout="row wrap" fxLayoutAlign="space-between start" class="mt-12">
         <button *ngIf="isModal" mat-raised-button ngClass.xs="" class="mt-8 w-100-p" fxFlex.xs="100" (click)="cerrar()" color="warn">
           Cerrar
         </button>
@@ -192,6 +233,7 @@ export class TemaFormModalComponent implements OnInit, OnDestroy, OnChanges {
   caracterClases = CaracterClaseConst;
   cargando = false;
   form: FormGroup;
+  @Input() template?: boolean;
   @Input() isUpdate?: boolean;
   @Input() planillaTaller?: IPlanillaTaller;
   @Input() tema?: ITema;

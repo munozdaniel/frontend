@@ -4,7 +4,6 @@ import { ChangeDetectorRef, Component, EventEmitter, Input, OnChanges, OnInit, O
 import { MatTableDataSource, MatSort, MatPaginator } from '@angular/material';
 import { Router } from '@angular/router';
 import { designAnimations } from '@design/animations';
-import { TemplateEnum } from 'app/models/constants/tipo-template.const';
 import { ISeguimientoAlumno } from 'app/models/interface/iSeguimientoAlumno';
 import * as moment from 'moment';
 
@@ -72,9 +71,7 @@ export class SeguimientoAlumnosTablaComponent implements OnInit, OnChanges {
         this.isMobile = false;
         this.columnas = ['seguimientoAlumnoNro', 'alumno', 'fecha', 'cicloLectivo', 'resuelto', 'opciones'];
       }
-      //   if (this.template === TemplateEnum.EDICION) {
-      //     this.columnas = [...this.columnas, 'opciones'];
-      //   }
+     
     });
   }
 

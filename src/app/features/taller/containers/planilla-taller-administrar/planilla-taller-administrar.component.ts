@@ -6,7 +6,6 @@ import { designAnimations } from '@design/animations';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { AlumnoService } from 'app/core/services/alumno.service';
 import { AsistenciaService } from 'app/core/services/asistencia.service';
-import { CalendarioService } from 'app/core/services/calendario.service';
 import { CalificacionService } from 'app/core/services/calificacion.service';
 import { PlanillaTallerService } from 'app/core/services/planillaTaller.service';
 import { SeguimientoAlumnoService } from 'app/core/services/seguimientoAlumno.service';
@@ -338,7 +337,6 @@ export class PlanillaTallerAdministrarComponent implements OnInit {
         }
         break;
       case 4:
-        console.log('this.calendario', this.calendario);
         this.titulo = 'Calendario ';
         if (!this.calendario) {
           this.obtenerClasesDetalle();

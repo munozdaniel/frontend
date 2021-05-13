@@ -2,7 +2,6 @@ import { MediaMatcher, Breakpoints, BreakpointState, BreakpointObserver } from '
 import { ChangeDetectorRef, Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges, ViewChild } from '@angular/core';
 import { MatTableDataSource, MatSort, MatPaginator, MatDialog } from '@angular/material';
 import { designAnimations } from '@design/animations';
-import { TemplateEnum } from 'app/models/constants/tipo-template.const';
 import { IAlumno } from 'app/models/interface/iAlumno';
 import { ICicloLectivo } from 'app/models/interface/iCicloLectivo';
 import { ISeguimientoAlumno } from 'app/models/interface/iSeguimientoAlumno';
@@ -18,8 +17,7 @@ import { VerSeguimientoModalComponent } from '../ver-seguimiento-modal/ver-segui
   providers: CONFIG_PROVIDER, // Para el time
 })
 export class PlanillaDetalleSeguimientoComponent implements OnInit, OnChanges {
-  TemplateEnum = TemplateEnum;
-  @Input() template: TemplateEnum;
+  @Input() template: string;
   @Input() cargandoAlumnos: boolean;
   @Input() alumnos: IAlumno[];
   @Input() seguimientos: ISeguimientoAlumno[];

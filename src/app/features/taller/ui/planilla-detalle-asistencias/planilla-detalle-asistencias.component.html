@@ -17,7 +17,7 @@
           <mat-icon matSuffix>search</mat-icon>
         </mat-form-field>
         <div
-          *ngIf="template?.toString() == TemplateEnum.EDICION.toString()"
+          *ngIf="template?.toString() == 'EDICION'"
           ngClass.xs="mb-12"
           fxLayout="row"
           fxLayoutAlign.gt-xs="end center"
@@ -120,7 +120,7 @@
         </div> -->
         <!-- <div><strong>Cantidad de Ausencias</strong><span>{{totalAusencias}}</span></div> -->
         <button
-          *ngIf="isMobile && template?.toString() == TemplateEnum.EDICION.toString()"
+          *ngIf="isMobile && template?.toString() == 'EDICION'"
           [disabled]="deshabilitarEdicion"
           mat-raised-button
           color="accent"

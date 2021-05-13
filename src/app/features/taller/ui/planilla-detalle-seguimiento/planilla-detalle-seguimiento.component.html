@@ -17,7 +17,7 @@
           <mat-icon matSuffix>search</mat-icon>
         </mat-form-field>
         <div
-          *ngIf="template?.toString() == TemplateEnum.EDICION.toString()"
+          *ngIf="template?.toString() == 'EDICION'"
           ngClass.xs="mb-12"
           fxLayout="row"
           fxLayoutAlign.gt-xs="end center"
@@ -177,21 +177,11 @@
                 <mat-icon>remove_red_eye</mat-icon>
                 <span>Ver Detalles</span>
               </button>
-              <button
-                *ngIf="template?.toString() == TemplateEnum.EDICION.toString()"
-                mat-menu-item
-                matTooltip="Modificar asistencia"
-                (click)="editar(row)"
-              >
+              <button *ngIf="template?.toString() == 'EDICION'" mat-menu-item matTooltip="Modificar asistencia" (click)="editar(row)">
                 <mat-icon>create</mat-icon>
                 <span>Editar</span>
               </button>
-              <button
-                *ngIf="template?.toString() == TemplateEnum.EDICION.toString()"
-                mat-menu-item
-                matTooltip="Eliminar asistencia"
-                (click)="eliminar(row)"
-              >
+              <button *ngIf="template?.toString() == 'EDICION'" mat-menu-item matTooltip="Eliminar asistencia" (click)="eliminar(row)">
                 <mat-icon>delete_forever</mat-icon>
                 <span>Eliminar</span>
               </button>

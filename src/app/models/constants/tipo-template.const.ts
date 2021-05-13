@@ -1,5 +1,5 @@
-export enum TemplateEnum {
-  'EDICION',
-  'VER',
-  'AGREGAR',
-}
+export const TemplateEnum = {
+  EDICION: 'EDICION',
+  VER: 'VER',
+  AGREGAR: 'AGREGAR',
+};

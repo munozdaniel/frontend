@@ -15,7 +15,7 @@ import { ICalificacion } from 'app/models/interface/iCalificacion';
 export class PlanillaDetalleCalificacionesComponent implements OnInit, OnChanges {
   TemplateEnum = TemplateEnum;
   touchtime = 0;
-  @Input() template?: TemplateEnum;
+  @Input() template?: string;
   @Input() cargandoCalificaciones: boolean;
   @Input() cargandoAlumnos: boolean;
   @Input() deshabilitarEdicion: boolean;
