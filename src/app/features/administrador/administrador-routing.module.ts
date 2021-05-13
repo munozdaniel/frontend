@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import { ActualizarCicloLectivoComponent } from './containers/actualizar-ciclo-lectivo/actualizar-ciclo-lectivo.component';
+import { AlumnosEliminadosComponent } from './containers/alumnos-eliminados/alumnos-eliminados.component';
 import { CalendarioAcademicoComponent } from './containers/calendario-academico/calendario-academico.component';
 import { MigrarComponent } from './containers/migrar/migrar.component';
 import { RolesComponent } from './containers/roles/roles.component';
@@ -25,6 +26,11 @@ const routes: Routes = [
   {
     path: 'usuarios-roles',
     component: RolesComponent,
+    //  DEBE estar autenticados
+  },
+  {
+    path: 'alumnos-eliminados',
+    component: AlumnosEliminadosComponent,
     //  DEBE estar autenticados
   },
 ];

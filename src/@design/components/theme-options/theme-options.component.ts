@@ -176,8 +176,7 @@ export class DesignThemeOptionsComponent implements OnInit, OnDestroy {
         // },
       ],
     };
-
-    this._designNavigationService.addNavigationItem(customFunctionNavItem, 'end');
+     this._designNavigationService.addNavigationItem(customFunctionNavItem, 'end');
   }
 
   /**

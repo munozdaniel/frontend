@@ -14,7 +14,6 @@ import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { IUsuario } from './models/interface/iUsuario';
 import { AuthenticationService } from './core/services/helpers/authentication.service';
 import { Router } from '@angular/router';
-import { navigationEmpty } from './navigation/navigation-empty';
 @UntilDestroy()
 @Component({
   selector: 'app',
@@ -151,6 +150,67 @@ export class AppComponent implements OnInit, OnDestroy {
           this._router.navigate(['/auth/iniciar-sesion']);
         } else {
           this.isLogin = true; // Set the main navigation as our current navigation
+          // if( tiene permisos de administrador){
+          const customFunctionNavItem = {
+            id: 'custom-function',
+            title: 'Administrar',
+            type: 'collapsable',
+            children: [
+              // {
+              //   id: 'migrar',
+              //   title: 'Migrador',
+              //   type: 'item',
+              //   icon: 'users',
+              //   url: '/administrador/migrar',
+              // },
+              {
+                id: 'alumnos',
+                title: 'Alumnos Eliminados',
+                type: 'item',
+                icon: 'build_circle',
+                url: '/administrador/alumnos-eliminados',
+              },
+              {
+                id: 'usuarios',
+                title: 'Usuarios',
+                type: 'item',
+                icon: 'build_circle',
+                url: '/administrador/usuarios-roles',
+              },
+              {
+                id: 'ciclo-lectivo',
+                title: 'Ciclo Lectivo',
+                type: 'item',
+                icon: 'warning',
+                url: '/administrador/ciclo-lectivo',
+              },
+              // {
+              //   id: 'micuenta',
+              //   title: 'Mi Cuenta',
+              //   type: 'item',
+              //   icon: 'account',
+              //   url: '/administrador/mi-cuenta',
+              // },
+              //   {
+              //     id: 'calendario',
+              //     title: 'Calendario',
+              //     type: 'item',
+              //     icon: 'today',
+              //     url: '/administrador/calendario-academico',
+              //   },
+              // {
+              //   id: 'customize',
+              //   title: 'Diseño',
+              //   type: 'item',
+              //   icon: 'settings',
+              //   function: () => {
+              //     this.toggleSidebarOpen('themeOptionsPanel');
+              //   },
+              // },
+            ],
+          };
+          // }
+          this._designNavigationService.addNavigationItem(customFunctionNavItem, 'end');
         }
       },
       (error) => {

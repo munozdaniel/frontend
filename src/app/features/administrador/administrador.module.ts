@@ -15,6 +15,7 @@ import { CalendarModule, DateAdapter } from 'angular-calendar';
 import { adapterFactory } from 'angular-calendar/date-adapters/moment';
 import * as moment from 'moment';
 import { CalendarHeaderComponent } from './ui/calendar-header/calendar-header.component';
+import { AlumnosEliminadosComponent } from './containers/alumnos-eliminados/alumnos-eliminados.component';
 
 export function momentAdapterFactory() {
   return adapterFactory(moment);
@@ -30,6 +31,7 @@ export function momentAdapterFactory() {
     RolesComponent,
     UsuariosTablaComponent,
     CalendarHeaderComponent,
+    AlumnosEliminadosComponent,
   ],
   imports: [
     CommonModule,
