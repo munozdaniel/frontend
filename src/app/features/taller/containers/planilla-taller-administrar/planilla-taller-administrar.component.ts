@@ -21,7 +21,6 @@ import { ISeguimientoAlumno } from 'app/models/interface/iSeguimientoAlumno';
 import { ITema } from 'app/models/interface/iTema';
 import { EmailAusenteModalComponent } from 'app/shared/components/email-ausente-modal/email-ausente-modal.component';
 import { TomarAsistenciaModalComponent } from 'app/shared/components/tomar-asistencia-modal/tomar-asistencia-modal.component';
-import * as moment from 'moment';
 import { of } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 import Swal from 'sweetalert2';
@@ -71,6 +70,7 @@ import { TemaFormModalComponent } from '../tema-form-modal/tema-form-modal.compo
               [cargandoAlumnos]="cargandoAlumnos"
               [alumnos]="alumnos"
               [asistencias]="asistencias"
+              [deshabilitarEdicion]="deshabilitarEdicion"
               (retBuscarAsistenciaPorAlumno)="setBuscarAsistenciaPorAlumno($event)"
               (retAbrirModalAsistencias)="setAbrirModalAsistencias($event)"
               (retTomarAsistencias)="setTomarAsistencias($event)"
@@ -91,6 +91,7 @@ import { TemaFormModalComponent } from '../tema-form-modal/tema-form-modal.compo
               (retAbrirModalCalificaciones)="setAbrirModalCalificaciones($event)"
               (retEditarCalificacion)="setEditarCalificacion($event)"
               (retEliminarCalificacion)="setEliminarCalificacion($event)"
+              [deshabilitarEdicion]="deshabilitarEdicion"
             >
             </app-planilla-detalle-calificaciones>
           </mat-tab>
@@ -98,7 +99,7 @@ import { TemaFormModalComponent } from '../tema-form-modal/tema-form-modal.compo
             <app-planilla-detalle-temas
               [template]="template"
               [temas]="temas"
-              [isUpdate]="true"
+              [isUpdate]="!deshabilitarEdicion"
               [planillaTaller]="planillaTaller"
               [cargandoTemas]="cargandoTemas"
               (retAbrirModalTemas)="setAbrirModalTemas($event)"
@@ -126,6 +127,7 @@ import { TemaFormModalComponent } from '../tema-form-modal/tema-form-modal.compo
               (retAbrirModalSeguimiento)="setAbrirModalSeguimiento($event)"
               (retEliminarSeguimiento)="setEliminarSeguimiento($event)"
               (retEditarSeguimiento)="setEditarSeguimiento($event)"
+              [deshabilitarEdicion]="deshabilitarEdicion"
             >
             </app-planilla-detalle-seguimiento>
           </mat-tab>
@@ -152,6 +154,8 @@ import { TemaFormModalComponent } from '../tema-form-modal/tema-form-modal.compo
   animations: [designAnimations],
 })
 export class PlanillaTallerAdministrarComponent implements OnInit {
+  anioActual = new Date().getFullYear();
+  deshabilitarEdicion = false;
   template = TemplateEnum.EDICION;
   indiceTab = 0;
   titulo = 'Planilla';
@@ -187,7 +191,6 @@ export class PlanillaTallerAdministrarComponent implements OnInit {
   constructor(
     private _activeRoute: ActivatedRoute,
     private _alumnoService: AlumnoService,
-    private _calendarioService: CalendarioService,
     private _temaService: TemaService,
     private _asistenciaService: AsistenciaService,
     private _calificacionService: CalificacionService,
@@ -226,6 +229,9 @@ export class PlanillaTallerAdministrarComponent implements OnInit {
       .subscribe(
         (datos) => {
           this.planillaTaller = { ...datos };
+          if (this.planillaTaller.cicloLectivo.anio < this.anioActual) {
+            this.deshabilitarEdicion = true;
+          }
           this.obtenerAlumnosPorCursoEspecifico();
           this.cargando = false;
         },

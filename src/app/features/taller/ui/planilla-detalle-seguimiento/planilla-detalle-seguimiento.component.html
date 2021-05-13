@@ -26,7 +26,7 @@
           fxFlex.gt-xs="45"
         >
           <!-- <p *ngIf="isMobile">Haga doble click sobre el/la alumno/a para tomar asistencia</p> -->
-          <button mat-raised-button color="accent" (click)="mostrarModal()" class="w-100-p">
+          <button *ngIf="!deshabilitarEdicion" mat-raised-button color="accent" (click)="mostrarModal()" class="w-100-p">
             <mat-icon>settings</mat-icon>Nuevo Seguimiento
           </button>
         </div>
@@ -157,7 +157,8 @@
           </td>
         </ng-container>
         <ng-container matColumnDef="resuelto">
-          <th mat-header-cell *matHeaderCellDef mat-sort-header>Resuelto
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>
+            Resuelto
             <mat-icon matTooltip="Para realizar una búsqueda rapida puede usar estos dos criterios: RESUELTO / SIN RESOLVER">info</mat-icon>
           </th>
           <td mat-cell *matCellDef="let row">

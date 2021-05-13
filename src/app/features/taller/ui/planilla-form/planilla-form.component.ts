@@ -38,10 +38,11 @@ export class PlanillaFormComponent implements OnInit, OnChanges {
   actualizar = false;
   minimo;
   maximo;
+  anioActual = new Date().getFullYear();
+  deshabilitarEdicion = false;
   constructor(private _fb: FormBuilder) {
-    var thisYear = new Date().getFullYear();
-    this.minimo = new Date('1/1/' + thisYear);
-    this.maximo = new Date('12/31/' + thisYear);
+    this.minimo = new Date('1/1/' + this.anioActual);
+    this.maximo = new Date('12/31/' + this.anioActual);
   }
   ngOnChanges(changes: SimpleChanges): void {
     if (changes.cargandoProfesores && changes.cargandoProfesores.currentValue) {
@@ -53,6 +54,9 @@ export class PlanillaFormComponent implements OnInit, OnChanges {
       this._configurarAsignaturaAutocomplete(changes.asignaturas.currentValue);
     }
     if (changes.planillaTaller && changes.planillaTaller.currentValue) {
+      if (this.planillaTaller.cicloLectivo.anio < this.anioActual) {
+        this.deshabilitarEdicion = true;
+      }
       this.setFormulario();
       this.actualizar = true;
     }
@@ -91,6 +95,11 @@ export class PlanillaFormComponent implements OnInit, OnChanges {
         this.setFormulario();
       }, 1000);
     } else {
+      if (this.deshabilitarEdicion) {
+        this.form.disable();
+      } else {
+        this.form.enable();
+      }
       this.form.patchValue(this.planillaTaller);
       this.form.controls.fechaInicio.setValue(moment.utc(this.planillaTaller.fechaInicio));
       this.form.controls.fechaFinalizacion.setValue(moment.utc(this.planillaTaller.fechaFinalizacion));

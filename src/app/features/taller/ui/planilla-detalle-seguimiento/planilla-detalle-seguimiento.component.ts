@@ -8,8 +8,6 @@ import { ICicloLectivo } from 'app/models/interface/iCicloLectivo';
 import { ISeguimientoAlumno } from 'app/models/interface/iSeguimientoAlumno';
 import { ITema } from 'app/models/interface/iTema';
 import { CONFIG_PROVIDER } from 'app/shared/config.provider';
-import * as moment from 'moment';
-import { connectableObservableDescriptor } from 'rxjs/internal/observable/ConnectableObservable';
 import { VerSeguimientoModalComponent } from '../ver-seguimiento-modal/ver-seguimiento-modal.component';
 
 @Component({
@@ -27,6 +25,7 @@ export class PlanillaDetalleSeguimientoComponent implements OnInit, OnChanges {
   @Input() seguimientos: ISeguimientoAlumno[];
   @Input() cicloLectivo?: ICicloLectivo; // DEBERIA USAR EL CICLO LECTIVO DEL SEGUIMIENTO
   @Input() cargandoSeguimiento: boolean;
+  @Input() deshabilitarEdicion?: boolean;
   @Output() retBuscarSeguimientosPorAlumno = new EventEmitter<IAlumno>();
   @Output() retEliminarSeguimiento = new EventEmitter<ISeguimientoAlumno>();
   @Output() retEditarSeguimiento = new EventEmitter<ISeguimientoAlumno>();
@@ -54,6 +53,8 @@ export class PlanillaDetalleSeguimientoComponent implements OnInit, OnChanges {
   isMobile: boolean;
   private _mobileQueryListener: () => void;
   mobileQuery: MediaQueryList;
+  //
+
   constructor(
     public dialog: MatDialog,
     private _changeDetectorRef: ChangeDetectorRef,

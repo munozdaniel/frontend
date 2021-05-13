@@ -18,6 +18,7 @@ export class PlanillaDetalleCalificacionesComponent implements OnInit, OnChanges
   @Input() template?: TemplateEnum;
   @Input() cargandoCalificaciones: boolean;
   @Input() cargandoAlumnos: boolean;
+  @Input() deshabilitarEdicion: boolean;
   @Input() alumnos: IAlumno[];
   @Input() calificaciones: ICalificacion[];
   @Output() retBuscarCalificacionesPorAlumno = new EventEmitter<IAlumno>();

@@ -13,6 +13,13 @@
 .pointer {
   cursor: pointer;
 }
+.mat-select-disabled .mat-select-value {
+  color: rgb(0 0 0 / 68%) !important;
+}
+.mat-input-element:disabled,
+body.theme-default .mat-form-field-type-mat-native-select.mat-form-field-disabled .mat-form-field-infix::after {
+  color: rgb(0 0 0 / 68%) !important;
+}
 .mat-form-field-appearance-outline .mat-form-field-flex {
   // Force all inputs to have the same height.
   // Otherwise mat-select are doing their own thing and gain extra-height
@@ -108,7 +115,12 @@ td > .nav-link-badge {
   width: 45px;
   box-shadow: 0 5px 10px 0 rgb(0 0 0 / 20%);
 }
-.big_tooltip {
+.big_tooltip,
+.tooltipXL {
   background-color: rgb(24, 24, 24) !important;
   font-size: 18px !important;
+}
+.tooltipL {
+  background-color: rgb(24, 24, 24) !important;
+  font-size: 15px !important;
 }

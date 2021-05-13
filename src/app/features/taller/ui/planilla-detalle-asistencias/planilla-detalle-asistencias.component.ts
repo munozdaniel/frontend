@@ -21,6 +21,7 @@ export class PlanillaDetalleAsistenciasComponent implements OnInit, OnChanges {
   totalNoRegistradas = { valor: 0, porcentaje: 0 };
   totalAusentes = { valor: 0, porcentaje: 0 };
   totalPresentes = { valor: 0, porcentaje: 0 };
+  @Input() deshabilitarEdicion: boolean;
   @Input() totalClases: number;
   @Input() template: TemplateEnum;
   @Input() cargandoAsistencias: boolean;

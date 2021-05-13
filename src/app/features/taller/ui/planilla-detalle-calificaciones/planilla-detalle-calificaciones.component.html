@@ -26,7 +26,7 @@
           fxFlex.gt-xs="45"
         >
           <!-- <p *ngIf="isMobile">Haga doble click sobre el/la alumno/a para tomar asistencia</p> -->
-          <button mat-raised-button color="accent" (click)="mostrarModalCalificacion()" class="w-100-p">
+          <button [disabled]="deshabilitarEdicion" mat-raised-button color="accent" (click)="mostrarModalCalificacion()" class="w-100-p">
             <mat-icon>settings</mat-icon>Calificar
           </button>
         </div>
@@ -271,7 +271,7 @@
         class="border-paginador paginator mat-elevation-z2"
         #paginatorCalificacion
         [pageSize]="10"
-        [pageSizeOptions]="[ 10, 20,50, 100]"
+        [pageSizeOptions]="[10, 20, 50, 100]"
       >
       </mat-paginator>
     </div>

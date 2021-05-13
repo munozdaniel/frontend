@@ -25,7 +25,7 @@
           fxFlex.xs="100"
           fxFlex.gt-xs="45"
         >
-          <button mat-raised-button color="accent" (click)="tomarAsistencias()" class="w-100-p">
+          <button [disabled]="deshabilitarEdicion" mat-raised-button color="accent" (click)="tomarAsistencias()" class="w-100-p">
             <mat-icon>settings</mat-icon>Tomar Asistencia
           </button>
           <!-- <p *ngIf="isMobile">Haga doble click sobre el/la alumno/a para tomar asistencia</p> -->
@@ -121,6 +121,7 @@
         <!-- <div><strong>Cantidad de Ausencias</strong><span>{{totalAusencias}}</span></div> -->
         <button
           *ngIf="isMobile && template?.toString() == TemplateEnum.EDICION.toString()"
+          [disabled]="deshabilitarEdicion"
           mat-raised-button
           color="accent"
           (click)="mostrarModalAsistencias()"
