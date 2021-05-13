@@ -4,6 +4,7 @@ import { MatDialogRef, MAT_DIALOG_DATA, throwToolbarMixedModesError } from '@ang
 import { designAnimations } from '@design/animations';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { CicloLectivoService } from 'app/core/services/ciclo-lectivo.service';
+import { ValidationService } from 'app/core/services/general/validation.services';
 import { SeguimientoAlumnoService } from 'app/core/services/seguimientoAlumno.service';
 import { DescripcionSeguimiento } from 'app/models/constants/descripcion-seguimiento.const';
 import { IAlumno } from 'app/models/interface/iAlumno';
@@ -30,7 +31,7 @@ import Swal from 'sweetalert2';
           <!-- Fecha -->
           <mat-form-field appearance="outline" fxFlex.xs="100" fxFlex.gt-xs="45">
             <mat-label>Fecha</mat-label>
-            <input [max]="maximo" [min]="minimo" autocomplete="off" matInput [matDatepicker]="picker" formControlName="fecha" />
+            <input [max]="maximo" autocomplete="off" matInput [matDatepicker]="picker" formControlName="fecha" />
             <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
             <mat-datepicker #picker></mat-datepicker>
             <mat-error *ngIf="form?.controls.fecha.hasError('required')"> Este campo es requerido. </mat-error>
@@ -146,7 +147,6 @@ export class SeguimientoFormModalComponent implements OnInit {
   isUpdate: boolean;
   planillaTaller: IPlanillaTaller;
   seguimiento: ISeguimientoAlumno;
-  minimo;
   maximo;
   ciclosLectivos: ICicloLectivo[];
   constructor(
@@ -156,10 +156,8 @@ export class SeguimientoFormModalComponent implements OnInit {
     public dialogRef: MatDialogRef<SeguimientoFormModalComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any
   ) {
-    console.log('data', data);
     if (data.planillaTaller) {
       this.planillaTaller = data.planillaTaller;
-      this.minimo = new Date(this.planillaTaller.fechaInicio);
       this.maximo = new Date(this.planillaTaller.fechaFinalizacion);
       this.cicloLectivo = this.planillaTaller.cicloLectivo;
     }
