@@ -315,7 +315,7 @@
         <button mat-raised-button matStepperPrevious color="warn">Volver</button>
         <button mat-raised-button matStepperNext color="accent">Siguiente</button>
       </div>
-      <div fxFlex="100" fxLayout="column" fxLayoutAlign="center center" class=" ">
+      <div fxFlex="100" fxLayout="column" fxLayoutAlign="center center" class="">
         <div *ngIf="!soloLectura" class="border p-24 mb-12">
           <mat-checkbox [(ngModel)]="seguimientoEtap" (ngModelChange)="actualizarFormEtap()">Seguimiento ETAP</mat-checkbox>
         </div>
@@ -403,7 +403,10 @@
               <strong>Sexo:</strong><span>{{ alumno.sexo }}</span>
             </p>
             <p>
-              <strong>Fecha de Nacimiento:</strong><span>{{ alumno.fechaNacimiento | date: 'dd/MM/yyyy':'GMT' }}</span>
+              <strong>Fecha de Nacimiento: </strong
+              ><span *ngIf="alumno?.fechaNacimiento && alumno?.fechaNacimiento != 'Invalid date'">{{
+                alumno?.fechaNacimiento | date: 'dd/MM/yyyy':'GMT'
+              }}</span>
             </p>
             <p>
               <strong>Nacionalidad:</strong><span>{{ alumno.nacionalidad }}</span>
