@@ -70,9 +70,9 @@
         <mat-form-field appearance="outline" fxFlex.gt-xs="45" fxFlex.xs="100">
           <mat-label class="lbl">Turno</mat-label>
           <mat-select formControlName="turno">
-            <mat-option value="1">MAÑANA</mat-option>
-            <mat-option value="2">TARDE</mat-option>
-            <mat-option value="3">VESPERTINO</mat-option>
+            <mat-option value="MAÑANA">MAÑANA</mat-option>
+            <mat-option value="TARDE">TARDE</mat-option>
+            <mat-option value="VESPERTINO">VESPERTINO</mat-option>
           </mat-select>
           <mat-error *ngIf="form.controls.turno.hasError('required')"> Este campo es requerido. </mat-error>
         </mat-form-field>
