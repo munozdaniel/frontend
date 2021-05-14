@@ -32,6 +32,7 @@ export class TomarAsistenciaModalComponent implements OnInit {
   columnas = ['nombreCompleto', 'ausente', 'tarde'];
   minimo;
   maximo;
+  deshabilitadoTemporalmente = false;
   form: FormGroup;
   isMobile = false;
   constructor(
@@ -47,6 +48,9 @@ export class TomarAsistenciaModalComponent implements OnInit {
       this.alumnos = data.alumnos;
       this.minimo = new Date(this.planillaTaller.fechaInicio);
       const fechaHoy = moment();
+      if (moment.utc(this.planillaTaller.fechaInicio).isAfter(moment.utc())) {
+        this.deshabilitadoTemporalmente = true;
+      }
       this.maximo = fechaHoy.toDate();
       let f = fechaHoy;
       if (this.planillaTaller && !fechaHoy.isSameOrBefore(moment.utc(this.planillaTaller.fechaFinalizacion))) {

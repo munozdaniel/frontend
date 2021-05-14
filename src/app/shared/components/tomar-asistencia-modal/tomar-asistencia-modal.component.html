@@ -1,4 +1,7 @@
 <h3 mat-dialog-title>Tomar asistencia del día:</h3>
+<div *ngIf="deshabilitadoTemporalmente" class="message-box info">
+  No podrá tomar asistencia hasta el día que inicia la planilla ({{ planillaTaller.fechaInicio | date: 'dd/MM/yyyy':'GMT' }})
+</div>
 <form [formGroup]="form" fxLayout="row" fxLayoutAlign="center start">
   <mat-form-field appearance="outline" fxFlex="100">
     <mat-label>Fecha</mat-label>
@@ -123,7 +126,13 @@
   </mat-paginator>
 </div>
 <div mat-dialog-actions class="w-100-p" fxLayout="row" fxLayoutAlign="center start">
-  <button [disabled]="controlAsistencias()" mat-raised-button fxFlex="100" color="accent" (click)="tomarAsistenciaMasivo()">
+  <button
+    [disabled]="deshabilitadoTemporalmente || controlAsistencias()"
+    mat-raised-button
+    fxFlex="100"
+    color="accent"
+    (click)="tomarAsistenciaMasivo()"
+  >
     GUARDAR ASISTENCIAS
   </button>
 </div>
