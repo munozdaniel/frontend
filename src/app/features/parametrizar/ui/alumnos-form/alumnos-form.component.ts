@@ -63,7 +63,7 @@ export class AlumnosFormComponent implements OnInit, OnChanges {
       procedenciaColegioPrimario: [null, [Validators.minLength(4), Validators.maxLength(50)]],
       procedenciaColegioSecundario: [null, [Validators.minLength(4), Validators.maxLength(50)]],
       fechaDeBaja: [null, []],
-      motivoDeBaja: [null, [Validators.minLength(4), Validators.maxLength(50)]],
+      motivoDeBaja: [null, [Validators.maxLength(255)]],
       domicilio: [null, [Validators.required, Validators.minLength(4), Validators.maxLength(50)]],
       cantidadIntegranteGrupoFamiliar: [null, []],
 
