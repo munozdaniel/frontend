@@ -117,15 +117,34 @@ export class AlumnosFormComponent implements OnInit, OnChanges {
       width: '50%',
     });
 
-    dialogRef.afterClosed().subscribe(({ adulto }: any) => {
-      adulto.index = Math.random();
-      this.adultos = [...this.adultos, adulto];
+    dialogRef.afterClosed().subscribe((adulto: IAdulto) => {
+      if (adulto) {
+        adulto.index = Math.random();
+        this.adultos = [...this.adultos, adulto];
+      }
     });
   }
   setEliminarAdulto(adulto: IAdulto) {
     const index = this.adultos.findIndex((x) => x.index === adulto.index);
     if (index !== -1) {
       this.adultos.splice(index, 1);
+    }
+  }
+  setEditarAdulto(adulto: IAdulto) {
+    const index = this.adultos.findIndex((x) => x.index === adulto.index);
+    if (index !== -1) {
+      const dialogRef = this._dialog.open(AdultosFormComponent, {
+        data: { esModal: true, adulto: this.adultos[index] },
+        width: '50%',
+      });
+
+      dialogRef.afterClosed().subscribe((adulto: IAdulto) => {
+        if (adulto) {
+          // adulto.index = Math.random();
+          this.adultos[index] = adulto;
+          // this.adultos = [...this.adultos, adulto];
+        }
+      });
     }
   }
   setDatosPersonalesTest() {

@@ -298,6 +298,7 @@
           <p *ngIf="!adultos || adultos.length < 1">No se ha ingresado ningún registro</p>
           <app-adultos-tabla-param
             [adultos]="adultos"
+            (retEditarAdulto)="setEditarAdulto($event)"
             (retEliminarAdulto)="setEliminarAdulto($event)"
             class="w-100-p"
           ></app-adultos-tabla-param>

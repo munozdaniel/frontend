@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { designAnimations } from '@design/animations';
 import { AlumnoService } from 'app/core/services/alumno.service';
 import { IAlumno } from 'app/models/interface/iAlumno';
@@ -38,7 +38,7 @@ export class AlumnosEditarComponent implements OnInit {
   resetear = false;
   alumno$: Observable<IAlumno>;
   alumnoId: string;
-  constructor(private _alumnoService: AlumnoService, private _activeRoute: ActivatedRoute) {}
+  constructor(private _alumnoService: AlumnoService, private _activeRoute: ActivatedRoute, private _router: Router) {}
 
   ngOnInit(): void {
     this.recuperarDatos();
@@ -46,7 +46,14 @@ export class AlumnosEditarComponent implements OnInit {
   recuperarDatos() {
     this._activeRoute.params.subscribe((params) => {
       this.alumnoId = params['id'];
-      this.alumno$ = this._alumnoService.obtenerAlumnoPorId(this.alumnoId).pipe(finalize(() => (this.cargando = false)));
+      this.alumno$ = this._alumnoService.obtenerAlumnoPorId(this.alumnoId).pipe(
+        catchError((error: any) => {
+          console.log('[ERROR]', error);
+          this._router.navigate(['/parametrizar/alumnos']);
+          return of(error);
+        }),
+        finalize(() => (this.cargando = false))
+      );
     });
   }
   setDatosForm(evento: IAlumno) {

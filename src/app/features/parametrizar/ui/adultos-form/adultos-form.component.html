@@ -40,6 +40,8 @@
     </mat-form-field>
   </div>
   <div fxLayout="row" fxLayoutAlign="center start">
-    <button mat-raised-button color="accent" type="submit">Agregar {{ formAdulto.controls.tipoAdulto.value }}</button>
+    <button mat-raised-button color="accent" type="submit">
+      {{ edicion ? 'Editar' : 'Agregar' }} {{ formAdulto.controls.tipoAdulto.value }}
+    </button>
   </div>
 </form>

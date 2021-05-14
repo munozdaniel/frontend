@@ -8,10 +8,14 @@ import { IAdulto } from 'app/models/interface/iAdulto';
 export class AdultosTablaParamComponent implements OnInit {
   @Input() adultos: IAdulto[];
   @Output() retEliminarAdulto = new EventEmitter<IAdulto>();
+  @Output() retEditarAdulto = new EventEmitter<IAdulto>();
   constructor() {}
 
   ngOnInit(): void {}
   quitarAdulto(adulto) {
     this.retEliminarAdulto.emit(adulto);
+  }
+  editarAdulto(adulto) {
+    this.retEditarAdulto.emit(adulto);
   }
 }

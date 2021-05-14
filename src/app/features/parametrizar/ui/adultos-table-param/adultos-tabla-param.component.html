@@ -1,17 +1,26 @@
 <div *ngFor="let adulto of adultos" fxLayout="row" fxLayoutAlign="space-between start" class="mat-card mat-elevation-z4 mb-8 w-100-p p-24">
   <div>
+    <span class="fg--red"> {{ adulto.tipoAdulto }}</span>
     <div>
-      <strong>{{ adulto.index }}. {{ adulto.nombreCompleto }}</strong>
+      <strong> {{ adulto.nombreCompleto }}</strong>
     </div>
     <div>
-      <small
-        ><span>Telefono: {{ adulto.telefono ? adulto.telefono : 'NO REGISTRADO' }}</span> -
-        <span>Celular: {{ adulto.celular ? adulto.celular : 'NO REGISTRADO' }}</span></small
-      >
+      <strong>Telefono:</strong>
+      <span>{{ adulto.telefono ? adulto.telefono : 'NO REGISTRADO' }}</span>
+      -
+      <strong>Celular: </strong>
+      <span>{{ adulto.celular ? adulto.celular : 'NO REGISTRADO' }}</span>
     </div>
-    <small class="fg--red"> {{ adulto.tipoAdulto }}</small>
+    <div fxLayoutAlign="start center" fxLayout="row" fxLayoutGap="5px">
+      <strong>Email: </strong> <span> {{ adulto.email }}</span>
+    </div>
   </div>
-  <button mat-icon-button color="warn" (click)="quitarAdulto(adulto)">
-    <mat-icon>delete_forever</mat-icon>
-  </button>
+  <div fxLayout="row wrap" fxLayoutAlign="end center">
+    <button mat-icon-button color="accent" (click)="editarAdulto(adulto)">
+      <mat-icon>create</mat-icon>
+    </button>
+    <button mat-icon-button color="warn" (click)="quitarAdulto(adulto)">
+      <mat-icon>delete_forever</mat-icon>
+    </button>
+  </div>
 </div>
