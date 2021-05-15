@@ -34,7 +34,6 @@ export class ComisionesTablaParamComponent implements OnInit, OnChanges {
   ngOnInit(): void {}
   ngOnChanges(changes: SimpleChanges): void {
     if (changes.estadoCursadas && changes.estadoCursadas.currentValue) {
-      console.log('estadoCursadas', this.estadoCursadas);
       this.dataSource.data = changes.estadoCursadas.currentValue;
     }
   }

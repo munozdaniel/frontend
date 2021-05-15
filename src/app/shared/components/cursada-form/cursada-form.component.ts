@@ -20,7 +20,7 @@ export class CursadaFormComponent implements OnInit {
   @Input() resetear: boolean;
   @Output() retDatosForm = new EventEmitter<IEstadoCursada>();
   comisionData = COMISION_DATA;
-  tiposComision = [0, 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H'];
+  tiposComision = [null, 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H'];
   form: FormGroup;
   today = new Date();
   //   anios = [];
@@ -92,7 +92,7 @@ export class CursadaFormComponent implements OnInit {
   }
   initForm() {
     this.form = this._fb.group({
-      comision: [null, [Validators.required]],
+      comision: [null, []],
       cicloLectivo: [null, [Validators.required]],
       curso: [null, [Validators.required, Validators.min(0), Validators.max(6)]],
       division: [null, [Validators.required, Validators.min(0), Validators.max(6)]],
@@ -152,7 +152,7 @@ export class CursadaFormComponent implements OnInit {
         division: Number(this.form.controls.division.value),
         comision: this.form.controls.comision.value,
       },
-    };
+       };
     if (this.esModal) {
       this.retornarDatosModal();
     } else {
@@ -169,6 +169,6 @@ export class CursadaFormComponent implements OnInit {
         comision: this.form.controls.comision.value,
       },
     };
-    this.dialogRef.close({ estadoCursada: this.estadoCursada });
+    this.dialogRef.close(this.estadoCursada);
   }
 }

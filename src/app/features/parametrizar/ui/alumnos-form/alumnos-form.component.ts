@@ -23,7 +23,9 @@ export class AlumnosFormComponent implements OnInit, OnChanges {
   @Input() alumno: IAlumno;
   @Input() cargando: boolean;
   @Input() resetear: boolean;
+  @Input() estadoCursadaEditada: IEstadoCursada;
   @Output() retDatosForm = new EventEmitter<IAlumno>();
+  @Output() retEditarEstadoCursada = new EventEmitter<IEstadoCursada>();
   //
   formDatosPersonales: FormGroup;
   formEtap: FormGroup;
@@ -35,6 +37,13 @@ export class AlumnosFormComponent implements OnInit, OnChanges {
   seguimientoEtap = false;
   constructor(private _fb: FormBuilder, private _dialog: MatDialog) {}
   ngOnChanges(changes: SimpleChanges): void {
+    if (changes.estadoCursadaEditada && changes.estadoCursadaEditada.currentValue) {
+      const index = this.estadoCursadas.findIndex((x) => x.index === this.estadoCursadaEditada.index);
+      if (index !== -1) {
+        this.estadoCursadas[index] = this.estadoCursadaEditada;
+        this.estadoCursadas = [...this.estadoCursadas];
+      }
+    }
     if (changes.resetear && changes.resetear.currentValue === true) {
       this.formDatosPersonales.reset();
       this.adultos = [];
@@ -200,10 +209,11 @@ export class AlumnosFormComponent implements OnInit, OnChanges {
       width: '50%',
     });
 
-    dialogRef.afterClosed().subscribe(({ comision }: any) => {
-      if (comision) {
-        comision.index = Math.random();
-        this.estadoCursadas = [...this.estadoCursadas, comision];
+    dialogRef.afterClosed().subscribe((estadoCursada: IEstadoCursada) => {
+      console.log('estadoCursada save', estadoCursada);
+      if (estadoCursada) {
+        estadoCursada.index = Math.random();
+        this.estadoCursadas = [...this.estadoCursadas, estadoCursada];
       }
     });
   }
@@ -218,18 +228,21 @@ export class AlumnosFormComponent implements OnInit, OnChanges {
   }
   setEditarComision(evento: IEstadoCursada) {
     if (evento) {
-      const dialogRef = this._dialog.open(CursadaFormComponent, {
-        data: { esModal: true, estadoCursada: evento },
-        width: '50%',
-      });
+      // Controlar que el estado de cursada no esté asigando en alumnos
+      this.retEditarEstadoCursada.emit(evento);
 
-      dialogRef.afterClosed().subscribe(({ comision }: any) => {
-        const index = this.estadoCursadas.findIndex((x) => x.index === evento.index);
-        if (index !== -1) {
-          this.estadoCursadas[index] = comision;
-          this.estadoCursadas = [...this.estadoCursadas];
-        }
-      });
+      //   const dialogRef = this._dialog.open(CursadaFormComponent, {
+      //     data: { esModal: true, estadoCursada: evento },
+      //     width: '50%',
+      //   });
+
+      //   dialogRef.afterClosed().subscribe(({ estadoCursada }: any) => {
+      //     const index = this.estadoCursadas.findIndex((x) => x.index === evento.index);
+      //     if (index !== -1) {
+      //       this.estadoCursadas[index] = estadoCursada;
+      //       this.estadoCursadas = [...this.estadoCursadas];
+      //     }
+      //   });
     }
   }
 }

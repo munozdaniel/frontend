@@ -1,12 +1,16 @@
 import { Component, OnInit } from '@angular/core';
+import { MatDialog } from '@angular/material';
 import { ActivatedRoute, Router } from '@angular/router';
 import { designAnimations } from '@design/animations';
+import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { AlumnoService } from 'app/core/services/alumno.service';
 import { IAlumno } from 'app/models/interface/iAlumno';
+import { IEstadoCursada } from 'app/models/interface/iEstadoCursada';
+import { CursadaFormComponent } from 'app/shared/components/cursada-form/cursada-form.component';
 import { Observable, of } from 'rxjs';
 import { catchError, finalize } from 'rxjs/operators';
 import Swal from 'sweetalert2';
-
+@UntilDestroy()
 @Component({
   selector: 'app-alumnos-editar',
   template: `
@@ -25,6 +29,8 @@ import Swal from 'sweetalert2';
         [alumno]="alumno$ | async"
         [resetear]="resetear"
         [cargando]="cargando"
+        [estadoCursadaEditada]="estadoCursadaEditada"
+        (retEditarEstadoCursada)="setEditarEstadoCursada($event)"
         (retDatosForm)="setDatosForm($event)"
       ></app-alumnos-form>
     </div>
@@ -38,7 +44,13 @@ export class AlumnosEditarComponent implements OnInit {
   resetear = false;
   alumno$: Observable<IAlumno>;
   alumnoId: string;
-  constructor(private _alumnoService: AlumnoService, private _activeRoute: ActivatedRoute, private _router: Router) {}
+  estadoCursadaEditada: IEstadoCursada;
+  constructor(
+    private _alumnoService: AlumnoService,
+    private _activeRoute: ActivatedRoute,
+    private _router: Router,
+    private _dialog: MatDialog
+  ) {}
 
   ngOnInit(): void {
     this.recuperarDatos();
@@ -103,6 +115,53 @@ export class AlumnosEditarComponent implements OnInit {
           });
         }
       }
+    });
+  }
+  //   Antes de poder editar un estadoDeCursada tenemos que verificar que no haya estado usado por algun alumno
+  setEditarEstadoCursada(evento: IEstadoCursada) {
+    if (evento) {
+      if (evento._id) {
+        this._alumnoService
+          .comprobarEstadoCursadaParaEditar(evento._id)
+          .pipe(untilDestroyed(this))
+          .subscribe(
+            (datos) => {
+              if (datos) {
+                this.abrirModalEstadoCursada(evento);
+              } else {
+                Swal.fire({
+                  title: 'Cursada no habilitada para edición',
+                  text: 'La cursada seleccionada no se puede editar porque ya registra datos asignados',
+                  icon: 'warning',
+                  timer: 5000,
+                  timerProgressBar: true,
+                }).then(() => {});
+              }
+            },
+            (error) => {
+              console.log('[ERROR]', error);
+            }
+          );
+      } else {
+        this.abrirModalEstadoCursada(evento);
+      }
+    }
+  }
+  abrirModalEstadoCursada(evento) {
+    const dialogRef = this._dialog.open(CursadaFormComponent, {
+      data: { esModal: true, estadoCursada: evento },
+      width: '50%',
+    });
+
+    dialogRef.afterClosed().subscribe((estadoCursada: IEstadoCursada) => {
+      if (estadoCursada) {
+        this.estadoCursadaEditada = { ...estadoCursada };
+      }
+      // const index = this.estadoCursadas.findIndex((x) => x.index === evento.index);
+      // if (index !== -1) {
+      //   this.estadoCursadas[index] = estadoCursada;
+      //   this.estadoCursadas = [...this.estadoCursadas];
+      // }
     });
   }
 }

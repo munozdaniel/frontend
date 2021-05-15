@@ -3,14 +3,12 @@ import { Injectable } from '@angular/core';
 import { IAlumno } from 'app/models/interface/iAlumno';
 import { IAlumnoPaginado } from 'app/models/interface/iAlumnoPaginado';
 import { IAsignatura } from 'app/models/interface/iAsignatura';
-import { IAsistencia } from 'app/models/interface/iAsistencia';
 import { ICicloLectivo } from 'app/models/interface/iCicloLectivo';
 import { IEstadoCursada } from 'app/models/interface/iEstadoCursada';
 import { IFichaAlumnoParam } from 'app/models/interface/iFichaAlumnoParam';
 import { IPlanillaTaller } from 'app/models/interface/iPlanillaTaller';
 import { IQueryPag } from 'app/models/interface/iQueryPag';
 import { environment } from 'environments/environment';
-import { StringifyOptions } from 'querystring';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { shareReplay, tap } from 'rxjs/operators';
 
@@ -239,5 +237,11 @@ export class AlumnoService {
     const url = this.url + query;
 
     return this.http.post<any>(url, { alumnos, fecha });
+  }
+  comprobarEstadoCursadaParaEditar(_id: string): Observable<boolean> {
+    const query = `alumnos/comprobar-estado-cursada/${_id}`;
+    const url = this.url + query;
+
+    return this.http.get<any>(url);
   }
 }
