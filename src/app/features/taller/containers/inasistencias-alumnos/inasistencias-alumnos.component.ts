@@ -50,9 +50,6 @@ import Swal from 'sweetalert2';
       <!--  -->
       <app-alumnos-tabla-email [cargando]="cargando" [alumnos]="alumnos"></app-alumnos-tabla-email>
       <div fxLayout="row" fxLayoutAlign="center start" fxLayoutGap="20px">
-        <button [disabled]="!alumnos || alumnos.length < 1" mat-raised-button color="warn" (click)="generarReporte()">
-          Generar Reporte
-        </button>
         <button [disabled]="!alumnos || alumnos.length < 1" mat-raised-button color="accent" (click)="enviarEmail()">
           Enviar Email Masivo
         </button>
@@ -288,15 +285,10 @@ export class InasistenciasAlumnosComponent implements OnInit {
   cargando = false;
   alumnos: any[];
   alumnosNoRegistrados: any[] = [];
-  alumnosMerge:any[];
+  alumnosMerge: any[];
   form: FormGroup;
   rangoHabilitado = false;
-  constructor(
-    private _fb: FormBuilder,
-    private _asistenciaService: AsistenciaService,
-    private _alumnoService: AlumnoService,
-    private _reportesService: ReportesService
-  ) {}
+  constructor(private _fb: FormBuilder, private _asistenciaService: AsistenciaService, private _alumnoService: AlumnoService) {}
 
   ngOnInit(): void {
     const today = new Date();
@@ -361,7 +353,7 @@ export class InasistenciasAlumnosComponent implements OnInit {
     }
     //   Buscar todas las plantillas
     this._asistenciaService
-      .buscarInasistencias(this.form.controls.fechaDesde.value, this.form.controls.fechaHasta.value)
+      .buscarInasistencias(this.form.controls.fechaDesde.value, this.rangoHabilitado ? this.form.controls.fechaHasta.value : null)
       .pipe(untilDestroyed(this))
       .subscribe(
         (datos: any) => {
@@ -423,11 +415,5 @@ export class InasistenciasAlumnosComponent implements OnInit {
         }
       }
     });
-  }
-  generarReporte() {
-    // const alumnos = [...this.alumnos, ...this.alumnosNoRegistrados];
-    const alumnos = [...this.ejemplo.alumnos, ...this.ejemplo.alumnosNoRegistrados];
-    const { fechaDesde, fechaHasta } = this.form.value;
-    this._reportesService.setInformeDeInasistencias(this.alumnosMerge, fechaDesde, fechaHasta);
   }
 }

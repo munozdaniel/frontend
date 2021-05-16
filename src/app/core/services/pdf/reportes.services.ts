@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core';
 import { DesignProgressBarService } from '@design/components/progress-bar/progress-bar.service';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
-import { IAlumno } from 'app/models/interface/iAlumno';
 import { IPlanillaTaller } from 'app/models/interface/iPlanillaTaller';
 import { of } from 'rxjs';
 import { catchError } from 'rxjs/operators';
@@ -16,7 +15,8 @@ import { CalificacionesDetalladoPdf } from './calificaciones-detallado.pdf';
 import { CalificacionesResumidoPdf } from './calificaciones-resumido.pdf';
 import { FichaAsistenciaDiaPdf } from './ficha-asistencias-dia.pdf';
 import { FichaAsistenciaGeneralPdf } from './ficha-asistencias-general.pdf';
-import { InasistenciaPdf } from './inasistencias.pdf';
+import { FichaAsistenciasPorDiaPdf } from './ficha-asistencias-por-dia.pdf';
+import { FichaAsistenciasPorFechaPdf } from './ficha-asistencias-por-fechas.pdf';
 import { LibroTemasPdf } from './libro-temas.pdf';
 @UntilDestroy()
 @Injectable({
@@ -28,7 +28,8 @@ export class ReportesService {
     private _designProgressBarService: DesignProgressBarService,
     private _asistenciaService: AsistenciaService,
     private _alumnoService: AlumnoService,
-    private _inasistenciasPdf: InasistenciaPdf,
+    private _asistenciasPorDiaPdf: FichaAsistenciasPorDiaPdf,
+    private _asistenciasPorFechaPdf: FichaAsistenciasPorFechaPdf,
     private _fichaAsistenciaGeneralPdf: FichaAsistenciaGeneralPdf,
     private _fichaAsistenciaDiaPdf: FichaAsistenciaDiaPdf,
     private _calificacioService: CalificacionService,
@@ -39,10 +40,10 @@ export class ReportesService {
     private _alumnosPorTallerPdf: AlumnosPdf,
     private _alumnosPorTallerResumidoPdf: AlumnosPorTallerPdf
   ) {}
-  setInformeDeInasistencias(alumnos: any[], fechaInicio: string, fechaFinal = null) {
+  setInformeDeAsistenciasPorDia(alumnos: any[], fechaInicio: string, fechaFinal = null) {
     this._designProgressBarService.show();
     Swal.fire({
-      title: 'Generar Informe de Inasistencias',
+      title: 'Generar Informe de Asistencias',
       html: 'El proceso puede tardar varios minutos debido a la cantidad de datos que se procesan. <br> <strong>¿Desea continuar?</strong>',
       icon: 'warning',
       focusConfirm: false,
@@ -53,8 +54,9 @@ export class ReportesService {
       showLoaderOnConfirm: true,
     }).then((result: any) => {
       this._designProgressBarService.hide();
-
-      this._inasistenciasPdf.generatePdf(alumnos, fechaInicio, fechaFinal);
+      if (result.isConfirmed) {
+        this._asistenciasPorDiaPdf.generatePdf(alumnos, fechaInicio, fechaFinal);
+      }
     });
   }
   setInformeAsistenciasPorTaller() {

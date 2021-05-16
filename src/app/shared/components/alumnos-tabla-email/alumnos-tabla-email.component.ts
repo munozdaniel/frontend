@@ -46,10 +46,10 @@ export class AlumnosTablaEmailComponent implements OnInit, OnChanges {
     this.breakpointObserver.observe([Breakpoints.Small, Breakpoints.HandsetPortrait]).subscribe((state: BreakpointState) => {
       if (state.matches) {
         this.isMobile = true;
-        this.columnas = ['nombre', 'curso', 'email'];
+        this.columnas = ['nombre', 'curso', 'email', 'asistencia'];
       } else {
         this.isMobile = false;
-        this.columnas = ['alumnoNro', 'nombre', 'dni', 'curso', 'email', 'asignatura', 'profesor'];
+        this.columnas = ['asistencia', 'nombre', 'dni', 'curso', 'email', 'asignatura', 'profesor'];
       }
     });
   }

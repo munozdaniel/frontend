@@ -60,6 +60,18 @@ export class AsistenciaService {
     const url = this.url + query;
     return this.http.post<any>(url, { planillaTaller });
   }
+  buscarAsistenciasPorFechas(desde: any, hasta?: any): Observable<IAlumno[]> {
+    const query = `asistencia/buscar-asistencias-por-fechas`;
+    const url = this.url + query;
+
+    return this.http.post<any>(url, { desde, hasta });
+  }
+  buscarAsistenciasPorFechaYPlanilla(fecha: Date, planilla: IPlanillaTaller, alumnos: IAlumno[]): Observable<IAsistencia[]> {
+    const query = `asistencia/obtener-asistencias-fecha`; // va una planilla
+    const url = this.url + query;
+
+    return this.http.post<any>(url, { fecha, planilla, alumnos });
+  }
   buscarInasistencias(desde: any, hasta?: any): Observable<IAlumno[]> {
     const query = `asistencia/buscar-inasistencias`;
     const url = this.url + query;
@@ -84,10 +96,5 @@ export class AsistenciaService {
 
     return this.http.post<any>(url, { planilla, alumnos });
   }
-  buscarAsistenciasPorFechaYPlanilla(fecha: Date, planilla: IPlanillaTaller, alumnos: IAlumno[]): Observable<IAsistencia[]> {
-    const query = `asistencia/obtener-asistencias-fecha`;
-    const url = this.url + query;
-
-    return this.http.post<any>(url, { fecha, planilla, alumnos });
-  }
+  
 }

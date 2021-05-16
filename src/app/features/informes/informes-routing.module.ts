@@ -1,8 +1,10 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
+import { InasistenciasAlumnosComponent } from '../taller/containers/inasistencias-alumnos/inasistencias-alumnos.component';
 import { AlumnosPorTallerComponent } from './containers/alumnos-por-taller/alumnos-por-taller.component';
 import { AsistenciaPorDiaComponent } from './containers/asistencia-por-dia/asistencia-por-dia.component';
 import { AsistenciaPorTallerComponent } from './containers/asistencia-por-taller/asistencia-por-taller.component';
+import { AsistenciasPorFechaComponent } from './containers/asistencias-por-fecha/asistencias-por-fecha.component';
 import { CalificacionesPorTallerResumenComponent } from './containers/calificaciones-por-taller-resumen/calificaciones-por-taller-resumen.component';
 import { CalificacionesPorTallerComponent } from './containers/calificaciones-por-taller/calificaciones-por-taller.component';
 import { LibroTemasComponent } from './containers/libro-temas/libro-temas.component';
@@ -45,6 +47,11 @@ const routes: Routes = [
     component: TallerPorAlumnosTutoresComponent,
     //  DEBE estar autenticados
   },
+  {
+    path: 'asistencias-por-fecha',
+    component: AsistenciasPorFechaComponent,
+    //  DEBE estar autenticados
+  }
 ];
 
 @NgModule({
