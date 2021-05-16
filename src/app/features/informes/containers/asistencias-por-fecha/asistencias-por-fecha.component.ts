@@ -142,6 +142,12 @@ export class AsistenciasPorFechaComponent implements OnInit {
         }
       );
   }
+  /**
+   * Agrupar entre multiples key [GroupBy, Multiple]
+   * @param array
+   * @param f
+   * @returns
+   */
   groupByMultipleCampos(array, f) {
     var groups = {};
     array.forEach(function (o) {
@@ -156,36 +162,20 @@ export class AsistenciasPorFechaComponent implements OnInit {
   generarReporte() {
     // const alumnos = [...this.alumnos, ...this.alumnosNoRegistrados];
     const { fechaDesde, fechaHasta } = this.form.value;
-    console.log('===>', this.alumnos);
 
     if (this.rangoHabilitado) {
-      //   const agrupar: any = _.chain(this.alumnos)
-      //     // Group the elements of Array based on `color` property
-      //     .groupBy('planillaTaller._id')
-      //     // `key` is group's name (color), `value` is the array of objects
-      //     .map((value, key) => ({ planillaTaller: key, grupoPlanilla: value }))
-      //     .value();
-      //   console.log('0000', agrupar);
-      //   const agruparPorFecha: any = _.chain(agrupar.map((x) => x.grupoPlanilla))
-      //     // Group the elements of Array based on `color` property
-      //     .groupBy('fecha')
-      //     // `key` is group's name (color), `value` is the array of objects
-      //     .map((value, key) => ({ fecha: key, grupoFecha: value }))
-      //     .value();
       const agrupacion = this.groupByMultipleCampos(this.alumnos, (x) => {
         return [x.fecha, x.planillaTaller._id];
       });
-      console.log('Agrupar', agrupacion);
       this._reportesService.setInformeDeAsistenciasPorFechas(agrupacion, fechaDesde, fechaHasta);
     } else {
+      // Agrupar por un solo  campo
       const agrupar: any = _.chain(this.alumnos)
         // Group the elements of Array based on `color` property
         .groupBy('planillaTaller._id')
         // `key` is group's name (color), `value` is the array of objects
         .map((value, key) => ({ planillaTaller: key, grupoPlanilla: value }))
         .value();
-      console.log('Agrupar', agrupar);
-      console.log('Agrupar2', agrupar[0].planillaTaller);
       this._reportesService.setInformeDeAsistenciasPorDia(agrupar, fechaDesde);
     }
   }
