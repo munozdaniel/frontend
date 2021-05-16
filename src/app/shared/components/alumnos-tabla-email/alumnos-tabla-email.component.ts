@@ -25,7 +25,7 @@ export class AlumnosTablaEmailComponent implements OnInit, OnChanges {
   @ViewChild('paginator') set setPaginator(paginator: MatPaginator) {
     this.dataSource.paginator = paginator;
   }
-  columnas: string[] = ['alumnoNro', 'nombre', 'dni', 'email'];
+  columnas: string[] = ['alumnoNro', 'nombre', 'dni', 'curso', 'email', 'asignatura', 'profesor'];
   // Input
   @Input() alumnos: IAlumno[];
   // Mobile
@@ -46,10 +46,10 @@ export class AlumnosTablaEmailComponent implements OnInit, OnChanges {
     this.breakpointObserver.observe([Breakpoints.Small, Breakpoints.HandsetPortrait]).subscribe((state: BreakpointState) => {
       if (state.matches) {
         this.isMobile = true;
-        this.columnas = ['nombre', 'email'];
+        this.columnas = ['nombre', 'curso', 'email'];
       } else {
         this.isMobile = false;
-        this.columnas = ['alumnoNro', 'nombre', 'dni', 'email'];
+        this.columnas = ['alumnoNro', 'nombre', 'dni', 'curso', 'email', 'asignatura', 'profesor'];
       }
     });
   }

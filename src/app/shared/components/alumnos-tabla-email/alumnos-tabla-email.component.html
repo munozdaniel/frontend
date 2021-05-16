@@ -20,34 +20,56 @@
     <!--  -->
     <ng-container matColumnDef="alumnoNro">
       <th mat-header-cell *matHeaderCellDef mat-sort-header>#</th>
-      <td mat-cell *matCellDef="let row">{{ row.alumnoNro }}</td>
+      <td mat-cell *matCellDef="let row">{{ row.alumno.alumnoNro }}</td>
     </ng-container>
     <!--  -->
     <ng-container matColumnDef="nombre">
       <th mat-header-cell *matHeaderCellDef mat-sort-header>Nombre Completo</th>
-      <td mat-cell *matCellDef="let row">{{ row.nombreCompleto }}</td>
+      <td mat-cell *matCellDef="let row">{{ row.alumno.nombreCompleto }}</td>
     </ng-container>
     <!--  -->
+    <ng-container matColumnDef="asignatura">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header>Asignatura</th>
+      <td mat-cell *matCellDef="let row">{{ row.planillaTaller.asignatura.detalle }}</td>
+    </ng-container>
+    <ng-container matColumnDef="profesor">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header>Dni</th>
+      <td mat-cell *matCellDef="let row">{{ row.planillaTaller.profesor.nombreCompleto }}</td>
+    </ng-container>
+    <ng-container matColumnDef="curso">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header>
+        <span class="text-center">Curso/Div./Com.</span>
+      </th>
+      <td mat-cell *matCellDef="let row" class="fila_hover">
+        <div class="comision" fxLayout="row" fxLayoutAlign="center start">
+          <span matTooltip="CURSO">{{ row.planillaTaller.curso?.curso }}° AÑO</span>
+          <strong> </strong>
+          <span matTooltip="DIVISION">{{ row.planillaTaller.curso?.division }}° DIV</span>
+          <strong *ngIf="row.planillaTaller.curso?.comision"> </strong>
+          <span *ngIf="row.planillaTaller.curso?.comision" matTooltip="COMISION">COM. {{ row.planillaTaller.curso?.comision }}</span>
+        </div>
+      </td>
+    </ng-container>
     <ng-container matColumnDef="email">
       <th mat-header-cell *matHeaderCellDef mat-sort-header>Responsable</th>
       <td mat-cell *matCellDef="let row">
         <div fxLayout="column">
-          <span>{{ row.nombreAdulto }}</span>
+          <span>{{ row.alumno.nombreAdulto }}</span>
           <span>
-            {{ row.email }}
+            {{ row.alumno.email }}
           </span>
         </div>
       </td>
     </ng-container>
     <ng-container matColumnDef="dni">
       <th mat-header-cell *matHeaderCellDef mat-sort-header>Dni</th>
-      <td mat-cell *matCellDef="let row">{{ row.dni }}</td>
+      <td mat-cell *matCellDef="let row">{{ row.alumno.dni }}</td>
     </ng-container>
     <ng-container matColumnDef="seguimientoEtap">
       <th mat-header-cell *matHeaderCellDef mat-sort-header>Seg. Etap.</th>
       <td mat-cell *matCellDef="let row">
-        <span *ngIf="!row.seguimientoEtap" class="nav-link-badge text-center no_tiene_etap"> NO </span>
-        <span *ngIf="row.seguimientoEtap" class="nav-link-badge text-center tiene_etap">SI</span>
+        <span *ngIf="!row.alumno.seguimientoEtap" class="nav-link-badge text-center no_tiene_etap"> NO </span>
+        <span *ngIf="row.alumno.seguimientoEtap" class="nav-link-badge text-center tiene_etap">SI</span>
       </td>
     </ng-container>
     <ng-container matColumnDef="opciones">
