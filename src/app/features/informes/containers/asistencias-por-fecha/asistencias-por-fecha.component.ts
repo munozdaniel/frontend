@@ -142,13 +142,41 @@ export class AsistenciasPorFechaComponent implements OnInit {
         }
       );
   }
+  groupByMultipleCampos(array, f) {
+    var groups = {};
+    array.forEach(function (o) {
+      var group = JSON.stringify(f(o));
+      groups[group] = groups[group] || [];
+      groups[group].push(o);
+    });
+    return Object.keys(groups).map(function (group) {
+      return groups[group];
+    });
+  }
   generarReporte() {
     // const alumnos = [...this.alumnos, ...this.alumnosNoRegistrados];
     const { fechaDesde, fechaHasta } = this.form.value;
     console.log('===>', this.alumnos);
 
     if (this.rangoHabilitado) {
-      //   this._reportesService.setInformeDeInasistencias(this.alumnos, fechaDesde, fechaHasta);
+      //   const agrupar: any = _.chain(this.alumnos)
+      //     // Group the elements of Array based on `color` property
+      //     .groupBy('planillaTaller._id')
+      //     // `key` is group's name (color), `value` is the array of objects
+      //     .map((value, key) => ({ planillaTaller: key, grupoPlanilla: value }))
+      //     .value();
+      //   console.log('0000', agrupar);
+      //   const agruparPorFecha: any = _.chain(agrupar.map((x) => x.grupoPlanilla))
+      //     // Group the elements of Array based on `color` property
+      //     .groupBy('fecha')
+      //     // `key` is group's name (color), `value` is the array of objects
+      //     .map((value, key) => ({ fecha: key, grupoFecha: value }))
+      //     .value();
+      const agrupacion = this.groupByMultipleCampos(this.alumnos, (x) => {
+        return [x.fecha, x.planillaTaller._id];
+      });
+      console.log('Agrupar', agrupacion);
+      this._reportesService.setInformeDeAsistenciasPorFechas(agrupacion, fechaDesde, fechaHasta);
     } else {
       const agrupar: any = _.chain(this.alumnos)
         // Group the elements of Array based on `color` property

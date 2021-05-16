@@ -52,6 +52,7 @@ export class FichaAsistenciasPorDiaPdf {
         ...this.asistencias.map((x) => {
           const unaPlanillaAsistencia: any[] = x.grupoPlanilla;
           const planilla: IPlanillaTaller = unaPlanillaAsistencia[0].planillaTaller;
+          let contador = 0;
           return {
             stack: [
               {
@@ -104,25 +105,57 @@ export class FichaAsistenciasPorDiaPdf {
                         text: `Dni`,
                         style: 'tableHeader',
                         alignment: 'left',
+                        bold: 'true',
+                        fillColor: '#eeeeee',
                       },
                       {
                         text: `Nombre y Apellido`,
                         style: 'tableHeader',
                         alignment: 'left',
+                        bold: 'true',
+                        fillColor: '#eeeeee',
                       },
                       {
                         text: `Asistencia`,
                         style: 'tableHeader',
                         alignment: 'center',
+                        bold: 'true',
+                        fillColor: '#eeeeee',
                       },
                     ],
                     ...unaPlanillaAsistencia.map((asistencia) => {
+                      if (asistencia.presente) {
+                        contador++;
+                      }
                       return [
-                        asistencia.alumno.dni,
-                        asistencia.alumno.nombreCompleto,
-                        { text: asistencia.presente ? 'Presente' : 'Ausente', alignment: 'center' },
+                        {
+                          text: asistencia.alumno.dni,
+                          bold: asistencia.presente ? false : true,
+                        },
+                        {
+                          text: asistencia.alumno.nombreCompleto,
+                          bold: asistencia.presente ? false : true,
+                        },
+                        {
+                          text: asistencia.presente ? 'Presente' : 'Ausente',
+                          alignment: 'center',
+                          bold: asistencia.presente ? false : true,
+                        },
                       ];
                     }),
+                    [
+                      {},
+                      {},
+                      {
+                        text:
+                          contador === unaPlanillaAsistencia.length
+                            ? 'Asistencia Completa'
+                            : 'Total Ausentes: ' + (unaPlanillaAsistencia.length - contador),
+                        colSpan: 1,
+                        alignment: 'center',
+                        bold: 'true',
+                      },
+                    ],
                   ],
                 },
                 layout: {

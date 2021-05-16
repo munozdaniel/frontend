@@ -8,14 +8,32 @@ declare let pdfMake: any;
 @Injectable({
   providedIn: 'root',
 })
-export class FichaAsistenciasPorFechaPdf {
-  asistencias: any[]; // { alumnos,planilla}
+export class FichaAsistenciasPorFechasPdf {
+  //   asistenciasGrupo =[
+  //     // Un Grupo
+  //     [
+  //       { alumno1, planilla1, fecha1, presente },
+  //       { alumno2, planilla1, fecha1, presente },
+  //     ],
+  //     // Otro grupo
+  //     [
+  //        { alumno1, planilla1, fecha2, presente },
+  //        { alumno2, planilla1, fecha2, presente },
+  //        { alumno3, planilla1, fecha2, presente },
+  //     ],
+  //   ];
+  asistenciasGrupo: any[]; //
+
+  fechaInicio: string;
+  fechaFinal: string;
   constructor(private scriptService: ScriptService) {
     this.scriptService.load('pdfMake', 'vfsFonts');
   }
 
-  generatePdf(asistencias: any[], fechaInicio: string, fechaFinal?: string, action = 'open') {
-    this.asistencias = asistencias;
+  generatePdf(asistenciasGrupo: any[], fechaInicio: string, fechaFinal: string, action = 'open') {
+    this.asistenciasGrupo = asistenciasGrupo;
+    this.fechaInicio = fechaInicio;
+    this.fechaFinal = fechaFinal;
     const documentDefinition = this.getDocumentDefinition();
     switch (action) {
       case 'open':
@@ -40,86 +58,147 @@ export class FichaAsistenciasPorFechaPdf {
       height: 'auto',
       content: [
         {
-          text: 'Informe de asistencia por día',
+          text: `Informe de asistencia desde ${moment.utc(this.fechaInicio).format('DD/MM/YYYY')} al ${moment
+            .utc(this.fechaFinal)
+            .format('DD/MM/YYYY')}`,
           bold: true,
           fontSize: 20,
           alignment: 'center',
           margin: [0, 0, 0, 20],
         },
 
-        ...this.asistencias.map((x) => {
+        ...this.asistenciasGrupo.map((asistencia) => {
+          //   [
+          //     // Un Grupo
+          //     [
+          //       { alumno, planilla, fecha, presente },
+          //       { alumno, planilla, fecha, presente },
+          //     ],
+          //     // Otro grupo
+          //     [],
+          //   ];
+
+          const planilla: IPlanillaTaller = asistencia[0].planillaTaller;
+          const fecha: string = moment.utc(asistencia[0].fecha).format('DD/MM/YYYY');
           return {
-            table: {
-              widths: ['33%', '33%', '33%'],
-              headerRows: 2,
-              // keepWithHeaderRows: 1,
-              body: [
-                //   Asig/Curso/Prof
-                [
-                  {
-                    text: x.planillaTaller.curso.comision
-                      ? 'Taller: ' + x.planillaTaller.asignatura.detalle
-                      : x.planillaTaller.asignatura.detalle,
-                    style: 'tableHeader',
-                    colSpan: 1,
-                    alignment: 'left',
+            stack: [
+              {
+                // =====
+                table: {
+                  widths: ['33%', '33%', '33%'],
+                  headerRows: 2,
+                  // keepWithHeaderRows: 1,
+                  body: [
+                    // Fecha
+                    [
+                      {
+                        text: `Fecha: ${fecha}`,
+                        style: 'tableHeader',
+                        alignment: 'left',
+                        bold: true,
+                        colSpan: 3,
+                        border: [true, true, true, false],
+                      },
+                      {},
+                      {},
+                    ],
+                    //   Asig/Curso/Prof
+                    [
+                      {
+                        text: planilla.curso.comision ? 'Taller: ' + planilla.asignatura.detalle : planilla.asignatura.detalle,
+                        style: 'tableHeader',
+                        colSpan: 1,
+                        alignment: 'left',
+                        border: [true, false, false, false],
+                      },
+                      {
+                        text: `Curso: ${planilla.curso.curso} Div.: ${planilla.curso.division} Com:${
+                          planilla.curso.comision ? planilla.curso.comision : ''
+                        }`,
+                        style: 'tableHeader',
+                        colSpan: 1,
+                        alignment: 'center',
+                        border: [false, false, false, false],
+                      },
+                      {
+                        text: `Prof: ${planilla.profesor.nombreCompleto}`,
+                        style: 'tableHeader',
+                        alignment: 'center',
+                        border: [false, false, true, false],
+                      },
+                    ],
+                    [
+                      {
+                        text: `Dni`,
+                        style: 'tableHeader',
+                        alignment: 'left',
+                        bold:'true'
+                      },
+                      {
+                        text: `Nombre y Apellido`,
+                        style: 'tableHeader',
+                        alignment: 'left',
+                        bold:'true'
+                      },
+                      {
+                        text: `Asistencia`,
+                        style: 'tableHeader',
+                        alignment: 'center',
+                        bold:'true'
+                      },
+                    ],
+                    ...asistencia.map((a) => {
+                      return [a.alumno.dni, a.alumno.nombreCompleto, { text: a.presente ? 'Presente' : 'Ausente', alignment: 'center' }];
+                    }),
+                  ],
+                },
+                layout: {
+                  hLineWidth: function (i, node) {
+                    return i === 0 || i === node.table.body.length ? 2 : 1;
                   },
-                  {
-                    text: `Curso: ${x.planillaTaller.curso.curso} Div.: ${x.planillaTaller.curso.division} Com:${
-                      x.planillaTaller.curso.comision ? x.planillaTaller.curso.comision : ''
-                    }`,
-                    style: 'tableHeader',
-                    colSpan: 1,
-                    alignment: 'center',
+                  vLineWidth: function (i, node) {
+                    return i === 0 || i === node.table.widths.length ? 1 : 0;
                   },
-                  { text: `Prof: ${x.planillaTaller.profesor.nombreCompleto}`, style: 'tableHeader', alignment: 'center' },
-                ],
-                // Fecha
-                [
-                  { text: `Fecha: ${moment.utc(x.fecha).format('DD/MM/YYYY')}`, style: 'tableHeader', alignment: 'left', bold: true },
-                  {},
-                  {},
-                ],
-                //
-                ['Sample value 1', 'Sample value 2', 'Sample value 3'],
-                [
-                  { rowSpan: 3, text: 'rowSpan set to 3\nLorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor' },
-                  'Sample value 2',
-                  'Sample value 3',
-                ],
-                ['', 'Sample value 2', 'Sample value 3'],
-                ['Sample value 1', 'Sample value 2', 'Sample value 3'],
-                ['Sample value 1', { colSpan: 2, rowSpan: 2, text: 'Both:\nrowSpan and colSpan\ncan be defined at the same time' }, ''],
-                ['Sample value 1', '', ''],
-              ],
-            },
-            layout: {
-              hLineWidth: function (i, node) {
-                return i === 0 || i === node.table.body.length ? 2 : 1;
+                  hLineColor: function (i, node) {
+                    return i === 0 || i === node.table.body.length ? 'black' : 'gray';
+                  },
+                  vLineColor: function (i, node) {
+                    return i === 0 || i === node.table.widths.length ? 'black' : 'gray';
+                  },
+                  // hLineStyle: function (i, node) { return {dash: { length: 10, space: 4 }}; },
+                  // vLineStyle: function (i, node) { return {dash: { length: 10, space: 4 }}; },
+                  // paddingLeft: function(i, node) { return 4; },
+                  // paddingRight: function(i, node) { return 4; },
+                  // paddingTop: function(i, node) { return 2; },
+                  // paddingBottom: function(i, node) { return 2; },
+                  // fillColor: function (rowIndex, node, columnIndex) { return null; }
+                },
+                // =====
               },
-              vLineWidth: function (i, node) {
-                return i === 0 || i === node.table.widths.length ? 0 : 0;
+              {
+                style: 'mt24',
+                table: {
+                  widths: ['60%', '20%', '20%'],
+                  body: [
+                    [
+                      { text: '', border: [false, false, false, false] },
+                      { text: 'FIRMA PROFESOR', border: [false, true, false, false], alignment: 'center' },
+                      { text: '', border: [false, false, false, false] },
+                    ],
+                  ],
+                },
               },
-              hLineColor: function (i, node) {
-                return i === 0 || i === node.table.body.length ? 'black' : 'gray';
-              },
-              vLineColor: function (i, node) {
-                return i === 0 || i === node.table.widths.length ? 'black' : 'gray';
-              },
-              // hLineStyle: function (i, node) { return {dash: { length: 10, space: 4 }}; },
-              // vLineStyle: function (i, node) { return {dash: { length: 10, space: 4 }}; },
-              // paddingLeft: function(i, node) { return 4; },
-              // paddingRight: function(i, node) { return 4; },
-              // paddingTop: function(i, node) { return 2; },
-              // paddingBottom: function(i, node) { return 2; },
-              // fillColor: function (rowIndex, node, columnIndex) { return null; }
-            },
+            ],
+            unbreakable: true, // that's the magic :)
           };
         }),
       ],
       styles: {
         tabla_cursadas: {
           margin: [0, 20, 0, 0],
+        },
+        mt24: {
+          margin: [0, 60, 0, 0],
         },
         tableExample: {},
       },

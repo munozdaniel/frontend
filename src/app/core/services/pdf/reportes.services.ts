@@ -16,7 +16,7 @@ import { CalificacionesResumidoPdf } from './calificaciones-resumido.pdf';
 import { FichaAsistenciaDiaPdf } from './ficha-asistencias-dia.pdf';
 import { FichaAsistenciaGeneralPdf } from './ficha-asistencias-general.pdf';
 import { FichaAsistenciasPorDiaPdf } from './ficha-asistencias-por-dia.pdf';
-import { FichaAsistenciasPorFechaPdf } from './ficha-asistencias-por-fechas.pdf';
+import { FichaAsistenciasPorFechasPdf } from './ficha-asistencias-por-fechas.pdf';
 import { LibroTemasPdf } from './libro-temas.pdf';
 @UntilDestroy()
 @Injectable({
@@ -29,7 +29,7 @@ export class ReportesService {
     private _asistenciaService: AsistenciaService,
     private _alumnoService: AlumnoService,
     private _asistenciasPorDiaPdf: FichaAsistenciasPorDiaPdf,
-    private _asistenciasPorFechaPdf: FichaAsistenciasPorFechaPdf,
+    private _asistenciasPorFechasPdf: FichaAsistenciasPorFechasPdf,
     private _fichaAsistenciaGeneralPdf: FichaAsistenciaGeneralPdf,
     private _fichaAsistenciaDiaPdf: FichaAsistenciaDiaPdf,
     private _calificacioService: CalificacionService,
@@ -40,7 +40,7 @@ export class ReportesService {
     private _alumnosPorTallerPdf: AlumnosPdf,
     private _alumnosPorTallerResumidoPdf: AlumnosPorTallerPdf
   ) {}
-  setInformeDeAsistenciasPorDia(alumnos: any[], fechaInicio: string, fechaFinal = null) {
+  setInformeDeAsistenciasPorFechas(asistenciasGrupo: any[], fechaInicio: string, fechaFinal = null) {
     this._designProgressBarService.show();
     Swal.fire({
       title: 'Generar Informe de Asistencias',
@@ -55,7 +55,26 @@ export class ReportesService {
     }).then((result: any) => {
       this._designProgressBarService.hide();
       if (result.isConfirmed) {
-        this._asistenciasPorDiaPdf.generatePdf(alumnos, fechaInicio, fechaFinal);
+        this._asistenciasPorFechasPdf.generatePdf(asistenciasGrupo, fechaInicio, fechaFinal);
+      }
+    });
+  }
+  setInformeDeAsistenciasPorDia(asistencias: any[], fechaInicio: string) {
+    this._designProgressBarService.show();
+    Swal.fire({
+      title: 'Generar Informe de Asistencias',
+      html: 'El proceso puede tardar varios minutos debido a la cantidad de datos que se procesan. <br> <strong>¿Desea continuar?</strong>',
+      icon: 'warning',
+      focusConfirm: false,
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      confirmButtonText: 'Continuar',
+      cancelButtonText: 'Cancelar',
+      showLoaderOnConfirm: true,
+    }).then((result: any) => {
+      this._designProgressBarService.hide();
+      if (result.isConfirmed) {
+        this._asistenciasPorDiaPdf.generatePdf(asistencias, fechaInicio);
       }
     });
   }
