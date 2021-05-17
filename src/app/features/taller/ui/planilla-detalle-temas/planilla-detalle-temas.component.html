@@ -1,6 +1,20 @@
 <div fxLayout="column" class="w-100-p" [class.p-12]="!isMobile" [class.p-4]="isMobile">
+  <div *ngIf="temas?.length < 1" class="w-100-p message-box warning text-center">
+    <span>La planilla no tiene configurado un calendario ni registra temas agregados del sistema anterior.</span>
+    <br />
+    <span>Para ver el calendario de <strong>temas</strong> deberá configurarlo desde la pestaña <strong>GENERAL</strong></span>
+  </div>
   <div fxLayout="row wrap" fxLayoutAlign="space-between start">
     <div fxLayout="column" fxFlex.xs="100" fxFlex.gt-xs="29">
+      <div fxLayout="row" fxLayoutGap="5px" fxLayoutAlign="start end" class="mat-card mat-elevation-z4 p-12 mb-12">
+        <span
+          style="font-size: 28px; color: #3f6542"
+          class="iconify"
+          data-icon="line-md:clipboard-check-twotone"
+          data-inline="false"
+        ></span>
+        <h3>Clases Dictadas: {{ clasesDictadas }}/{{ temas?.length }}</h3>
+      </div>
       <table
         multiTemplateDataRows
         mat-table

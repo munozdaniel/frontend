@@ -23,6 +23,7 @@ import { ITema } from 'app/models/interface/iTema';
 })
 export class PlanillaDetalleTemasComponent implements OnInit, OnChanges {
   TemplateEnum = TemplateEnum;
+  clasesDictadas: number = 0;
   @Input() isUpdate?: boolean;
   @Input() planillaTaller?: IPlanillaTaller;
   @Input() template?: string;
@@ -64,12 +65,17 @@ export class PlanillaDetalleTemasComponent implements OnInit, OnChanges {
         this.isMobile = false;
         this.columnas = ['fecha', 'nroClase', 'opciones'];
       }
-     
     });
   }
 
   ngOnChanges(changes: SimpleChanges): void {
     if (changes.temas && changes.temas.currentValue) {
+      this.clasesDictadas = 0;
+      this.temas.forEach((x) => {
+        if (!x.motivoSinDictar && x.temaDelDia) {
+          this.clasesDictadas++;
+        }
+      });
       this.dataSource.data = [...this.temas];
       if (this.temaSeleccionado) {
         const index = this.temas.findIndex((x) => x._id === this.temaSeleccionado._id);
@@ -77,7 +83,6 @@ export class PlanillaDetalleTemasComponent implements OnInit, OnChanges {
           this.temaSeleccionado = { ...this.temas[index] };
         }
       }
-     
     }
   }
 
