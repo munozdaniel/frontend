@@ -120,13 +120,8 @@
   </mat-paginator>
 </div>
 <div mat-dialog-actions class="w-100-p" fxLayout="row" fxLayoutAlign="center start">
-  <button
-    [disabled]="deshabilitadoTemporalmente || controlAsistencias()"
-    mat-raised-button
-    fxFlex="100"
-    color="accent"
-    (click)="tomarAsistenciaMasivo()"
-  >
+  <!--  || controlAsistencias() -->
+  <button [disabled]="deshabilitadoTemporalmente" mat-raised-button fxFlex="100" color="accent" (click)="tomarAsistenciaMasivo()">
     GUARDAR ASISTENCIAS
   </button>
 </div>
