@@ -74,11 +74,7 @@ export class PlanillasTablaComponent implements OnInit, OnChanges {
           'fechaInicio',
           'bimestre',
           'asignatura',
-          // 'curso',
-          // 'div',
-          // 'comision',
           'comisioncompleta',
-          // 'duracion',
           'profesor',
           'observacion',
           'opciones',
@@ -101,6 +97,7 @@ export class PlanillasTablaComponent implements OnInit, OnChanges {
       const matchFilter = [];
       const filterArray = filters.split(',');
       const columns = [
+        data.turno,
         data.planillaTallerNro,
         moment.utc(data.fechaInicio, 'YYYY-MM-DDTHH:mm:ss').format('DD/MM/YYYY HH:mm:ss').toString(), // 2021-03-02T15:21:12
         data.bimestre,
@@ -123,25 +120,30 @@ export class PlanillasTablaComponent implements OnInit, OnChanges {
       return matchFilter.every(Boolean); // AND
     };
     // Personalizar Sort
-    //     planillaTallerNro
-    // cicloLectivo
-    // fechaInicio
-    // bimestre
-    // asignatura
-    // comisioncompleta
-    // profesor
-    // observacion
-    // opciones
+    // 'planillaTallerNro',
+    // 'turno',
+    // 'cicloLectivo',
+    // 'fechaInicio',
+    // 'bimestre',
+    // 'asignatura',
+    // 'comisioncompleta',
+    // 'profesor',
+    // 'observacion',
+    // 'opciones',
     this.dataSource.sortingDataAccessor = (item: IPlanillaTaller, property) => {
       switch (property) {
         case 'planillaTallerNro':
           return item.planillaTallerNro.toString();
+        case 'turno':
+          return item.turno.toString();
         case 'cicloLectivo':
-          return item.cicloLectivo[0].anio;
+          return item.cicloLectivo.anio;
         case 'fechaInicio':
           return moment.utc(item.fechaInicio, 'YYYY-MM-DDTHH:mm:ss').format('DD/MM/YYYY HH:mm:ss').toString();
         case 'asignatura':
           return item.asignatura.detalle;
+        case 'bimestre':
+          return item.bimestre;
         case 'comisioncompleta':
           return item.curso.curso + '° AÑO ' + item.curso.division + '° DIV COM. ' + item.curso.comision;
         case 'profesor':
