@@ -63,7 +63,6 @@ import { TemaFormModalComponent } from '../tema-form-modal/tema-form-modal.compo
 
           <mat-tab label="Asistencias">
             <app-planilla-detalle-asistencias
-              [totalClases]="totalClases"
               [template]="template"
               [cargandoAsistencias]="cargandoAsistencias"
               [cargandoAlumnos]="cargandoAlumnos"

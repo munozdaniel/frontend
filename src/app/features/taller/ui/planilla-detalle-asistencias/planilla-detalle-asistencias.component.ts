@@ -21,7 +21,7 @@ export class PlanillaDetalleAsistenciasComponent implements OnInit, OnChanges {
   totalAusentes = { valor: 0, porcentaje: 0 };
   totalPresentes = { valor: 0, porcentaje: 0 };
   @Input() deshabilitarEdicion: boolean;
-  @Input() totalClases: number;
+   totalClases: number;
   @Input() template: string;
   @Input() cargandoAsistencias: boolean;
   @Input() cargandoAlumnos: boolean;
@@ -88,6 +88,7 @@ export class PlanillaDetalleAsistenciasComponent implements OnInit, OnChanges {
     }
     if (changes.asistencias && changes.asistencias.currentValue) {
       this.dataSourceAsistencia.data = this.asistencias;
+      this.totalClases = this.asistencias.length;
       this.calcularEstadisticas();
     }
   }

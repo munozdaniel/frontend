@@ -38,7 +38,6 @@ import Swal from 'sweetalert2';
           </mat-tab>
           <mat-tab label="Asistencias">
             <app-planilla-detalle-asistencias
-              [totalClases]="totalClases"
               [cargandoAsistencias]="cargandoAsistencias"
               [cargandoAlumnos]="cargandoAlumnos"
               [alumnos]="alumnos"
