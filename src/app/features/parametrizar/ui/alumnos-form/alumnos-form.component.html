@@ -221,7 +221,7 @@
             <!-- motivo de baja ============================= -->
             <mat-form-field appearance="outline">
               <mat-label class="lbl">Motivo de Baja</mat-label>
-              <input matInput type="text" formControlName="motivoDeBaja" minlength="4" maxlength="50" autocomplete="off" />
+              <input matInput type="text" formControlName="motivoDeBaja" maxlength="50" autocomplete="off" />
               <mat-error *ngIf="formDatosPersonales.get('motivoDeBaja').hasError('maxlength')"> Máximo 50 caracteres </mat-error>
             </mat-form-field>
             <!-- domicilio ============================= -->
