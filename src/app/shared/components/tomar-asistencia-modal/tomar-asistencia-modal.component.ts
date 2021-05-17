@@ -99,6 +99,11 @@ export class TomarAsistenciaModalComponent implements OnInit {
   }
   ngOnInit(): void {}
   tomarAsistenciaMasivo() {
+    // console.log('¿ this.alumnos', this.alumnos);
+    // console.log(
+    //   '¿ this.alumnos',
+    //   this.alumnos.filter((x) => x.presente !== null)
+    // );
     const fecha = moment(this.form.controls.fecha.value).format('DD/MM/YYYY');
     Swal.fire({
       title: '¿Está seguro de continuar?',
@@ -111,17 +116,23 @@ export class TomarAsistenciaModalComponent implements OnInit {
       cancelButtonText: 'Cancelar',
       showLoaderOnConfirm: true,
       preConfirm: () => {
-        return this._asistenciaService.tomarAsistenciaPorPlanilla(this.planillaTaller, this.alumnos, this.form.controls.fecha.value).pipe(
-          catchError((error) => {
-            console.log('[ERROR]', error);
-            Swal.fire({
-              title: 'Oops! Ocurrió un error',
-              text: error && error.error ? error.error.message : 'Error de conexion',
-              icon: 'error',
-            });
-            return of(error);
-          })
-        );
+        return this._asistenciaService
+          .tomarAsistenciaPorPlanilla(
+            this.planillaTaller,
+            this.alumnos.filter((x) => x.presente !== null),
+            this.form.controls.fecha.value
+          )
+          .pipe(
+            catchError((error) => {
+              console.log('[ERROR]', error);
+              Swal.fire({
+                title: 'Oops! Ocurrió un error',
+                text: error && error.error ? error.error.message : 'Error de conexion',
+                icon: 'error',
+              });
+              return of(error);
+            })
+          );
       },
       allowOutsideClick: () => !Swal.isLoading(),
     }).then((result: any) => {
