@@ -1,14 +1,6 @@
 import { trigger, state, style, transition, animate } from '@angular/animations';
 import { BreakpointObserver, Breakpoints, BreakpointState, MediaMatcher } from '@angular/cdk/layout';
-import {
-  Component,
-  Input,
-  OnInit,
-  ViewChild,
-  OnChanges,
-  SimpleChanges,
-  ChangeDetectorRef,
-} from '@angular/core';
+import { Component, Input, OnInit, ViewChild, OnChanges, SimpleChanges, ChangeDetectorRef } from '@angular/core';
 import { MatTableDataSource, MatSort, MatPaginator, PageEvent } from '@angular/material';
 import { Router } from '@angular/router';
 import { designAnimations } from '@design/animations';
@@ -113,7 +105,7 @@ export class PlanillasTablaComponent implements OnInit, OnChanges {
         moment.utc(data.fechaInicio, 'YYYY-MM-DDTHH:mm:ss').format('DD/MM/YYYY HH:mm:ss').toString(), // 2021-03-02T15:21:12
         data.bimestre,
         data.asignatura.detalle,
-        '0' + data.curso.curso + ' / 0' + data.curso.division + ' / ' + data.curso.comision,
+        data.curso.curso + '° AÑO ' + data.curso.division + '° DIV COM. ' + data.curso.comision,
         data.profesor.nombreCompleto,
         data.observacion,
         data.cicloLectivo.anio,
@@ -151,7 +143,7 @@ export class PlanillasTablaComponent implements OnInit, OnChanges {
         case 'asignatura':
           return item.asignatura.detalle;
         case 'comisioncompleta':
-          return '0' + item.curso.curso + ' / 0' + item.curso.division + ' / ' + item.curso.comision;
+          return item.curso.curso + '° AÑO ' + item.curso.division + '° DIV COM. ' + item.curso.comision;
         case 'profesor':
           return item.profesor.nombreCompleto;
         default:

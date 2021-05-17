@@ -59,10 +59,22 @@ export class AlumnosTablaEmailComponent implements OnInit, OnChanges {
   }
   customSearchSortTable() {
     // Personalizar funcion busqueda en la tabla detalle
-    this.dataSource.filterPredicate = (data: IAlumno, filters: string) => {
+    this.dataSource.filterPredicate = (data: any, filters: string) => {
       const matchFilter = [];
       const filterArray = filters.split(',');
-      const columns = [data.alumnoNro, data.nombreCompleto, data.email, data.dni, data.seguimientoEtap ? 'SI' : 'NO'];
+      const columns = [
+        data.presente ? 'Presente' : 'Ausente',
+        data.alumno.nombreCompleto,
+        data.alumno.dni,
+        data.alumno.email,
+        data.planillaTaller.curso.curso +
+          '° AÑO ' +
+          data.planillaTaller.curso.division +
+          '° DIV COM. ' +
+          data.planillaTaller.curso.comision,
+        data.planillaTaller.asignatura.detalle,
+        data.planillaTaller.profesor.nombreCompleto,
+      ];
 
       filterArray.forEach((filter) => {
         const customFilter = [];
@@ -76,17 +88,29 @@ export class AlumnosTablaEmailComponent implements OnInit, OnChanges {
       return matchFilter.every(Boolean); // AND
     };
 
-    this.dataSource.sortingDataAccessor = (item: IAlumno, property) => {
+    this.dataSource.sortingDataAccessor = (item: any, property) => {
       switch (property) {
-        case 'alumnoNro':
-          return item.alumnoNro.toString();
+        case 'asistencia':
+          return item.presente ? 'Presente' : 'Ausente';
         case 'nombre':
-          return item.nombreCompleto;
-        case 'email':
-          return item.email;
+          return item.alumno.nombreCompleto.toString();
         case 'dni':
-          return item.dni;
+          return item.alumno.dni;
+        case 'email':
+          return item.alumno.email;
+        case 'curso':
+          return (
+            item.planillaTaller.curso.curso +
+            '° AÑO ' +
+            item.planillaTaller.curso.division +
+            '° DIV COM. ' +
+            item.planillaTaller.curso.comision
+          );
 
+        case 'asignatura':
+          return item.planillaTaller.asignatura.detalle;
+        case 'profesor':
+          return item.planillaTaller.profesor.nombreCompleto;
         default:
           return item[property];
       }
