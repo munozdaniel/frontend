@@ -149,7 +149,9 @@ export class CalendarioAcademicoComponent implements OnInit {
             text: 'El seguimiento ha sido actualizado correctamente.',
             icon: 'success',
           });
-          this.calendario = [...result.value.calendarioNuevo];
+          //   this.calendario = [...result.value.calendarioNuevo];
+          //   this.recuperarCalendarioPorCiclo(this.cicloActual);
+          window.location.reload();
         } else {
           Swal.fire({
             title: 'Oops! Ocurrió un error',
