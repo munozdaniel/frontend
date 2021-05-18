@@ -80,16 +80,16 @@
           <mat-icon>more_vert</mat-icon>
         </button>
         <mat-menu #menu="matMenu">
-          <button mat-menu-item matTooltip="Modificar asistencia" (click)="editar(row)">
+          <button mat-menu-item matTooltip="Modificar seguimiento" (click)="editar(row)">
             <mat-icon>create</mat-icon>
             <span>Editar</span>
           </button>
-          <button mat-menu-item matTooltip="Eliminar asistencia" (click)="eliminar(row)">
+          <button mat-menu-item matTooltip="Eliminar seguimiento" (click)="eliminar(row)">
             <mat-icon>delete_forever</mat-icon>
             <span>Eliminar</span>
           </button>
           <mat-divider></mat-divider>
-          <button *ngIf="row.planillaTaller" mat-menu-item matTooltip="Eliminar asistencia" (click)="redireccionarPlanilla(row)">
+          <button *ngIf="row.planillaTaller" mat-menu-item matTooltip="Eliminar seguimiento" (click)="redireccionarPlanilla(row)">
             <mat-icon>build</mat-icon>
             <span>Ver Planilla Taller</span>
           </button>

@@ -5,21 +5,39 @@ import { designAnimations } from '@design/animations';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { CicloLectivoService } from 'app/core/services/ciclo-lectivo.service';
 import { ValidationService } from 'app/core/services/general/validation.services';
+import { AuthenticationService } from 'app/core/services/helpers/authentication.service';
 import { SeguimientoAlumnoService } from 'app/core/services/seguimientoAlumno.service';
 import { DescripcionSeguimiento } from 'app/models/constants/descripcion-seguimiento.const';
 import { IAlumno } from 'app/models/interface/iAlumno';
 import { ICicloLectivo } from 'app/models/interface/iCicloLectivo';
 import { IPlanillaTaller } from 'app/models/interface/iPlanillaTaller';
 import { ISeguimientoAlumno } from 'app/models/interface/iSeguimientoAlumno';
+import { IUsuario } from 'app/models/interface/iUsuario';
 import { CONFIG_PROVIDER } from 'app/shared/config.provider';
 import * as moment from 'moment';
 import Swal from 'sweetalert2';
 @UntilDestroy()
 @Component({
   selector: 'app-seguimiento-form-modal',
-  template: `
-    <h1 mat-dialog-title>Seguimiento de {{ alumno?.nombreCompleto }}</h1>
+  template: ` <h1 mat-dialog-title>Seguimiento de {{ alumno?.nombreCompleto }}</h1>
     <div mat-dialog-content class="px-24">
+      <div fxLayout="row wrap" fxLayoutAlign="space-between start">
+        <div *ngIf="seguimiento.creadoPor" fxFlex.xs="100" fxFlex.gt-xs="45" fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="10px">
+          <strong>Creado Por:</strong>
+          <span>{{ seguimiento.creadoPor?.apellido + ' ' + seguimiento.creadoPor?.nombre }}</span>
+        </div>
+        <div
+          *ngIf="seguimiento.modificadoPor"
+          fxFlex.xs="100"
+          fxFlex.gt-xs="45"
+          fxLayout="row"
+          fxLayoutAlign="start center"
+          fxLayoutGap="10px"
+        >
+          <strong>Modificado Por:</strong>
+          <span>{{ seguimiento.modificadoPor?.apellido + ' ' + seguimiento.modificadoPor?.nombre }}</span>
+        </div>
+      </div>
       <form
         [formGroup]="form"
         [@animate]="{ value: '*', params: { delay: '50ms', scale: '0.2' } }"
@@ -103,37 +121,36 @@ import Swal from 'sweetalert2';
           </mat-form-field>
         </div>
       </form>
-      <div fxLayout="row wrap" fxLayoutAlign="space-between start" class="mt-12">
-        <button mat-raised-button ngClass.xs="" class="mt-8 " fxFlex.xs="100" (click)="cerrar()" color="warn">Cerrar</button>
-        <button
-          [disabled]="cargando"
-          *ngIf="!isUpdate"
-          mat-raised-button
-          [disabled]="form.invalid"
-          ngClass.xs=""
-          class="mt-8"
-          fxFlex.xs="100"
-          (click)="guardar()"
-          color="primary"
-        >
-          Guardar
-        </button>
-        <button
-          *ngIf="isUpdate"
-          mat-raised-button
-          [disabled]="form.invalid"
-          ngClass.xs=""
-          class="mt-8 "
-          fxFlex.xs="100"
-          [disabled]="cargando"
-          (click)="actualizar()"
-          color="primary"
-        >
-          Actualizar
-        </button>
-      </div>
     </div>
-  `,
+    <div mat-dialog-actionsfxLayout="row wrap" fxLayoutAlign="space-between start" class="mt-12">
+      <button mat-raised-button ngClass.xs="" class="mt-8 " fxFlex.xs="100" (click)="cerrar()" color="warn">Cerrar</button>
+      <button
+        [disabled]="cargando"
+        *ngIf="!isUpdate"
+        mat-raised-button
+        [disabled]="form.invalid"
+        ngClass.xs=""
+        class="mt-8"
+        fxFlex.xs="100"
+        (click)="guardar()"
+        color="primary"
+      >
+        Guardar
+      </button>
+      <button
+        *ngIf="isUpdate"
+        mat-raised-button
+        [disabled]="form.invalid"
+        ngClass.xs=""
+        class="mt-8 "
+        fxFlex.xs="100"
+        [disabled]="cargando"
+        (click)="actualizar()"
+        color="primary"
+      >
+        Actualizar
+      </button>
+    </div>`,
   styles: [],
   animations: [designAnimations],
   providers: CONFIG_PROVIDER,
@@ -149,10 +166,12 @@ export class SeguimientoFormModalComponent implements OnInit {
   seguimiento: ISeguimientoAlumno;
   maximo;
   ciclosLectivos: ICicloLectivo[];
+  usuario: IUsuario;
   constructor(
     private _fb: FormBuilder,
     private _seguimientoAlumnoService: SeguimientoAlumnoService,
     private _cicloLectivoService: CicloLectivoService,
+    private _authService: AuthenticationService,
     public dialogRef: MatDialogRef<SeguimientoFormModalComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any
   ) {
@@ -170,6 +189,14 @@ export class SeguimientoFormModalComponent implements OnInit {
       this.isUpdate = true;
       this.seguimiento = data.seguimiento;
     }
+    this._authService.currentUser$.pipe(untilDestroyed(this)).subscribe(
+      (datos) => {
+        this.usuario = { ...datos };
+      },
+      (error) => {
+        console.log('[ERROR]', error);
+      }
+    );
   }
   ngOnDestroy(): void {}
   ngOnInit(): void {
@@ -258,6 +285,7 @@ export class SeguimientoFormModalComponent implements OnInit {
       ...this.form.value,
       activo: true,
       fechaCreacion: new Date(),
+      creadoPor: this.usuario,
     };
     this._seguimientoAlumnoService
       .agregarSeguimientoAlumno(seguimiento)
@@ -314,7 +342,8 @@ export class SeguimientoFormModalComponent implements OnInit {
     const seguimientoForm: ISeguimientoAlumno = {
       ...this.form.value,
       activo: true,
-      fechaCreacion: new Date(),
+      fechaModificacion: new Date(),
+      modificadoPor: this.usuario,
     };
     this._seguimientoAlumnoService
       .actualizarSeguimientoAlumno(this.seguimiento._id, seguimientoForm)

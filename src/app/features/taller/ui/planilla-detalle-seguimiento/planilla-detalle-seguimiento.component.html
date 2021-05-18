@@ -173,15 +173,15 @@
               <mat-icon>more_vert</mat-icon>
             </button>
             <mat-menu #menu="matMenu">
-              <button mat-menu-item matTooltip="Modificar asistencia" (click)="abrirModalDetalle(row)">
+              <button mat-menu-item matTooltip="Ver detalles" (click)="abrirModalDetalle(row)">
                 <mat-icon>remove_red_eye</mat-icon>
                 <span>Ver Detalles</span>
               </button>
-              <button *ngIf="template?.toString() == 'EDICION'" mat-menu-item matTooltip="Modificar asistencia" (click)="editar(row)">
+              <button *ngIf="template?.toString() == 'EDICION'" mat-menu-item matTooltip="Modificar seguimiento del alumno" (click)="editar(row)">
                 <mat-icon>create</mat-icon>
                 <span>Editar</span>
               </button>
-              <button *ngIf="template?.toString() == 'EDICION'" mat-menu-item matTooltip="Eliminar asistencia" (click)="eliminar(row)">
+              <button *ngIf="template?.toString() == 'EDICION'" mat-menu-item matTooltip="Eliminar seguimiento del alumno" (click)="eliminar(row)">
                 <mat-icon>delete_forever</mat-icon>
                 <span>Eliminar</span>
               </button>

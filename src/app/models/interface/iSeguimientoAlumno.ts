@@ -1,6 +1,7 @@
 import { IAlumno } from './iAlumno';
 import { ICicloLectivo } from './iCicloLectivo';
 import { IPlanillaTaller } from './iPlanillaTaller';
+import { IUsuario } from './iUsuario';
 
 export interface ISeguimientoAlumno {
   _id?: string;
@@ -17,6 +18,8 @@ export interface ISeguimientoAlumno {
   observacionJefe: string;
 
   fechaCreacion: Date;
+  creadoPor?: IUsuario | string;
+  modificadoPor?: IUsuario | string;
   fechaModificacion?: Date;
   activo: boolean;
 }

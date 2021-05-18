@@ -29,7 +29,7 @@
     </ng-template>
   </div>
   <div class="barra_titulos" fxLayout="column">
-    <mat-accordion>
+    <mat-accordion [fxHide]="cantidadSeguimientos < 1">
       <mat-expansion-panel style="border: 2px dashed red; border-radius: 0">
         <mat-expansion-panel-header>
           <mat-panel-title fxLayout="row" fxLayoutAlign="start center">

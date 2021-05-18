@@ -2,8 +2,11 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { designAnimations } from '@design/animations';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
+import { AuthenticationService } from 'app/core/services/helpers/authentication.service';
+import { UsuarioService } from 'app/core/services/helpers/usuario.service';
 import { SeguimientoAlumnoService } from 'app/core/services/seguimientoAlumno.service';
 import { ISeguimientoAlumno } from 'app/models/interface/iSeguimientoAlumno';
+import { IUsuario } from 'app/models/interface/iUsuario';
 import Swal from 'sweetalert2';
 @UntilDestroy()
 @Component({
@@ -30,7 +33,23 @@ export class SeguimientoEditarComponent implements OnInit {
   cargando = false;
   seguimiento: ISeguimientoAlumno;
   seguimientoId: string;
-  constructor(private _activeRoute: ActivatedRoute, private _seguimientoAlumnoService: SeguimientoAlumnoService, private _router: Router) {}
+  usuario: IUsuario;
+  constructor(
+    private _activeRoute: ActivatedRoute,
+    private _seguimientoAlumnoService: SeguimientoAlumnoService,
+    private _router: Router,
+    private _authService: AuthenticationService
+  ) {
+    this._authService.currentUser$.pipe(untilDestroyed(this)).subscribe(
+      (datos) => {
+        this.usuario = { ...datos };
+        this.usuario.token = null;
+      },
+      (error) => {
+        console.log('[ERROR]', error);
+      }
+    );
+  }
 
   ngOnInit(): void {
     this._activeRoute.params.subscribe((params) => {
@@ -66,7 +85,8 @@ export class SeguimientoEditarComponent implements OnInit {
     const seguimiento: ISeguimientoAlumno = {
       ...evento,
       activo: true,
-      fechaCreacion: new Date(),
+      fechaModificacion: new Date(),
+      modificadoPor: this.usuario,
     };
     this._seguimientoAlumnoService
       .actualizarSeguimientoAlumno(this.seguimiento._id, seguimiento)
