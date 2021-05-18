@@ -46,45 +46,50 @@ export class CalendarioDatosComponent implements OnInit, OnChanges, OnDestroy {
     if (changes.calendario && changes.calendario.currentValue && changes.calendario.currentValue.length > 0) {
       this.minDate = this.calendario[0].fecha;
       this.maxDate = this.calendario[this.calendario.length - 1].fecha;
-      this.events = this.calendario.map((x) => {
-        const comision: any = this.retornarComision(x);
+      this.calendario.map((x) => {
+        const comisiones: any[] = this.retornarComision(x);
         const fecha = x.fecha.toString().split('T')[0]; // Esto para que no cambie la fecha al pasar a date
-        return {
-          title: comision.title,
-          //   start: moment(fecha).utc().add(1, 'day').toDate(),
-          start: moment(fecha).clone().toDate(),
-          color: comision.color,
-          allDay: true,
-        };
+        comisiones.map((comision) => {
+          console.log('comision.color', comision.color);
+          this.events.push({
+            title: comision.title,
+            //   start: moment(fecha).utc().add(1, 'day').toDate(),
+            start: moment(fecha).clone().toDate(),
+            color: comision.color,
+            allDay: true,
+          });
+        });
       });
       this.refresh.next();
     }
   }
   retornarComision(x: ICalendario) {
+    const arreglo = [];
     if (x.comisionA) {
-      return { title: 'COMISION A', color: 'rgb(0, 153, 255)' };
+      arreglo.push({ title: 'COMISION A', color: 'rgb(0, 153, 255)' });
     }
     if (x.comisionB) {
-      return { title: 'COMISION B', color: 'rgb(0, 255, 106)' };
+      arreglo.push({ title: 'COMISION B', color: 'rgb(0, 255, 106)' });
     }
     if (x.comisionC) {
-      return { title: 'COMISION C', color: 'rgb(187, 255, 0)' };
+      arreglo.push({ title: 'COMISION C', color: 'rgb(187, 255, 0)' });
     }
     if (x.comisionD) {
-      return { title: 'COMISION D', color: 'rgb(255, 208, 0)' };
+      arreglo.push({ title: 'COMISION D', color: 'rgb(255, 208, 0)' });
     }
     if (x.comisionE) {
-      return { title: 'COMISION E', color: 'rgb(255, 94, 0);' };
+      arreglo.push({ title: 'COMISION E', color: 'rgb(255, 94, 0);' });
     }
     if (x.comisionF) {
-      return { title: 'COMISION F', color: 'rgb(255, 0, 0);' };
+      arreglo.push({ title: 'COMISION F', color: 'rgb(255, 0, 0);' });
     }
     if (x.comisionG) {
-      return { title: 'COMISION G', color: 'rgb(255, 0, 128)' };
+      arreglo.push({ title: 'COMISION G', color: 'rgb(255, 0, 128)' });
     }
     if (x.comisionH) {
-      return { title: 'COMISION H', color: 'rgb(55, 0, 255)' };
+      arreglo.push({ title: 'COMISION H', color: 'rgb(55, 0, 255)' });
     }
+    return arreglo;
   }
   ngOnInit(): void {
     const cadena = this._cookieService.check('configuracion') ? this._cookieService.get('configuracion') : null;

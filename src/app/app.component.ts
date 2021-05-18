@@ -191,13 +191,13 @@ export class AppComponent implements OnInit, OnDestroy {
               //   icon: 'account',
               //   url: '/administrador/mi-cuenta',
               // },
-              //   {
-              //     id: 'calendario',
-              //     title: 'Calendario',
-              //     type: 'item',
-              //     icon: 'today',
-              //     url: '/administrador/calendario-academico',
-              //   },
+              {
+                id: 'calendario',
+                title: 'Calendario',
+                type: 'item',
+                icon: 'today',
+                url: '/administrador/calendario-academico',
+              },
               // {
               //   id: 'customize',
               //   title: 'Diseño',
