@@ -61,7 +61,7 @@ import Swal from 'sweetalert2';
             <mat-error *ngIf="form.controls.formaExamen.hasError('required')"> Este campo es requerido. </mat-error>
           </mat-form-field>
           <!-- promedioGeneral ============================= -->
-          <mat-form-field appearance="outline" fxFlex.gt-xs="45" fxFlex.xs="100">
+          <mat-form-field [fxHide]="ausente" appearance="outline" fxFlex.gt-xs="45" fxFlex.xs="100">
             <mat-label class="lbl">Calificación</mat-label>
             <input matInput type="number" formControlName="promedioGeneral" min="1" max="10" autocomplete="off" />
             <mat-error *ngIf="form.controls.promedioGeneral.hasError('required')"> Este campo es requerido. </mat-error>
@@ -74,9 +74,16 @@ import Swal from 'sweetalert2';
               Entre 0 y 10
             </mat-error>
           </mat-form-field>
+          <!-- <mat-checkbox class="mb-12" (click)="permitirAusentar()">Ausente permitido</mat-checkbox> -->
+          <div fxFlex.xs="100" fxFlex.gt-xs="45" fxLayout="row wrap" fxLayoutAlign="space-between start" class="border p-12 ">
+            <mat-slide-toggle formControlName="ausente" (click)="ausentar($event)">AUSENTE</mat-slide-toggle>
+            <mat-slide-toggle *ngIf="ausente" formControlName="ausentePermitido" (click)="permitirAusentar($event)">
+              AUTORIZAR
+            </mat-slide-toggle>
+          </div>
           <!-- promedia ============================= -->
-          <div fxFlex.xs="100" fxFlex.gt-xs="45 " class="border p-12 mb-12">
-            <mat-slide-toggle formControlName="promedia">{{ form.controls.promedia.value ? 'PROMEDIA' : 'NO PROMEDIA' }}</mat-slide-toggle>
+          <div [fxHide]="ausente" fxFlex.xs="100" fxFlex.gt-xs="45 " class="border p-12 mb-12">
+            <mat-slide-toggle formControlName="promedia">PROMEDIAR</mat-slide-toggle>
           </div>
 
           <!-- observacion ============================= -->
@@ -113,6 +120,8 @@ import Swal from 'sweetalert2';
   animations: [designAnimations],
 })
 export class CalificacionFormModalComponent implements OnInit, OnDestroy {
+  ausentePermitido = false;
+  ausente = false;
   cargando = false;
   tiposExamenes = TiposExamenesConst;
   formasExamenes = FormasExamenesConst;
@@ -137,12 +146,15 @@ export class CalificacionFormModalComponent implements OnInit, OnDestroy {
     if (data.calificacion) {
       this.isUpdate = true;
       this.calificacion = data.calificacion;
+      this.ausente = this.calificacion.ausente;
     }
   }
   ngOnDestroy(): void {}
 
   ngOnInit(): void {
     this.form = this._fb.group({
+      ausente: [this.calificacion ? this.calificacion.ausente : null, []],
+      ausentePermitido: [this.calificacion ? this.calificacion.ausentePermitido : null, []],
       formaExamen: [this.calificacion ? this.calificacion.formaExamen : null, [Validators.required]],
       tipoExamen: [this.calificacion ? this.calificacion.tipoExamen : null, [Validators.required]],
       promedia: [this.calificacion ? this.calificacion.promedia : false, []],
@@ -179,6 +191,8 @@ export class CalificacionFormModalComponent implements OnInit, OnDestroy {
       alumno: this.alumno,
       activo: true,
       fechaCreacion: new Date(),
+      ausente: this.ausente,
+      ausentePermitido: this.ausentePermitido,
     };
     this._calificacionService
       .guardarCalificacion(calificacion)
@@ -221,6 +235,8 @@ export class CalificacionFormModalComponent implements OnInit, OnDestroy {
       alumno: this.alumno,
       activo: true,
       fechaCreacion: new Date(),
+      ausente: this.ausente,
+      ausentePermitido: this.ausentePermitido,
     };
     this._calificacionService
       .actualizarCalificacion(this.calificacion._id, calificacionForm)
@@ -245,5 +261,28 @@ export class CalificacionFormModalComponent implements OnInit, OnDestroy {
           });
         }
       );
+  }
+  ausentar(evento) {
+    this.ausente = !this.ausente;
+    if (!this.ausente) {
+      //   this.form.controls.promedioGeneral.setValidators([Validators.required, Validators.min(1), Validators.max(10)]);
+    } else {
+      this.form.controls.promedia.setValue(true);
+      this.form.controls.promedioGeneral.setValue(1);
+    }
+  }
+  permitirAusentar(evento) {
+    this.ausentePermitido = !this.ausentePermitido;
+    if (this.ausentePermitido) {
+      // Está permitido, no se toma en cuenta
+      this.form.controls.promedia.setValue(false);
+      this.form.controls.promedioGeneral.setValidators([]);
+      this.form.controls.promedioGeneral.setValue(null);
+    } else {
+      // No está permitido, pongale 1
+      this.form.controls.promedioGeneral.setValidators([Validators.required, Validators.min(1), Validators.max(10)]);
+      this.form.controls.promedia.setValue(true);
+      this.form.controls.promedioGeneral.setValue(1);
+    }
   }
 }
