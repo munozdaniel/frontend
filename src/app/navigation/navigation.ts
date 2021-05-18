@@ -64,9 +64,9 @@ export const navigation: DesignNavigation[] = [
       },
       {
         id: 'taller_inasistencias_alumnos',
-        title: 'Inasistencias de Alumnos',
+        title: 'Email de Inasistencias',
         type: 'item',
-        icon: 'portrait',
+        icon: 'email',
         url: '/taller/inasistencias-alumno',
       },
       //   {
