@@ -24,26 +24,26 @@
       </p>
     </div>
 
-    <div *ngIf="seguimiento.alumno.seguimientoEtap" fxLayout="column" fxFlex.xs="100" fxFlex.gt-xs="45">
-      <div fxLayout="row wrap" fxLayoutAlign.gt-xs="start center" fxLayoutGap="10px">
+    <div fxLayout="column" fxFlex.xs="100" fxFlex.gt-xs="45">
+      <div *ngIf="seguimiento.alumno.seguimientoEtap" fxLayout="row wrap" fxLayoutAlign.gt-xs="start center" fxLayoutGap="10px">
         <strong>Nombre Completo TAE:</strong>
         <span>{{ seguimiento.alumno.nombreCompletoTae }}</span>
       </div>
-      <div fxLayout="row wrap" fxLayoutAlign.gt-xs="start center" fxLayoutGap="10px">
+      <div *ngIf="seguimiento.alumno.seguimientoEtap" fxLayout="row wrap" fxLayoutAlign.gt-xs="start center" fxLayoutGap="10px">
         <strong>Email TAE:</strong>
         <span>{{ seguimiento.alumno.emailTae }}</span>
       </div>
-      <div fxLayout="row wrap" fxLayoutAlign.gt-xs="start center" fxLayoutGap="10px">
+      <div *ngIf="seguimiento.alumno.seguimientoEtap" fxLayout="row wrap" fxLayoutAlign.gt-xs="start center" fxLayoutGap="10px">
         <strong>Diagnostico:</strong>
         <span>{{ seguimiento.alumno.archivoDiagnostico }}</span>
       </div>
       <br /><br />
-      <div *ngIf="seguimiento.creadoPor" fxFlex.xs="100" fxFlex.gt-xs="45" fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="10px">
+      <div *ngIf="seguimiento?.creadoPor" fxFlex.xs="100" fxFlex.gt-xs="45" fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="10px">
         <strong>Creado Por:</strong>
         <span>{{ seguimiento.creadoPor?.apellido + ' ' + seguimiento.creadoPor?.nombre }}</span>
       </div>
       <div
-        *ngIf="seguimiento.modificadoPor"
+        *ngIf="seguimiento?.modificadoPor"
         fxFlex.xs="100"
         fxFlex.gt-xs="45"
         fxLayout="row"

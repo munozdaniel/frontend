@@ -22,12 +22,19 @@ import Swal from 'sweetalert2';
   template: ` <h1 mat-dialog-title>Seguimiento de {{ alumno?.nombreCompleto }}</h1>
     <div mat-dialog-content class="px-24">
       <div fxLayout="row wrap" fxLayoutAlign="space-between start">
-        <div *ngIf="seguimiento.creadoPor" fxFlex.xs="100" fxFlex.gt-xs="45" fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="10px">
+        <div
+          *ngIf="seguimiento?.creadoPor"
+          fxFlex.xs="100"
+          fxFlex.gt-xs="45"
+          fxLayout="row"
+          fxLayoutAlign="start center"
+          fxLayoutGap="10px"
+        >
           <strong>Creado Por:</strong>
           <span>{{ seguimiento.creadoPor?.apellido + ' ' + seguimiento.creadoPor?.nombre }}</span>
         </div>
         <div
-          *ngIf="seguimiento.modificadoPor"
+          *ngIf="seguimiento?.modificadoPor"
           fxFlex.xs="100"
           fxFlex.gt-xs="45"
           fxLayout="row"
