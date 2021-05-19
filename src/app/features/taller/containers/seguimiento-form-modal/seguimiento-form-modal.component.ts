@@ -44,6 +44,18 @@ import Swal from 'sweetalert2';
           <strong>Modificado Por:</strong>
           <span>{{ seguimiento.modificadoPor?.apellido + ' ' + seguimiento.modificadoPor?.nombre }}</span>
         </div>
+        <div
+          *ngIf="seguimiento?.planillaTaller"
+          fxFlex.xs="100"
+          fxFlex.gt-xs="45"
+          fxLayout="row"
+          fxLayoutAlign="start center"
+          fxLayoutGap="10px"
+        >
+          <strong>Curso:</strong>
+          <span>{{ seguimiento.planillaTaller?.curso.curso + '° AÑO ' + seguimiento.planillaTaller?.curso.division + '° DIV ' }}</span>
+          <span *ngIf="seguimiento.planillaTaller?.curso.comision">{{ 'COM. ' + seguimiento.planillaTaller?.curso.comision }}</span>
+        </div>
       </div>
       <form
         [formGroup]="form"

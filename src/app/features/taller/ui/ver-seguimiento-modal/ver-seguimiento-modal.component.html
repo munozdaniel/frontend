@@ -1,6 +1,6 @@
 <h1 mat-dialog-title>Seguimiento del Alumno</h1>
 <div mat-dialog-content class="px-24">
-  <div fxLayout.xs="column" fxLayout.gt-xs="row wrap" fxLayoutAlign.gt-xs="space-between start" fxLayoutGap.xs="20px">
+  <div *ngIf="seguimiento" fxLayout.xs="column" fxLayout.gt-xs="row wrap" fxLayoutAlign.gt-xs="space-between start" fxLayoutGap.xs="20px">
     <div fxFlex.xs="100" fxFlex.gt-xs="45">
       <p fxLayout="row wrap" fxLayoutAlign.gt-xs="start center" fxLayoutGap="10px">
         <strong>Ciclo:</strong>
@@ -52,6 +52,18 @@
       >
         <strong>Modificado Por:</strong>
         <span>{{ seguimiento.modificadoPor?.apellido + ' ' + seguimiento.modificadoPor?.nombre }}</span>
+      </div>
+      <div
+        *ngIf="seguimiento?.planillaTaller"
+        fxFlex.xs="100"
+        fxFlex.gt-xs="45"
+        fxLayout="row"
+        fxLayoutAlign="start center"
+        fxLayoutGap="10px"
+      >
+        <strong>Curso:</strong>
+        <span>{{ seguimiento.planillaTaller?.curso.curso + '° AÑO ' + seguimiento.planillaTaller?.curso.division + '° DIV ' }}</span>
+        <span *ngIf="seguimiento.planillaTaller?.curso.comision">{{ 'COM. ' + seguimiento.planillaTaller?.curso.comision }}</span>
       </div>
     </div>
     <div fxFlex.xs="100" fxFlex.gt-xs="45">

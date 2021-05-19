@@ -878,7 +878,6 @@ export class PlanillaTallerAdministrarComponent implements OnInit {
       });
       return;
     }
-
     const dialogRef = this._dialog.open(SeguimientoFormModalComponent, {
       data: { planillaTaller: this.planillaTaller, alumno: this.alumnoSeleccionado },
     });

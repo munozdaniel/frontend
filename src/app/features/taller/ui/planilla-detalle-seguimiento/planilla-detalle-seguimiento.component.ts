@@ -104,7 +104,7 @@ export class PlanillaDetalleSeguimientoComponent implements OnInit, OnChanges {
     this.retBuscarSeguimientosPorAlumno.emit(alumno);
   }
   abrirModalDetalle(row: ISeguimientoAlumno) {
-    row.cicloLectivo = this.cicloLectivo;
+    // row.cicloLectivo = this.cicloLectivo;
     const dialogRef = this.dialog.open(VerSeguimientoModalComponent, {
       data: row,
     });
