@@ -89,10 +89,7 @@ export class PlanillaDetalleCalificacionesComponent implements OnInit, OnChanges
         this.totalCalificaciones = this.calificaciones.length;
         this.calificaciones.forEach((x) => {
           if (x.ausente) {
-            if (!x.ausentePermitido) {
-              this.totalPromedios += 1;
-              suma += 1;
-            }
+           
           } else {
             if (x.promedia) {
               this.totalPromedios += 1;

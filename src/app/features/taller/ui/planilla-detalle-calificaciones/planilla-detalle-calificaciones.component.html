@@ -219,22 +219,13 @@
           <th mat-header-cell *matHeaderCellDef mat-sort-header>Calif.</th>
           <td mat-cell *matCellDef="let row">
             <div
-              *ngIf="row.ausente && row.ausentePermitido"
-              [matTooltip]="row.ausente ? 'AUSENTE PERMITIDO' : ''"
+              *ngIf="row.ausente"
+              [matTooltip]="row.ausente ? 'AUSENTE' : ''"
               fxLayout="row"
               fxLayoutAlign="center center"
               style="font-size: 26px"
             >
               <span class="iconify" data-icon="twemoji:letter-a" data-inline="false"></span>
-            </div>
-            <div
-              *ngIf="row.ausente && !row.ausentePermitido"
-              [matTooltip]="row.ausente ? 'AUSENTE NO PERMITIDO' : ''"
-              fxLayout="row"
-              fxLayoutAlign="center center"
-              style="font-size: 26px"
-            >
-              <span class="iconify" data-icon="twemoji:a-button-blood-type" data-inline="false"></span>
             </div>
             <span *ngIf="!row.ausente" class="nav-link-badge text-center no_promedia"> {{ row.promedioGeneral }} </span>
           </td>

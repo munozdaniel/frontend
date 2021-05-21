@@ -14,7 +14,6 @@ export interface ICalificacion {
   promedioGeneral: number;
   observaciones: string;
   ausente?: boolean;
-  ausentePermitido?: boolean;
   fechaCreacion?: Date;
   fechaModificacion?: Date;
   activo: boolean;

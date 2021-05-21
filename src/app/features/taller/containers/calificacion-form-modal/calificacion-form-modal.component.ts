@@ -77,9 +77,6 @@ import Swal from 'sweetalert2';
           <!-- <mat-checkbox class="mb-12" (click)="permitirAusentar()">Ausente permitido</mat-checkbox> -->
           <div fxFlex.xs="100" fxFlex.gt-xs="45" fxLayout="row wrap" fxLayoutAlign="space-between start" class="border p-12 ">
             <mat-slide-toggle formControlName="ausente" (click)="ausentar($event)">AUSENTE</mat-slide-toggle>
-            <mat-slide-toggle *ngIf="ausente" formControlName="ausentePermitido" (click)="permitirAusentar($event)">
-              AUTORIZAR
-            </mat-slide-toggle>
           </div>
           <!-- promedia ============================= -->
           <div [fxHide]="ausente" fxFlex.xs="100" fxFlex.gt-xs="45 " class="border p-12 mb-12">
@@ -120,7 +117,6 @@ import Swal from 'sweetalert2';
   animations: [designAnimations],
 })
 export class CalificacionFormModalComponent implements OnInit, OnDestroy {
-  ausentePermitido = false;
   ausente = false;
   cargando = false;
   tiposExamenes = TiposExamenesConst;
@@ -154,7 +150,6 @@ export class CalificacionFormModalComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.form = this._fb.group({
       ausente: [this.calificacion ? this.calificacion.ausente : null, []],
-      ausentePermitido: [this.calificacion ? this.calificacion.ausentePermitido : null, []],
       formaExamen: [this.calificacion ? this.calificacion.formaExamen : null, [Validators.required]],
       tipoExamen: [this.calificacion ? this.calificacion.tipoExamen : null, [Validators.required]],
       promedia: [this.calificacion ? this.calificacion.promedia : false, []],
@@ -192,7 +187,6 @@ export class CalificacionFormModalComponent implements OnInit, OnDestroy {
       activo: true,
       fechaCreacion: new Date(),
       ausente: this.ausente,
-      ausentePermitido: this.ausentePermitido,
     };
     this._calificacionService
       .guardarCalificacion(calificacion)
@@ -236,7 +230,6 @@ export class CalificacionFormModalComponent implements OnInit, OnDestroy {
       activo: true,
       fechaCreacion: new Date(),
       ausente: this.ausente,
-      ausentePermitido: this.ausentePermitido,
     };
     this._calificacionService
       .actualizarCalificacion(this.calificacion._id, calificacionForm)
@@ -266,23 +259,14 @@ export class CalificacionFormModalComponent implements OnInit, OnDestroy {
     this.ausente = !this.ausente;
     if (!this.ausente) {
       //   this.form.controls.promedioGeneral.setValidators([Validators.required, Validators.min(1), Validators.max(10)]);
-    } else {
+      this.form.controls.promedioGeneral.setValidators([Validators.required, Validators.min(1), Validators.max(10)]);
       this.form.controls.promedia.setValue(true);
-      this.form.controls.promedioGeneral.setValue(1);
-    }
-  }
-  permitirAusentar(evento) {
-    this.ausentePermitido = !this.ausentePermitido;
-    if (this.ausentePermitido) {
-      // Está permitido, no se toma en cuenta
+      this.form.controls.promedioGeneral.setValue(null);
+    } else {
+      // Es Ausente
       this.form.controls.promedia.setValue(false);
       this.form.controls.promedioGeneral.setValidators([]);
       this.form.controls.promedioGeneral.setValue(null);
-    } else {
-      // No está permitido, pongale 1
-      this.form.controls.promedioGeneral.setValidators([Validators.required, Validators.min(1), Validators.max(10)]);
-      this.form.controls.promedia.setValue(true);
-      this.form.controls.promedioGeneral.setValue(1);
     }
   }
 }
