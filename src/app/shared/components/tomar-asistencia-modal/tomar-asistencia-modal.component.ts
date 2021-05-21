@@ -83,18 +83,19 @@ export class TomarAsistenciaModalComponent implements OnInit {
           this.dataSource.data = this.alumnos = this.alumnos.map((alumno) => {
             const index = asistencias.findIndex((asistencia) => asistencia.alumno.toString() === alumno._id.toString());
             let tomarAsistencia = 0;
-            if (typeof asistencias[index].ausentePermitido !== 'number') {
-              tomarAsistencia = 0;
-            } else {
-              tomarAsistencia =
-                asistencias[index].presente === true
-                  ? 1
-                  : asistencias[index].presente === false && asistencias[index].ausentePermitido === false
-                  ? 2
-                  : 3;
-            }
+
             // ?0:(asistencias[index].presente===true ?1:((asistencias[index].presente===false && asistencias[index].ausentePermitido===false)? 2:3))
             if (index !== -1) {
+              if (typeof asistencias[index].ausentePermitido !== 'boolean') {
+                tomarAsistencia = 0;
+              } else {
+                tomarAsistencia =
+                  asistencias[index].presente === true
+                    ? 1
+                    : asistencias[index].presente === false && asistencias[index].ausentePermitido === false
+                    ? 2
+                    : 3;
+              }
               return {
                 ...alumno,
 
