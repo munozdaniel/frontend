@@ -1,6 +1,7 @@
 import { trigger, state, style, transition, animate } from '@angular/animations';
 import { BreakpointObserver, Breakpoints, BreakpointState, MediaMatcher } from '@angular/cdk/layout';
 import { Component, Input, OnInit, ViewChild, OnChanges, SimpleChanges, ChangeDetectorRef } from '@angular/core';
+import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
 import { MatTableDataSource, MatSort, MatPaginator, PageEvent } from '@angular/material';
 import { Router } from '@angular/router';
 import { designAnimations } from '@design/animations';
@@ -20,6 +21,16 @@ import * as moment from 'moment';
   ],
 })
 export class PlanillasTablaComponent implements OnInit, OnChanges {
+  globalFilter = '';
+
+  turnoFilter = new FormControl();
+  bimestreFilter = new FormControl();
+  filteredValues = {
+    bimestre: '',
+    turno: '',
+    multiple: true,
+    general: '',
+  };
   @Input() planillas: IPlanillaTaller[];
   @Input() cargando: boolean;
   columnas = [
@@ -86,16 +97,49 @@ export class PlanillasTablaComponent implements OnInit, OnChanges {
   ngOnChanges(changes: SimpleChanges): void {
     if (changes.planillas && changes.planillas.currentValue) {
       this.dataSource.data = this.planillas;
+      //   this.dataSource.filterPredicate = this.customFilterPredicate();
       this.customSearchSortTable();
     }
   }
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    this.turnoFilter.valueChanges.subscribe((positionFilterValue) => {
+      this.filteredValues['turno'] = positionFilterValue;
+      this.dataSource.filter = JSON.stringify(this.filteredValues);
+    });
+
+    this.bimestreFilter.valueChanges.subscribe((nameFilterValue) => {
+      this.filteredValues['bimestre'] = nameFilterValue;
+      this.dataSource.filter = JSON.stringify(this.filteredValues);
+    });
+  }
+
+  filtroRapido(filterValue: string) {
+    this.filteredValues.general = filterValue;
+    this.dataSource.filter = JSON.stringify(this.filteredValues);
+
+    // this.dataSource.filter = filterValue.trim().toLowerCase();
+    if (this.dataSource.paginator) {
+      this.dataSource.paginator.firstPage();
+    }
+  }
   customSearchSortTable() {
     // Personalizar funcion busqueda en la tabla detalle
-    this.dataSource.filterPredicate = (data: IPlanillaTaller, filters: string) => {
+    this.dataSource.filterPredicate = (data: IPlanillaTaller, filters: string | any) => {
+      let filterArray = [];
+      const filtrosObject = JSON.parse(filters);
+      if (filtrosObject.bimestre !== '') {
+        filterArray.push(filtrosObject.bimestre.toLowerCase());
+      }
+      if (filtrosObject.turno !== '') {
+        filterArray.push(filtrosObject.turno.toLowerCase());
+      }
+      if (filtrosObject.general !== '') {
+        filterArray = [...filterArray, ...filtrosObject.general.split(',')];
+      }
+
       const matchFilter = [];
-      const filterArray = filters.split(',');
+      //   const filterArray = filters.split(',');
       const columns = [
         data.turno,
         data.planillaTallerNro,
@@ -117,7 +161,9 @@ export class PlanillasTablaComponent implements OnInit, OnChanges {
         });
         matchFilter.push(customFilter.some(Boolean)); // OR
       });
+      //   }
       return matchFilter.every(Boolean); // AND
+      //   }
     };
     // Personalizar Sort
     // 'planillaTallerNro',
@@ -152,12 +198,6 @@ export class PlanillasTablaComponent implements OnInit, OnChanges {
           return item[property];
       }
     };
-  }
-  filtroRapido(filterValue: string) {
-    this.dataSource.filter = filterValue.trim().toLowerCase();
-    if (this.dataSource.paginator) {
-      this.dataSource.paginator.firstPage();
-    }
   }
 
   verPlanillaDetalle(planilla: IPlanillaTaller) {
