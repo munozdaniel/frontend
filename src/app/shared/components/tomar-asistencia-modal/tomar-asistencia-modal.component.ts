@@ -82,10 +82,32 @@ export class TomarAsistenciaModalComponent implements OnInit {
         (asistencias) => {
           this.dataSource.data = this.alumnos = this.alumnos.map((alumno) => {
             const index = asistencias.findIndex((asistencia) => asistencia.alumno.toString() === alumno._id.toString());
-            if (index !== -1) {
-              return { ...alumno, presente: asistencias[index].presente, tarde: asistencias[index].llegoTarde };
+            let tomarAsistencia = 0;
+            if (typeof asistencias[index].ausentePermitido !== 'number') {
+              tomarAsistencia = 0;
             } else {
-              return { ...alumno, presente: null, tarde: false };
+              tomarAsistencia =
+                asistencias[index].presente === true
+                  ? 1
+                  : asistencias[index].presente === false && asistencias[index].ausentePermitido === false
+                  ? 2
+                  : 3;
+            }
+            // ?0:(asistencias[index].presente===true ?1:((asistencias[index].presente===false && asistencias[index].ausentePermitido===false)? 2:3))
+            if (index !== -1) {
+              return {
+                ...alumno,
+
+                ausentePermitido: typeof asistencias[index].ausentePermitido === 'boolean' ? asistencias[index].ausentePermitido : false,
+                // Verificar que si ausentePermitido es indefinido entonces es false
+                presente: asistencias[index].presente,
+                tarde: asistencias[index].llegoTarde,
+                tomarAsistencia,
+                // Setear tomarAsistencia segun lo que tenga seteado: Recordar que si viene un asuentePermitido indefinido entonce hay que ponerle 0
+                //  sino verifacar si presente = true? 1 : ausentePermitido = false? 2 :3
+              };
+            } else {
+              return { ...alumno, ausentePermitido: false, presente: null, tarde: false, tomarAsistencia: 0 };
             }
           });
         },
@@ -104,6 +126,21 @@ export class TomarAsistenciaModalComponent implements OnInit {
     //   '¿ this.alumnos',
     //   this.alumnos.filter((x) => x.presente !== null)
     // );
+    console.log('this.alumnos', this.alumnos);
+    const asistenciasTomadas: IAlumno[] = this.alumnos.map((x) => {
+      if (x.tomarAsistencia === 1) {
+        x.presente = true;
+      }
+      if (x.tomarAsistencia === 2) {
+        x.presente = false;
+        x.ausentePermitido = false;
+      }
+      if (x.tomarAsistencia === 3) {
+        x.presente = false;
+        x.ausentePermitido = true;
+      }
+      return x;
+    });
     const fecha = moment(this.form.controls.fecha.value).format('DD/MM/YYYY');
     Swal.fire({
       title: '¿Está seguro de continuar?',
@@ -117,11 +154,7 @@ export class TomarAsistenciaModalComponent implements OnInit {
       showLoaderOnConfirm: true,
       preConfirm: () => {
         return this._asistenciaService
-          .tomarAsistenciaPorPlanilla(
-            this.planillaTaller,
-            this.alumnos.filter((x) => x.presente !== null),
-            this.form.controls.fecha.value
-          )
+          .tomarAsistenciaPorPlanilla(this.planillaTaller, asistenciasTomadas, this.form.controls.fecha.value)
           .pipe(
             catchError((error) => {
               console.log('[ERROR]', error);
@@ -154,11 +187,18 @@ export class TomarAsistenciaModalComponent implements OnInit {
     });
   }
   controlAsistencias() {
-    if (!this.alumnos) {
+    if (!this.dataSource.data) {
       return true; // disable true
     }
-    const total = this.alumnos.length;
-    const tomados = this.alumnos.filter((x) => x.presente === true || x.presente === false);
+    const total = this.dataSource.data.length;
+    const tomados = this.dataSource.data.filter((x) => x.tomarAsistencia === 1 || x.tomarAsistencia === 2 || x.tomarAsistencia === 3);
     return !(total === tomados.length);
+  }
+  toggleAsistencia(row) {
+    if (row.tomarAsistencia > 2) {
+      row.tomarAsistencia = 1;
+    } else {
+      row.tomarAsistencia++;
+    }
   }
 }

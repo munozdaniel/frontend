@@ -1,4 +1,4 @@
-<h1 mat-dialog-title>Tomar Asistencia</h1>
+<h1 mat-dialog-title>Editar Asistencia</h1>
 <div mat-dialog-content class="px-24">
   <form
     [formGroup]="form"
@@ -30,8 +30,14 @@
           form.controls.presente.value ? 'PRESENTE' : 'AUSENTE'
         }}</mat-slide-toggle>
       </div>
+      <!-- ausentePermitido -->
+      <div [fxHide]="form.controls.presente.value" fxFlex.xs="100" fxFlex.gt-xs="45 " class="border p-12">
+        <mat-slide-toggle formControlName="ausentePermitido">{{
+          !form.controls.ausentePermitido.value ? 'NO PERMITIDO' : 'PERMITIDO'
+        }}</mat-slide-toggle>
+      </div>
       <!-- Tarde -->
-      <div fxFlex.xs="100" fxFlex.gt-xs="45 " class="border p-12">
+      <div [fxHide]="form.controls.ausentePermitido.value" fxFlex.xs="100" fxFlex.gt-xs="45 " class="border p-12">
         <mat-slide-toggle formControlName="llegoTarde">{{
           form.controls.llegoTarde.value ? 'LLEGÓ TARDE' : 'EN HORARIO'
         }}</mat-slide-toggle>

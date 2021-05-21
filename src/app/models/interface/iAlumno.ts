@@ -42,6 +42,9 @@ export interface IAlumno {
   // Ejecucion
   selected?: boolean;
   nombreAdulto?: string;
+  //  Para las asistencias
   presente?: boolean;
   tarde?: boolean;
+  ausentePermitido?: boolean;
+  tomarAsistencia?: number; // 0: Nada 1:Presente 2:Ausente 3:AusentePermitido
 }

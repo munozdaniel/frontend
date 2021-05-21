@@ -56,6 +56,7 @@ export class AsistenciaFormModalComponent implements OnInit, OnDestroy {
       fecha: [this.asistencia ? this.asistencia.fecha : f, [Validators.required]],
       presente: [this.asistencia ? this.asistencia.presente : true, []],
       llegoTarde: [this.asistencia ? this.asistencia.llegoTarde : false, []],
+      ausentePermitido: [this.asistencia ? this.asistencia.ausentePermitido : false, []],
       alumno: [this.alumno.nombreCompleto, [Validators.required]],
       planillaTaller: [this.planillaTaller, [Validators.required]],
     });

@@ -9,8 +9,12 @@ export interface IAsistencia {
   alumno: IAlumno;
   fecha: Date;
   presente: boolean;
+  ausentePermitido?: boolean;
   llegoTarde: boolean;
   fechaCreacion?: Date;
   fechaModificacion?: Date;
   activo: boolean;
+
+  //
+  tomarAsistencia?: number; // 0: Nada 1:Presente 2:Ausente 3:AusentePermitido
 }
