@@ -20,13 +20,13 @@
         <mat-form-field appearance="outline">
           <mat-label class="lbl"> Teléfono </mat-label>
           <input matInput type="number" formControlName="telefono" minlength="4" maxlength="50" autocomplete="off" />
-          <mat-error *ngIf="form.controls.telefono.hasError('required')"> Este campo es requerido. </mat-error>
+          <!-- <mat-error *ngIf="form.controls.telefono.hasError('required')"> Este campo es requerido. </mat-error> -->
         </mat-form-field>
         <!-- celular ============================= -->
         <mat-form-field appearance="outline">
           <mat-label class="lbl"> Celular </mat-label>
           <input matInput type="number" formControlName="celular" minlength="4" maxlength="50" autocomplete="off" />
-          <mat-error *ngIf="form.controls.celular.hasError('required')"> Este campo es requerido. </mat-error>
+          <!-- <mat-error *ngIf="form.controls.celular.hasError('required')"> Este campo es requerido. </mat-error> -->
         </mat-form-field>
       </div>
       <div fxFlex.gt-xs="42" fxFlex.xs="100" fxLayout="column">

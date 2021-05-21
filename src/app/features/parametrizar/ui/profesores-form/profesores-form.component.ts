@@ -29,7 +29,7 @@ export class ProfesoresFormComponent implements OnInit {
   ngOnInit(): void {
     this.form = this._fb.group({
       nombreCompleto: [null, [Validators.required, Validators.minLength(3), Validators.maxLength(100)]],
-      telefono: [null, [Validators.required]],
+      telefono: [null, []],
       celular: [null],
       email: [null, [Validators.required, Validators.email]],
       formacion: [null, [Validators.required, Validators.minLength(3), Validators.maxLength(100)]],
@@ -64,8 +64,8 @@ export class ProfesoresFormComponent implements OnInit {
 
     const profesor: IProfesor = {
       ...this.form.value,
-      telefono: this.form.controls.telefono.value.toString(),
-      celular: this.form.controls.celular.value.toString(),
+      telefono: this.form.controls.telefono.value ? this.form.controls.telefono.value.toString() : null,
+      celular: this.form.controls.celular.value ? this.form.controls.celular.value.toString() : null,
       activo: true,
     };
     this.retDatosForm.emit(profesor);
