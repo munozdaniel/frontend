@@ -154,11 +154,11 @@
           </td>
         </ng-container>
         <ng-container matColumnDef="llegoTarde">
-          <th mat-header-cell *matHeaderCellDef mat-sort-header>Tarde</th>
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>En Horario</th>
           <td mat-cell *matCellDef="let row">
             <!-- <h4>{{ row.llegoTarde ? 'SI' : 'NO' }}</h4> -->
-            <span *ngIf="!row.llegoTarde" class="nav-link-badge text-center no-tarde"> NO </span>
-            <span *ngIf="row.llegoTarde" class="nav-link-badge text-center tarde">SI</span>
+            <span *ngIf="!row.llegoTarde" class="nav-link-badge text-center no-tarde">SI </span>
+            <span *ngIf="row.llegoTarde" class="nav-link-badge text-center tarde">NO</span>
           </td>
         </ng-container>
         <ng-container matColumnDef="opciones">
