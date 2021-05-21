@@ -215,7 +215,10 @@ export class PlanillaVerComponent implements OnInit {
         // Si hay asistencias entonces hay alumnoSeleccionado. Controlamos para no repetir la consulta
         if (
           (!this.asistencias && this.alumnoSeleccionado) ||
-          (this.asistencias && this.asistencias.length > 0 && this.alumnoSeleccionado._id !== this.asistencias[0].alumno._id)
+          (this.asistencias &&
+            this.asistencias.length > 0 &&
+            this.alumnoSeleccionado &&
+            this.alumnoSeleccionado._id !== this.asistencias[0].alumno._id)
         ) {
           this.setBuscarAsistenciaPorAlumno(this.alumnoSeleccionado);
         }
