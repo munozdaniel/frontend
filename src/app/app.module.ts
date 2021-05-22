@@ -22,6 +22,7 @@ import { SharedModule } from './shared/shared.module';
 import { registerLocaleData } from '@angular/common';
 
 import localeEsAr from '@angular/common/locales/es-AR';
+import { AuthInterceptorProviders } from './core/services/helpers/auth.interceptor';
 
 registerLocaleData(localeEsAr, 'es-Ar');
 
@@ -61,6 +62,6 @@ const appRoutes: Routes = [
     LayoutModule,
   ],
   bootstrap: [AppComponent],
-  providers: [Title, { provide: LOCALE_ID, useValue: 'es-Ar' }],
+  providers: [AuthInterceptorProviders, Title, { provide: LOCALE_ID, useValue: 'es-Ar' }],
 })
 export class AppModule {}
