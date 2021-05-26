@@ -123,11 +123,11 @@ profesor: "6021bb72c18fc750b87b0a12"
       </th>
       <td mat-cell *matCellDef="let row" class="fila_hover">
         <div class="comision" fxLayout="row" fxLayoutAlign="center start">
-          <span matTooltip="CURSO">{{ row.curso.curso }}° AÑO</span>
+          <span matTooltip="CURSO">{{ row.curso?.curso }}° AÑO</span>
           <strong> </strong>
-          <span matTooltip="DIVISION">{{ row.curso.division }}° DIV</span>
-          <strong *ngIf="row.curso.comision"> </strong>
-          <span *ngIf="row.curso.comision" matTooltip="COMISION">COM. {{ row.curso.comision }}</span>
+          <span matTooltip="DIVISION">{{ row.curso?.division }}° DIV</span>
+          <strong *ngIf="row.curso?.comision"> </strong>
+          <span *ngIf="row.curso?.comision" matTooltip="COMISION">COM. {{ row.curso?.comision }}</span>
         </div>
       </td>
     </ng-container>

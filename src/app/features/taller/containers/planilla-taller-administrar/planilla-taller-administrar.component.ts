@@ -230,7 +230,9 @@ export class PlanillaTallerAdministrarComponent implements OnInit {
           if (this.planillaTaller.cicloLectivo.anio < this.anioActual) {
             this.deshabilitarEdicion = true;
           }
-          this.obtenerAlumnosPorCursoEspecifico();
+          if (this.planillaTaller.curso) {
+            this.obtenerAlumnosPorCursoEspecifico();
+          }
           this.cargando = false;
         },
         (error) => {
