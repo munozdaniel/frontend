@@ -146,11 +146,13 @@ export class PlanillasTablaComponent implements OnInit, OnChanges {
         moment.utc(data.fechaInicio, 'YYYY-MM-DDTHH:mm:ss').format('DD/MM/YYYY HH:mm:ss').toString(), // 2021-03-02T15:21:12
         data.bimestre,
         data.asignatura.detalle,
-        data.curso.curso + '° AÑO ' + data.curso.division + '° DIV COM. ' + data.curso.comision,
         data.profesor.nombreCompleto,
         data.observacion,
         data.cicloLectivo.anio,
       ];
+      if (data.curso) {
+        columns.push(data.curso.curso + '° AÑO ' + data.curso.division + '° DIV COM. ' + data.curso.comision);
+      }
 
       filterArray.forEach((filter) => {
         const customFilter = [];
