@@ -23,6 +23,7 @@ import { registerLocaleData } from '@angular/common';
 
 import localeEsAr from '@angular/common/locales/es-AR';
 import { AuthInterceptorProviders } from './core/services/helpers/auth.interceptor';
+import { NgxPermissionsModule } from 'ngx-permissions';
 
 registerLocaleData(localeEsAr, 'es-Ar');
 
@@ -40,6 +41,7 @@ const appRoutes: Routes = [
     BrowserAnimationsModule,
     HttpClientModule,
     RouterModule.forRoot(appRoutes),
+    NgxPermissionsModule.forRoot(),
 
     AppRoutingModule,
 

@@ -14,6 +14,7 @@ import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { IUsuario } from './models/interface/iUsuario';
 import { AuthenticationService } from './core/services/helpers/authentication.service';
 import { Router } from '@angular/router';
+import { NgxPermissionsService } from 'ngx-permissions';
 @UntilDestroy()
 @Component({
   selector: 'app',
@@ -41,6 +42,7 @@ export class AppComponent implements OnInit, OnDestroy {
    */
   constructor(
     @Inject(DOCUMENT) private document: any,
+    private permissionsService: NgxPermissionsService,
     private _designConfigService: DesignConfigService,
     private _designNavigationService: DesignNavigationService,
     private _designSidebarService: DesignSidebarService,
@@ -55,7 +57,8 @@ export class AppComponent implements OnInit, OnDestroy {
     this._designNavigationService.setCurrentNavigation('main');
     // Register the navigation to the service
     this.comprobarLogin();
-
+    const perm = ['ADMIN', 'PROFESOR', 'PRECEPTOR', 'INVITADO', 'JEFE', 'DIRECTOR'];
+    this.permissionsService.loadPermissions(perm);
     /**
      * ----------------------------------------------------------------------------------------------------
      * ngxTranslate Fix Start
