@@ -156,7 +156,12 @@ export class PlanillasTablaComponent implements OnInit, OnChanges {
         const customFilter = [];
         columns.forEach((column) => {
           if (column) {
-            customFilter.push(column.toString().toLowerCase().includes(filter));
+            customFilter.push(
+              column
+                .toString()
+                .toLowerCase()
+                .includes(filter ? filter.toString().toLowerCase() : '')
+            );
           }
         });
         matchFilter.push(customFilter.some(Boolean)); // OR
@@ -181,19 +186,19 @@ export class PlanillasTablaComponent implements OnInit, OnChanges {
         case 'planillaTallerNro':
           return item.planillaTallerNro.toString();
         case 'turno':
-          return item.turno.toString();
+          return item.turno ? item.turno.toString().toLowerCase() : '';
         case 'cicloLectivo':
           return item.cicloLectivo.anio;
         case 'fechaInicio':
           return moment.utc(item.fechaInicio, 'YYYY-MM-DDTHH:mm:ss').format('DD/MM/YYYY HH:mm:ss').toString();
         case 'asignatura':
-          return item.asignatura.detalle;
+          return item.asignatura.detalle ? item.asignatura.detalle.toString().toLowerCase() : '';
         case 'bimestre':
-          return item.bimestre;
+          return item.bimestre ? item.bimestre.toString().toLowerCase() : '';
         case 'comisioncompleta':
           return item.curso.curso + '° AÑO ' + item.curso.division + '° DIV COM. ' + item.curso.comision;
         case 'profesor':
-          return item.profesor.nombreCompleto;
+          return item.profesor.nombreCompleto ? item.profesor.nombreCompleto.toLowerCase() : '';
         default:
           return item[property];
       }
