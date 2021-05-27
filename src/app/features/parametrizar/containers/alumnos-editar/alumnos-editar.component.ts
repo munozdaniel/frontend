@@ -121,27 +121,29 @@ export class AlumnosEditarComponent implements OnInit {
   setEditarEstadoCursada(evento: IEstadoCursada) {
     if (evento) {
       if (evento._id) {
-        this._alumnoService
-          .comprobarEstadoCursadaParaEditar(evento._id)
-          .pipe(untilDestroyed(this))
-          .subscribe(
-            (datos) => {
-              if (datos) {
-                this.abrirModalEstadoCursada(evento);
-              } else {
-                Swal.fire({
-                  title: 'Cursada no habilitada para edición',
-                  text: 'La cursada seleccionada no se puede editar porque ya registra datos asignados',
-                  icon: 'warning',
-                  timer: 5000,
-                  timerProgressBar: true,
-                }).then(() => {});
-              }
-            },
-            (error) => {
-              console.log('[ERROR]', error);
-            }
-          );
+        this.abrirModalEstadoCursada(evento);
+
+        // this._alumnoService
+        //   .comprobarEstadoCursadaParaEditar(evento._id)
+        //   .pipe(untilDestroyed(this))
+        //   .subscribe(
+        //     (datos) => {
+        //       if (datos) {
+        //         this.abrirModalEstadoCursada(evento);
+        //       } else {
+        //         Swal.fire({
+        //           title: 'Cursada no habilitada para edición',
+        //           text: 'La cursada seleccionada no se puede editar porque ya registra datos asignados',
+        //           icon: 'warning',
+        //           timer: 5000,
+        //           timerProgressBar: true,
+        //         }).then(() => {});
+        //       }
+        //     },
+        //     (error) => {
+        //       console.log('[ERROR]', error);
+        //     }
+        //   );
       } else {
         this.abrirModalEstadoCursada(evento);
       }

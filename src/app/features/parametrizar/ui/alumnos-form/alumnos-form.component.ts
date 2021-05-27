@@ -210,7 +210,6 @@ export class AlumnosFormComponent implements OnInit, OnChanges {
     });
 
     dialogRef.afterClosed().subscribe((estadoCursada: IEstadoCursada) => {
-      console.log('estadoCursada save', estadoCursada);
       if (estadoCursada) {
         estadoCursada.index = Math.random();
         this.estadoCursadas = [...this.estadoCursadas, estadoCursada];
