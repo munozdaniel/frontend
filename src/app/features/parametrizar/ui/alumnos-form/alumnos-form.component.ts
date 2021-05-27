@@ -66,7 +66,7 @@ export class AlumnosFormComponent implements OnInit, OnChanges {
       observacionTelefono: [null, [Validators.minLength(3), Validators.maxLength(50)]],
       telefono: [null, [Validators.minLength(7), Validators.maxLength(20)]],
       celular: [null, [Validators.minLength(7), Validators.maxLength(20)]],
-      email: [null, [Validators.email, Validators.required, Validators.minLength(4), Validators.maxLength(50)]],
+      email: [null, [Validators.email, Validators.minLength(4), Validators.maxLength(50)]],
 
       fechaIngreso: [null, []],
       procedenciaColegioPrimario: [null, [Validators.minLength(4), Validators.maxLength(50)]],
