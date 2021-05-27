@@ -160,11 +160,11 @@
               <mat-label class="lbl"> Email </mat-label>
               <input matInput type="email" formControlName="email" minlength="4" maxlength="50" autocomplete="off" />
               <mat-error *ngIf="formDatosPersonales.controls.email.hasError('required')"> Este campo es requerido. </mat-error>
-              <mat-error
+              <!-- <mat-error
                 *ngIf="formDatosPersonales.controls.email.hasError('email') && !formDatosPersonales.controls.email.hasError('required')"
               >
                 Email inválido
-              </mat-error>
+              </mat-error> -->
               <mat-error
                 *ngIf="
                   !formDatosPersonales.get('email').hasError('required') &&

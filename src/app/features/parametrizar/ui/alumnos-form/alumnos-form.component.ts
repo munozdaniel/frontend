@@ -95,7 +95,9 @@ export class AlumnosFormComponent implements OnInit, OnChanges {
     }
     this.estadoCursadas = this.alumno.estadoCursadas;
     this.formDatosPersonales.patchValue(this.alumno);
-    this.formDatosPersonales.controls.fechaIngreso.setValue(moment.utc(this.alumno.fechaIngreso));
+    if (moment.utc(this.alumno.fechaIngreso).isValid()) {
+      this.formDatosPersonales.controls.fechaIngreso.setValue(moment.utc(this.alumno.fechaIngreso));
+    }
     if (this.alumno.fechaNacimiento && this.alumno.fechaNacimiento !== 'Invalid date') {
       this.formDatosPersonales.controls.fechaNacimiento.setValue(moment.utc(this.alumno.fechaNacimiento));
     }
