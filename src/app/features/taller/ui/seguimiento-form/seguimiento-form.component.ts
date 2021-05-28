@@ -2,6 +2,7 @@ import { MediaMatcher, BreakpointObserver, Breakpoints, BreakpointState } from '
 import { ChangeDetectorRef, Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { designAnimations } from '@design/animations';
+import { DescripcionSeguimiento } from 'app/models/constants/descripcion-seguimiento.const';
 import { ISeguimientoAlumno } from 'app/models/interface/iSeguimientoAlumno';
 import { CONFIG_PROVIDER } from 'app/shared/config.provider';
 import * as moment from 'moment';
@@ -15,6 +16,7 @@ import Swal from 'sweetalert2';
   providers: CONFIG_PROVIDER,
 })
 export class SeguimientoFormComponent implements OnInit, OnChanges {
+  descripcionSeguimientos = DescripcionSeguimiento;
   panelOpenState = true;
   @Input() cargando: boolean;
   @Input() seguimiento: ISeguimientoAlumno;
