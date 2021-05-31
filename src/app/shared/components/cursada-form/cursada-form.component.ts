@@ -152,7 +152,7 @@ export class CursadaFormComponent implements OnInit {
         division: Number(this.form.controls.division.value),
         comision: this.form.controls.comision.value,
       },
-       };
+    };
     if (this.esModal) {
       this.retornarDatosModal();
     } else {
@@ -169,6 +169,8 @@ export class CursadaFormComponent implements OnInit {
         comision: this.form.controls.comision.value,
       },
     };
+    // delete this.estadoCursada.division;
+    // delete this.estadoCursada.comision;
     this.dialogRef.close(this.estadoCursada);
   }
 }

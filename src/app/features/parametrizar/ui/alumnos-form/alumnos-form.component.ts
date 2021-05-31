@@ -230,20 +230,20 @@ export class AlumnosFormComponent implements OnInit, OnChanges {
   setEditarComision(evento: IEstadoCursada) {
     if (evento) {
       // Controlar que el estado de cursada no esté asigando en alumnos
-      this.retEditarEstadoCursada.emit(evento);
+      //   this.retEditarEstadoCursada.emit(evento);
 
-      //   const dialogRef = this._dialog.open(CursadaFormComponent, {
-      //     data: { esModal: true, estadoCursada: evento },
-      //     width: '50%',
-      //   });
+      const dialogRef = this._dialog.open(CursadaFormComponent, {
+        data: { esModal: true, estadoCursada: evento },
+        width: '50%',
+      });
 
-      //   dialogRef.afterClosed().subscribe(({ estadoCursada }: any) => {
-      //     const index = this.estadoCursadas.findIndex((x) => x.index === evento.index);
-      //     if (index !== -1) {
-      //       this.estadoCursadas[index] = estadoCursada;
-      //       this.estadoCursadas = [...this.estadoCursadas];
-      //     }
-      //   });
+      dialogRef.afterClosed().subscribe((estadoCursada: IEstadoCursada) => {
+        const index = this.estadoCursadas.findIndex((x) => x.index === evento.index);
+        if (index !== -1) {
+          this.estadoCursadas[index] = estadoCursada;
+          this.estadoCursadas = [...this.estadoCursadas];
+        }
+      });
     }
   }
 }
