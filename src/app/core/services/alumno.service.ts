@@ -220,7 +220,7 @@ export class AlumnoService {
     return this.http.post<any>(url, { fecha });
   }
   //   Estado de Cursada
-  agregarEstadoCursada(estadoCursada: IEstadoCursada, alumnoId: string): Observable<IAlumno[]> {
+  agregarEstadoCursada(estadoCursada: IEstadoCursada, alumnoId: string): Observable<IAlumno> {
     const query = `alumnos/agregar-estado-cursada/${alumnoId}`;
     const url = this.url + query;
 

@@ -92,6 +92,7 @@ export class CursadaFormComponent implements OnInit {
   }
   initForm() {
     this.form = this._fb.group({
+      _id: [null, []],
       comision: [null, []],
       cicloLectivo: [null, [Validators.required]],
       curso: [null, [Validators.required, Validators.min(0), Validators.max(6)]],
@@ -124,6 +125,7 @@ export class CursadaFormComponent implements OnInit {
       return;
     }
     // this.form.patchValue(this.estadoCursada);
+    this.form.controls._id.setValue(this.estadoCursada._id);
     this.form.controls.condicion.setValue(this.estadoCursada.condicion);
     this.form.controls.cicloLectivo.setValue(this.ciclosLectivos.find((x) => this.estadoCursada.cicloLectivo._id === x._id));
     this.form.controls.comision.setValue(this.estadoCursada.curso.comision ? this.estadoCursada.curso.comision.toString() : null);

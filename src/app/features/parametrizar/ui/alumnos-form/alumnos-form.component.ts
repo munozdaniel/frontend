@@ -25,7 +25,9 @@ export class AlumnosFormComponent implements OnInit, OnChanges {
   @Input() resetear: boolean;
   @Input() estadoCursadaEditada: IEstadoCursada;
   @Output() retDatosForm = new EventEmitter<IAlumno>();
-  @Output() retEditarEstadoCursada = new EventEmitter<IEstadoCursada>();
+
+  //   @Output() retEditarEstadoCursada = new EventEmitter<IEstadoCursada>();
+  @Output() retAgregarCursada = new EventEmitter<IEstadoCursada>();
   //
   formDatosPersonales: FormGroup;
   formEtap: FormGroup;
@@ -213,11 +215,13 @@ export class AlumnosFormComponent implements OnInit, OnChanges {
 
     dialogRef.afterClosed().subscribe((estadoCursada: IEstadoCursada) => {
       if (estadoCursada) {
-        estadoCursada.index = Math.random();
-        this.estadoCursadas = [...this.estadoCursadas, estadoCursada];
+        this.retAgregarCursada.emit(estadoCursada);
+        // estadoCursada.index = Math.random();
+        // this.estadoCursadas = [...this.estadoCursadas, estadoCursada];
       }
     });
   }
+
   setEliminarComision(evento: IEstadoCursada) {
     if (evento) {
       const index = this.estadoCursadas.findIndex((x) => x.index === evento.index);
@@ -230,7 +234,6 @@ export class AlumnosFormComponent implements OnInit, OnChanges {
   setEditarComision(evento: IEstadoCursada) {
     if (evento) {
       // Controlar que el estado de cursada no esté asigando en alumnos
-      //   this.retEditarEstadoCursada.emit(evento);
 
       const dialogRef = this._dialog.open(CursadaFormComponent, {
         data: { esModal: true, estadoCursada: evento },
@@ -238,10 +241,13 @@ export class AlumnosFormComponent implements OnInit, OnChanges {
       });
 
       dialogRef.afterClosed().subscribe((estadoCursada: IEstadoCursada) => {
-        const index = this.estadoCursadas.findIndex((x) => x.index === evento.index);
-        if (index !== -1) {
-          this.estadoCursadas[index] = estadoCursada;
-          this.estadoCursadas = [...this.estadoCursadas];
+        if (estadoCursada) {
+          //   this.retEditarEstadoCursada.emit(estadoCursada);
+          const index = this.estadoCursadas.findIndex((x) => x._id === evento._id);
+          if (index !== -1) {
+            this.estadoCursadas[index] = estadoCursada;
+            this.estadoCursadas = [...this.estadoCursadas];
+          }
         }
       });
     }
