@@ -3,6 +3,12 @@
 <div fxHide.gt-xs="true" fxLayout="row" fxLayoutAlign="center start">
   <p>Esta pantalla no puede ser utilizada en dispositivos mobiles momentaneamente</p>
 </div>
+<div fxLayout="row" fxLayoutAlign="space-between baseline" class="mat-card mat-elevation-z4 mb-12">
+  <h2>{{ titulo }}</h2>
+  <button mat-raised-button color="accent" (click)="guardarAlumno()">
+    <mat-icon class="mr-4">save</mat-icon><span>Guardar Cambios</span>
+  </button>
+</div>
 <div fxLayout="row" fxLayoutAlign="center start" class="w-100-p">
   <mat-horizontal-stepper [linear]="true" #stepper class="w-100-p">
     <mat-step [stepControl]="formDatosPersonales" label="Alumno">

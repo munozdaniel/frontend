@@ -20,6 +20,7 @@ import { AdultosFormComponent } from '../adultos-form/adultos-form.component';
 })
 export class AlumnosFormComponent implements OnInit, OnChanges {
   @Input() soloLectura?: boolean = false;
+  @Input() titulo: string;
   @Input() alumno: IAlumno;
   @Input() cargando: boolean;
   @Input() resetear: boolean;
