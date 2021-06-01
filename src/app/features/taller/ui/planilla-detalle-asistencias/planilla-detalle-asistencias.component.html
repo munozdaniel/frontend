@@ -149,8 +149,17 @@
           <th mat-header-cell *matHeaderCellDef mat-sort-header>Presente</th>
           <td mat-cell *matCellDef="let row">
             <!-- <h4>{{ row.presente ? 'SI' : 'NO' }}</h4> -->
-            <span *ngIf="!row.presente" class="nav-link-badge text-center ausente"> NO </span>
-            <span *ngIf="row.presente" class="nav-link-badge text-center presente">SI</span>
+            <span matTooltip="Está Ausente" *ngIf="!row.presente && !row.ausentePermitido" class="nav-link-badge text-center ausente">
+              NO
+            </span>
+            <span
+              matTooltip="No debe venir"
+              *ngIf="!row.presente && row.ausentePermitido"
+              class="nav-link-badge text-center ausente_permitido"
+            >
+              NO
+            </span>
+            <span matTooltip="Está Presente" *ngIf="row.presente" class="nav-link-badge text-center presente">SI</span>
           </td>
         </ng-container>
         <ng-container matColumnDef="llegoTarde">

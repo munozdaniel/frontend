@@ -21,7 +21,7 @@ export class PlanillaDetalleAsistenciasComponent implements OnInit, OnChanges {
   totalAusentes = { valor: 0, porcentaje: 0 };
   totalPresentes = { valor: 0, porcentaje: 0 };
   @Input() deshabilitarEdicion: boolean;
-   totalClases: number;
+  totalClases: number;
   @Input() template: string;
   @Input() cargandoAsistencias: boolean;
   @Input() cargandoAlumnos: boolean;
@@ -102,7 +102,7 @@ export class PlanillaDetalleAsistenciasComponent implements OnInit, OnChanges {
       this.asistencias.forEach((x) => {
         tardes += x.llegoTarde ? 1 : 0;
         presentes += x.presente ? 1 : 0;
-        ausentes += !x.presente ? 1 : 0;
+        ausentes += !x.presente && !x.ausentePermitido ? 1 : 0;
       });
       const noRegistradas = this.totalClases - (ausentes + presentes);
       this.totalAusentes = { valor: ausentes, porcentaje: Number(((ausentes * 100) / this.totalClases).toFixed(2)) };
