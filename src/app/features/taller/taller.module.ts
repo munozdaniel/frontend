@@ -41,6 +41,7 @@ import { InasistenciasAlumnosComponent } from './containers/inasistencias-alumno
 import { PlanillaCalendarioComponent } from './ui/planilla-calendario/planilla-calendario.component';
 import { CalendarModule, DateAdapter } from 'angular-calendar';
 import { AdministradorModule, momentAdapterFactory } from '../administrador/administrador.module';
+import { CustomPlanillaAlumnosModalComponent } from './containers/custom-planilla-alumnos-modal/custom-planilla-alumnos-modal.component';
 
 @NgModule({
   declarations: [
@@ -80,6 +81,7 @@ import { AdministradorModule, momentAdapterFactory } from '../administrador/admi
     InformesComponent,
     InasistenciasAlumnosComponent,
     PlanillaCalendarioComponent,
+    CustomPlanillaAlumnosModalComponent,
   ],
   imports: [
     CommonModule,
@@ -89,5 +91,6 @@ import { AdministradorModule, momentAdapterFactory } from '../administrador/admi
     CalendarModule.forRoot({ provide: DateAdapter, useFactory: momentAdapterFactory }),
     AdministradorModule,
   ],
+  entryComponents: [CustomPlanillaAlumnosModalComponent],
 })
 export class TallerModule {}

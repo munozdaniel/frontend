@@ -73,7 +73,6 @@ import { AlumnosTablaCursadaComponent } from './components/alumnos-tabla-cursada
     AlumnosTablaEmailComponent,
     TomarAsistenciaModalComponent,
     AlumnosTablaCursadaComponent,
-    
   ],
 })
 export class SharedModule {}

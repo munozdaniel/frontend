@@ -230,8 +230,13 @@ export class PlanillaTallerAdministrarComponent implements OnInit {
           if (this.planillaTaller.cicloLectivo.anio < this.anioActual) {
             this.deshabilitarEdicion = true;
           }
+
           if (this.planillaTaller.curso) {
-            this.obtenerAlumnosPorCursoEspecifico();
+            if (!this.planillaTaller.personalizada) {
+              this.obtenerAlumnosPorCursoEspecifico();
+            } else {
+              this.obtenerAlumnosPorCursoEspecial();
+            }
           }
           this.cargando = false;
         },
@@ -248,6 +253,23 @@ export class PlanillaTallerAdministrarComponent implements OnInit {
       );
   }
   obtenerAlumnosPorCursoEspecifico() {
+    this.cargandoAlumnos = true;
+    const { curso, division, comision } = this.planillaTaller.curso;
+    this._alumnoService
+      .obtenerAlumnosPorCursoEspecifico(curso, comision, division, this.planillaTaller.cicloLectivo)
+      .pipe(untilDestroyed(this))
+      .subscribe(
+        (datos) => {
+          this.alumnos = datos;
+          this.cargandoAlumnos = false;
+        },
+        (error) => {
+          this.cargandoAlumnos = false;
+          console.log('[ERROR]', error);
+        }
+      );
+  }
+  obtenerAlumnosPorCursoEspecial() {
     this.cargandoAlumnos = true;
     const { curso, division, comision } = this.planillaTaller.curso;
     this._alumnoService

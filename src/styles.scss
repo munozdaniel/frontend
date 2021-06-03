@@ -4,6 +4,17 @@
 
 // Import app.theme.scss
 @import 'app/app.theme';
+.position_relative {
+    position: relative;
+  }
+  .checkbox_absolute {
+    z-index: 4;
+    position: absolute;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    // background-color: rgba(0, 0, 0, 0.116);
+  }
 .checkbox_invisible > label > .mat-checkbox-inner-container-no-side-margin {
   opacity: 0 !important;
 }

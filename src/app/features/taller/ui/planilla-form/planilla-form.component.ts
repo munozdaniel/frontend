@@ -1,5 +1,6 @@
 import { EventEmitter, Component, Input, OnInit, Output, OnChanges, SimpleChanges } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { MatDialog } from '@angular/material';
 import { ValidationService } from 'app/core/services/general/validation.services';
 import { ASIGNATURA_KEY, IAsignatura } from 'app/models/interface/iAsignatura';
 import { IPlanillaTaller } from 'app/models/interface/iPlanillaTaller';
@@ -9,6 +10,7 @@ import * as moment from 'moment';
 import { Observable, of } from 'rxjs';
 import { startWith, switchMap, delay, map } from 'rxjs/operators';
 import Swal from 'sweetalert2';
+import { CustomPlanillaAlumnosModalComponent } from '../../containers/custom-planilla-alumnos-modal/custom-planilla-alumnos-modal.component';
 @Component({
   selector: 'app-planilla-form',
   templateUrl: './planilla-form.component.html',
@@ -40,7 +42,8 @@ export class PlanillaFormComponent implements OnInit, OnChanges {
   maximo;
   anioActual = new Date().getFullYear();
   deshabilitarEdicion = false;
-  constructor(private _fb: FormBuilder) {
+  mostrarSelectorAlumnos = false;
+  constructor(public dialog: MatDialog, private _fb: FormBuilder) {
     this.minimo = new Date('1/1/' + this.anioActual);
     this.maximo = new Date('12/31/' + this.anioActual);
   }
@@ -77,6 +80,7 @@ export class PlanillaFormComponent implements OnInit, OnChanges {
         turno: [null, [Validators.required]],
         tipoCalendario: [null],
         diasHabilitados: [null],
+        personalizada: [false],
         // observacion: [null, [Validators.maxLength(150), Validators.minLength(5)]],
       },
       {
@@ -185,5 +189,21 @@ export class PlanillaFormComponent implements OnInit, OnChanges {
     this.personalizarDias = true;
     this.form.controls.diasHabilitados.setValidators([Validators.required]);
     this.form.controls.tipoCalendario.setValue('PERSONALIZADO');
+  }
+  habilitarPlanillaPorCurso() {
+    this.mostrarSelectorAlumnos = false;
+  }
+  habilitarPlanillaPersonalizada() {
+    this.mostrarSelectorAlumnos = true;
+  }
+  buscarLosAlumnos() {
+    const dialogRef = this.dialog.open(CustomPlanillaAlumnosModalComponent, {
+      data: { planillaTaller: this.planillaTaller },
+    });
+
+    dialogRef.afterClosed().subscribe((result) => {
+      if (result) {
+      }
+    });
   }
 }

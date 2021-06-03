@@ -2,6 +2,7 @@ import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { IAlumno } from 'app/models/interface/iAlumno';
 import { IAlumnoPaginado } from 'app/models/interface/iAlumnoPaginado';
+import { IAlumnoTaller } from 'app/models/interface/iAlumnoTaller';
 import { IAsignatura } from 'app/models/interface/iAsignatura';
 import { ICicloLectivo } from 'app/models/interface/iCicloLectivo';
 import { IEstadoCursada } from 'app/models/interface/iEstadoCursada';
@@ -243,5 +244,18 @@ export class AlumnoService {
     const url = this.url + query;
 
     return this.http.get<any>(url);
+  }
+  //   ALUMNOSTALLER ------------------------
+  obtenerAlumnosPorPlanillaPersonalizada(planillaId: string): Observable<IAlumnoTaller[]> {
+    const query = `alumno-taller/planilla-personalizada/${planillaId}`;
+    const url = this.url + query;
+
+    return this.http.get<any>(url);
+  }
+  guardarAlumnosEspeciales(alumnosTaller: IAlumnoTaller[], planillaTallerId:string) {
+    const query = `alumno-taller/${planillaTallerId}`;
+    const url = this.url + query;
+
+    return this.http.put<any>(url, alumnosTaller);
   }
 }

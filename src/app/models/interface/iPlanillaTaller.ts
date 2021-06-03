@@ -18,10 +18,11 @@ export interface IPlanillaTaller {
   fechaFinalizacion: Date;
   observacion?: string;
   bimestre: string;
-  turno:string;
+  turno: string;
   tipoCalendario?: 'POR COMISION' | 'PERSONALIZADO';
-  diasHabilitados: string[], // Lunes,Martes,Miercoles... (En ingles)
+  diasHabilitados: string[]; // Lunes,Martes,Miercoles... (En ingles)
   fechaCreacion?: Date;
   fechaModificacion?: Date;
   activo: boolean;
+  personalizada?: boolean; // obtiene los alumnos que forman parte de una mezcla de curso
 }

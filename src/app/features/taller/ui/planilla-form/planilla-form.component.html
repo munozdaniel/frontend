@@ -76,6 +76,33 @@
           </mat-select>
           <mat-error *ngIf="form.controls.turno.hasError('required')"> Este campo es requerido. </mat-error>
         </mat-form-field>
+        <!--  ============================= -->
+        <div fxLayout="column">
+          <strong fxLayout="row wrap" fxLayoutAlign="start center">
+            <mat-icon
+              matTooltipClass="tooltipL"
+              matTooltip="La planilla personalizada será utilizada con alumnos agregados manualmente."
+              style="color: rgb(0, 153, 255); cursor: pointer"
+              >info</mat-icon
+            >
+            <span> Tipo de Planilla</span></strong
+          >
+          <mat-radio-group
+            formControlName="personalizada"
+            fxLayout="row wrap"
+            fxLayoutAlign="space-between start"
+            fxFlex.xs="100"
+            fxFlex.gt-xs="45"
+            fxLayoutGap="10px"
+            class="border p-12"
+          >
+            <mat-radio-button [value]="false" class="mb-12" (click)="habilitarPlanillaPorCurso()"> Por Curso</mat-radio-button>
+            <mat-radio-button [value]="true" class="mb-12" (click)="habilitarPlanillaPersonalizada()"> Personalizada</mat-radio-button>
+          </mat-radio-group>
+          <button type="button" *ngIf="mostrarSelectorAlumnos" mat-raised-button color="primary" (click)="buscarLosAlumnos()">
+            Buscar Alumnos
+          </button>
+        </div>
       </div>
       <div fxFlex.gt-xs="42" fxFlex.xs="100" fxLayout="column">
         <!-- curso ============================= -->
@@ -159,7 +186,7 @@
               >Calendario Personalizado</mat-radio-button
             >
           </mat-radio-group>
-          <mat-form-field [fxHide]="!personalizarDias" appearance="outline" class="w-100-p">
+          <mat-form-field [fxHide]="!personalizarDias" appearance="outline" class="w-100-p mt-12">
             <mat-label class="lbl">Días</mat-label>
             <mat-select formControlName="diasHabilitados" multiple>
               <mat-option value="Monday">Lunes</mat-option>
