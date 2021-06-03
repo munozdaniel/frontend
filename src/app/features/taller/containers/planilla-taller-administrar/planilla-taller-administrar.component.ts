@@ -235,7 +235,7 @@ export class PlanillaTallerAdministrarComponent implements OnInit {
             if (!this.planillaTaller.personalizada) {
               this.obtenerAlumnosPorCursoEspecifico();
             } else {
-              this.obtenerAlumnosPorCursoEspecial();
+              this.obtenerAlumnosPorPlanillaPersonalizada();
             }
           }
           this.cargando = false;
@@ -269,15 +269,20 @@ export class PlanillaTallerAdministrarComponent implements OnInit {
         }
       );
   }
-  obtenerAlumnosPorCursoEspecial() {
+  obtenerAlumnosPorPlanillaPersonalizada() {
     this.cargandoAlumnos = true;
-    const { curso, division, comision } = this.planillaTaller.curso;
     this._alumnoService
-      .obtenerAlumnosPorCursoEspecifico(curso, comision, division, this.planillaTaller.cicloLectivo)
+      .obtenerAlumnosPorPlanillaPersonalizada(this.planillaTaller._id)
       .pipe(untilDestroyed(this))
       .subscribe(
         (datos) => {
-          this.alumnos = datos;
+          this.alumnos = datos
+            .map((x) => {
+              if (x.selected) {
+                return { ...x.alumno };
+              }
+            })
+            .filter((x) => x);
           this.cargandoAlumnos = false;
         },
         (error) => {
@@ -840,42 +845,7 @@ export class PlanillaTallerAdministrarComponent implements OnInit {
   setCargarLista(event) {
     this.obtenerClasesDetalle();
   }
-  //   setTemasCalendario(tipo: string) {
-  //     this.cargando = true;
-  //     this._temaService
-  //       .obtenerTemasCalendario(tipo, this.planillaId)
-  //       .pipe(untilDestroyed(this))
-  //       .subscribe(
-  //         (datos) => {
-  //           if (datos.status === 200) {
-  //             this.cargando = false;
-  //             const temasDelCalendario = [...datos.temasDelCalendario];
-  //             const merge = temasDelCalendario.map((x) => {
-  //               const index = this.temas.findIndex((t) => {
-  //                 return moment.utc(t.fecha).isSame(moment.utc(x.fecha));
-  //               });
-  //               if (index === -1) {
-  //                 return { ...x, incompleto: true };
-  //               } else {
-  //                 return this.temas[index];
-  //               }
-  //             });
-  //             this.temas = [...merge];
-  //           } else {
-  //             Swal.fire({
-  //               title: '',
-  //               text: datos.message,
-  //               icon: 'error',
-  //             });
-  //           }
-  //         },
-  //         (error) => {
-  //           this.cargando = false;
-  //           console.log('[ERROR]', error);
-  //         }
-  //       );
-  //   }
-  //
+
   setBuscarSeguimientosPorAlumno(alumno: IAlumno) {
     this.alumnoSeleccionado = alumno; // cuando viene por output se actualiza
     this.cargandoSeguimiento = true;
@@ -986,5 +956,12 @@ export class PlanillaTallerAdministrarComponent implements OnInit {
   }
   setPlanillaActualizada(evento) {
     this.calendario = this.temas = null;
+    if (this.planillaTaller.curso) {
+      if (!this.planillaTaller.personalizada) {
+        this.obtenerAlumnosPorCursoEspecifico();
+      } else {
+        this.obtenerAlumnosPorPlanillaPersonalizada();
+      }
+    }
   }
 }

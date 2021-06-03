@@ -77,7 +77,7 @@
           <mat-error *ngIf="form.controls.turno.hasError('required')"> Este campo es requerido. </mat-error>
         </mat-form-field>
         <!--  ============================= -->
-        <div fxLayout="column">
+        <div *ngIf="actualizar" fxLayout="column">
           <strong fxLayout="row wrap" fxLayoutAlign="start center">
             <mat-icon
               matTooltipClass="tooltipL"
