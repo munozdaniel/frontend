@@ -83,6 +83,7 @@ export class PlanillaEditarComponent implements OnInit, OnChanges {
         anio: Number(anio), // set en el back
         tipoCalendario: evento.tipoCalendario,
         diasHabilitados: evento.diasHabilitados,
+        personalizada: evento.personalizada,
         activo: true,
       };
 

@@ -121,6 +121,9 @@ export class PlanillaFormComponent implements OnInit, OnChanges {
       if (this.planillaTaller.tipoCalendario === 'PERSONALIZADO') {
         this.personalizarDias = true;
       }
+      if (this.planillaTaller.personalizada) {
+        this.mostrarSelectorAlumnos = true;
+      }
     }
   }
   _configurarProfesoresAutocomplete(profesoresList: IProfesor[]) {
@@ -199,6 +202,7 @@ export class PlanillaFormComponent implements OnInit, OnChanges {
   buscarLosAlumnos() {
     const dialogRef = this.dialog.open(CustomPlanillaAlumnosModalComponent, {
       data: { planillaTaller: this.planillaTaller },
+      width: '55%',
     });
 
     dialogRef.afterClosed().subscribe((result) => {

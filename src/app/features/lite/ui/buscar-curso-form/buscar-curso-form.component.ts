@@ -12,7 +12,7 @@ import Swal from 'sweetalert2';
 export class BuscarCursoFormComponent implements OnInit {
   form: FormGroup;
   @Output() retBuscarAlumnos = new EventEmitter<any>();
-  tiposComision = [0, 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H'];
+  tiposComision = [null, 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H'];
   constructor(private _fb: FormBuilder) {}
 
   ngOnInit(): void {

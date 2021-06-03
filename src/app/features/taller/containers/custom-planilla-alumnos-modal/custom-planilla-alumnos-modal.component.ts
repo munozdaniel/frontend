@@ -1,12 +1,16 @@
 import { SelectionModel } from '@angular/cdk/collections';
 import { Component, Inject, OnInit, ViewChild } from '@angular/core';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatTableDataSource, MatSort, MatPaginator, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 import { designAnimations } from '@design/animations';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { AlumnoService } from 'app/core/services/alumno.service';
+import { CicloLectivoService } from 'app/core/services/ciclo-lectivo.service';
 import { IAlumno } from 'app/models/interface/iAlumno';
 import { IAlumnoTaller } from 'app/models/interface/iAlumnoTaller';
+import { ICicloLectivo } from 'app/models/interface/iCicloLectivo';
 import { IPlanillaTaller } from 'app/models/interface/iPlanillaTaller';
+import Swal from 'sweetalert2';
 @UntilDestroy()
 @Component({
   selector: 'app-custom-planilla-alumnos-modal',
@@ -15,10 +19,12 @@ import { IPlanillaTaller } from 'app/models/interface/iPlanillaTaller';
   animations: designAnimations,
 })
 export class CustomPlanillaAlumnosModalComponent implements OnInit {
+  form: FormGroup;
+  tiposComision = [null, 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H'];
   planillaTaller: IPlanillaTaller;
   cargando = false;
   //
-  alumnos: IAlumnoTaller[] = [];
+  alumnosTaller: IAlumnoTaller[] = [];
   dataSource: MatTableDataSource<any> = new MatTableDataSource([]);
   @ViewChild('sort') set setSort(sort: MatSort) {
     this.dataSource.sort = sort;
@@ -28,11 +34,14 @@ export class CustomPlanillaAlumnosModalComponent implements OnInit {
   }
   columnas: string[] = ['nombre', 'opciones'];
   seleccionA = new SelectionModel<IAlumnoTaller>(true, []);
+  ciclosLectivos: ICicloLectivo[] = [];
 
   constructor(
+    private _fb: FormBuilder,
     private _alumnoService: AlumnoService,
     public dialogRef: MatDialogRef<CustomPlanillaAlumnosModalComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: any
+    @Inject(MAT_DIALOG_DATA) public data: any,
+    private _cicloLectivoService: CicloLectivoService
   ) {
     if (data) {
       this.planillaTaller = data.planillaTaller;
@@ -40,7 +49,47 @@ export class CustomPlanillaAlumnosModalComponent implements OnInit {
     }
   }
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    this._cicloLectivoService
+      .obtenerCiclosLectivos()
+      .pipe(untilDestroyed(this))
+      .subscribe(
+        (datos) => {
+          this.cargando = false;
+          this.ciclosLectivos = datos;
+          this.form = this._fb.group({
+            curso: [null, [Validators.required]],
+            comision: [null, []],
+            division: [null, [Validators.required]],
+            cicloLectivo: [null, [Validators.required]],
+          });
+        },
+        (error) => {
+          this.cargando = false;
+          console.log('[ERROR]', error);
+        }
+      );
+  }
+  setBuscarPlanilla() {
+    this.cargando = true;
+    const { curso, comision, division, cicloLectivo } = this.form.value;
+    this._alumnoService
+      .obtenerAlumnosTallerPorCursoEspecifico(this.planillaTaller, curso, comision, division, cicloLectivo)
+      .pipe(untilDestroyed(this))
+      .subscribe(
+        (datos) => {
+          this.cargando = false;
+          this.alumnosTaller = datos;
+          this.dataSource.data = this.alumnosTaller;
+          this.dataSource.filteredData.forEach((row) => (row.selected ? this.seleccionA.select(row) : null));
+          this.dataSource.filter = '';
+        },
+        (error) => {
+          this.cargando = false;
+          console.log('[ERROR]', error);
+        }
+      );
+  }
   filtroRapido(evento) {}
   obtenerAlumnos() {
     this.cargando = true;
@@ -50,8 +99,8 @@ export class CustomPlanillaAlumnosModalComponent implements OnInit {
       .subscribe(
         (datos) => {
           this.cargando = false;
-          this.alumnos = [...datos];
-          this.dataSource.data = this.alumnos;
+          this.alumnosTaller = [...datos];
+          this.dataSource.data = this.alumnosTaller;
           this.dataSource.filteredData.forEach((row) => (row.selected ? this.seleccionA.select(row) : null));
           this.dataSource.filter = '';
         },
@@ -75,15 +124,32 @@ export class CustomPlanillaAlumnosModalComponent implements OnInit {
     this.seleccionA.toggle(row);
   }
   guardarAlumnosEspeciales() {
+    this.cargando = true;
     const alumnosTaller: IAlumnoTaller[] = this.seleccionA.selected;
     this._alumnoService
       .guardarAlumnosEspeciales(alumnosTaller, this.planillaTaller._id)
       .pipe(untilDestroyed(this))
       .subscribe(
         (datos) => {
-          this.obtenerAlumnos();
+          this.cargando = false;
+
+          //   this.obtenerAlumnos();
+          if (datos.success) {
+            if (datos.planillaTaller) {
+              this.planillaTaller = { ...datos.planillaTaller };
+            }
+            Swal.fire({
+              title: 'Operación exitosa',
+              text: datos.message,
+              icon: 'success',
+              timer: 2000,
+              timerProgressBar: true,
+            }).then(() => {});
+          }
         },
         (error) => {
+          this.cargando = false;
+
           console.log('[ERROR]', error);
         }
       );

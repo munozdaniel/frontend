@@ -252,10 +252,22 @@ export class AlumnoService {
 
     return this.http.get<any>(url);
   }
-  guardarAlumnosEspeciales(alumnosTaller: IAlumnoTaller[], planillaTallerId:string) {
+  guardarAlumnosEspeciales(alumnosTaller: IAlumnoTaller[], planillaTallerId: string) {
     const query = `alumno-taller/${planillaTallerId}`;
     const url = this.url + query;
 
     return this.http.put<any>(url, alumnosTaller);
+  }
+  obtenerAlumnosTallerPorCursoEspecifico(
+    planillaTaller: IPlanillaTaller,
+    curso: number,
+    comision: string,
+    division: number,
+    cicloLectivo: ICicloLectivo
+  ): Observable<IAlumnoTaller[]> {
+    const query = `alumno-taller/por-curso-especifico`;
+    const url = this.url + query;
+
+    return this.http.post<any>(url, { planillaTaller, curso, comision, division, cicloLectivo });
   }
 }
