@@ -72,11 +72,11 @@ export class AsistenciaService {
 
     return this.http.post<any>(url, { fecha, planilla, alumnos });
   }
-  buscarInasistencias(desde: any, hasta?: any): Observable<IAlumno[]> {
+  buscarInasistencias(turno: string, desde: any, hasta?: any): Observable<IAlumno[]> {
     const query = `asistencia/buscar-inasistencias`;
     const url = this.url + query;
 
-    return this.http.post<any>(url, { desde, hasta });
+    return this.http.post<any>(url, { turno, desde, hasta });
   }
   tomarAsistencia(alumno: IAlumno, fecha: string): Observable<any> {
     const query = `asistencia/tomar-asistencias`;
@@ -96,5 +96,4 @@ export class AsistenciaService {
 
     return this.http.post<any>(url, { planilla, alumnos });
   }
-  
 }

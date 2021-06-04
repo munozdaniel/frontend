@@ -21,29 +21,42 @@ import Swal from 'sweetalert2';
           <h1 [@animate]="{ value: '*', params: { x: '50px' } }" class="px-12">{{ titulo }}</h1>
           <mat-spinner *ngIf="cargando" matSuffix class="ml-10" diameter="20"></mat-spinner>
         </div>
-        <form *ngIf="form" [formGroup]="form" fxLayout="row" fxLayoutAlign="center start" (ngSubmit)="buscarInasistencias()">
-          <div fxLayout="column">
-            <div fxLayout="row wrap" fxLayoutAlign.xs="center start" fxLayoutAlign.gt-xs="start baseline" fxLayoutGap.gt-xs="10px">
-              <mat-form-field appearance="outline" fxFlex.xs="100">
+        <form *ngIf="form" [formGroup]="form" class=" w-100-p" (ngSubmit)="buscarInasistencias()">
+          <div
+            fxLayout="row wrap"
+            [fxLayoutGap]="rangoHabilitado ? '0px' : '10px'"
+            [fxLayoutAlign]="rangoHabilitado ? 'space-between baseline' : 'start baseline'"
+          >
+            <div fxLayout="column" fxFlex.gt-xs="30" fxFlex.xs="100">
+              <mat-form-field appearance="outline">
                 <mat-label>Fecha Desde </mat-label>
                 <input matInput [matDatepicker]="picker" formControlName="fechaDesde" />
                 <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
                 <mat-datepicker #picker></mat-datepicker>
                 <mat-error *ngIf="form.controls.fechaDesde.hasError('required')"> Este campo es requerido. </mat-error>
               </mat-form-field>
-              <mat-form-field *ngIf="rangoHabilitado" appearance="outline" fxFlex.xs="100">
-                <mat-label>Fecha Hasta</mat-label>
-                <input matInput [matDatepicker]="pickerHasta" formControlName="fechaHasta" />
-                <mat-datepicker-toggle matSuffix [for]="pickerHasta"></mat-datepicker-toggle>
-                <mat-datepicker #pickerHasta></mat-datepicker>
-                <mat-error *ngIf="form.controls.fechaHasta.hasError('required')"> Este campo es requerido. </mat-error>
-              </mat-form-field>
-              <mat-error *ngIf="form.errors?.fechas">{{ form.errors.fechas }}</mat-error>
+              <mat-checkbox class="mb-12" (click)="habilitarRango()">Buscar por rango</mat-checkbox>
             </div>
-            <mat-checkbox class="mb-12" (click)="habilitarRango()">Buscar por rango</mat-checkbox>
-            <button *ngIf="!form.errors?.fechas" [disabled]="form.invalid" mat-raised-button color="primary">
-              <mat-icon>search</mat-icon> Buscar
-            </button>
+            <mat-form-field *ngIf="rangoHabilitado" appearance="outline" fxFlex.gt-xs="30" fxFlex.xs="100">
+              <mat-label>Fecha Hasta</mat-label>
+              <input matInput [matDatepicker]="pickerHasta" formControlName="fechaHasta" />
+              <mat-datepicker-toggle matSuffix [for]="pickerHasta"></mat-datepicker-toggle>
+              <mat-datepicker #pickerHasta></mat-datepicker>
+              <mat-error *ngIf="form.controls.fechaHasta.hasError('required')"> Este campo es requerido. </mat-error>
+            </mat-form-field>
+            <mat-form-field appearance="outline" fxFlex.gt-xs="30" fxFlex.xs="100">
+              <mat-label class="lbl">Turno</mat-label>
+              <mat-select formControlName="turno">
+                <mat-option value="MAÑANA">MAÑANA</mat-option>
+                <mat-option value="TARDE">TARDE</mat-option>
+                <mat-option value="VESPERTINO">VESPERTINO</mat-option>
+              </mat-select>
+              <mat-error *ngIf="form.controls.turno.hasError('required')"> Este campo es requerido. </mat-error>
+            </mat-form-field>
+            <mat-error *ngIf="form.errors?.fechas" fxFlex="100">{{ form.errors.fechas }}</mat-error>
+            <div fxFlex="100" fxLayout="row" fxLayoutAlign="center start">
+              <button [disabled]="form.invalid" mat-raised-button color="primary"><mat-icon>search</mat-icon> Buscar</button>
+            </div>
           </div>
         </form>
       </div>
@@ -94,6 +107,7 @@ export class InasistenciasAlumnosComponent implements OnInit {
         fechaHasta: [today],
         horaDesde: [horasD, Validators.required],
         horaHasta: [horasH, Validators.required],
+        turno: [null, Validators.required],
       },
       {
         validator: this.restriccionFecha('fechaDesde', 'fechaHasta', 'horaDesde', 'horaHasta'),
@@ -147,7 +161,11 @@ export class InasistenciasAlumnosComponent implements OnInit {
     }
     //   Buscar todas las plantillas
     this._asistenciaService
-      .buscarInasistencias(this.form.controls.fechaDesde.value, this.rangoHabilitado ? this.form.controls.fechaHasta.value : null)
+      .buscarInasistencias(
+        this.form.controls.turno.value,
+        this.form.controls.fechaDesde.value,
+        this.rangoHabilitado ? this.form.controls.fechaHasta.value : null
+      )
       .pipe(untilDestroyed(this))
       .subscribe(
         (datos: any) => {
