@@ -29,9 +29,22 @@ import { CursadaFormComponent } from 'app/shared/components/cursada-form/cursada
       </div>
     </div>
     <ng-template #cargandoAlumno>
-      <div fxLayout="column" fxLayoutAlign="center center" class="w-100-p text-center">
+      <div fxLayout="column" fxLayoutAlign="start center" class="w-100-p text-center  p-24">
+        <div
+          class="mat-card mat-elevation-z4 w-100-p mb-24"
+          style="margin-top: 60px;"
+          fxLayout="row wrap"
+          fxLayoutAlign="space-between center"
+        >
+          <div fxLayout="row" fxFlex="100" fxLayoutAlign="start center">
+            <h1 class="px-12">Ver Alumno</h1>
+            <mat-spinner matSuffix class="ml-10" diameter="20"></mat-spinner>
+          </div>
+        </div>
         <mat-progress-bar mode="indeterminate" class="w-100-p"> </mat-progress-bar>
-        <mat-card style="height:200px; width:100%;">Cargando datos...</mat-card>
+        <mat-card style="height:200px; width:100%;" fxLayout="row" fxLayoutAlign="center center">
+          <div>Cargando datos...</div>
+        </mat-card>
       </div>
     </ng-template>
 
