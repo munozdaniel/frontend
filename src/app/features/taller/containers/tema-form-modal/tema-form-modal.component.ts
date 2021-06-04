@@ -450,6 +450,7 @@ export class TemaFormModalComponent implements OnInit, OnDestroy, OnChanges {
         placeholder: 'Ingrese el motivo',
       },
       preConfirm: (motivoSinDictar) => {
+        console.log('tema', tema);
         tema.motivoSinDictar = motivoSinDictar;
         return this._temaService.actualizarTema(this.tema._id, tema).pipe(
           catchError((error) => {
