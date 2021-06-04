@@ -54,30 +54,33 @@
             <mat-icon>remove_red_eye</mat-icon>
             <span>Ver Detalle</span>
           </button>
-          <button mat-menu-item matTooltip="Modificar asistencia" (click)="editar(row)">
+          <button mat-menu-item matTooltip="Modificar asistencia" (click)="editar(row)" *ngxPermissionsOnly="['ADMIN', 'JEFETALLER']">
             <mat-icon>create</mat-icon>
             <span>Editar</span>
           </button>
-          <button
-            *ngIf="row.activo"
-            mat-menu-item
-            style="color: white; background-color: rgb(170, 2, 2)"
-            matTooltip="Modificar asistencia"
-            (click)="eliminarAlumno(row)"
-          >
-            <mat-icon style="color: white">delete_forever</mat-icon>
-            <span>Eliminar</span>
-          </button>
-          <button
-            *ngIf="!row.activo"
-            mat-menu-item
-            style="color: white; background-color: rgb(2, 155, 2)"
-            matTooltip="Modificar asistencia"
-            (click)="eliminarAlumno(row)"
-          >
-            <mat-icon style="color: white">check_circle</mat-icon>
-            <span>Habilitar</span>
-          </button>
+          <div *ngxPermissionsOnly="['ADMIN', 'JEFETALLER']">
+            <button
+              *ngIf="row.activo"
+              mat-menu-item
+              style="color: white; background-color: rgb(170, 2, 2)"
+              matTooltip="Modificar asistencia"
+              (click)="eliminarAlumno(row)"
+            >
+              <mat-icon style="color: white">delete_forever</mat-icon>
+              <span>Eliminar</span>
+            </button>
+            <button
+              *ngIf="!row.activo"
+              mat-menu-item
+              style="color: white; background-color: rgb(2, 155, 2)"
+              matTooltip="Modificar asistencia"
+              (click)="eliminarAlumno(row)"
+            >
+              <mat-icon style="color: white">check_circle</mat-icon>
+              <span>Habilitar</span>
+            </button>
+          </div>
+
           <mat-divider></mat-divider>
           <button mat-menu-item matTooltip="Ver ficha personal" (click)="verFichaPersonalAlumno(row)">
             <mat-icon>portrait</mat-icon>

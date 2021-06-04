@@ -27,7 +27,7 @@
     [ngClass]="designConfig.layout.navbar.secondaryBackground"
   >
     <div class="h3 username">{{ usuario.nombre }}</div>
-    <div class="h5 email hint-text mt-8">{{ usuario.email }}</div>
+    <div class="h5 email hint-text mt-8">{{ usuario.rol }}</div>
     <div class="avatar-container" [ngClass]="designConfig.layout.navbar.primaryBackground">
       <img class="avatar" [src]="usuario.picture ? usuario.picture : '/assets/auth/avatar.svg'" [alt]="usuario.nombre" />
     </div>

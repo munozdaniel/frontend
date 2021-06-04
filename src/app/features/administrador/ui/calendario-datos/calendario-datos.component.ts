@@ -50,7 +50,6 @@ export class CalendarioDatosComponent implements OnInit, OnChanges, OnDestroy {
         const comisiones: any[] = this.retornarComision(x);
         const fecha = x.fecha.toString().split('T')[0]; // Esto para que no cambie la fecha al pasar a date
         comisiones.map((comision) => {
-          console.log('comision.color', comision.color);
           this.events.push({
             title: comision.title,
             //   start: moment(fecha).utc().add(1, 'day').toDate(),

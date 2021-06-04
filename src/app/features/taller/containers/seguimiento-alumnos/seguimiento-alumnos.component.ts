@@ -27,7 +27,8 @@ import Swal from 'sweetalert2';
               class="w-100-p"
             ></app-tipo-seguimiento-form>
           </div>
-          <button mat-raised-button color="primary" fxFlex.gt-xs="35" fxFlex.xs="100" (click)="redireccionar()">
+          <!-- *ngxPermissionsOnly="['ADMIN', 'JEFETALLER']" -->
+          <button  mat-raised-button color="primary" fxFlex.gt-xs="35" fxFlex.xs="100" (click)="redireccionar()">
             <mat-icon>add</mat-icon>Agregar Seguimiento
           </button>
         </div>

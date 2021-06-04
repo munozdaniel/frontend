@@ -2,11 +2,13 @@ import { EventEmitter, Component, Input, OnInit, Output, OnChanges, SimpleChange
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatDialog } from '@angular/material';
 import { ValidationService } from 'app/core/services/general/validation.services';
+import { ROL, RolConst } from 'app/models/constants/rol.enum';
 import { ASIGNATURA_KEY, IAsignatura } from 'app/models/interface/iAsignatura';
 import { IPlanillaTaller } from 'app/models/interface/iPlanillaTaller';
 import { IProfesor, PROFESOR_KEY } from 'app/models/interface/iProfesor';
 import { CONFIG_PROVIDER } from 'app/shared/config.provider';
 import * as moment from 'moment';
+import { NgxPermissionsService } from 'ngx-permissions';
 import { Observable, of } from 'rxjs';
 import { startWith, switchMap, delay, map } from 'rxjs/operators';
 import Swal from 'sweetalert2';
@@ -42,8 +44,10 @@ export class PlanillaFormComponent implements OnInit, OnChanges {
   maximo;
   anioActual = new Date().getFullYear();
   deshabilitarEdicion = false;
+  sinPermisos = true;
   mostrarSelectorAlumnos = false;
-  constructor(public dialog: MatDialog, private _fb: FormBuilder) {
+  permisos;
+  constructor(private _permissionsService: NgxPermissionsService, public dialog: MatDialog, private _fb: FormBuilder) {
     this.minimo = new Date('1/1/' + this.anioActual);
     this.maximo = new Date('12/31/' + this.anioActual);
   }
@@ -87,11 +91,27 @@ export class PlanillaFormComponent implements OnInit, OnChanges {
         validator: [ValidationService.desdeMenorEstrictoHasta('fechaInicio', 'fechaFinalizacion')], // validator: ValidationService.restriccionFechaConHoras('fechaDesde', 'fechaHasta', 'horaDesde', 'horaHasta')
       }
     );
+    this.form.disable();
     const actual = moment().year();
     for (let index = 10; index > 0; index--) {
       this.anios.unshift(actual - index);
     }
     this.anios.unshift(actual);
+    this._permissionsService.permissions$.subscribe((permissions) => {
+      this.permisos = Object.keys(permissions);
+      if (this.permisos && this.permisos.length > 0) {
+        console.log(RolConst.ADMIN, 'this.permisos', this.permisos);
+        const index = this.permisos.findIndex((x) => x.toString() === RolConst.ADMIN || x.toString() === RolConst.JEFETALLER);
+        console.log('index', index);
+        if (index !== -1 && !this.deshabilitarEdicion) {
+          this.form.enable();
+          this.sinPermisos = false;
+        } else {
+          this.form.disable();
+          this.sinPermisos = true;
+        }
+      }
+    });
   }
   setFormulario() {
     if (!this.form) {
@@ -99,11 +119,11 @@ export class PlanillaFormComponent implements OnInit, OnChanges {
         this.setFormulario();
       }, 1000);
     } else {
-      if (this.deshabilitarEdicion) {
-        this.form.disable();
-      } else {
-        this.form.enable();
-      }
+      //   if (this.deshabilitarEdicion) {
+      //     this.form.disable();
+      //   } else {
+      //     this.form.enable();
+      //   }
       this.form.patchValue(this.planillaTaller);
       this.form.controls.fechaInicio.setValue(moment.utc(this.planillaTaller.fechaInicio));
       this.form.controls.fechaFinalizacion.setValue(moment.utc(this.planillaTaller.fechaFinalizacion));

@@ -29,7 +29,15 @@ import Swal from 'sweetalert2';
             [cicloLectivo]="cicloActual"
             (retParametrosBusqueda)="setParametrosBusqueda($event)"
           ></app-form-ciclo-lectivo>
-          <button mat-raised-button fxFlex.gt-xs="40" fxFlex.xs="100" color="accent" (click)="toggleCalendario()" class="w-100-p">
+          <button
+            *ngxPermissionsOnly="['ADMIN', 'JEFETALLER']"
+            mat-raised-button
+            fxFlex.gt-xs="40"
+            fxFlex.xs="100"
+            color="accent"
+            (click)="toggleCalendario()"
+            class="w-100-p"
+          >
             <mat-icon *ngIf="!mostrarAgregar">add</mat-icon> <span *ngIf="!mostrarAgregar">Crear Nuevo Calendario</span>
             <mat-icon *ngIf="mostrarAgregar">close</mat-icon> <span *ngIf="mostrarAgregar">Ocultar Formulario</span>
           </button>

@@ -9,11 +9,7 @@ import { IAsignatura } from 'app/models/interface/iAsignatura';
   selector: 'app-asignaturas-ver',
   template: `
     <button-volver></button-volver>
-    <!-- <div *ngIf="asignatura$ | async as asignatura; else cargandoAsignatura" fxLayout="column" class="w-100-p p-12 mt-16">
-      <div fxLayout="row" fxLayoutAlign="space-between start">
-        <h1>Ver Asignatura</h1>
-        <button mat-raised-button color="primary" [disabled]="!asignatura" (click)="habilitarEdicion()">Habilitar Edición</button>
-      </div> -->
+ 
     <div fxLayout="column" fxLayoutAlign="start start" fxLayoutGap="20px" class="w-100-p p-12 mt-40">
       <div fxLayout="column" class="mat-card mat-elevation-z4 p-24 w-100-p">
         <div fxLayout fxLayoutAlign="start center" class="w-100-p mb-12" style="border-bottom: 2px solid #80808057">
@@ -22,7 +18,7 @@ import { IAsignatura } from 'app/models/interface/iAsignatura';
         </div>
         <div fxLayout="row" fxLayoutAlign="space-between baseline">
           <div fxLayout fxLayoutAlign="end center" fxFlex="25"></div>
-          <button mat-raised-button color="primary" [disabled]="!asignatura" (click)="habilitarEdicion()">Habilitar Edición</button>
+          <button *ngxPermissionsOnly="['ADMIN', 'JEFETALLER']" mat-raised-button color="primary" [disabled]="!asignatura" (click)="habilitarEdicion()">Habilitar Edición</button>
         </div>
       </div>
       ´

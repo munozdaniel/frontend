@@ -61,6 +61,7 @@ export class SeguimientoAlumnosTablaComponent implements OnInit, OnChanges {
     private _media: MediaMatcher,
     public breakpointObserver: BreakpointObserver
   ) {
+   
     this.mobileQuery = this._media.matchMedia('(max-width: 600px)');
     this._mobileQueryListener = () => this._changeDetectorRef.detectChanges();
     this.breakpointObserver.observe([Breakpoints.Small, Breakpoints.HandsetPortrait]).subscribe((state: BreakpointState) => {
@@ -71,7 +72,6 @@ export class SeguimientoAlumnosTablaComponent implements OnInit, OnChanges {
         this.isMobile = false;
         this.columnas = ['seguimientoAlumnoNro', 'alumno', 'fecha', 'cicloLectivo', 'resuelto', 'opciones'];
       }
-     
     });
   }
 

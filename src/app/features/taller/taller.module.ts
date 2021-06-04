@@ -42,6 +42,7 @@ import { PlanillaCalendarioComponent } from './ui/planilla-calendario/planilla-c
 import { CalendarModule, DateAdapter } from 'angular-calendar';
 import { AdministradorModule, momentAdapterFactory } from '../administrador/administrador.module';
 import { CustomPlanillaAlumnosModalComponent } from './containers/custom-planilla-alumnos-modal/custom-planilla-alumnos-modal.component';
+import { NgxPermissionsModule } from 'ngx-permissions';
 
 @NgModule({
   declarations: [
@@ -90,6 +91,7 @@ import { CustomPlanillaAlumnosModalComponent } from './containers/custom-planill
     DesignSharedModule,
     CalendarModule.forRoot({ provide: DateAdapter, useFactory: momentAdapterFactory }),
     AdministradorModule,
+    NgxPermissionsModule.forChild(),
   ],
   entryComponents: [CustomPlanillaAlumnosModalComponent],
 })

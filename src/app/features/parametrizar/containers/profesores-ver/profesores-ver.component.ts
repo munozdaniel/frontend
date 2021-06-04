@@ -10,11 +10,7 @@ import { finalize } from 'rxjs/operators';
   selector: 'app-profesores-ver',
   template: `
     <button-volver></button-volver>
-    <!-- <div *ngIf="profesor$ | async as profesor; else cargandoProfesor" fxLayout="column" class="w-100-p p-12 mt-16">
-      <div fxLayout="row" fxLayoutAlign="space-between start">
-        <h1>Ver Profesor</h1>
-        <button mat-raised-button color="primary" [disabled]="!profesor" (click)="habilitarEdicion()">Habilitar Edición</button>
-      </div> -->
+
     <div *ngIf="profesor$ | async as profesor; else cargandoProfesor" fxLayout="column" fxLayoutGap="20px" class="w-100-p p-12 mt-40">
       <div fxLayout="column" class="mat-card mat-elevation-z4 p-24 ">
         <div fxLayout fxLayoutAlign="start center" class="w-100-p mb-12" style="border-bottom: 2px solid #80808057">
@@ -23,7 +19,15 @@ import { finalize } from 'rxjs/operators';
         </div>
         <div fxLayout="row" fxLayoutAlign="space-between baseline">
           <div fxLayout fxLayoutAlign="end center" fxFlex="25"></div>
-          <button mat-raised-button color="primary" [disabled]="!profesor" (click)="habilitarEdicion()">Habilitar Edición</button>
+          <button
+            mat-raised-button
+            *ngxPermissionsOnly="['ADMIN', 'JEFETALLER']"
+            color="primary"
+            [disabled]="!profesor"
+            (click)="habilitarEdicion()"
+          >
+            Habilitar Edición
+          </button>
         </div>
       </div>
       <app-profesores-form [soloLectura]="true" [profesor]="profesor" [resetear]="resetear" [cargando]="cargando"></app-profesores-form>

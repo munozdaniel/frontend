@@ -100,6 +100,7 @@
   </div>
   <div fxLayout="row" fxLayoutAlign="center start" class="mt-24">
     <button
+      *ngxPermissionsOnly="['ADMIN', 'JEFETALLER']"
       mat-raised-button
       color="accent"
       (click)="actualizarCiclo()"

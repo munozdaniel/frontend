@@ -21,6 +21,7 @@ import { CursadaFormComponent } from './components/cursada-form/cursada-form.com
 import { AlumnosTablaEmailComponent } from './components/alumnos-tabla-email/alumnos-tabla-email.component';
 import { TomarAsistenciaModalComponent } from './components/tomar-asistencia-modal/tomar-asistencia-modal.component';
 import { AlumnosTablaCursadaComponent } from './components/alumnos-tabla-cursada/alumnos-tabla-cursada.component';
+import { NgxPermissionsModule } from 'ngx-permissions';
 
 @NgModule({
   imports: [
@@ -33,6 +34,7 @@ import { AlumnosTablaCursadaComponent } from './components/alumnos-tabla-cursada
       useColumnBasisZero: false,
       printWithBreakpoints: ['md', 'lt-lg', 'lt-xl', 'gt-sm', 'gt-xs'],
     }),
+    NgxPermissionsModule.forChild(),
   ],
   providers: [],
   entryComponents: [],

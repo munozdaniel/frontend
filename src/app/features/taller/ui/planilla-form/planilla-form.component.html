@@ -77,15 +77,16 @@
           <mat-error *ngIf="form.controls.turno.hasError('required')"> Este campo es requerido. </mat-error>
         </mat-form-field>
         <!--  ============================= -->
-        <div *ngIf="actualizar" fxLayout="column">
+        <div *ngIf="actualizar" fxLayout="column" class="border p-12" fxLayoutGap="10px">
           <strong fxLayout="row wrap" fxLayoutAlign="start center">
             <mat-icon
+              [class.gray-text]="sinPermisos"
               matTooltipClass="tooltipL"
               matTooltip="La planilla personalizada será utilizada con alumnos agregados manualmente."
               style="color: rgb(0, 153, 255); cursor: pointer"
               >info</mat-icon
             >
-            <span> Tipo de Planilla</span></strong
+            <span [class.gray-text]="sinPermisos"> Tipo de Planilla</span></strong
           >
           <mat-radio-group
             formControlName="personalizada"
@@ -94,14 +95,17 @@
             fxFlex.xs="100"
             fxFlex.gt-xs="45"
             fxLayoutGap="10px"
-            class="border p-12"
           >
-            <mat-radio-button [value]="false" class="mb-12" (click)="habilitarPlanillaPorCurso()"> Por Curso</mat-radio-button>
-            <mat-radio-button [value]="true" class="mb-12" (click)="habilitarPlanillaPersonalizada()"> Personalizada</mat-radio-button>
+            <mat-radio-button [value]="false" class="mb-12" (click)="habilitarPlanillaPorCurso()"> Alumnos por curso</mat-radio-button>
+            <mat-radio-button [value]="true" class="mb-12" (click)="habilitarPlanillaPersonalizada()">
+              Alumnos Seleccionados</mat-radio-button
+            >
           </mat-radio-group>
-          <button type="button" *ngIf="mostrarSelectorAlumnos" mat-raised-button color="primary" (click)="buscarLosAlumnos()">
-            Buscar Alumnos
-          </button>
+          <div *ngxPermissionsOnly="['ADMIN', 'JEFETALLER']" fxLayout="row" fxLayoutAlign="center start">
+            <button type="button" *ngIf="mostrarSelectorAlumnos" mat-raised-button color="primary" (click)="buscarLosAlumnos()">
+              <mat-icon class="mr-4">search</mat-icon> <span>Buscar </span>
+            </button>
+          </div>
         </div>
       </div>
       <div fxFlex.gt-xs="42" fxFlex.xs="100" fxLayout="column">
@@ -163,12 +167,13 @@
         <div fxLayout="column">
           <strong fxLayout="row wrap" fxLayoutAlign="start center">
             <mat-icon
+              [class.gray-text]="sinPermisos"
               matTooltipClass="tooltipL"
               matTooltip="Si ya se han cargado TEMAS a la planilla, al cambiar el tipo de calendario se adicionarán las fechas del nuevo calendario a las existentes. (No se sobreescribirán datos)"
               style="color: rgb(0, 153, 255); cursor: pointer"
               >info</mat-icon
             >
-            <span> Tipo de Calendario</span></strong
+            <span [class.gray-text]="sinPermisos"> Tipo de Calendario</span></strong
           >
           <mat-radio-group
             formControlName="tipoCalendario"
@@ -207,6 +212,7 @@
     <div fxLayout="column">
       <div *ngIf="!deshabilitarEdicion" fxLayout="row" fxLayoutAlign="center start">
         <button
+          *ngxPermissionsOnly="['ADMIN', 'JEFETALLER']"
           [disabled]="
             cargando ||
             form.invalid ||

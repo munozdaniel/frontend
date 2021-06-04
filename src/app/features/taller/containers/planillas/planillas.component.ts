@@ -24,7 +24,15 @@ import * as moment from 'moment';
             [cicloLectivo]="cicloActual"
             (retParametrosBusqueda)="setParametrosBusqueda($event)"
           ></app-form-ciclo-lectivo>
-          <button mat-raised-button fxFlex.gt-xs="40" fxFlex.xs="100" color="primary" (click)="redireccionar()" class="w-100-p">
+          <button
+            *ngxPermissionsOnly="['ADMIN', 'JEFETALLER']"
+            mat-raised-button
+            fxFlex.gt-xs="40"
+            fxFlex.xs="100"
+            color="primary"
+            (click)="redireccionar()"
+            class="w-100-p"
+          >
             <mat-icon>add</mat-icon>Agregar Planilla
           </button>
         </div>

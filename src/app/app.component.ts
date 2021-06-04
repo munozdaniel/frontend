@@ -57,8 +57,9 @@ export class AppComponent implements OnInit, OnDestroy {
     this._designNavigationService.setCurrentNavigation('main');
     // Register the navigation to the service
     this.comprobarLogin();
-    const perm = ['ADMIN', 'PROFESOR', 'PRECEPTOR', 'INVITADO', 'JEFE', 'DIRECTOR'];
-    this.permissionsService.loadPermissions(perm);
+    // const perm = ['ADMIN', 'PROFESOR', 'PRECEPTOR', 'INVITADO', 'JEFE', 'DIRECTOR'];
+    // this.permissionsService.loadPermissions(perm);
+    console.log(':..---');
     /**
      * ----------------------------------------------------------------------------------------------------
      * ngxTranslate Fix Start
@@ -148,10 +149,14 @@ export class AppComponent implements OnInit, OnDestroy {
   comprobarLogin() {
     this._authService.currentUser$.pipe(untilDestroyed(this)).subscribe(
       (datos: any) => {
+        console.log('datos', datos);
         if (!datos || !datos.success) {
           this.isLogin = false;
           this._router.navigate(['/auth/iniciar-sesion']);
         } else {
+          const perm = [datos.rol];
+          this.permissionsService.loadPermissions(perm);
+
           this.isLogin = true; // Set the main navigation as our current navigation
           // if( tiene permisos de administrador){
           const customFunctionNavItem = {
