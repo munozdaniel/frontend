@@ -8,7 +8,11 @@ import { Observable } from 'rxjs';
 export class UsuarioService {
   protected url = environment.apiURI;
   constructor(private http: HttpClient) {}
-
+  enviarLink(email: string): Observable<any> {
+    const query = `usuarios/link/${email}`;
+    const url = this.url + query;
+    return this.http.get(url);
+  }
   register(user: IUsuario) {
     const query = `usuarios/register`;
     const url = this.url + query;
