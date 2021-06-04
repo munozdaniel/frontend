@@ -62,7 +62,7 @@ import Swal from 'sweetalert2';
               [cargandoTemas]="cargandoTemas"
             ></app-planilla-detalle-temas>
           </mat-tab>
-          <mat-tab label="Calendario">
+          <mat-tab *ngxPermissionsOnly="['ADMIN', 'JEFETALLER']" label="Calendario">
             <!-- Componente Smart podria ser UI pero no D: -->
             <app-planilla-calendario [cargando]="cargando" [planillaTaller]="planillaTaller" [calendario]="calendario">
             </app-planilla-calendario>
