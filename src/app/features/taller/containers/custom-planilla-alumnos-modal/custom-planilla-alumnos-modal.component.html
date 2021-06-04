@@ -2,13 +2,9 @@
 <mat-dialog-content>
   <mat-accordion *ngIf="form" class="w-100-p">
     <mat-expansion-panel>
-      <mat-expansion-panel-header>
-        <mat-panel-title> Búsqueda por curso </mat-panel-title>
-        <mat-panel-description>
-          <div fxLayoutAlign="end start" fxLayout="row">
-            <mat-icon>search</mat-icon>
-          </div>
-        </mat-panel-description>
+      <mat-expansion-panel-header class="border">
+        <mat-panel-title><mat-icon class="mr-4">search</mat-icon><span> Búsqueda por curso</span> </mat-panel-title>
+        <mat-panel-description> </mat-panel-description>
       </mat-expansion-panel-header>
       <form [formGroup]="form" (ngSubmit)="setBuscarPlanilla()" fxLayout="row wrap" fxLayoutAlign="space-between start">
         <!-- cicloLectivo ============================= -->
@@ -48,16 +44,11 @@
           </mat-select>
           <mat-error *ngIf="form.controls.division.hasError('required')"> Este campo es requerido. </mat-error>
         </mat-form-field>
-        <!-- tipoComision ============================= -->
-        <mat-form-field appearance="outline" fxFlex="100">
-          <mat-label class="lbl">Comision</mat-label>
-          <mat-select formControlName="comision">
-            <mat-option *ngFor="let tipo of tiposComision" [value]="tipo">{{ tipo }}</mat-option>
-          </mat-select>
-          <mat-error *ngIf="form.controls.comision.hasError('required')"> Este campo es requerido. </mat-error>
-        </mat-form-field>
+
         <div fxLayout="row" fxLayoutAlign="center start" fxLayoutGap="30px" class="w-100-p">
-          <button mat-raised-button color="warn" type="button" (click)="obtenerAlumnos()"><mat-icon class="mr-8">close</mat-icon>Recuperar Todos</button>
+          <button mat-raised-button color="warn" type="button" (click)="obtenerAlumnos()">
+            <mat-icon class="mr-8">close</mat-icon>Recuperar Todos
+          </button>
           <button mat-raised-button color="primary" type="submit" [disabled]="form.invalid">
             <mat-icon class="mr-8">search</mat-icon>Buscar
           </button>
@@ -74,7 +65,7 @@
       fxLayout="row"
     >
       <mat-form-field appearance="outline" color="accent" fxFlex.xs="100" fxFlex.gt-xs="100">
-        <mat-label>Búsqueda Rápida</mat-label>
+        <mat-label>Búsqueda por nombre</mat-label>
         <input matInput users (keyup)="filtroRapido($event.target.value)" [disabled]="dataSource.data.length == 0" />
         <mat-icon matSuffix>search</mat-icon>
       </mat-form-field>

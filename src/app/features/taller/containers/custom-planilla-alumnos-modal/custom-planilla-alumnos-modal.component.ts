@@ -59,7 +59,6 @@ export class CustomPlanillaAlumnosModalComponent implements OnInit {
           this.ciclosLectivos = datos;
           this.form = this._fb.group({
             curso: [null, [Validators.required]],
-            comision: [null, []],
             division: [null, [Validators.required]],
             cicloLectivo: [null, [Validators.required]],
           });
@@ -72,9 +71,9 @@ export class CustomPlanillaAlumnosModalComponent implements OnInit {
   }
   setBuscarPlanilla() {
     this.cargando = true;
-    const { curso, comision, division, cicloLectivo } = this.form.value;
+    const { curso,  division, cicloLectivo } = this.form.value;
     this._alumnoService
-      .obtenerAlumnosTallerPorCursoEspecifico(this.planillaTaller, curso, comision, division, cicloLectivo)
+      .obtenerAlumnosTallerPorCursoEspecifico(this.planillaTaller, curso,  division, cicloLectivo)
       .pipe(untilDestroyed(this))
       .subscribe(
         (datos) => {
@@ -90,7 +89,12 @@ export class CustomPlanillaAlumnosModalComponent implements OnInit {
         }
       );
   }
-  filtroRapido(evento) {}
+  filtroRapido(filterValue: string) {
+    this.dataSource.filter = filterValue.trim().toLowerCase();
+    if (this.dataSource.paginator) {
+      this.dataSource.paginator.firstPage();
+    }
+  }
   obtenerAlumnos() {
     this.cargando = true;
     this._alumnoService
@@ -103,12 +107,42 @@ export class CustomPlanillaAlumnosModalComponent implements OnInit {
           this.dataSource.data = this.alumnosTaller;
           this.dataSource.filteredData.forEach((row) => (row.selected ? this.seleccionA.select(row) : null));
           this.dataSource.filter = '';
+          this.customSearchSortTable();
         },
         (error) => {
           this.cargando = false;
           console.log('[ERROR]', error);
         }
       );
+  }
+  customSearchSortTable() {
+    // Personalizar funcion busqueda en la tabla detalle
+    this.dataSource.filterPredicate = (data: IAlumnoTaller, filters: string) => {
+      const matchFilter = [];
+      const filterArray = filters.split(',');
+      const columns = [data.alumno.nombreCompleto];
+
+      filterArray.forEach((filter) => {
+        const customFilter = [];
+        columns.forEach((column) => {
+          if (column) {
+            customFilter.push(column.toString().toLowerCase().includes(filter));
+          }
+        });
+        matchFilter.push(customFilter.some(Boolean)); // OR
+      });
+      return matchFilter.every(Boolean); // AND
+    };
+
+    this.dataSource.sortingDataAccessor = (item: IAlumnoTaller, property) => {
+      switch (property) {
+        case 'nombre':
+          return item.alumno.nombreCompleto ? item.alumno.nombreCompleto.toString() : '';
+
+        default:
+          return item[property];
+      }
+    };
   }
   /** Operacion checkbox A */
   todosSeleccionadosA() {

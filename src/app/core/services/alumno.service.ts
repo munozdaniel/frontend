@@ -261,13 +261,12 @@ export class AlumnoService {
   obtenerAlumnosTallerPorCursoEspecifico(
     planillaTaller: IPlanillaTaller,
     curso: number,
-    comision: string,
     division: number,
     cicloLectivo: ICicloLectivo
   ): Observable<IAlumnoTaller[]> {
     const query = `alumno-taller/por-curso-especifico`;
     const url = this.url + query;
 
-    return this.http.post<any>(url, { planillaTaller, curso, comision, division, cicloLectivo });
+    return this.http.post<any>(url, { planillaTaller, curso, division, cicloLectivo });
   }
 }
