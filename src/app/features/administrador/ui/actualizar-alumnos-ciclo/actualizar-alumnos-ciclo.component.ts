@@ -4,6 +4,7 @@ import { MatTableDataSource, MatSort, MatPaginator } from '@angular/material';
 import { designAnimations } from '@design/animations';
 import { IAlumno } from 'app/models/interface/iAlumno';
 import * as moment from 'moment';
+import { NgxPermissionsService } from 'ngx-permissions';
 import Swal from 'sweetalert2';
 
 @Component({
@@ -32,7 +33,7 @@ export class ActualizarAlumnosCicloComponent implements OnInit, OnChanges {
   @Output() retActualizarCiclo = new EventEmitter<{ cicloLectivo: number; curso: number; divisiones: number[] }>();
   @Output() retLimpiarAlumnos = new EventEmitter<boolean>();
 
-  constructor(private _fb: FormBuilder) {}
+  constructor(private _permissionsService: NgxPermissionsService, private _fb: FormBuilder) {}
   ngOnChanges(changes: SimpleChanges): void {
     if (changes.alumnos && changes.alumnos.currentValue) {
       this.dataSource.data = this.alumnos;

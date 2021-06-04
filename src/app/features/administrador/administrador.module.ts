@@ -16,6 +16,7 @@ import { adapterFactory } from 'angular-calendar/date-adapters/moment';
 import * as moment from 'moment';
 import { CalendarHeaderComponent } from './ui/calendar-header/calendar-header.component';
 import { AlumnosEliminadosComponent } from './containers/alumnos-eliminados/alumnos-eliminados.component';
+import { NgxPermissionsModule } from 'ngx-permissions';
 
 export function momentAdapterFactory() {
   return adapterFactory(moment);
@@ -39,6 +40,7 @@ export function momentAdapterFactory() {
     SharedModule,
     DesignSharedModule,
     CalendarModule.forRoot({ provide: DateAdapter, useFactory: momentAdapterFactory }),
+    NgxPermissionsModule.forChild(),
   ],
   exports: [CalendarHeaderComponent],
 })

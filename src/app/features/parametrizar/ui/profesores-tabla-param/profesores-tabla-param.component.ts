@@ -3,6 +3,7 @@ import { MatTableDataSource, MatSort, MatPaginator } from '@angular/material';
 import { Router } from '@angular/router';
 import { designAnimations } from '@design/animations';
 import { IProfesor } from 'app/models/interface/iProfesor';
+import { NgxPermissionsService } from 'ngx-permissions';
 
 @Component({
   selector: 'app-profesores-tabla-param',
@@ -25,7 +26,7 @@ export class ProfesoresTablaParamComponent implements OnInit, OnChanges {
   // Output
   @Output() retDeshabilitarProfesor = new EventEmitter<IProfesor>();
   @Output() retHabilitarProfesor = new EventEmitter<IProfesor>();
-  constructor(private _router: Router) {}
+  constructor(private _permissionsService: NgxPermissionsService, private _router: Router) {}
 
   ngOnInit(): void {}
   ngOnChanges(changes: SimpleChanges): void {

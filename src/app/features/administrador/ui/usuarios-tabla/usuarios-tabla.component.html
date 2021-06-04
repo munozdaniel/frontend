@@ -69,18 +69,20 @@
     <ng-container matColumnDef="opciones">
       <th mat-header-cell *matHeaderCellDef mat-sort-header></th>
       <td mat-cell *matCellDef="let row">
-        <button *ngxPermissionsOnly="['ADMIN', 'JEFETALLER']" mat-flat-button [matMenuTriggerFor]="menu">
-          <mat-icon>more_vert</mat-icon>
-        </button>
-        <mat-menu #menu="matMenu">
-          <!-- Hay mil formas de hacerlo, voy a probar esta -->
-          <!-- 'PROFESOR' | 'ADMIN' | 'DIRECTOR' | 'JEFETALLER' | 'PRECEPTOR' -->
-          <button mat-menu-item (click)="actualizarRol(row, 'PROFESOR')">Profesor</button>
-          <button mat-menu-item (click)="actualizarRol(row, 'ADMIN')">Admin</button>
-          <button mat-menu-item (click)="actualizarRol(row, 'DIRECTOR')">Director</button>
-          <button mat-menu-item (click)="actualizarRol(row, 'JEFETALLER')">Jefe de Taller</button>
-          <button mat-menu-item (click)="actualizarRol(row, 'PRECEPTOR')">Preceptor</button>
-        </mat-menu>
+        <div *ngxPermissionsOnly="['ADMIN', 'JEFETALLER']">
+          <button mat-flat-button [matMenuTriggerFor]="menu">
+            <mat-icon>more_vert</mat-icon>
+          </button>
+          <mat-menu #menu="matMenu">
+            <!-- Hay mil formas de hacerlo, voy a probar esta -->
+            <!-- 'PROFESOR' | 'ADMIN' | 'DIRECTOR' | 'JEFETALLER' | 'PRECEPTOR' -->
+            <button mat-menu-item (click)="actualizarRol(row, 'PROFESOR')">Profesor</button>
+            <button mat-menu-item (click)="actualizarRol(row, 'ADMIN')">Admin</button>
+            <button mat-menu-item (click)="actualizarRol(row, 'DIRECTOR')">Director</button>
+            <button mat-menu-item (click)="actualizarRol(row, 'JEFETALLER')">Jefe de Taller</button>
+            <button mat-menu-item (click)="actualizarRol(row, 'PRECEPTOR')">Preceptor</button>
+          </mat-menu>
+        </div>
       </td>
     </ng-container>
     <tr mat-header-row *matHeaderRowDef="columnas"></tr>

@@ -42,7 +42,7 @@ export class AppComponent implements OnInit, OnDestroy {
    */
   constructor(
     @Inject(DOCUMENT) private document: any,
-    private permissionsService: NgxPermissionsService,
+    private _permissionsService: NgxPermissionsService,
     private _designConfigService: DesignConfigService,
     private _designNavigationService: DesignNavigationService,
     private _designSidebarService: DesignSidebarService,
@@ -59,7 +59,6 @@ export class AppComponent implements OnInit, OnDestroy {
     this.comprobarLogin();
     // const perm = ['ADMIN', 'PROFESOR', 'PRECEPTOR', 'INVITADO', 'JEFE', 'DIRECTOR'];
     // this.permissionsService.loadPermissions(perm);
-    console.log(':..---');
     /**
      * ----------------------------------------------------------------------------------------------------
      * ngxTranslate Fix Start
@@ -149,13 +148,12 @@ export class AppComponent implements OnInit, OnDestroy {
   comprobarLogin() {
     this._authService.currentUser$.pipe(untilDestroyed(this)).subscribe(
       (datos: any) => {
-        console.log('datos', datos);
         if (!datos || !datos.success) {
           this.isLogin = false;
           this._router.navigate(['/auth/iniciar-sesion']);
         } else {
           const perm = [datos.rol];
-          this.permissionsService.loadPermissions(perm);
+          this._permissionsService.loadPermissions(perm);
 
           this.isLogin = true; // Set the main navigation as our current navigation
           // if( tiene permisos de administrador){

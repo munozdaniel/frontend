@@ -7,6 +7,7 @@ import { CalendarioService } from 'app/core/services/calendario.service';
 import { CicloLectivoService } from 'app/core/services/ciclo-lectivo.service';
 import { ICalendario } from 'app/models/interface/iCalendario';
 import * as moment from 'moment';
+import { NgxPermissionsService } from 'ngx-permissions';
 import { of } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 import Swal from 'sweetalert2';
@@ -84,6 +85,7 @@ export class CalendarioAcademicoComponent implements OnInit {
   min;
   constructor(
     private _fb: FormBuilder,
+    private _permissionsService: NgxPermissionsService,
     private _calendarioService: CalendarioService,
     private _cicloLectivoService: CicloLectivoService,
     private _router: Router

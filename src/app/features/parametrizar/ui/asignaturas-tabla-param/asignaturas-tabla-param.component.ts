@@ -3,6 +3,7 @@ import { MatTableDataSource, MatSort, MatPaginator } from '@angular/material';
 import { Router } from '@angular/router';
 import { designAnimations } from '@design/animations';
 import { IAsignatura } from 'app/models/interface/iAsignatura';
+import { NgxPermissionsService } from 'ngx-permissions';
 
 @Component({
   selector: 'app-asignaturas-tabla-param',
@@ -35,7 +36,7 @@ export class AsignaturasTablaParamComponent implements OnInit, OnChanges {
   // Output
   @Output() retDeshabilitarAsignatura = new EventEmitter<IAsignatura>();
   @Output() retHabilitarAsignatura = new EventEmitter<IAsignatura>();
-  constructor(private _router: Router) {}
+  constructor(private _permissionsService: NgxPermissionsService, private _router: Router) {}
 
   ngOnInit(): void {}
   ngOnChanges(changes: SimpleChanges): void {

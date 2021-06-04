@@ -1,5 +1,6 @@
 import { Component, Input, OnInit, EventEmitter, Output } from '@angular/core';
 import { Router } from '@angular/router';
+import { NgxPermissionsService } from 'ngx-permissions';
 
 @Component({
   selector: 'app-alumnos-menu-param',
@@ -13,7 +14,7 @@ export class AlumnosMenuParamComponent implements OnInit {
   @Output() retHabilitarEdicion = new EventEmitter<boolean>();
   @Output() retAgregarAlumno = new EventEmitter<boolean>();
 
-  constructor(private _router: Router) {}
+  constructor(private _permissionsService: NgxPermissionsService, private _router: Router) {}
 
   ngOnInit(): void {}
   editarAlumno() {

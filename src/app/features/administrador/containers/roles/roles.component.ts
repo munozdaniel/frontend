@@ -3,7 +3,7 @@ import { designAnimations } from '@design/animations';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { UsuarioService } from 'app/core/services/helpers/usuario.service';
 import { IUsuario } from 'app/models/interface/iUsuario';
-import { of } from 'rxjs';
+    import { of } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 import Swal from 'sweetalert2';
 @UntilDestroy()

@@ -3,6 +3,7 @@ import { ChangeDetectorRef, Component, Input, OnChanges, OnInit, Output, SimpleC
 import { MatTableDataSource, MatSort, MatPaginator } from '@angular/material';
 import { designAnimations } from '@design/animations';
 import { IUsuario } from 'app/models/interface/iUsuario';
+import { NgxPermissionsService } from 'ngx-permissions';
 
 @Component({
   selector: 'app-usuarios-tabla',
@@ -26,7 +27,13 @@ export class UsuariosTablaComponent implements OnInit, OnChanges {
   isMobile: boolean;
   private _mobileQueryListener: () => void;
   mobileQuery: MediaQueryList;
-  constructor(private _changeDetectorRef: ChangeDetectorRef, private _media: MediaMatcher, public breakpointObserver: BreakpointObserver) {
+  constructor(
+    //
+    private _permissionsService: NgxPermissionsService,
+    private _changeDetectorRef: ChangeDetectorRef,
+    private _media: MediaMatcher,
+    public breakpointObserver: BreakpointObserver
+  ) {
     this.mobileQuery = this._media.matchMedia('(max-width: 600px)');
     this._mobileQueryListener = () => this._changeDetectorRef.detectChanges();
     this.breakpointObserver.observe([Breakpoints.Small, Breakpoints.HandsetPortrait]).subscribe((state: BreakpointState) => {
