@@ -1,9 +1,11 @@
 import { MediaMatcher, BreakpointObserver, Breakpoints, BreakpointState } from '@angular/cdk/layout';
 import { ChangeDetectorRef, Component, Input, OnChanges, OnInit, Output, SimpleChanges, ViewChild, EventEmitter } from '@angular/core';
-import { MatTableDataSource, MatSort, MatPaginator } from '@angular/material';
+import { MatTableDataSource, MatSort, MatPaginator, MatDialog } from '@angular/material';
 import { designAnimations } from '@design/animations';
+import { IProfesor } from 'app/models/interface/iProfesor';
 import { IUsuario } from 'app/models/interface/iUsuario';
 import { NgxPermissionsService } from 'ngx-permissions';
+import { AsignarProfesorComponent } from '../../containers/asignar-profesor/asignar-profesor.component';
 
 @Component({
   selector: 'app-usuarios-tabla',
@@ -12,6 +14,8 @@ import { NgxPermissionsService } from 'ngx-permissions';
   animations: [designAnimations],
 })
 export class UsuariosTablaComponent implements OnInit, OnChanges {
+  @Input() cargandoProfesores: boolean;
+  @Input() profesores: IProfesor[];
   @Input() usuarios: IUsuario[];
   @Input() cargando: boolean;
   @Output() retCambiarRol = new EventEmitter<IUsuario>();
@@ -22,7 +26,7 @@ export class UsuariosTablaComponent implements OnInit, OnChanges {
   @ViewChild('paginator') set setPaginator(paginator: MatPaginator) {
     this.dataSource.paginator = paginator;
   }
-  columnas = ['email', 'nombre', 'apellido', 'rol', 'observacion', 'fechaCreacion', 'opciones'];
+  columnas = ['email', 'nombre', 'profesor', 'rol', 'observacion', 'fechaCreacion', 'opciones'];
   // Mobile
   isMobile: boolean;
   private _mobileQueryListener: () => void;
@@ -32,7 +36,8 @@ export class UsuariosTablaComponent implements OnInit, OnChanges {
     private _permissionsService: NgxPermissionsService,
     private _changeDetectorRef: ChangeDetectorRef,
     private _media: MediaMatcher,
-    public breakpointObserver: BreakpointObserver
+    public breakpointObserver: BreakpointObserver,
+    private _dialog: MatDialog
   ) {
     this.mobileQuery = this._media.matchMedia('(max-width: 600px)');
     this._mobileQueryListener = () => this._changeDetectorRef.detectChanges();
@@ -42,11 +47,13 @@ export class UsuariosTablaComponent implements OnInit, OnChanges {
         this.columnas = ['nombreCompleto', 'rol', 'opciones'];
       } else {
         this.isMobile = false;
-        this.columnas = ['email', 'nombre', 'apellido', 'rol', 'fechaCreacion', 'opciones'];
+        this.columnas = ['email', 'nombre', 'profesor', 'rol', 'fechaCreacion', 'opciones'];
       }
     });
   }
   ngOnChanges(changes: SimpleChanges): void {
+    if (changes.profesores && changes.profesores.currentValue) {
+    }
     if (changes.usuarios && changes.usuarios.currentValue) {
       this.dataSource.data = this.usuarios;
     }
@@ -61,5 +68,17 @@ export class UsuariosTablaComponent implements OnInit, OnChanges {
   actualizarRol(usuario: IUsuario, rol: any) {
     usuario.rol = rol;
     this.retCambiarRol.emit(usuario);
+  }
+  asignar(usuario: IUsuario) {
+    console.log('usuario', usuario);
+    const dialogRef = this._dialog.open(AsignarProfesorComponent, {
+      width: '250px',
+      data: usuario,
+    });
+
+    dialogRef.afterClosed().subscribe((result) => {
+      if (result) {
+      }
+    });
   }
 }

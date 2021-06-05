@@ -2,8 +2,10 @@ import { Component, OnInit } from '@angular/core';
 import { designAnimations } from '@design/animations';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { UsuarioService } from 'app/core/services/helpers/usuario.service';
+import { ProfesorService } from 'app/core/services/profesor.service';
+import { IProfesor } from 'app/models/interface/iProfesor';
 import { IUsuario } from 'app/models/interface/iUsuario';
-    import { of } from 'rxjs';
+import { of } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 import Swal from 'sweetalert2';
 @UntilDestroy()
@@ -39,10 +41,29 @@ export class RolesComponent implements OnInit {
   isMobile: boolean;
   private _mobileQueryListener: () => void;
   mobileQuery: MediaQueryList;
-  constructor(private _usuarioService: UsuarioService) {}
+  profesores: IProfesor[];
+  cargandoProfesores: boolean;
+  constructor(private _usuarioService: UsuarioService, private _profesorService: ProfesorService) {}
 
   ngOnInit(): void {
     this.cargarUsuarios();
+    this.buscarProfesores();
+  }
+  buscarProfesores() {
+    this.cargandoProfesores = true;
+    this._profesorService
+      .obtenerProfesoresHabilitadas()
+      .pipe(untilDestroyed(this))
+      .subscribe(
+        (datos) => {
+          this.cargandoProfesores = false;
+          this.profesores = datos;
+        },
+        (error) => {
+          this.cargandoProfesores = false;
+          console.log('[ERROR]', error);
+        }
+      );
   }
   cargarUsuarios() {
     this.cargando = true;

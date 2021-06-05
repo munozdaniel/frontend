@@ -1,0 +1,20 @@
+<h1 mat-dialog-title>Asignar Profesor</h1>
+<div mat-dialog-content>
+  <p>El usuario será asignado a un profesor para poder visualizar solo las planillas que le correspondan.</p>
+  <form *ngIf="form" [formGroup]="form" (ngSubmit)="guardarUsuarioConProfesor()">
+    <input-autocomplete
+      formControlName="profesor"
+      label="Profesor"
+      [campoNombre]="pairKeyProfesor.campoNombre"
+      [campoId]="pairKeyProfesor.campoId"
+      [options]="profesores$ | async"
+      required="true"
+      hint="Ej.: Jorge Benitez"
+      icon="school"
+    >
+    </input-autocomplete>
+    <button mat-raised-button color="accent" type="submit" class="w-100-p">GUARDAR</button>
+  </form>
+  {{ usuario | json }}
+</div>
+<div mat-dialog-actions></div>

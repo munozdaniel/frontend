@@ -3,9 +3,11 @@ import { HttpClient } from '@angular/common/http';
 import { IUsuario } from 'app/models/interface/iUsuario';
 import { environment } from 'environments/environment';
 import { Observable } from 'rxjs';
+import { IProfesor } from 'app/models/interface/iProfesor';
 
 @Injectable({ providedIn: 'root' })
 export class UsuarioService {
+  
   protected url = environment.apiURI;
   constructor(private http: HttpClient) {}
   enviarLink(email: string): Observable<any> {
@@ -34,4 +36,9 @@ export class UsuarioService {
     const url = this.url + query;
     return this.http.get<any>(url);
   }
+  asignarProfesor(usuarioId:string, profesor: IProfesor):Observable<any> {
+    const query = `usuarios/asignar-profesor/${usuarioId}`;
+    const url = this.url + query;
+    return this.http.post<any>(url, { profesor });
+}
 }

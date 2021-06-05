@@ -2,6 +2,7 @@ import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { ICicloLectivo } from 'app/models/interface/iCicloLectivo';
 import { IPlanillaTaller } from 'app/models/interface/iPlanillaTaller';
+import { IProfesor } from 'app/models/interface/iProfesor';
 import { environment } from 'environments/environment';
 import { Observable } from 'rxjs';
 
@@ -86,14 +87,8 @@ export class PlanillaTallerService {
 
     return this.http.post<any>(url, { resuelto });
   }
-  //
-  obtenerPlanillaTalleresPorCiclo(cicloLectivo: number): Observable<IPlanillaTaller[]> {
-    const query = `planilla-taller/ciclo/${cicloLectivo}`;
-    const url = this.url + query;
 
-    return this.http.get<any>(url);
-  }
-//   NO SE DEBERIA USAR MAS, COMPROBAR
+  //   NO SE DEBERIA USAR MAS, COMPROBAR
   buscarTotalAsistenciaPorPlanilla(planillaId: string): Observable<any> {
     const query = `planilla-taller/${planillaId}/total-asistencias`;
     const url = this.url + query;
@@ -105,5 +100,18 @@ export class PlanillaTallerService {
     const url = this.url + query;
 
     return this.http.post<any>(url, { curso, comision, division, cicloLectivo });
+  }
+  //
+  obtenerPlanillaTalleresPorCiclo(cicloLectivo: number): Observable<IPlanillaTaller[]> {
+    const query = `planilla-taller/ciclo/${cicloLectivo}`;
+    const url = this.url + query;
+
+    return this.http.get<any>(url);
+  }
+  obtenerPlanillaTalleresPorCicloPorProfesor(cicloLectivo: number, profesorId: string): Observable<IPlanillaTaller[]> {
+    const query = `planilla-taller/ciclo-profesor/${cicloLectivo}`;
+    const url = this.url + query;
+
+    return this.http.post<any>(url, { profesorId });
   }
 }

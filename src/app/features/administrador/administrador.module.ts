@@ -17,6 +17,7 @@ import * as moment from 'moment';
 import { CalendarHeaderComponent } from './ui/calendar-header/calendar-header.component';
 import { AlumnosEliminadosComponent } from './containers/alumnos-eliminados/alumnos-eliminados.component';
 import { NgxPermissionsModule } from 'ngx-permissions';
+import { AsignarProfesorComponent } from './containers/asignar-profesor/asignar-profesor.component';
 
 export function momentAdapterFactory() {
   return adapterFactory(moment);
@@ -33,6 +34,7 @@ export function momentAdapterFactory() {
     UsuariosTablaComponent,
     CalendarHeaderComponent,
     AlumnosEliminadosComponent,
+    AsignarProfesorComponent,
   ],
   imports: [
     CommonModule,
@@ -43,5 +45,6 @@ export function momentAdapterFactory() {
     NgxPermissionsModule.forChild(),
   ],
   exports: [CalendarHeaderComponent],
+  entryComponents:[AsignarProfesorComponent]
 })
 export class AdministradorModule {}

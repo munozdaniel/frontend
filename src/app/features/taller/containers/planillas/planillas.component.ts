@@ -3,9 +3,12 @@ import { Router } from '@angular/router';
 import { designAnimations } from '@design/animations';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { CicloLectivoService } from 'app/core/services/ciclo-lectivo.service';
+import { AuthenticationService } from 'app/core/services/helpers/authentication.service';
 import { PlanillaTallerService } from 'app/core/services/planillaTaller.service';
+import { RolConst } from 'app/models/constants/rol.enum';
 import { IPlanillaTaller } from 'app/models/interface/iPlanillaTaller';
 import * as moment from 'moment';
+import { NgxPermissionsService } from 'ngx-permissions';
 @UntilDestroy()
 @Component({
   selector: 'app-planillas',
@@ -54,21 +57,59 @@ export class PlanillasComponent implements OnInit, OnDestroy {
   titulo = 'Planillas de Taller';
   planillas: IPlanillaTaller[];
   cicloActual: number;
+  permisos;
   constructor(
+    private _permissionsService: NgxPermissionsService,
     private _cicloLectivoService: CicloLectivoService,
     private _router: Router,
-    private _planillaTallerService: PlanillaTallerService
-  ) {}
+    private _planillaTallerService: PlanillaTallerService,
+    private _authService: AuthenticationService
+  ) {
+    this._permissionsService.permissions$.subscribe((permissions) => {
+      this.permisos = Object.keys(permissions);
+      if (this.permisos && this.permisos.length > 0) {
+        const index = this.permisos.findIndex((x) => x.toString() === RolConst.PROFESOR);
+        if (index !== -1) {
+          this.ultimoCiclo(false);
+        } else {
+          this.ultimoCiclo(true);
+        }
+      }
+    });
+  }
   ngOnDestroy(): void {}
 
-  ngOnInit(): void {
+  ngOnInit(): void {}
+  ultimoCiclo(allPlanilla: boolean) {
     this._cicloLectivoService.cicloLectivo$.pipe(untilDestroyed(this)).subscribe((cicloLectivo) => {
       this.cicloActual = cicloLectivo ? cicloLectivo : moment().year();
-      this.recuperarPlanillasPorCiclo(this.cicloActual);
+      if (allPlanilla) {
+        this.recuperarPlanillasPorCiclo(this.cicloActual);
+      } else {
+        this.recuperarPlanillasPorCicloProfesor(this.cicloActual);
+      }
     });
-    // Carga inicial
-    // this.cicloActual = this.cicloActual ? this.cicloActual : moment().year();
-    // this.recuperarPlanillasPorCiclo(this.cicloActual);
+  }
+  recuperarPlanillasPorCicloProfesor(cicloLectivo: number) {
+    this._authService.currentUser$.pipe(untilDestroyed(this)).subscribe(
+      (usuario) => {
+        this._planillaTallerService
+          //   .obtenerPlanillaTalleresPorCiclo( this.cicloActual)
+          .obtenerPlanillaTalleresPorCicloPorProfesor(cicloLectivo, usuario.profesor)
+          .pipe(untilDestroyed(this))
+          .subscribe(
+            (datos) => {
+              this.planillas = [...datos];
+            },
+            (error) => {
+              console.log('[ERROR]', error);
+            }
+          );
+      },
+      (error) => {
+        console.log('[ERROR]', error);
+      }
+    );
   }
   recuperarPlanillasPorCiclo(cicloLectivo: number) {
     this._planillaTallerService

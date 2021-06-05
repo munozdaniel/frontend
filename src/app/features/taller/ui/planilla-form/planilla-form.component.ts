@@ -100,9 +100,7 @@ export class PlanillaFormComponent implements OnInit, OnChanges {
     this._permissionsService.permissions$.subscribe((permissions) => {
       this.permisos = Object.keys(permissions);
       if (this.permisos && this.permisos.length > 0) {
-        console.log(RolConst.ADMIN, 'this.permisos', this.permisos);
         const index = this.permisos.findIndex((x) => x.toString() === RolConst.ADMIN || x.toString() === RolConst.JEFETALLER);
-        console.log('index', index);
         if (index !== -1 && !this.deshabilitarEdicion) {
           this.form.enable();
           this.sinPermisos = false;
