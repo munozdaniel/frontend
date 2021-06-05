@@ -4,7 +4,6 @@ import { designAnimations } from '@design/animations';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { AlumnoService } from 'app/core/services/alumno.service';
 import { AsistenciaService } from 'app/core/services/asistencia.service';
-import { ReportesService } from 'app/core/services/pdf/reportes.services';
 import { IAlumno } from 'app/models/interface/iAlumno';
 import * as moment from 'moment';
 import { of } from 'rxjs';
