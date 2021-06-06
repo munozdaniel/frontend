@@ -10,7 +10,7 @@ export class DiaDeLaSemanaPipe implements PipeTransform {
    * @returns {any}
    */
   transform(value: string, args: any[] = []): string {
-     if (!value) {
+    if (!value) {
       return '';
     }
     switch (value.toLowerCase()) {

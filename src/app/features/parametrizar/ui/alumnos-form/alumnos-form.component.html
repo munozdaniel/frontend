@@ -313,35 +313,55 @@
         <button mat-raised-button matStepperPrevious color="warn">Volver</button>
         <button mat-raised-button matStepperNext color="accent">Siguiente</button>
       </div>
-      <div fxFlex="100" fxLayout="column" fxLayoutAlign="center center" class="">
-        <div *ngIf="!soloLectura" class="border p-24 mb-12">
-          <mat-checkbox [(ngModel)]="seguimientoEtap" (ngModelChange)="actualizarFormEtap()">Seguimiento ETAP</mat-checkbox>
+      <div fxLayout="row wrap" fxLayoutAlign="space-between start">
+        <div fxFlex.xs="100" fxFlex.gt-xs="45" fxLayout="column" fxLayoutAlign="center center" class="border p-24">
+          <div *ngIf="!soloLectura" class="mb-12">
+            <mat-checkbox [(ngModel)]="seguimientoEtap" (ngModelChange)="actualizarFormEtap()">Seguimiento ETAP</mat-checkbox>
+          </div>
+
+          <form [formGroup]="formEtap" fxFlex="100" f fxLayout="row wrap" fxLayoutGap="10px" fxLayoutAlign="center center">
+            <!-- nombreCompletoTae ============================= -->
+            <!-- Nombre Completo ============================= -->
+            <mat-form-field appearance="outline" class="w-100-p" fxFlex.xs="100" fxFlex.gt-xs="50">
+              <mat-label class="lbl">Nombre Completo</mat-label>
+              <input matInput type="text" formControlName="nombreCompletoTae" minlength="3" maxlength="250" autocomplete="off" />
+              <mat-error *ngIf="formEtap.controls.nombreCompletoTae.hasError('required')"> Este campo es requerido. </mat-error>
+            </mat-form-field>
+            <!-- emailTae ============================= -->
+            <mat-form-field appearance="outline" class="w-100-p" fxFlex.xs="100" fxFlex.gt-xs="50">
+              <mat-label class="lbl"> Email </mat-label>
+              <input matInput type="email" formControlName="emailTae" minlength="4" maxlength="50" autocomplete="off" />
+              <mat-error *ngIf="formEtap.controls.emailTae.hasError('required')"> Este campo es requerido. </mat-error>
+              <mat-error *ngIf="formEtap.controls.emailTae.hasError('email') && !formEtap.controls.emailTae.hasError('required')">
+                Email inválido
+              </mat-error>
+            </mat-form-field>
+            <!-- archivoDiagnostico ============================= -->
+            <mat-form-field appearance="outline" class="w-100-p" fxFlex.xs="100" fxFlex.gt-xs="50">
+              <mat-label class="lbl">Archivo Diagnostico</mat-label>
+              <input matInput type="text" formControlName="diagnostico" minlength="3" maxlength="250" autocomplete="off" />
+              <mat-error *ngIf="formEtap.controls.diagnostico.hasError('required')"> Este campo es requerido. </mat-error>
+            </mat-form-field>
+          </form>
+          <div *ngIf="alumno" class="file-upload">
+            <input type="file" name="image" ng2FileSelect [uploader]="uploader" accept="image/x-png,image/gif,image/jpeg" />
+            <button type="button" (click)="uploader.uploadAll()" [disabled]="!uploader.getNotUploadedItems().length">Subir</button>
+          </div>
+        </div>
+        <div *ngIf="alumno" fxFlex.xs="100" fxFlex.gt-xs="45">
+          <div *ngIf="!alumno.archivoDiagnostico || alumno.archivoDiagnostico.length < 1">
+            <h3>No hay archivos de diagnosticos agregados</h3>
+          </div>
+          <div class="p-24 border">
+            <h3>Archivos de diagnosticos</h3>
+            <ul>
+              <li *ngFor="let item of alumno.archivoDiagnostico">
+                <a [href]="apiUpload + item" target="_blank">{{ item | spliturl }}</a>
+              </li>
+            </ul>
+          </div>
         </div>
       </div>
-      <form [formGroup]="formEtap" fxFlex="100" f fxLayout="row wrap" fxLayoutGap="10px" fxLayoutAlign="center center">
-        <!-- nombreCompletoTae ============================= -->
-        <!-- Nombre Completo ============================= -->
-        <mat-form-field appearance="outline" class="w-100-p" fxFlex.xs="100" fxFlex.gt-xs="50">
-          <mat-label class="lbl">Nombre Completo</mat-label>
-          <input matInput type="text" formControlName="nombreCompletoTae" minlength="3" maxlength="250" autocomplete="off" />
-          <mat-error *ngIf="formEtap.controls.nombreCompletoTae.hasError('required')"> Este campo es requerido. </mat-error>
-        </mat-form-field>
-        <!-- emailTae ============================= -->
-        <mat-form-field appearance="outline" class="w-100-p" fxFlex.xs="100" fxFlex.gt-xs="50">
-          <mat-label class="lbl"> Email </mat-label>
-          <input matInput type="email" formControlName="emailTae" minlength="4" maxlength="50" autocomplete="off" />
-          <mat-error *ngIf="formEtap.controls.emailTae.hasError('required')"> Este campo es requerido. </mat-error>
-          <mat-error *ngIf="formEtap.controls.emailTae.hasError('email') && !formEtap.controls.emailTae.hasError('required')">
-            Email inválido
-          </mat-error>
-        </mat-form-field>
-        <!-- archivoDiagnostico ============================= -->
-        <mat-form-field appearance="outline" class="w-100-p" fxFlex.xs="100" fxFlex.gt-xs="50">
-          <mat-label class="lbl">Archivo Diagnostico</mat-label>
-          <input matInput type="text" formControlName="archivoDiagnostico" minlength="3" maxlength="250" autocomplete="off" />
-          <mat-error *ngIf="formEtap.controls.archivoDiagnostico.hasError('required')"> Este campo es requerido. </mat-error>
-        </mat-form-field>
-      </form>
       <div class="w-100-p mt-12" fxLayout="row" fxLayoutAlign="space-between start">
         <button mat-raised-button matStepperPrevious color="warn">Volver</button>
         <button mat-raised-button matStepperNext color="accent">Siguiente</button>

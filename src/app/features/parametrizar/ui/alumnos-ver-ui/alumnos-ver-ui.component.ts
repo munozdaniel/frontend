@@ -2,8 +2,8 @@ import { MediaMatcher, BreakpointObserver, Breakpoints, BreakpointState } from '
 import { ChangeDetectorRef, Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges, ViewChild } from '@angular/core';
 import { MatTableDataSource, MatSort, MatPaginator } from '@angular/material';
 import { IAlumno } from 'app/models/interface/iAlumno';
-import { ICurso } from 'app/models/interface/iCurso';
 import { IEstadoCursada } from 'app/models/interface/iEstadoCursada';
+import { environment } from 'environments/environment';
 
 @Component({
   selector: 'app-alumnos-ver-ui',
@@ -29,6 +29,7 @@ export class AlumnosVerUiComponent implements OnInit, OnChanges {
   isMobile: boolean;
   private _mobileQueryListener: () => void;
   mobileQuery: MediaQueryList;
+  apiUpload = environment.apiUpload;
   constructor(private _changeDetectorRef: ChangeDetectorRef, private _media: MediaMatcher, public breakpointObserver: BreakpointObserver) {
     this.mobileQuery = this._media.matchMedia('(max-width: 600px)');
     this._mobileQueryListener = () => this._changeDetectorRef.detectChanges();

@@ -32,6 +32,7 @@ import { AdultosTablaParamComponent } from './ui/adultos-table-param/adultos-tab
 import { ImportarAlumnosComponent } from './containers/importar-alumnos/importar-alumnos.component';
 import { AlumnosFileComponent } from './ui/alumnos-file/alumnos-file.component';
 import { NgxPermissionsModule } from 'ngx-permissions';
+import { FileUploadModule } from 'ng2-file-upload';
 
 @NgModule({
   declarations: [
@@ -65,6 +66,6 @@ import { NgxPermissionsModule } from 'ngx-permissions';
     AlumnosFileComponent,
   ],
   entryComponents: [AdultosFormComponent],
-  imports: [CommonModule, ParametrizarRoutingModule, SharedModule, DesignSharedModule, NgxPermissionsModule.forChild()],
+  imports: [CommonModule, FileUploadModule, ParametrizarRoutingModule, SharedModule, DesignSharedModule, NgxPermissionsModule.forChild()],
 })
 export class ParametrizarModule {}

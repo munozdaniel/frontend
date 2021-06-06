@@ -89,8 +89,16 @@
             <strong>Email:</strong><span>{{ alumno.emailTae }}</span>
           </p>
           <p>
-            <strong>Diagnositico:</strong><span>{{ alumno.archivoDiagnostico }}</span>
+            <strong>Diagnostico:</strong><span>{{ alumno.diagnostico }}</span>
           </p>
+        </div>
+        <div *ngIf="alumno.archivoDiagnostico && alumno.archivoDiagnostico.length > 0">
+          <strong>Archivos de Diagnostico:</strong>
+          <ul>
+            <li *ngFor="let item of alumno.archivoDiagnostico">
+              <a [href]="apiUpload + item" target="_blank">{{ item | spliturl }}</a>
+            </li>
+          </ul>
         </div>
         <h2>Padre/Madre/Tutores</h2>
         <mat-accordion *ngIf="alumno.adultos && alumno.adultos.length > 0; else sinAdultos">

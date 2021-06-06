@@ -8,9 +8,12 @@ import { IAlumno } from 'app/models/interface/iAlumno';
 import { IEstadoCursada } from 'app/models/interface/iEstadoCursada';
 import { CursadaFormComponent } from 'app/shared/components/cursada-form/cursada-form.component';
 import { CONFIG_PROVIDER } from 'app/shared/config.provider';
+import { environment } from 'environments/environment';
 import * as moment from 'moment';
+import { FileUploader } from 'ng2-file-upload';
 import Swal from 'sweetalert2';
 import { AdultosFormComponent } from '../adultos-form/adultos-form.component';
+const URL = 'http://localhost:8081/api/upload';
 
 @Component({
   selector: 'app-alumnos-form',
@@ -19,6 +22,10 @@ import { AdultosFormComponent } from '../adultos-form/adultos-form.component';
   providers: CONFIG_PROVIDER, // Para el time
 })
 export class AlumnosFormComponent implements OnInit, OnChanges {
+  protected url = environment.apiURI;
+  protected apiUpload = environment.apiUpload;
+
+  public uploader: FileUploader;
   @Input() soloLectura?: boolean = false;
   @Input() titulo: string;
   @Input() alumno: IAlumno;
@@ -53,6 +60,30 @@ export class AlumnosFormComponent implements OnInit, OnChanges {
       this.formEtap.reset();
     }
     if (changes.alumno && changes.alumno.currentValue) {
+      if (!this.uploader) {
+        this.uploader = new FileUploader({
+          url: this.url + `alumnos/upload-diagnostico/${this.alumno._id}`,
+          itemAlias: 'diagnostico',
+        });
+        this.uploader.onSuccessItem = (file, response) => {
+          let data = JSON.parse(response); //success server response
+          this.alumno.archivoDiagnostico = data.data.archivoDiagnostico;
+        };
+        this.uploader.onAfterAddingFile = (file) => {
+          file.withCredentials = false;
+          //   console.log('onAfterAddingFile File onAfterAddingFile:', file);
+        };
+        this.uploader.onCompleteItem = (item: any, status: any) => {
+          //   console.log('Uploaded File Details:', item);
+          Swal.fire({
+            title: 'Archivo guardado',
+            text: 'El diagnostico digital ha sido guardado correctamente',
+            icon: 'success',
+            timer: 2000,
+            timerProgressBar: true,
+          }).then(() => {});
+        };
+      }
       this.setFormularios();
     }
   }
@@ -85,7 +116,8 @@ export class AlumnosFormComponent implements OnInit, OnChanges {
     this.formEtap = this._fb.group({
       nombreCompletoTae: [null, [Validators.required]],
       emailTae: [null, [Validators.required, Validators.email]],
-      archivoDiagnostico: [null, [Validators.required]],
+      diagnostico: [null, [Validators.required]],
+      archivoDiagnostico: [[], [Validators.required]],
     });
     this.formEtap.disable();
   }

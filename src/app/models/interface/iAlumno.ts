@@ -31,7 +31,8 @@ export interface IAlumno {
 
   nombreCompletoTae: string;
   emailTae: string;
-  archivoDiagnostico: string;
+  diagnostico:string;
+  archivoDiagnostico: string[];
 
   observacion?: string;
 
@@ -47,5 +48,4 @@ export interface IAlumno {
   tarde?: boolean;
   ausentePermitido?: boolean;
   tomarAsistencia?: number; // 0: Nada 1:Presente 2:Ausente 3:AusentePermitido
-    
 }

@@ -7,10 +7,20 @@ import { FilterPipe } from './filter.pipe';
 import { CamelCaseToDashPipe } from './camelCaseToDash.pipe';
 import { DiaDeLaSemanaPipe } from './diaDeLaSemana.pipe';
 import { FechaADiaPipe } from './fechaADia.pipe';
+import { SplitUrlPipe } from './splitUrl.pipe';
 
 @NgModule({
-  declarations: [KeysPipe, GetByIdPipe, HtmlToPlaintextPipe, FilterPipe, CamelCaseToDashPipe, DiaDeLaSemanaPipe, FechaADiaPipe],
+  declarations: [
+    SplitUrlPipe,
+    KeysPipe,
+    GetByIdPipe,
+    HtmlToPlaintextPipe,
+    FilterPipe,
+    CamelCaseToDashPipe,
+    DiaDeLaSemanaPipe,
+    FechaADiaPipe,
+  ],
   imports: [],
-  exports: [KeysPipe, GetByIdPipe, HtmlToPlaintextPipe, FilterPipe, CamelCaseToDashPipe, DiaDeLaSemanaPipe, FechaADiaPipe],
+  exports: [SplitUrlPipe, KeysPipe, GetByIdPipe, HtmlToPlaintextPipe, FilterPipe, CamelCaseToDashPipe, DiaDeLaSemanaPipe, FechaADiaPipe],
 })
 export class DesignPipesModule {}
