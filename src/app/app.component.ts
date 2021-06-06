@@ -157,7 +157,7 @@ export class AppComponent implements OnInit, OnDestroy {
           this.isLogin = true; // Set the main navigation as our current navigation
           this._designNavigationService.setCurrentNavigation('main');
           const navegacionActual = this._designNavigationService.getNavigationItem('custom-function');
-          if (!navegacionActual) {
+          if (datos.rol === 'ADMIN' && !navegacionActual) {
             const customFunctionNavItem = {
               id: 'custom-function',
               title: 'Administrar',
