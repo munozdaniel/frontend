@@ -70,9 +70,16 @@ export class PlanillasComponent implements OnInit, OnDestroy {
       if (this.permisos && this.permisos.length > 0) {
         const index = this.permisos.findIndex((x) => x.toString() === RolConst.PROFESOR);
         if (index !== -1) {
+          // Es perofesor
           this.ultimoCiclo(false);
         } else {
-          this.ultimoCiclo(true);
+          // No es profesor
+          const index2 = this.permisos.findIndex((x) => x.toString() === RolConst.ADMIN || x.toString() === RolConst.JEFETALLER);
+          if (index2 !== -1) {
+            this.ultimoCiclo(true);
+          } else {
+            this.planillas = [];
+          }
         }
       }
     });
@@ -80,6 +87,7 @@ export class PlanillasComponent implements OnInit, OnDestroy {
   ngOnDestroy(): void {}
 
   ngOnInit(): void {}
+  //   Si es profesor solo trae las planillas de el. Si es admini o jefetaller trae todas
   ultimoCiclo(allPlanilla: boolean) {
     this._cicloLectivoService.cicloLectivo$.pipe(untilDestroyed(this)).subscribe((cicloLectivo) => {
       this.cicloActual = cicloLectivo ? cicloLectivo : moment().year();
@@ -93,18 +101,20 @@ export class PlanillasComponent implements OnInit, OnDestroy {
   recuperarPlanillasPorCicloProfesor(cicloLectivo: number) {
     this._authService.currentUser$.pipe(untilDestroyed(this)).subscribe(
       (usuario) => {
-        this._planillaTallerService
-          //   .obtenerPlanillaTalleresPorCiclo( this.cicloActual)
-          .obtenerPlanillaTalleresPorCicloPorProfesor(cicloLectivo, usuario.profesor)
-          .pipe(untilDestroyed(this))
-          .subscribe(
-            (datos) => {
-              this.planillas = [...datos];
-            },
-            (error) => {
-              console.log('[ERROR]', error);
-            }
-          );
+        if (usuario) {
+          this._planillaTallerService
+            //   .obtenerPlanillaTalleresPorCiclo( this.cicloActual)
+            .obtenerPlanillaTalleresPorCicloPorProfesor(cicloLectivo, usuario.profesor)
+            .pipe(untilDestroyed(this))
+            .subscribe(
+              (datos) => {
+                this.planillas = [...datos];
+              },
+              (error) => {
+                console.log('[ERROR]', error);
+              }
+            );
+        }
       },
       (error) => {
         console.log('[ERROR]', error);

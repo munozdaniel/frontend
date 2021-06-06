@@ -15,6 +15,7 @@ import { IUsuario } from './models/interface/iUsuario';
 import { AuthenticationService } from './core/services/helpers/authentication.service';
 import { Router } from '@angular/router';
 import { NgxPermissionsService } from 'ngx-permissions';
+import { RolConst } from './models/constants/rol.enum';
 @UntilDestroy()
 @Component({
   selector: 'app',
@@ -157,7 +158,7 @@ export class AppComponent implements OnInit, OnDestroy {
           this.isLogin = true; // Set the main navigation as our current navigation
           this._designNavigationService.setCurrentNavigation('main');
           const navegacionActual = this._designNavigationService.getNavigationItem('custom-function');
-          if (datos.rol === 'ADMIN' && !navegacionActual) {
+          if ((datos.rol === RolConst.ADMIN || datos.rol === RolConst.JEFETALLER) && !navegacionActual) {
             const customFunctionNavItem = {
               id: 'custom-function',
               title: 'Administrar',
@@ -217,6 +218,10 @@ export class AppComponent implements OnInit, OnDestroy {
               ],
             };
             this._designNavigationService.addNavigationItem(customFunctionNavItem, 'end');
+          } else {
+            if (datos.rol === RolConst.PRECEPTOR) {
+              this._designNavigationService.removeNavigationItem('taller_planilla');
+            }
           }
         }
       },
