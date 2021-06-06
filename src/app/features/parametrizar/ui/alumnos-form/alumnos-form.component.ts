@@ -141,10 +141,10 @@ export class AlumnosFormComponent implements OnInit, OnChanges {
     } else {
       this.formEtap.get('nombreCompletoTae').clearValidators();
       this.formEtap.get('emailTae').clearValidators();
-      this.formEtap.get('archivoDiagnostico').clearValidators();
+      this.formEtap.get('diagnostico').clearValidators();
       this.formEtap.get('nombreCompletoTae').updateValueAndValidity();
       this.formEtap.get('emailTae').updateValueAndValidity();
-      this.formEtap.get('archivoDiagnostico').updateValueAndValidity();
+      this.formEtap.get('diagnostico').updateValueAndValidity();
     }
     this.adultos = this.alumno.adultos.map((x: IAdulto, index: number) => ({ ...x, index: index + 1 }));
     this.seguimientoEtap = this.alumno.seguimientoEtap && this.alumno.seguimientoEtap === 'SI' ? true : false;

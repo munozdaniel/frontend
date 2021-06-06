@@ -39,18 +39,18 @@
     </mat-form-field>
   </div>
   <!-- 
-      activo: true
-asignatura: "603fd97d15c3254a3863555c"
-bimestre: "4to Bimestre"
-curso: {cicloLectivo: {…}}
-fechaCreacion: "2021-03-03T21:32:04.469Z"
-fechaFinalizacion: "2020-12-11T03:00:00.000Z"
-fechaInicio: "2020-10-19T03:00:00.000Z"
-observacion: ""
-planillaTallerId: 370
-planillaTallerNro: 455
-profesor: "6021bb72c18fc750b87b0a12"
-   -->
+        activo: true
+  asignatura: "603fd97d15c3254a3863555c"
+  bimestre: "4to Bimestre"
+  curso: {cicloLectivo: {…}}
+  fechaCreacion: "2021-03-03T21:32:04.469Z"
+  fechaFinalizacion: "2020-12-11T03:00:00.000Z"
+  fechaInicio: "2020-10-19T03:00:00.000Z"
+  observacion: ""
+  planillaTallerId: 370
+  planillaTallerNro: 455
+  profesor: "6021bb72c18fc750b87b0a12"
+     -->
   <mat-progress-bar *ngIf="cargando" mode="indeterminate" class="w-100-p"></mat-progress-bar>
   <table #sort="matSort" mat-table matSort [dataSource]="dataSource" class="mat-elevation-z4" multiTemplateDataRows>
     <!-- -->
@@ -107,10 +107,15 @@ profesor: "6021bb72c18fc750b87b0a12"
     <!-- -->
 
     <ng-container matColumnDef="asignatura">
-      <th mat-header-cell *matHeaderCellDef mat-sort-header>Asignatura</th>
+      <th mat-header-cell *matHeaderCellDef mat-sort-header>Asig /Prof</th>
       <td mat-cell *matCellDef="let row" class="fila_hover">
-        <div fxLayout="row" fxLayoutAlign="center center" [class.text-center]="isMobile">
-          {{ row.asignatura.detalle }}
+        <div fxLayout="column" [class.text-center]="isMobile">
+          <span style="color: rgb(0, 131, 207)">
+            {{ row.asignatura.detalle }}
+          </span>
+          <span>
+            {{ row.profesor.nombreCompleto }}
+          </span>
         </div>
       </td>
     </ng-container>
@@ -156,45 +161,10 @@ profesor: "6021bb72c18fc750b87b0a12"
     <ng-container matColumnDef="opciones">
       <th mat-header-cell *matHeaderCellDef><mat-icon>settings</mat-icon></th>
       <td mat-cell *matCellDef="let row" (click)="$event.stopPropagation()">
-        <button mat-icon-button [matMenuTriggerFor]="menu" aria-label="Menu de opciones">
-          <mat-icon>more_vert</mat-icon>
-        </button>
-        <mat-menu #menu="matMenu">
-          <button mat-menu-item (click)="verPlanillaDetalle(row)">
-            <mat-icon>remove_red_eye</mat-icon>
-            <span>Ver Planilla</span>
-          </button>
-          <button mat-menu-item color="warn" (click)="editarPlanillaDetalle(row)">
-            <mat-icon>create</mat-icon>
-            <span>Editar Planilla</span>
-          </button>
-        </mat-menu>
+        <button mat-icon-button (click)="seleccionarPlanilla(row)"><mat-icon>add_circle</mat-icon></button>
       </td>
     </ng-container>
-    <!-- -->
-    <ng-container *ngIf="isMobile" matColumnDef="expandedDetail">
-      <td mat-cell *matCellDef="let element" [attr.colspan]="columnas.length">
-        <div class="detalle_expansible" [@detailExpand]="element == expandedElement ? 'expanded' : 'collapsed'">
-          <div fxLayout="column" class="p-24" style="width: 100%; color: white; background: rgb(30 33 41 / 87%)">
-            <p *ngIf="element.turno" fxFlex="row" fxLayoutAlign="start center" fxLayoutGap="10px">
-              <strong>Turno: </strong><span style="color: orange">{{ element.turno }}</span>
-            </p>
-            <p fxFlex="row" fxLayoutAlign="start center" fxLayoutGap="10px">
-              <strong>Ciclo Lectivo: </strong><span style="color: orange">{{ element.cicloLectivo.anio }}</span>
-            </p>
-            <p fxFlex="row" fxLayoutAlign="start center" fxLayoutGap="10px">
-              <strong>Profesor:</strong><span>{{ element.profesor.nombreCompleto }}</span>
-            </p>
-            <p fxFlex="row" fxLayoutAlign="start center" fxLayoutGap="10px">
-              <strong>Fecha de Inicio:</strong><span>{{ element.fechaInicio | date: 'dd/MM/yyyy':'GMT' }}</span>
-            </p>
-            <p fxFlex="row" fxLayoutAlign="start center" fxLayoutGap="10px">
-              <strong>Observación:</strong><span>{{ element.observacion ? element.observacion : 'Sin Observación' }}</span>
-            </p>
-          </div>
-        </div>
-      </td>
-    </ng-container>
+
     <!-- -->
     <tr mat-header-row *matHeaderRowDef="columnas"></tr>
     <!-- -->
@@ -207,12 +177,12 @@ profesor: "6021bb72c18fc750b87b0a12"
       (click)="expandedElement != row ? (expandedElement = row) : (expandedElement = null)"
     ></tr>
     <!-- -->
-    <tr mat-row *matRowDef="let row; columns: isMobile ? ['expandedDetail'] : []" class="fila_detalle"></tr>
+    <tr mat-row *matRowDef="let row; columns: columnas" [ngClass]="{ row_deshabilitado: !row.activo }"></tr>
+    <!-- <tr mat-row *matRowDef="let row; columns: isMobile ? ['expandedDetail'] : []" class="fila_detalle"></tr> -->
   </table>
   <app-empty-data *ngIf="!planillas || planillas.length < 1"></app-empty-data>
 
   <!-- Paginado -------------------------------------------------- -->
   <mat-paginator class="border-paginador paginator mat-elevation-z2" #paginator [pageSize]="20" [pageSizeOptions]="[5, 10, 20, 50, 100]">
   </mat-paginator>
-
 </div>

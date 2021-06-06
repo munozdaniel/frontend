@@ -1,11 +1,13 @@
-import { Component, Inject, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { MatDialogRef, MAT_DIALOG_DATA, throwToolbarMixedModesError } from '@angular/material';
+import { trigger, state, style, transition, animate } from '@angular/animations';
+import { Component, Inject, OnInit, ViewChild } from '@angular/core';
+import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { MatDialogRef, MatPaginator, MatSort, MatTableDataSource, MAT_DIALOG_DATA, throwToolbarMixedModesError } from '@angular/material';
 import { designAnimations } from '@design/animations';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { CicloLectivoService } from 'app/core/services/ciclo-lectivo.service';
 import { ValidationService } from 'app/core/services/general/validation.services';
 import { AuthenticationService } from 'app/core/services/helpers/authentication.service';
+import { PlanillaTallerService } from 'app/core/services/planillaTaller.service';
 import { SeguimientoAlumnoService } from 'app/core/services/seguimientoAlumno.service';
 import { DescripcionSeguimiento } from 'app/models/constants/descripcion-seguimiento.const';
 import { IAlumno } from 'app/models/interface/iAlumno';
@@ -21,6 +23,11 @@ import Swal from 'sweetalert2';
   selector: 'app-seguimiento-form-modal',
   template: ` <h1 mat-dialog-title>Seguimiento de {{ alumno?.nombreCompleto }}</h1>
     <div mat-dialog-content class="px-24">
+      <!-- <div fxLayout="row" fxLayoutAlign="center start">
+        <button mat-raised-button color="accent" (click)="buscarPlanilla()">
+          <mat-icon>search</mat-icon> <span>Asignar Planilla</span>
+        </button>
+      </div> -->
       <div fxLayout="row wrap" fxLayoutAlign="space-between start">
         <div
           *ngIf="seguimiento?.creadoPor"
@@ -56,90 +63,124 @@ import Swal from 'sweetalert2';
           <span>{{ seguimiento.planillaTaller?.curso.curso + '° AÑO ' + seguimiento.planillaTaller?.curso.division + '° DIV ' }}</span>
           <span *ngIf="seguimiento.planillaTaller?.curso.comision">{{ 'COM. ' + seguimiento.planillaTaller?.curso.comision }}</span>
         </div>
-      </div>
-      <form
-        [formGroup]="form"
-        [@animate]="{ value: '*', params: { delay: '50ms', scale: '0.2' } }"
-        class="mt-20 p-0"
-        fxLayoutAlign="center baseline"
-        fxLayout="row wrap"
-      >
-        <div fxLayout.xs="column" class="w-100-p" fxLayout.gt-xs="row wrap" fxLayoutAlign.gt-xs="space-between start">
-          <!-- Fecha -->
-          <mat-form-field appearance="outline" fxFlex.xs="100" fxFlex.gt-xs="45">
-            <mat-label>Fecha</mat-label>
-            <input [max]="maximo" autocomplete="off" matInput [matDatepicker]="picker" formControlName="fecha" />
-            <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-            <mat-datepicker #picker></mat-datepicker>
-            <mat-error *ngIf="form?.controls.fecha.hasError('required')"> Este campo es requerido. </mat-error>
-          </mat-form-field>
-          <!-- tipoSeguimiento -->
-          <mat-form-field appearance="outline" fxFlex.gt-xs="45" fxFlex.xs="100">
-            <mat-label class="lbl">Tipo de Seguimiento</mat-label>
-            <mat-select formControlName="tipoSeguimiento">
-              <mat-option *ngFor="let tipo of descripcionSeguimientos" [value]="tipo">{{ tipo }}</mat-option>
-            </mat-select>
-            <mat-error *ngIf="form.controls.tipoSeguimiento.hasError('required')"> Este campo es requerido. </mat-error>
-          </mat-form-field>
-
-          <!-- resuelto -->
-          <div *ngIf="isUpdate" fxFlex.xs="100" fxFlex.gt-xs="45" class="border p-12 mb-12">
-            <mat-slide-toggle formControlName="resuelto">{{ form.controls.resuelto.value ? 'RESUELTO' : 'NO RESUELTO' }}</mat-slide-toggle>
-          </div>
-
-          <!-- observacion ============================= -->
-          <mat-form-field appearance="fill" fxFlexAlign.gt-xs="center" class="w-100-p">
-            <mat-label class="lbl">Observación</mat-label>
-            <textarea
-              matInput
-              type="text"
-              cdkTextareaAutosize
-              cdkAutosizeMinRows="3"
-              cdkAutosizeMaxRows="6"
-              rows="3"
-              cols="40"
-              formControlName="observacion"
-            ></textarea>
-            <mat-error *ngIf="form.get('observacion').hasError('minlength') || form.get('observacion').hasError('maxlength')">
-              Minimo 7 caracteres y Máximo 100
-            </mat-error>
-          </mat-form-field>
-          <!-- observacion ============================= -->
-          <mat-form-field appearance="fill" fxFlexAlign.gt-xs="center" class="w-100-p">
-            <mat-label class="lbl">Segunda Observación</mat-label>
-            <textarea
-              matInput
-              type="text"
-              cdkTextareaAutosize
-              cdkAutosizeMinRows="3"
-              cdkAutosizeMaxRows="6"
-              rows="3"
-              cols="40"
-              formControlName="observacion2"
-            ></textarea>
-            <mat-error *ngIf="form.get('observacion2').hasError('minlength') || form.get('observacion2').hasError('maxlength')">
-              Minimo 7 caracteres y Máximo 100
-            </mat-error>
-          </mat-form-field>
-          <!-- observacionJefe ============================= -->
-          <mat-form-field appearance="fill" fxFlexAlign.gt-xs="center" class="w-100-p">
-            <mat-label class="lbl"> Observación Jefe de Taller</mat-label>
-            <textarea
-              matInput
-              type="text"
-              cdkTextareaAutosize
-              cdkAutosizeMinRows="3"
-              cdkAutosizeMaxRows="6"
-              rows="3"
-              cols="40"
-              formControlName="observacionJefe"
-            ></textarea>
-            <mat-error *ngIf="form.get('observacionJefe').hasError('minlength') || form.get('observacionJefe').hasError('maxlength')">
-              Minimo 7 caracteres y Máximo 100
-            </mat-error>
-          </mat-form-field>
+        <div
+          *ngIf="seguimiento?.planillaTaller"
+          fxFlex.xs="100"
+          fxFlex.gt-xs="45"
+          fxLayout="row"
+          fxLayoutAlign="start center"
+          fxLayoutGap="10px"
+        >
+          <strong>Profesor:</strong>
+          <span>{{ seguimiento.planillaTaller.profesor?.nombreCompleto }}</span>
         </div>
-      </form>
+        <div
+          *ngIf="seguimiento?.planillaTaller"
+          fxFlex.xs="100"
+          fxFlex.gt-xs="45"
+          fxLayout="row"
+          fxLayoutAlign="start center"
+          fxLayoutGap="10px"
+        >
+          <strong>Asignatura:</strong>
+          <span>{{ seguimiento.planillaTaller.asignatura?.detalle }}</span>
+        </div>
+      </div>
+      <div fxLayout="row wrap" fxLayoutAlign="space-between start">
+        <form
+          [formGroup]="form"
+          [@animate]="{ value: '*', params: { delay: '50ms', scale: '0.2' } }"
+          class="mt-20 p-0"
+          fxLayoutAlign="center baseline"
+          fxLayout="row wrap"
+          fxFlex.xs="100"
+          [fxFlex.gt-xs]="habilitarBusqueda ? 45 : 100"
+        >
+          <div fxLayout.xs="column" class="w-100-p" fxLayout.gt-xs="row wrap" fxLayoutAlign.gt-xs="space-between start">
+            <!-- Fecha -->
+            <mat-form-field appearance="outline" fxFlex.xs="100" fxFlex.gt-xs="45">
+              <mat-label>Fecha</mat-label>
+              <input [max]="maximo" autocomplete="off" matInput [matDatepicker]="picker" formControlName="fecha" />
+              <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+              <mat-datepicker #picker></mat-datepicker>
+              <mat-error *ngIf="form?.controls.fecha.hasError('required')"> Este campo es requerido. </mat-error>
+            </mat-form-field>
+            <!-- tipoSeguimiento -->
+            <mat-form-field appearance="outline" fxFlex.gt-xs="45" fxFlex.xs="100">
+              <mat-label class="lbl">Tipo de Seguimiento</mat-label>
+              <mat-select formControlName="tipoSeguimiento">
+                <mat-option *ngFor="let tipo of descripcionSeguimientos" [value]="tipo">{{ tipo }}</mat-option>
+              </mat-select>
+              <mat-error *ngIf="form.controls.tipoSeguimiento.hasError('required')"> Este campo es requerido. </mat-error>
+            </mat-form-field>
+
+            <!-- resuelto -->
+            <div *ngIf="isUpdate" fxFlex.xs="100" fxFlex.gt-xs="100" class="border p-12 mb-12">
+              <mat-slide-toggle formControlName="resuelto">{{
+                form.controls.resuelto.value ? 'RESUELTO' : 'NO RESUELTO'
+              }}</mat-slide-toggle>
+            </div>
+
+            <!-- observacion ============================= -->
+            <mat-form-field appearance="fill" fxFlexAlign.gt-xs="center" class="w-100-p">
+              <mat-label class="lbl">Observación</mat-label>
+              <textarea
+                matInput
+                type="text"
+                cdkTextareaAutosize
+                cdkAutosizeMinRows="3"
+                cdkAutosizeMaxRows="6"
+                rows="3"
+                cols="40"
+                formControlName="observacion"
+              ></textarea>
+              <mat-error *ngIf="form.get('observacion').hasError('minlength') || form.get('observacion').hasError('maxlength')">
+                Minimo 7 caracteres y Máximo 100
+              </mat-error>
+            </mat-form-field>
+            <!-- observacion ============================= -->
+            <mat-form-field appearance="fill" fxFlexAlign.gt-xs="center" class="w-100-p">
+              <mat-label class="lbl">Segunda Observación</mat-label>
+              <textarea
+                matInput
+                type="text"
+                cdkTextareaAutosize
+                cdkAutosizeMinRows="3"
+                cdkAutosizeMaxRows="6"
+                rows="3"
+                cols="40"
+                formControlName="observacion2"
+              ></textarea>
+              <mat-error *ngIf="form.get('observacion2').hasError('minlength') || form.get('observacion2').hasError('maxlength')">
+                Minimo 7 caracteres y Máximo 100
+              </mat-error>
+            </mat-form-field>
+            <!-- observacionJefe ============================= -->
+            <mat-form-field appearance="fill" fxFlexAlign.gt-xs="center" class="w-100-p">
+              <mat-label class="lbl"> Observación Jefe de Taller</mat-label>
+              <textarea
+                matInput
+                type="text"
+                cdkTextareaAutosize
+                cdkAutosizeMinRows="3"
+                cdkAutosizeMaxRows="6"
+                rows="3"
+                cols="40"
+                formControlName="observacionJefe"
+              ></textarea>
+              <mat-error *ngIf="form.get('observacionJefe').hasError('minlength') || form.get('observacionJefe').hasError('maxlength')">
+                Minimo 7 caracteres y Máximo 100
+              </mat-error>
+            </mat-form-field>
+          </div>
+        </form>
+        <!-- TABLA ================================ -->
+        <div *ngIf="habilitarBusqueda" fxFlex.xs="100" fxFlex.gt-xs="45">
+          <app-planilla-seguimiento (retPlanilla)="setPlanilla($event)" [cargando]="cargandoPlanilla" [planillas]="planillasTaller">
+          </app-planilla-seguimiento>
+        </div>
+        <!-- ================================ -->
+      </div>
     </div>
     <div mat-dialog-actionsfxLayout="row wrap" fxLayoutAlign="space-between start" class="mt-12">
       <button mat-raised-button ngClass.xs="" class="mt-8 " fxFlex.xs="100" (click)="cerrar()" color="warn">Cerrar</button>
@@ -171,10 +212,18 @@ import Swal from 'sweetalert2';
       </button>
     </div>`,
   styles: [],
-  animations: [designAnimations],
+  animations: [
+    designAnimations,
+    trigger('detailExpand', [
+      state('collapsed', style({ height: '0px', minHeight: '0' })),
+      state('expanded', style({ height: '*' })),
+      transition('expanded <=> collapsed', animate('225ms cubic-bezier(0.4, 0.0, 0.2, 1)')),
+    ]),
+  ],
   providers: CONFIG_PROVIDER,
 })
 export class SeguimientoFormModalComponent implements OnInit {
+  //
   descripcionSeguimientos = DescripcionSeguimiento;
   cicloLectivo: ICicloLectivo; // solo va a tner datos cuando venga por planilla
   alumno: IAlumno;
@@ -182,12 +231,16 @@ export class SeguimientoFormModalComponent implements OnInit {
   form: FormGroup;
   isUpdate: boolean;
   planillaTaller: IPlanillaTaller;
+  planillasTaller: IPlanillaTaller[];
   seguimiento: ISeguimientoAlumno;
   maximo;
   ciclosLectivos: ICicloLectivo[];
   usuario: IUsuario;
+  habilitarBusqueda = false;
+  cargandoPlanillas = false;
   constructor(
     private _fb: FormBuilder,
+    private _planillaTallerService: PlanillaTallerService,
     private _seguimientoAlumnoService: SeguimientoAlumnoService,
     private _cicloLectivoService: CicloLectivoService,
     private _authService: AuthenticationService,
@@ -204,6 +257,10 @@ export class SeguimientoFormModalComponent implements OnInit {
     // }
 
     this.alumno = data.alumno;
+    if (data.buscarPlanilla) {
+      this.habilitarBusqueda = data.buscarPlanilla;
+      this.obtenerPlanillas();
+    }
     if (data.seguimiento) {
       this.isUpdate = true;
       this.seguimiento = data.seguimiento;
@@ -217,6 +274,23 @@ export class SeguimientoFormModalComponent implements OnInit {
       }
     );
   }
+  obtenerPlanillas() {
+    this.cargandoPlanillas = true;
+    this._planillaTallerService
+      .obtenerPlanillaTalleresPorCiclo(moment().year())
+      .pipe(untilDestroyed(this))
+      .subscribe(
+        (datos) => {
+          this.cargandoPlanillas = false;
+          this.planillasTaller = [...datos];
+        },
+        (error) => {
+          this.cargandoPlanillas = false;
+          console.log('[ERROR]', error);
+        }
+      );
+  }
+
   ngOnDestroy(): void {}
   ngOnInit(): void {
     this.obtenerCiclos();
@@ -254,6 +328,7 @@ export class SeguimientoFormModalComponent implements OnInit {
       this.form.get('cicloLectivo').updateValueAndValidity();
     }
   }
+  buscarPlanilla() {}
   obtenerCiclos() {
     this._cicloLectivoService
       .obtenerCiclosLectivos()
@@ -387,5 +462,10 @@ export class SeguimientoFormModalComponent implements OnInit {
           });
         }
       );
+  }
+  setPlanilla(evento: IPlanillaTaller) {
+    this.planillaTaller = evento;
+    this.form.controls.planillaTaller.setValue(evento);
+    this.seguimiento = this.form.value;
   }
 }

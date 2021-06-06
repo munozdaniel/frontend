@@ -129,7 +129,7 @@ export class SeguimientoAgregarComponent implements OnInit {
     }
 
     const dialogRef = this._dialog.open(SeguimientoFormModalComponent, {
-      data: { ciclosLectivos: this.ciclosLectivos, alumno: this.alumnoSeleccionado },
+      data: { ciclosLectivos: this.ciclosLectivos, alumno: this.alumnoSeleccionado, buscarPlanilla: true },
     });
 
     dialogRef.afterClosed().subscribe((resultado) => {
@@ -156,7 +156,7 @@ export class SeguimientoAgregarComponent implements OnInit {
       return;
     }
     const dialogRef = this._dialog.open(SeguimientoFormModalComponent, {
-      data: { ciclosLectivos: this.ciclosLectivos, seguimiento: seguimiento, alumno: this.alumnoSeleccionado },
+      data: { ciclosLectivos: this.ciclosLectivos, seguimiento: seguimiento, alumno: this.alumnoSeleccionado, buscarPlanilla: true },
     });
 
     dialogRef.afterClosed().subscribe((resultado) => {

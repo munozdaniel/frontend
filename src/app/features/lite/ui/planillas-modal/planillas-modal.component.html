@@ -1,7 +1,6 @@
-<h1 mat-dialog-title>Planilla de Taller {{ isMobile }}</h1>
+<h1 mat-dialog-title>Planilla de Taller</h1>
 <div mat-dialog-content>
   <div fxLayout="column" class="w-100-p">
-    <span>{{ columnas | json }}</span>
     <div
       *ngIf="planillas && planillas.length > 0"
       [@animate]="{ value: '*', params: { delay: '50ms', scale: '0.2' } }"
