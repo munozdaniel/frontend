@@ -6,7 +6,6 @@ import { designAnimations } from '@design/animations';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { AlumnoService } from 'app/core/services/alumno.service';
 import { CicloLectivoService } from 'app/core/services/ciclo-lectivo.service';
-import { IAlumno } from 'app/models/interface/iAlumno';
 import { IAlumnoTaller } from 'app/models/interface/iAlumnoTaller';
 import { ICicloLectivo } from 'app/models/interface/iCicloLectivo';
 import { IPlanillaTaller } from 'app/models/interface/iPlanillaTaller';
@@ -71,9 +70,9 @@ export class CustomPlanillaAlumnosModalComponent implements OnInit {
   }
   setBuscarPlanilla() {
     this.cargando = true;
-    const { curso,  division, cicloLectivo } = this.form.value;
+    const { curso, division, cicloLectivo } = this.form.value;
     this._alumnoService
-      .obtenerAlumnosTallerPorCursoEspecifico(this.planillaTaller, curso,  division, cicloLectivo)
+      .obtenerAlumnosTallerPorCursoEspecifico(this.planillaTaller, curso, division, cicloLectivo)
       .pipe(untilDestroyed(this))
       .subscribe(
         (datos) => {
@@ -178,7 +177,9 @@ export class CustomPlanillaAlumnosModalComponent implements OnInit {
               icon: 'success',
               timer: 2000,
               timerProgressBar: true,
-            }).then(() => {});
+            }).then(() => {
+              this.dialogRef.close();
+            });
           }
         },
         (error) => {
