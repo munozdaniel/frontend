@@ -23,7 +23,7 @@ const routes: Routes = [
     //  DEBE estar autenticados
   },
   {
-    path: 'reset',
+    path: 'reset/:id',
     component: ResetPasswordComponent,
     //  DEBE estar autenticados
   },
