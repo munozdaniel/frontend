@@ -50,22 +50,42 @@
             <strong>{{ cantidadSeguimientos }} Seguimiento/s sin Resolver</strong></mat-panel-description
           >
         </mat-expansion-panel-header>
-        <div class="border p-12" *ngFor="let seguimiento of seguimientoAlumnos" fxLayout="row wrap" fxLayoutAlign="space-between start">
-          <span fxFlex.gt-xs="25"> <strong>Fecha: </strong>{{ seguimiento.fecha | date: 'dd/MM/yyyy':'GMT' }}</span>
-          <span fxFlex.gt-xs="30"
-            ><strong>{{ seguimiento.alumno.nombreCompleto }} </strong></span
-          >
-          <span fxFlex.gt-xs="30" fxFlex.xs="100"><strong>Tipo: </strong>{{ seguimiento.tipoSeguimiento }}</span>
-          <button
-            fxHide.xs="true"
-            fxFlex.gt-xs="15"
-            mat-icon-button
-            color="accent"
-            matTooltip="Ver detalle"
-            (click)="verSeguimiento(seguimiento)"
-          >
-            <mat-icon>remove_red_eye</mat-icon>
-          </button>
+        <div class="border p-12" *ngFor="let seguimiento of seguimientoAlumnos" fxLayout="column">
+          <div fxLayout="row wrap" fxLayoutAlign="space-between start">
+            <span fxFlex.gt-xs="15"> <strong>Fecha: </strong>{{ seguimiento.fecha | date: 'dd/MM/yyyy':'GMT' }}</span>
+            <span fxFlex.gt-xs="30"
+              ><strong>{{ seguimiento.alumno.nombreCompleto }} </strong></span
+            >
+            <span fxLayout="column" *ngIf="seguimiento.planillaTaller" fxFlex.gt-xs="20">
+              <div fxLayout="row" fxLayoutGap="10px">
+                <span
+                  ><strong>{{ seguimiento.planillaTaller.curso?.curso }}°</strong> AÑO</span
+                >
+                <span
+                  ><strong>{{ seguimiento.planillaTaller.curso?.division }}°</strong> DIV</span
+                >
+              </div>
+              <span
+                >COMISION<strong> {{ seguimiento.planillaTaller.curso?.comision }}</strong>
+              </span>
+            </span>
+            <span fxFlex.gt-xs="15" fxFlex.xs="100"><strong>Tipo: </strong>{{ seguimiento.tipoSeguimiento }}</span>
+            <button
+              fxHide.xs="true"
+              fxFlex.gt-xs="15"
+              mat-icon-button
+              color="accent"
+              matTooltip="Ver detalle"
+              (click)="verSeguimiento(seguimiento)"
+            >
+              <mat-icon>remove_red_eye</mat-icon>
+            </button>
+          </div>
+          <!-- <div *ngIf="seguimiento.planillaTaller" fxLayout="row wrap" fxLayoutAlign="space-between start">
+            <span fxFlex.gt-xs="25"> <strong>Curso: </strong>{{ seguimiento.planillaTaller.curso?.curso }}</span>
+            <span fxFlex.gt-xs="25"> <strong>División: </strong>{{ seguimiento.planillaTaller.curso?.division }}</span>
+            <span fxFlex.gt-xs="25"> <strong>Comisión: </strong>{{ seguimiento.planillaTaller.curso?.comision }}</span>
+          </div> -->
           <button
             fxHide.gt-xs="true"
             fxFlex.xs="100"
