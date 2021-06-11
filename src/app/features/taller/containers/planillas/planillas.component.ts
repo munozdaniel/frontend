@@ -15,11 +15,11 @@ import { NgxPermissionsService } from 'ngx-permissions';
   template: `
     <div fxLayout="column" class="w-100-p p-24" fxLayoutGap="20px">
       <div fxLayout="column" class="mat-card mat-elevation-z4 p-24">
-        <div fxLayout fxLayoutAlign="start center" class="w-100-p mb-12" style="border-bottom: 2px solid #80808057;">
+        <div fxLayout="row" fxLayoutAlign="start center" class="w-100-p mb-12" style="border-bottom: 2px solid #80808057;">
           <h1 [@animate]="{ value: '*', params: { x: '50px' } }" class="px-12">{{ titulo }}</h1>
           <mat-spinner *ngIf="cargando" matSuffix class="ml-10" diameter="20"></mat-spinner>
         </div>
-        <div fxLayout.xs="column" fxLayout.gt-xs="row wrap" fxLayoutAlign="space-between baseline" fxLayoutGap.xs="20px">
+        <div fxLayout.xs="column" fxLayout.gt-xs="row wrap" fxLayoutAlign="space-between baseline" fxLayoutGap="0px" fxLayoutGap.xs="20px">
           <app-form-ciclo-lectivo
             fxFlex.gt-xs="40"
             fxFlex.xs="100"

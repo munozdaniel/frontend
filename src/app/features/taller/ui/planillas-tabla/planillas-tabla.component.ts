@@ -23,9 +23,13 @@ import * as moment from 'moment';
 export class PlanillasTablaComponent implements OnInit, OnChanges {
   globalFilter = '';
 
+  cursoFilter = new FormControl();
+  divisionFilter = new FormControl();
   turnoFilter = new FormControl();
   bimestreFilter = new FormControl();
   filteredValues = {
+    curso: null,
+    division: null,
     bimestre: '',
     turno: '',
     multiple: true,
@@ -103,6 +107,17 @@ export class PlanillasTablaComponent implements OnInit, OnChanges {
   }
 
   ngOnInit(): void {
+    this.cursoFilter.valueChanges.subscribe((cursoFilterValue) => {
+      console.log('cursoFilterValue', cursoFilterValue);
+      this.filteredValues['curso'] = cursoFilterValue;
+      this.dataSource.filter = JSON.stringify(this.filteredValues);
+    });
+
+    this.divisionFilter.valueChanges.subscribe((divisionFilterValue) => {
+      this.filteredValues['division'] = divisionFilterValue;
+      this.dataSource.filter = JSON.stringify(this.filteredValues);
+    });
+
     this.turnoFilter.valueChanges.subscribe((positionFilterValue) => {
       this.filteredValues['turno'] = positionFilterValue;
       this.dataSource.filter = JSON.stringify(this.filteredValues);
@@ -128,6 +143,13 @@ export class PlanillasTablaComponent implements OnInit, OnChanges {
     this.dataSource.filterPredicate = (data: IPlanillaTaller, filters: string | any) => {
       let filterArray = [];
       const filtrosObject = JSON.parse(filters);
+      if (filtrosObject.curso !== '' && filtrosObject.curso !== null) {
+        filterArray.push((filtrosObject.curso));
+      }
+
+      if (filtrosObject.division !== '' && filtrosObject.division !== null) {
+        filterArray.push(filtrosObject.division.toLowerCase());
+      }
       if (filtrosObject.bimestre !== '') {
         filterArray.push(filtrosObject.bimestre.toLowerCase());
       }
@@ -151,13 +173,17 @@ export class PlanillasTablaComponent implements OnInit, OnChanges {
         data.cicloLectivo.anio,
       ];
       if (data.curso) {
-        columns.push(data.curso.curso + '° AÑO ' + data.curso.division + '° DIV COM. ' + data.curso.comision);
+        // columns.push(data.curso.curso + '° AÑO ' + data.curso.division + '° DIV COM. ' + data.curso.comision);
+        columns.push(Number(data.curso.curso) + '° AÑO');
+        columns.push(data.curso.division.toString() + '° DIV.');
       }
+      console.log('filterArray', filterArray);
 
       filterArray.forEach((filter) => {
         const customFilter = [];
         columns.forEach((column) => {
           if (column) {
+            // console.log('column', column);
             customFilter.push(
               column
                 .toString()
@@ -187,6 +213,7 @@ export class PlanillasTablaComponent implements OnInit, OnChanges {
       switch (property) {
         case 'planillaTallerNro':
           return item.planillaTallerNro.toString();
+
         case 'turno':
           return item.turno ? item.turno.toString().toLowerCase() : '';
         case 'cicloLectivo':
@@ -198,7 +225,7 @@ export class PlanillasTablaComponent implements OnInit, OnChanges {
         case 'bimestre':
           return item.bimestre ? item.bimestre.toString().toLowerCase() : '';
         case 'comisioncompleta':
-          return item.curso.curso + '° AÑO ' + item.curso.division + '° DIV COM. ' + item.curso.comision;
+          return item.curso ? item.curso.curso + '° AÑO ' + item.curso.division + '° DIV COM. ' + item.curso.comision : '';
         case 'profesor':
           return item.profesor.nombreCompleto ? item.profesor.nombreCompleto.toLowerCase() : '';
         default:

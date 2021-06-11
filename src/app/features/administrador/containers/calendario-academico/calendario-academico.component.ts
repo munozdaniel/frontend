@@ -22,7 +22,13 @@ import Swal from 'sweetalert2';
           <h1 [@animate]="{ value: '*', params: { x: '50px' } }" class="px-12">{{ titulo }}</h1>
           <mat-spinner *ngIf="cargando" matSuffix class="ml-10" diameter="20"></mat-spinner>
         </div>
-        <div fxLayout.xs="column" fxLayout.gt-xs="row wrap" fxLayoutAlign="space-between baseline" fxLayoutGap.xs="20px">
+        <div
+          fxLayout.xs="column"
+          fxLayout.gt-xs="row wrap"
+          fxLayoutAlign="space-between baseline"
+          fxLayoutGap.xs="20px"
+          fxLayoutGap.xs="2px"
+        >
           <app-form-ciclo-lectivo
             fxFlex.gt-xs="40"
             fxFlex.xs="100"
