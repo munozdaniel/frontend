@@ -229,7 +229,8 @@ profesor: "6021bb72c18fc750b87b0a12"
       class="fila_seleccionada"
       [class.example-expanded-row]="expandedElement === row"
       [ngClass]="{ row_deshabilitado: !row.activo }"
-      (click)="expandedElement != row ? (expandedElement = row) : (expandedElement = null)"
+      (dblclick)="dobleClickPlanilla(row)"
+      (click)="clickPlanilla(row); expandedElement != row ? (expandedElement = row) : (expandedElement = null)"
     ></tr>
     <!-- -->
     <tr mat-row *matRowDef="let row; columns: isMobile ? ['expandedDetail'] : []" class="fila_detalle"></tr>

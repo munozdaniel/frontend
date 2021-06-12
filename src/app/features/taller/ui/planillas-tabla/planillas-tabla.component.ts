@@ -34,6 +34,8 @@ import * as moment from 'moment';
   ],
 })
 export class PlanillasTablaComponent implements OnInit, OnChanges, OnDestroy {
+  touchtime = 0;
+  planillaTouch: IPlanillaTaller; // para comprobar que hizo click en la misma fila 2 veces
   globalFilter = '';
 
   cursoFilter = new FormControl();
@@ -145,6 +147,9 @@ export class PlanillasTablaComponent implements OnInit, OnChanges, OnDestroy {
     if (this.planillaParams.bimestre) {
       this.bimestreFilter.setValue(this.planillaParams.bimestre);
     }
+    if (this.planillaParams.general) {
+      this.filtroRapido(this.planillaParams.general);
+    }
   }
   ngOnInit(): void {
     this.cursoFilter.valueChanges.subscribe((valor) => {
@@ -184,6 +189,7 @@ export class PlanillasTablaComponent implements OnInit, OnChanges, OnDestroy {
     // this.planillaParams.filtro = filterValue;
     // this._planillaTallerService.setPlanillaParams(this.planillaParams);
 
+    this.planillaParams.general = filterValue;
     this.filteredValues.general = filterValue;
     this.dataSource.filter = JSON.stringify(this.filteredValues);
 
@@ -310,5 +316,34 @@ export class PlanillasTablaComponent implements OnInit, OnChanges, OnDestroy {
   }
   verInformes(planilla: IPlanillaTaller) {
     this._router.navigate([`taller/planillas-administrar/${planilla._id}/informes`]);
+  }
+  dobleClickPlanilla(planilla: IPlanillaTaller) {
+    console.log('dobleClickPlanilla');
+    this._router.navigate([`taller/planillas-administrar/${planilla._id}`]);
+  }
+  clickPlanilla(planilla: IPlanillaTaller) {
+    console.log('clickPlanilla');
+    if (this.planillaTouch && this.planillaTouch._id === planilla._id) {
+      this.simularDobleClick(planilla);
+    } else {
+      this.planillaTouch = planilla;
+    }
+  }
+  simularDobleClick(planilla) {
+    console.log('simularDobleClick');
+    if (this.touchtime == 0) {
+      // set first click
+      this.touchtime = new Date().getTime();
+    } else {
+      // compare first click to this click and see if they occurred within double click threshold
+      if (new Date().getTime() - this.touchtime < 800) {
+        // double click occurred
+        this._router.navigate([`taller/planillas-administrar/${planilla._id}`]);
+        this.touchtime = 0;
+      } else {
+        // not a double click so set as a new first click
+        this.touchtime = new Date().getTime();
+      }
+    }
   }
 }

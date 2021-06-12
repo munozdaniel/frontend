@@ -1,5 +1,5 @@
 export interface IPlanillaTallerParam {
-  filtro?: string;
+  general?: string;
   curso?: number;
   division?: number;
   bimestre?: string;
