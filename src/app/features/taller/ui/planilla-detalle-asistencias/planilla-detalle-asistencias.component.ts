@@ -5,6 +5,7 @@ import { designAnimations } from '@design/animations';
 import { TemplateEnum } from 'app/models/constants/tipo-template.const';
 import { IAlumno } from 'app/models/interface/iAlumno';
 import { IAsistencia } from 'app/models/interface/iAsistencia';
+import * as moment from 'moment';
 import Swal from 'sweetalert2';
 
 @Component({
@@ -14,14 +15,16 @@ import Swal from 'sweetalert2';
   animations: [designAnimations],
 })
 export class PlanillaDetalleAsistenciasComponent implements OnInit, OnChanges {
-  TemplateEnum = TemplateEnum;
+  
+    TemplateEnum = TemplateEnum;
   touchtime = 0;
-
+  hoy = moment().format('DD/MM/YYYY');
   totalNoRegistradas = { valor: 0, porcentaje: 0 };
   totalAusentes = { valor: 0, porcentaje: 0 };
   totalPresentes = { valor: 0, porcentaje: 0 };
   @Input() deshabilitarEdicion: boolean;
   totalClases: number;
+  @Input() asistenciasHoy: any;
   @Input() template: string;
   @Input() cargandoAsistencias: boolean;
   @Input() cargandoAlumnos: boolean;

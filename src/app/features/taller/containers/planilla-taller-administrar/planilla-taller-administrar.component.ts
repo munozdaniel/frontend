@@ -64,6 +64,7 @@ import { TemaFormModalComponent } from '../tema-form-modal/tema-form-modal.compo
           <mat-tab label="Asistencias">
             <app-planilla-detalle-asistencias
               [template]="template"
+              [asistenciasHoy]="asistenciasHoy"
               [cargandoAsistencias]="cargandoAsistencias"
               [cargandoAlumnos]="cargandoAlumnos"
               [alumnos]="alumnos"
@@ -152,6 +153,7 @@ import { TemaFormModalComponent } from '../tema-form-modal/tema-form-modal.compo
   animations: [designAnimations],
 })
 export class PlanillaTallerAdministrarComponent implements OnInit {
+  asistenciasHoy: { presentes: 0; ausentes: 0 };
   anioActual = new Date().getFullYear();
   deshabilitarEdicion = false;
   template = TemplateEnum.EDICION;
@@ -209,6 +211,7 @@ export class PlanillaTallerAdministrarComponent implements OnInit {
         this.isMobile = false;
       }
     });
+    this.suscripcionAsistenciasHoy();
   }
 
   ngOnInit(): void {
@@ -217,6 +220,11 @@ export class PlanillaTallerAdministrarComponent implements OnInit {
       this.tipoPantalla = params['tipo'];
       this.seleccionarTab();
       this.obtenerPlanilla();
+    });
+  }
+  suscripcionAsistenciasHoy() {
+    this._asistenciaService.asistenciasHoy$.pipe(untilDestroyed(this)).subscribe((datos) => {
+      this.asistenciasHoy = datos;
     });
   }
   obtenerPlanilla() {
@@ -239,6 +247,7 @@ export class PlanillaTallerAdministrarComponent implements OnInit {
             }
           }
           this.cargando = false;
+          this.buscarAsistenciasHoy();
         },
         (error) => {
           this.cargando = false;
@@ -251,6 +260,9 @@ export class PlanillaTallerAdministrarComponent implements OnInit {
           console.log('[ERROR]', error);
         }
       );
+  }
+  buscarAsistenciasHoy() {
+    this._asistenciaService.buscarAsistenciasHoy(this.planillaTaller._id);
   }
   obtenerAlumnosPorCursoEspecifico() {
     this.cargandoAlumnos = true;
@@ -315,20 +327,7 @@ export class PlanillaTallerAdministrarComponent implements OnInit {
         break;
     }
   }
-  //   buscarTotalesPorPlanilla() {
-  //     this._planillaTallerService
-  //       .buscarTotalAsistenciaPorPlanilla(this.planillaId)
-  //       .pipe(untilDestroyed(this))
-  //       .subscribe(
-  //         (datos) => {
-  //           this.totalClases = datos.total;
-  //         },
-  //         (error) => {
-  //           console.log('[ERROR]', error);
-  //           this.cargandoAsistencias = false;
-  //         }
-  //       );
-  //   }
+
   controlTabs(evento) {
     this.indiceTab = evento.index;
     switch (evento.index) {
@@ -403,113 +402,7 @@ export class PlanillaTallerAdministrarComponent implements OnInit {
         }
       );
   }
-  //   Calendario (Al buscar el calendario se encuentran los temas y viceversa)
-  //   setBuscarCalendario() {
-  //     console.log('this.planillaTaller.tipoCalendario', this.planillaTaller.tipoCalendario);
-  //     if (!this.planillaTaller.tipoCalendario) {
-  //       // No tiene asignado un tipo de calendario, se formara el calendario con las fechas creadas en los temas.
-  //       this.buscarFechasDeLosTemas();
-  //     } else {
-  //       if (this.planillaTaller.tipoCalendario === 'POR COMISION') {
-  //         //   Obtiene el calendario por la comision (seria calendario de taller)
-  //         this.obtenerCalendarioTallerPorPlanilla();
-  //       } else {
-  //         //   Es un calendario personalizado, busca todos los dias seleccionados entre las fechas de ini y fin. Y los temas que contengan esas fechas
-  //         this.obtenerCalendarioAulaPorDiasYPlanilla();
-  //       }
-  //     }
-  //   }
-  //   buscarFechasDeLosTemas() {
-  //     // nno hace falta preguntar porque si no existe el calendario entonces no existen los temas y viceversa
-  //     if (!this.temas || this.temas.length < 1) {
-  //       this.obtenerLibroDeTemas();
-  //     }
-  //   }
-  //   obtenerCalendarioTallerPorPlanilla() {
-  //     this._calendarioService
-  //       .obtenerCalendarioTallerPorPlanilla(this.planillaTaller)
-  //       .pipe(untilDestroyed(this))
-  //       .subscribe(
-  //         (datos) => {
-  //           console.log('DAtos temas de la plantilla', datos);
-  //           this.calendario = [...datos];
-  //         },
-  //         (error) => {
-  //           console.log('[ERROR]', error);
-  //         }
-  //       );
-  //   }
-  //   obtenerCalendarioAulaPorDiasYPlanilla() {}
-  // Temas (Al buscar el calendario se encuentra el calendario y viceversa)
-  //   obtenerLibroDeTemas() {
-  //     this.cargandoTemas = true;
-  //     this._temaService
-  //       .obtenerTemasCalendario('TALLER', this.planillaId)
-  //       .pipe(untilDestroyed(this))
-  //       .subscribe(
-  //         (datos) => {
-  //           this.temas = [...datos.temasDelCalendario];
-  //           this.calendario = this.temas.map((x) => {
-  //             const comisiones = {
-  //               comisionA: 0,
-  //               comisionB: 0,
-  //               comisionC: 0,
-  //               comisionD: 0,
-  //               comisionE: 0,
-  //               comisionF: 0,
-  //               comisionG: 0,
-  //               comisionH: 0,
-  //             };
-  //             switch (this.planillaTaller.curso.comision) {
-  //               case 'A':
-  //                 comisiones.comisionA = 1;
-  //                 break;
-  //               case 'B':
-  //                 comisiones.comisionB = 1;
-  //                 break;
-  //               case 'C':
-  //                 comisiones.comisionC = 1;
-  //                 break;
-  //               case 'D':
-  //                 comisiones.comisionD = 1;
-  //                 break;
-  //               case 'E':
-  //                 comisiones.comisionE = 1;
-  //                 break;
-  //               case 'F':
-  //                 comisiones.comisionF = 1;
-  //                 break;
-  //               case 'G':
-  //                 comisiones.comisionG = 1;
-  //                 break;
-  //               case 'H':
-  //                 comisiones.comisionH = 1;
-  //                 break;
 
-  //               default:
-  //                 break;
-  //             }
-  //             const unCalendario: ICalendario = {
-  //               fecha: x.fecha,
-  //               cicloLectivo: this.planillaTaller.cicloLectivo,
-  //               activo: true,
-  //               titulo: x.temaDelDia
-  //                 ? x.temaDelDia
-  //                 : x.motivoSinDictar
-  //                 ? 'MOTIVO POR EL CUAL NO SE DICTÓ LA CLASE: ' + x.motivoSinDictar
-  //                 : 'SIN DEFINIR',
-  //               ...comisiones,
-  //             };
-  //             return unCalendario;
-  //           });
-  //           this.cargandoTemas = false;
-  //         },
-  //         (error) => {
-  //           this.cargandoTemas = false;
-  //           console.log('[ERROR]', error);
-  //         }
-  //       );
-  //   }
   //   Output Asistencias
   setBuscarAsistenciaPorAlumno(alumno: IAlumno) {
     this.alumnoSeleccionado = alumno; // cuando viene por output se actualiza

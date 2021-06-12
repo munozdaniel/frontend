@@ -1,15 +1,20 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { IAlumno } from 'app/models/interface/iAlumno';
 import { IAsistencia } from 'app/models/interface/iAsistencia';
 import { IPlanillaTaller } from 'app/models/interface/iPlanillaTaller';
 import { environment } from 'environments/environment';
-import { Observable } from 'rxjs';
-
+import { BehaviorSubject, Observable } from 'rxjs';
+import { shareReplay } from 'rxjs/operators';
+@UntilDestroy()
 @Injectable({
   providedIn: 'root',
 })
 export class AsistenciaService {
+  private asistenciasHoySubject = new BehaviorSubject<any>(null);
+  public asistenciasHoy$ = this.asistenciasHoySubject.asObservable().pipe(shareReplay(1));
+
   protected url = environment.apiURI;
   constructor(private http: HttpClient) {}
 
@@ -95,5 +100,21 @@ export class AsistenciaService {
     const url = this.url + query;
 
     return this.http.post<any>(url, { planilla, alumnos });
+  }
+  buscarAsistenciasHoy(planillaTallerId) {
+    const query = `asistencia/asistencias-hoy/${planillaTallerId}`;
+    const url = this.url + query;
+
+    this.http
+      .get<any>(url)
+      .pipe(untilDestroyed(this))
+      .subscribe(
+        (datos) => {
+          this.asistenciasHoySubject.next(datos);
+        },
+        (error) => {
+          console.log('[ERROR]', error);
+        }
+      );
   }
 }

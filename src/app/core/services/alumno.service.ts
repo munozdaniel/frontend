@@ -11,7 +11,7 @@ import { IPlanillaTaller } from 'app/models/interface/iPlanillaTaller';
 import { IQueryPag } from 'app/models/interface/iQueryPag';
 import { environment } from 'environments/environment';
 import { BehaviorSubject, Observable } from 'rxjs';
-import { shareReplay} from 'rxjs/operators';
+import { shareReplay } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root',

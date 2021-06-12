@@ -4,6 +4,17 @@
     <!-- ALUMNOS ================================================ -->
     <!-- ================================================ -->
     <div *ngIf="!cargandoAlumnos" fxLayout="column" class="w-100-p" fxFlex.xs="100" fxFlex.gt-xs="45" ngClass.xs="mb-12">
+      <div fxLayout="row wrap" fxLayoutAlign="center start" fxLayoutGap="10px">
+        <span>Hoy </span><strong>{{ hoy }}</strong>
+      </div>
+      <div fxLayout="row wrap" fxLayoutAlign="space-between center">
+        <div>
+          <span>Presentes </span><strong>{{ asistenciasHoy?.presentes }}</strong>
+        </div>
+        <div>
+          <span>Ausentes </span><strong>{{ asistenciasHoy?.ausentes }}</strong>
+        </div>
+      </div>
       <div
         *ngIf="alumnos && alumnos.length > 0"
         [@animate]="{ value: '*', params: { delay: '50ms', scale: '0.2' } }"

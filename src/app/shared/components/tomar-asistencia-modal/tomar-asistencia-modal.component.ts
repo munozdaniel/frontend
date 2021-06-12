@@ -127,7 +127,6 @@ export class TomarAsistenciaModalComponent implements OnInit {
     //   '¿ this.alumnos',
     //   this.alumnos.filter((x) => x.presente !== null)
     // );
-    console.log('this.alumnos', this.alumnos);
     const asistenciasTomadas: IAlumno[] = this.alumnos.map((x) => {
       if (x.tomarAsistencia === 1) {
         x.presente = true;
@@ -177,6 +176,7 @@ export class TomarAsistenciaModalComponent implements OnInit {
             text: 'Las asistencias se han actualizado  correctamente.',
             icon: 'success',
           });
+          this._asistenciaService.buscarAsistenciasHoy(this.planillaTaller._id);
         } else {
           Swal.fire({
             title: 'Oops! Ocurrió un error',
