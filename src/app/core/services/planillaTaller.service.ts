@@ -2,16 +2,24 @@ import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { ICicloLectivo } from 'app/models/interface/iCicloLectivo';
 import { IPlanillaTaller } from 'app/models/interface/iPlanillaTaller';
-import { IProfesor } from 'app/models/interface/iProfesor';
+import { IPlanillaTallerParam } from 'app/models/interface/iPlanillaTallerParams';
 import { environment } from 'environments/environment';
-import { Observable } from 'rxjs';
+import { BehaviorSubject, Observable } from 'rxjs';
+import { shareReplay } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root',
 })
 export class PlanillaTallerService {
+  private planillaParamsSubject = new BehaviorSubject<IPlanillaTallerParam>(null);
+  public planillaParams$ = this.planillaParamsSubject.asObservable().pipe(shareReplay(1));
+
   protected url = environment.apiURI;
   constructor(private http: HttpClient) {}
+  setPlanillaParams(params: IPlanillaTallerParam) {
+    this.planillaParamsSubject.next(params);
+  }
+
   obtenerPlanillaTalleresPaginado(filter = '', sortField = '', sortOrder = 'asc', pageNumber = 0, pageSize = 3): Observable<any> {
     const query = `planilla-taller/paginar`;
     const url = this.url + query;

@@ -1,11 +1,24 @@
 import { trigger, state, style, transition, animate } from '@angular/animations';
 import { BreakpointObserver, Breakpoints, BreakpointState, MediaMatcher } from '@angular/cdk/layout';
-import { Component, Input, OnInit, ViewChild, OnChanges, SimpleChanges, ChangeDetectorRef } from '@angular/core';
+import {
+  Component,
+  Input,
+  OnInit,
+  ViewChild,
+  OnChanges,
+  SimpleChanges,
+  ChangeDetectorRef,
+  OnDestroy,
+  Output,
+  EventEmitter,
+} from '@angular/core';
 import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
 import { MatTableDataSource, MatSort, MatPaginator, PageEvent } from '@angular/material';
 import { Router } from '@angular/router';
 import { designAnimations } from '@design/animations';
+import { PlanillaTallerService } from 'app/core/services/planillaTaller.service';
 import { IPlanillaTaller } from 'app/models/interface/iPlanillaTaller';
+import { IPlanillaTallerParam } from 'app/models/interface/iPlanillaTallerParams';
 import * as moment from 'moment';
 @Component({
   selector: 'app-planillas-tabla',
@@ -20,7 +33,7 @@ import * as moment from 'moment';
     ]),
   ],
 })
-export class PlanillasTablaComponent implements OnInit, OnChanges {
+export class PlanillasTablaComponent implements OnInit, OnChanges, OnDestroy {
   globalFilter = '';
 
   cursoFilter = new FormControl();
@@ -35,6 +48,8 @@ export class PlanillasTablaComponent implements OnInit, OnChanges {
     multiple: true,
     general: '',
   };
+  @Input() planillaParams: IPlanillaTallerParam;
+  @Output() retPlanillaParams = new EventEmitter<IPlanillaTallerParam>();
   @Input() planillas: IPlanillaTaller[];
   @Input() cargando: boolean;
   columnas = [
@@ -71,7 +86,8 @@ export class PlanillasTablaComponent implements OnInit, OnChanges {
     private _router: Router,
     private _changeDetectorRef: ChangeDetectorRef,
     private _media: MediaMatcher,
-    public breakpointObserver: BreakpointObserver
+    public breakpointObserver: BreakpointObserver,
+    private _planillaTallerService: PlanillaTallerService
   ) {
     this.mobileQuery = this._media.matchMedia('(max-width: 600px)');
     this._mobileQueryListener = () => this._changeDetectorRef.detectChanges();
@@ -97,39 +113,77 @@ export class PlanillasTablaComponent implements OnInit, OnChanges {
       }
     });
   }
+  ngOnDestroy(): void {
+    // this.salvarDatos();
+    this.retPlanillaParams.emit(this.planillaParams);
+  }
 
   ngOnChanges(changes: SimpleChanges): void {
+    if (changes.planillaParams && changes.planillaParams.currentValue) {
+      if (this.dataSource.data.length > 0) {
+        this.setFiltros();
+      }
+    }
+
     if (changes.planillas && changes.planillas.currentValue) {
       this.dataSource.data = this.planillas;
       //   this.dataSource.filterPredicate = this.customFilterPredicate();
       this.customSearchSortTable();
+      this.setFiltros();
     }
   }
-
+  setFiltros() {
+    if (this.planillaParams.curso) {
+      this.cursoFilter.setValue(this.planillaParams.curso);
+    }
+    if (this.planillaParams.division) {
+      this.divisionFilter.setValue(this.planillaParams.division);
+    }
+    if (this.planillaParams.turno) {
+      this.turnoFilter.setValue(this.planillaParams.turno);
+    }
+    if (this.planillaParams.bimestre) {
+      this.bimestreFilter.setValue(this.planillaParams.bimestre);
+    }
+  }
   ngOnInit(): void {
-    this.cursoFilter.valueChanges.subscribe((cursoFilterValue) => {
-      console.log('cursoFilterValue', cursoFilterValue);
-      this.filteredValues['curso'] = cursoFilterValue;
+    this.cursoFilter.valueChanges.subscribe((valor) => {
+      this.filteredValues['curso'] = valor;
       this.dataSource.filter = JSON.stringify(this.filteredValues);
+      this.planillaParams.curso = valor;
+      //   this.planillaParams.curso = cursoFilterValue;
+      //   this._planillaTallerService.setPlanillaParams(this.planillaParams);
     });
 
-    this.divisionFilter.valueChanges.subscribe((divisionFilterValue) => {
-      this.filteredValues['division'] = divisionFilterValue;
+    this.divisionFilter.valueChanges.subscribe((valor) => {
+      this.filteredValues['division'] = valor;
       this.dataSource.filter = JSON.stringify(this.filteredValues);
+      //   this.planillaParams.division = divisionFilterValue;
+      //   this._planillaTallerService.setPlanillaParams(this.planillaParams);
+      this.planillaParams.division = valor;
     });
 
-    this.turnoFilter.valueChanges.subscribe((positionFilterValue) => {
-      this.filteredValues['turno'] = positionFilterValue;
+    this.turnoFilter.valueChanges.subscribe((valor) => {
+      this.filteredValues['turno'] = valor;
       this.dataSource.filter = JSON.stringify(this.filteredValues);
+      //   this.planillaParams.turno = positionFilterValue;
+      //   this._planillaTallerService.setPlanillaParams(this.planillaParams);
+      this.planillaParams.turno = valor;
     });
 
-    this.bimestreFilter.valueChanges.subscribe((nameFilterValue) => {
-      this.filteredValues['bimestre'] = nameFilterValue;
+    this.bimestreFilter.valueChanges.subscribe((valor) => {
+      this.filteredValues['bimestre'] = valor;
       this.dataSource.filter = JSON.stringify(this.filteredValues);
+      //   this.planillaParams.bimestre = nameFilterValue;
+      //   this._planillaTallerService.setPlanillaParams(this.planillaParams);
+      this.planillaParams.bimestre = valor;
     });
   }
 
   filtroRapido(filterValue: string) {
+    // this.planillaParams.filtro = filterValue;
+    // this._planillaTallerService.setPlanillaParams(this.planillaParams);
+
     this.filteredValues.general = filterValue;
     this.dataSource.filter = JSON.stringify(this.filteredValues);
 
@@ -144,7 +198,7 @@ export class PlanillasTablaComponent implements OnInit, OnChanges {
       let filterArray = [];
       const filtrosObject = JSON.parse(filters);
       if (filtrosObject.curso !== '' && filtrosObject.curso !== null) {
-        filterArray.push((filtrosObject.curso));
+        filterArray.push(filtrosObject.curso);
       }
 
       if (filtrosObject.division !== '' && filtrosObject.division !== null) {
@@ -177,7 +231,6 @@ export class PlanillasTablaComponent implements OnInit, OnChanges {
         columns.push(Number(data.curso.curso) + '° AÑO');
         columns.push(data.curso.division.toString() + '° DIV.');
       }
-      console.log('filterArray', filterArray);
 
       filterArray.forEach((filter) => {
         const customFilter = [];

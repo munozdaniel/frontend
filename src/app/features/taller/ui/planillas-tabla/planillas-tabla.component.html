@@ -34,6 +34,7 @@
     <mat-form-field appearance="outline" fxFlex.gt-xs="18" fxFlex.xs="100">
       <mat-label class="lbl">Curso</mat-label>
       <mat-select [formControl]="cursoFilter">
+        <mat-option value="">SIN FILTRO</mat-option>
         <mat-option value="1° AÑO">CURSO 1</mat-option>
         <mat-option value="2° AÑO">CURSO 2</mat-option>
         <mat-option value="3° AÑO">CURSO 3</mat-option>
@@ -45,6 +46,7 @@
     <mat-form-field appearance="outline" fxFlex.gt-xs="18" fxFlex.xs="100">
       <mat-label class="lbl">División</mat-label>
       <mat-select [formControl]="divisionFilter">
+        <mat-option value="">SIN FILTRO</mat-option>
         <mat-option value="1° DIV.">DIVISIÓN 1</mat-option>
         <mat-option value="2° DIV.">DIVISIÓN 2</mat-option>
         <mat-option value="3° DIV.">DIVISIÓN 3</mat-option>

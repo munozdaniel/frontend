@@ -7,6 +7,7 @@ import { AuthenticationService } from 'app/core/services/helpers/authentication.
 import { PlanillaTallerService } from 'app/core/services/planillaTaller.service';
 import { RolConst } from 'app/models/constants/rol.enum';
 import { IPlanillaTaller } from 'app/models/interface/iPlanillaTaller';
+import { IPlanillaTallerParam } from 'app/models/interface/iPlanillaTallerParams';
 import * as moment from 'moment';
 import { NgxPermissionsService } from 'ngx-permissions';
 @UntilDestroy()
@@ -43,9 +44,11 @@ import { NgxPermissionsService } from 'ngx-permissions';
       <!--  -->
       <app-planillas-tabla
         [cargando]="cargando"
+        [planillaParams]="planillaParams"
         [planillas]="planillas"
         (retEditarPlanilla)="setEditarPlanilla($event)"
         (retEliminarPlanilla)="setEliminarPlanilla($event)"
+        (retPlanillaParams)="setPlanillaParams($event)"
       ></app-planillas-tabla>
     </div>
   `,
@@ -53,6 +56,7 @@ import { NgxPermissionsService } from 'ngx-permissions';
   animations: [designAnimations],
 })
 export class PlanillasComponent implements OnInit, OnDestroy {
+  planillaParams: IPlanillaTallerParam;
   cargando = false;
   titulo = 'Planillas de Taller';
   planillas: IPlanillaTaller[];
@@ -65,6 +69,7 @@ export class PlanillasComponent implements OnInit, OnDestroy {
     private _planillaTallerService: PlanillaTallerService,
     private _authService: AuthenticationService
   ) {
+    this.suscripcionPlanillaParams();
     this._permissionsService.permissions$.subscribe((permissions) => {
       this.permisos = Object.keys(permissions);
       if (this.permisos && this.permisos.length > 0) {
@@ -87,6 +92,15 @@ export class PlanillasComponent implements OnInit, OnDestroy {
   ngOnDestroy(): void {}
 
   ngOnInit(): void {}
+  suscripcionPlanillaParams() {
+    this._planillaTallerService.planillaParams$.pipe(untilDestroyed(this)).subscribe((datos) => {
+      this.planillaParams = { ...datos };
+    });
+  }
+  setPlanillaParams(evento: IPlanillaTallerParam) {
+    // this.planillaParams = { ...evento };
+    this._planillaTallerService.setPlanillaParams(evento);
+  }
   //   Si es profesor solo trae las planillas de el. Si es admini o jefetaller trae todas
   ultimoCiclo(allPlanilla: boolean) {
     this._cicloLectivoService.cicloLectivo$.pipe(untilDestroyed(this)).subscribe((cicloLectivo) => {
