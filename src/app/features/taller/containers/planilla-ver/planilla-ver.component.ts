@@ -39,6 +39,7 @@ import Swal from 'sweetalert2';
           <mat-tab label="Asistencias">
             <app-planilla-detalle-asistencias
               [cargandoAsistencias]="cargandoAsistencias"
+              [asistenciasHoy]="asistenciasHoy"
               [cargandoAlumnos]="cargandoAlumnos"
               [alumnos]="alumnos"
               [asistencias]="asistencias"
@@ -88,6 +89,7 @@ import Swal from 'sweetalert2';
   animations: [designAnimations],
 })
 export class PlanillaVerComponent implements OnInit {
+  asistenciasHoy: { presentes: 0; ausentes: 0 };
   anioActual = new Date().getFullYear();
   deshabilitarEdicion = false;
   //   Calendario
@@ -126,7 +128,9 @@ export class PlanillaVerComponent implements OnInit {
     private _calificacionService: CalificacionService,
     private _planillaTallerService: PlanillaTallerService,
     private _seguimientoAlumnoService: SeguimientoAlumnoService
-  ) {}
+  ) {
+    this.suscripcionAsistenciasHoy();
+  }
 
   ngOnInit(): void {
     this._activeRoute.params.subscribe((params) => {
@@ -135,6 +139,11 @@ export class PlanillaVerComponent implements OnInit {
       this.ciclo = params['ciclo'];
       this.cargando = true;
       this.obtenerPlanilla();
+    });
+  }
+  suscripcionAsistenciasHoy() {
+    this._asistenciaService.asistenciasHoy$.pipe(untilDestroyed(this)).subscribe((datos) => {
+      this.asistenciasHoy = datos;
     });
   }
   obtenerPlanilla() {
