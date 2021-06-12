@@ -98,20 +98,20 @@ export class AlumnosPorTallerPdf {
   calificaciones(alumno) {
     let notas = '';
     let suma = 0;
-    let totalPromedios = 0;
+    let totalPromediados = 0;
     let totalCalificaciones = alumno.calificaciones.length;
     alumno.calificaciones.forEach((a, index: number) => {
       if (a) {
         notas += '  ' + Number(a.promedioGeneral).toFixed(2) + '  ';
         if (a.promedia) {
-          totalPromedios += 1;
+          totalPromediados += 1;
+          suma += a.promedioGeneral;
         }
-        suma += a.promedioGeneral;
       }
       // subtotal.push(terceraLinea);
     });
     const total = [];
-    const promedio = suma ? (suma / totalCalificaciones).toFixed(2) : Number(0).toFixed(2);
+    const promedio = suma ? (suma / totalPromediados).toFixed(2) : Number(0).toFixed(2);
     const promedioFinal = promedio !== '0.00' ? (Math.ceil(Number(promedio) * 2) / 2).toFixed(2) : Number(0).toFixed(2);
     total.push(
       [
@@ -198,7 +198,7 @@ export class AlumnosPorTallerPdf {
         defaultBorder: false,
       },
       table: {
-        widths: ['20%', '28%', '18%', '32%'],
+        widths: ['15%', '30%', '18%', '35%'],
         body: [
           [
             {
@@ -207,7 +207,7 @@ export class AlumnosPorTallerPdf {
                 defaultBorder: false,
               },
               table: {
-                body: [alumno.inasistencias.map((x) => ({ text: x ? x.fecha : '', fontSize: 12 }))],
+                body: [alumno.inasistencias.map((x) => ({ text: x ? moment(x.fecha).format('DD/MM/YY') : '', fontSize: 12 }))],
               },
             },
             {},
@@ -216,9 +216,9 @@ export class AlumnosPorTallerPdf {
           ],
           [
             { text: 'Clases: ' + alumno.totalClases, fontSize: 12 },
-            { text: 'Asistencia: ' + alumno.porcentajeAsistencias + ' %', fontSize: 12 },
+            { text: 'Asistencia: ' + alumno.porcentajeAsistencias + '%', fontSize: 12 },
             { text: 'Tarde: ' + alumno.llegadasTardes, fontSize: 12 },
-            { text: 'Inasistencia: ' + alumno.porcentajeInasistencias + ' %', fontSize: 12 },
+            { text: 'Inasistencia: ' + alumno.porcentajeInasistencias + '%', fontSize: 12 },
           ],
         ],
       },
@@ -282,7 +282,7 @@ export class AlumnosPorTallerPdf {
               text: 'Firma',
               alignment: 'center',
               fontSize: 9,
-              border: [false, true, false, false],
+              border: [false, false, false, false],
             },
           ],
         ],
@@ -293,6 +293,7 @@ export class AlumnosPorTallerPdf {
   }
   body() {
     const total = [];
+    const tabla = [];
     const subtotal = [];
     this.reporteAlumnos.forEach((x) => {
       //   ================================
@@ -350,7 +351,11 @@ export class AlumnosPorTallerPdf {
         },
       };
       total.push(tablaTaller);
+      tabla.push({ stack: [tablaCabecera, tablaCalificaciones, tablaAsistencias, tablaTaller], unbreakable: true });
     });
-    return [...total];
+    console.log('>o', tabla);
+    return [...tabla];
+    //  return [...total];
+    // return _.chunk(tabla, 1).map((x) => ({ stack: [x], unbreakable: true }));
   }
 }
