@@ -28,6 +28,7 @@ import Swal from 'sweetalert2';
           fxFlex="100"
           [usuarios]="usuarios"
           (retActualizarTabla)="setActualizarTabla($event)"
+          (retEliminarUsuario)="setEliminarUsuario($event)"
           (retCambiarRol)="setCambiarRol($event)"
         >
         </app-usuarios-tabla>
@@ -134,5 +135,49 @@ export class RolesComponent implements OnInit {
   }
   setActualizarTabla(evento) {
     this.cargarUsuarios();
+  }
+  setEliminarUsuario(evento:IUsuario){
+    Swal.fire({
+        title: '¿Está seguro de continuar?',
+        html: 'Está a punto de eliminar al usuario permanentemente',
+        icon: 'warning',
+        focusConfirm: false,
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        confirmButtonText: 'Si, estoy seguro',
+        cancelButtonText: 'Cancelar',
+        showLoaderOnConfirm: true,
+        preConfirm: () => {
+          return this._usuarioService.delete(evento._id).pipe(
+            catchError((error) => {
+              console.log('[ERROR]', error);
+              Swal.fire({
+                title: 'Oops! Ocurrió un error',
+                text: error && error.error ? error.error.message : 'Error de conexion',
+                icon: 'error',
+              });
+              return of(error);
+            })
+          );
+        },
+        allowOutsideClick: () => !Swal.isLoading(),
+      }).then((result: any) => {
+        if (result.isConfirmed) {
+          if (result.value && result.value.status === 200) {
+            Swal.fire({
+              title: 'Operación Exitosa',
+              text: 'El usuario ha sido actualizado con un nuevo rol.',
+              icon: 'success',
+            });
+            this.cargarUsuarios();
+          } else {
+            Swal.fire({
+              title: 'Oops! Ocurrió un error',
+              text: 'Intentelo nuevamente. Si el problema persiste comuniquese con el soporte técnico.',
+              icon: 'error',
+            });
+          }
+        }
+      });
   }
 }

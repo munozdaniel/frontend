@@ -145,6 +145,18 @@
               ></span>
               <span>Asignar Profesor</span>
             </button>
+            <mat-divider></mat-divider>
+            <button
+              fxLayout="row"
+              fxLayoutGap="5px"
+              fxLayoutAlign="start center"
+              mat-menu-item
+              (click)="eliminar(row)"
+              matTooltip="Eliminar usuario"
+            >
+              <mat-icon>delete_forever</mat-icon>
+              <span>Eliminar</span>
+            </button>
           </mat-menu>
         </div>
       </td>

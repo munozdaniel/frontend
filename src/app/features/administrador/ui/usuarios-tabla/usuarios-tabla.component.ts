@@ -20,6 +20,7 @@ export class UsuariosTablaComponent implements OnInit, OnChanges {
   @Input() cargando: boolean;
   @Output() retCambiarRol = new EventEmitter<IUsuario>();
   @Output() retActualizarTabla = new EventEmitter<boolean>();
+  @Output() retEliminarUsuario = new EventEmitter<IUsuario>();
   dataSource: MatTableDataSource<any> = new MatTableDataSource([]);
   @ViewChild('sort') set setSort(sort: MatSort) {
     this.dataSource.sort = sort;
@@ -81,5 +82,8 @@ export class UsuariosTablaComponent implements OnInit, OnChanges {
         this.retActualizarTabla.emit(true);
       }
     });
+  }
+  eliminar(usuario:IUsuario){
+      this.retEliminarUsuario.emit(usuario)
   }
 }

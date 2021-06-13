@@ -7,6 +7,7 @@ import { IProfesor } from 'app/models/interface/iProfesor';
 
 @Injectable({ providedIn: 'root' })
 export class UsuarioService {
+  
   protected url = environment.apiURI;
   constructor(private http: HttpClient) {}
   enviarLink(email: string): Observable<any> {
@@ -20,7 +21,7 @@ export class UsuarioService {
     return this.http.post(url, user);
   }
 
-  delete(id: number) {
+  delete(id: string) {
     const query = `usuarios/${id}`;
     const url = this.url + query;
     return this.http.delete(url);
