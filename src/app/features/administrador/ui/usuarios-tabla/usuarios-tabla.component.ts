@@ -19,6 +19,7 @@ export class UsuariosTablaComponent implements OnInit, OnChanges {
   @Input() usuarios: IUsuario[];
   @Input() cargando: boolean;
   @Output() retCambiarRol = new EventEmitter<IUsuario>();
+  @Output() retActualizarTabla = new EventEmitter<boolean>();
   dataSource: MatTableDataSource<any> = new MatTableDataSource([]);
   @ViewChild('sort') set setSort(sort: MatSort) {
     this.dataSource.sort = sort;
@@ -70,7 +71,6 @@ export class UsuariosTablaComponent implements OnInit, OnChanges {
     this.retCambiarRol.emit(usuario);
   }
   asignar(usuario: IUsuario) {
-    console.log('usuario', usuario);
     const dialogRef = this._dialog.open(AsignarProfesorComponent, {
       width: '250px',
       data: usuario,
@@ -78,6 +78,7 @@ export class UsuariosTablaComponent implements OnInit, OnChanges {
 
     dialogRef.afterClosed().subscribe((result) => {
       if (result) {
+        this.retActualizarTabla.emit(true);
       }
     });
   }

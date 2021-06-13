@@ -24,7 +24,13 @@ import Swal from 'sweetalert2';
       </div>
       <!--  -->
       <div fxLayout="row" fxLayoutAlign="center start" class="w-100-p">
-        <app-usuarios-tabla fxFlex="100" [usuarios]="usuarios" (retCambiarRol)="setCambiarRol($event)"> </app-usuarios-tabla>
+        <app-usuarios-tabla
+          fxFlex="100"
+          [usuarios]="usuarios"
+          (retActualizarTabla)="setActualizarTabla($event)"
+          (retCambiarRol)="setCambiarRol($event)"
+        >
+        </app-usuarios-tabla>
       </div>
     </div>
   `,
@@ -115,6 +121,7 @@ export class RolesComponent implements OnInit {
             text: 'El usuario ha sido actualizado con un nuevo rol.',
             icon: 'success',
           });
+          this.cargarUsuarios();
         } else {
           Swal.fire({
             title: 'Oops! Ocurrió un error',
@@ -124,5 +131,8 @@ export class RolesComponent implements OnInit {
         }
       }
     });
+  }
+  setActualizarTabla(evento) {
+    this.cargarUsuarios();
   }
 }

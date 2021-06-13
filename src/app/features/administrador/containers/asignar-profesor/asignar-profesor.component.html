@@ -14,7 +14,9 @@
     >
     </input-autocomplete>
     <button mat-raised-button color="accent" type="submit" class="w-100-p">GUARDAR</button>
+    <button *ngIf="usuario.profesor" (click)="quitarProfesor()" mat-raised-button color="warn" type="button" class="w-100-p mt-24">
+      SIN ASIGNAR
+    </button>
   </form>
-  {{ usuario | json }}
 </div>
 <div mat-dialog-actions></div>

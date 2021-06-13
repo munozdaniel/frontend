@@ -40,7 +40,12 @@ export class UsuarioService {
     const url = this.url + query;
     return this.http.post<any>(url, { profesor });
   }
-  cambiarContrasena(email: string, password: string, passwordConfirm: string, _id: string):Observable<any> {
+  quitarProfesor(usuarioId: string): Observable<any> {
+    const query = `usuarios/desasignar-profesor/${usuarioId}`;
+    const url = this.url + query;
+    return this.http.get<any>(url);
+  }
+  cambiarContrasena(email: string, password: string, passwordConfirm: string, _id: string): Observable<any> {
     const query = `/usuarios/change-password`;
     const url = this.url + query;
 

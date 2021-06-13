@@ -101,4 +101,25 @@ export class AsignarProfesorComponent implements OnInit {
         );
     }
   }
+  quitarProfesor() {
+    this._usuarioService
+      .quitarProfesor(this.usuario._id)
+      .pipe(untilDestroyed(this))
+      .subscribe(
+        (datos) => {
+          Swal.fire({
+            title: 'Operación exitosa',
+            text: 'El profesor ha sido desvinculado al usuario',
+            icon: 'success',
+            timer: 2000,
+            timerProgressBar: true,
+          }).then(() => {
+            this.dialogRef.close(true);
+          });
+        },
+        (error) => {
+          console.log('[ERROR]', error);
+        }
+      );
+  }
 }
