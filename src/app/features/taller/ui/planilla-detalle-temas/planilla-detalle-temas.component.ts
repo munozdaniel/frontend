@@ -28,6 +28,7 @@ export class PlanillaDetalleTemasComponent implements OnInit, OnChanges {
   @Input() planillaTaller?: IPlanillaTaller;
   @Input() template?: string;
   @Input() temas: ITema[];
+  @Input() reset: number;
   temaSeleccionado: ITema = null;
   @Input() cargandoTemas: boolean;
   @Output() retAbrirModalTemas = new EventEmitter<boolean>();
@@ -69,6 +70,10 @@ export class PlanillaDetalleTemasComponent implements OnInit, OnChanges {
   }
 
   ngOnChanges(changes: SimpleChanges): void {
+    if (changes.reset && changes.reset.currentValue) {
+      console.log('temasele', this.temaSeleccionado);
+      this.temaSeleccionado = null;
+    }
     if (changes.temas && changes.temas.currentValue) {
       this.clasesDictadas = 0;
       this.temas.forEach((x) => {

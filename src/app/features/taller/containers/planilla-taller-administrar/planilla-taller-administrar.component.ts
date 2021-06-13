@@ -98,6 +98,7 @@ import { TemaFormModalComponent } from '../tema-form-modal/tema-form-modal.compo
             <app-planilla-detalle-temas
               [template]="template"
               [temas]="temas"
+              [reset]="resetTema"
               [isUpdate]="!deshabilitarEdicion"
               [planillaTaller]="planillaTaller"
               [cargandoTemas]="cargandoTemas"
@@ -153,6 +154,7 @@ import { TemaFormModalComponent } from '../tema-form-modal/tema-form-modal.compo
   animations: [designAnimations],
 })
 export class PlanillaTallerAdministrarComponent implements OnInit {
+  resetTema = 0;
   asistenciasHoy: { presentes: 0; ausentes: 0 };
   anioActual = new Date().getFullYear();
   deshabilitarEdicion = false;
@@ -672,6 +674,7 @@ export class PlanillaTallerAdministrarComponent implements OnInit {
 
     dialogRef.afterClosed().subscribe((resultado) => {
       if (resultado) {
+        this.resetTema++;
         this.obtenerClasesDetalle();
         // this.obtenerLibroDeTemas();
       }
@@ -685,7 +688,7 @@ export class PlanillaTallerAdministrarComponent implements OnInit {
     dialogRef.afterClosed().subscribe((resultado) => {
       if (resultado) {
         this.obtenerClasesDetalle();
-
+        this.resetTema++;
         // this.obtenerLibroDeTemas();
       }
     });
@@ -724,6 +727,7 @@ export class PlanillaTallerAdministrarComponent implements OnInit {
             icon: 'success',
           });
           this.obtenerClasesDetalle();
+          this.resetTema++;
           //   this.obtenerLibroDeTemas();
         } else {
           Swal.fire({
@@ -736,6 +740,7 @@ export class PlanillaTallerAdministrarComponent implements OnInit {
     });
   }
   setCargarLista(event) {
+    this.resetTema++;
     this.obtenerClasesDetalle();
   }
 
