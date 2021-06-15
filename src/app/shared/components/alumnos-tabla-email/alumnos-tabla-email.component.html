@@ -60,17 +60,24 @@
     </ng-container>
     <ng-container matColumnDef="profesor">
       <th mat-header-cell *matHeaderCellDef mat-sort-header>Prof</th>
-      <td mat-cell *matCellDef="let row">{{ row.planillaTaller.profesor.nombreCompleto }}</td>
+      <td mat-cell *matCellDef="let row">
+        <div fxLayout="column">
+          <strong> {{ row.planillaTaller.profesor.nombreCompleto }}</strong>
+          <span> {{ row.planillaTaller.asignatura.detalle }}</span>
+        </div>
+      </td>
     </ng-container>
     <ng-container matColumnDef="curso">
       <th mat-header-cell *matHeaderCellDef mat-sort-header>
         <span class="text-center">Curso/Div./Com.</span>
       </th>
       <td mat-cell *matCellDef="let row" class="fila_hover">
-        <div class="comision" fxLayout="row" fxLayoutAlign="center start">
-          <span matTooltip="CURSO">{{ row.planillaTaller.curso?.curso }}° AÑO</span>
-          <strong class="mx-4"> </strong>
-          <span matTooltip="DIVISION">{{ row.planillaTaller.curso?.division }}° DIV</span>
+        <div fxLayout="column" fxLayoutAlign="center center">
+          <div class="comision" fxLayout="row wrap" fxLayoutAlign="center start">
+            <span matTooltip="CURSO">{{ row.planillaTaller.curso?.curso }}° AÑO</span>
+            <strong class="mx-4"> </strong>
+            <span matTooltip="DIVISION">{{ row.planillaTaller.curso?.division }}° DIV</span>
+          </div>
           <strong class="mx-4" *ngIf="row.planillaTaller.curso?.comision"> </strong>
           <span *ngIf="row.planillaTaller.curso?.comision" matTooltip="COMISION">COM. {{ row.planillaTaller.curso?.comision }}</span>
         </div>
@@ -80,10 +87,10 @@
       <th mat-header-cell *matHeaderCellDef mat-sort-header>Responsable</th>
       <td mat-cell *matCellDef="let row">
         <div fxLayout="column">
-          <span>{{ row.alumno.nombreAdulto }}</span>
-          <span>
-            {{ row.alumno.email }}
-          </span>
+          <span>{{ row.nombreAdulto }}</span>
+          <strong style="color: rgb(0, 153, 255)">
+            {{ row.email }}
+          </strong>
         </div>
       </td>
     </ng-container>

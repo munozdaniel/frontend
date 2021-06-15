@@ -180,9 +180,13 @@ export class InasistenciasAlumnosComponent implements OnInit {
   }
   enviarEmail() {
     const alumnosRegistrados: IAlumno[] = this.alumnos.filter((x) => {
-      const emailEncontrado = x.adultos.find((a) => a.email);
-      if (emailEncontrado) {
-        return x;
+      if (x.adultos) {
+        const emailEncontrado = x.adultos.find((a) => a.email);
+        if (emailEncontrado) {
+          return x;
+        }
+      } else {
+        console.log('x', x);
       }
     });
     Swal.fire({
@@ -196,17 +200,19 @@ export class InasistenciasAlumnosComponent implements OnInit {
       cancelButtonText: 'Cancelar',
       showLoaderOnConfirm: true,
       preConfirm: () => {
-        return this._alumnoService.enviarEmailMasivo(alumnosRegistrados, this.form.controls.fecha.value).pipe(
-          catchError((error) => {
-            console.log('[ERROR]', error);
-            Swal.fire({
-              title: 'Oops! Ocurrió un error',
-              text: error && error.error ? error.error.message : 'Error de conexion',
-              icon: 'error',
-            });
-            return of(error);
-          })
-        );
+        return this._alumnoService
+          .enviarEmailMasivo(alumnosRegistrados, this.form.controls.fechaDesde.value, this.form.controls.fechaHasta.value)
+          .pipe(
+            catchError((error) => {
+              console.log('[ERROR]', error);
+              Swal.fire({
+                title: 'Oops! Ocurrió un error',
+                text: error && error.error ? error.error.message : 'Error de conexion',
+                icon: 'error',
+              });
+              return of(error);
+            })
+          );
       },
       allowOutsideClick: () => !Swal.isLoading(),
     }).then((result: any) => {

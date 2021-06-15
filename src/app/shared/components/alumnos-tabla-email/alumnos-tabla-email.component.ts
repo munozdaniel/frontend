@@ -25,7 +25,7 @@ export class AlumnosTablaEmailComponent implements OnInit, OnChanges {
   @ViewChild('paginator') set setPaginator(paginator: MatPaginator) {
     this.dataSource.paginator = paginator;
   }
-  columnas: string[] = ['alumnoNro', 'nombre', 'dni', 'curso', 'email', 'asignatura', 'profesor'];
+  columnas: string[] = ['alumnoNro', 'nombre', 'dni', 'curso', 'email', 'profesor'];
   // Input
   @Input() alumnos: IAlumno[];
   // Mobile
@@ -49,7 +49,7 @@ export class AlumnosTablaEmailComponent implements OnInit, OnChanges {
         this.columnas = ['nombre', 'curso', 'email', 'asistencia'];
       } else {
         this.isMobile = false;
-        this.columnas = ['asistencia', 'nombre', 'dni', 'curso', 'email', 'asignatura', 'profesor'];
+        this.columnas = ['asistencia', 'nombre', 'dni', 'curso', 'email', 'profesor'];
       }
     });
   }
@@ -118,6 +118,7 @@ export class AlumnosTablaEmailComponent implements OnInit, OnChanges {
   }
   ngOnChanges(changes: SimpleChanges): void {
     if (changes.alumnos && changes.alumnos.currentValue) {
+      console.log('changes.alumnos.currentValue', changes.alumnos.currentValue);
       this.dataSource.data = changes.alumnos.currentValue;
     }
   }
