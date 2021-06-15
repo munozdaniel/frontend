@@ -22,6 +22,8 @@ import { AlumnosTablaEmailComponent } from './components/alumnos-tabla-email/alu
 import { TomarAsistenciaModalComponent } from './components/tomar-asistencia-modal/tomar-asistencia-modal.component';
 import { AlumnosTablaCursadaComponent } from './components/alumnos-tabla-cursada/alumnos-tabla-cursada.component';
 import { NgxPermissionsModule } from 'ngx-permissions';
+import { SidebarNotificacionesComponent } from './components/sidebar-notificaciones/sidebar-notificaciones.component';
+import { SeguimientoFormModalComponent } from './components/seguimiento-form-modal/seguimiento-form-modal.component';
 
 @NgModule({
   imports: [
@@ -37,7 +39,7 @@ import { NgxPermissionsModule } from 'ngx-permissions';
     NgxPermissionsModule.forChild(),
   ],
   providers: [],
-  entryComponents: [],
+  entryComponents: [SidebarNotificacionesComponent, SeguimientoFormModalComponent],
   exports: [
     Error401Component,
     Error404Component,
@@ -56,6 +58,8 @@ import { NgxPermissionsModule } from 'ngx-permissions';
     AlumnosTablaEmailComponent,
     TomarAsistenciaModalComponent,
     AlumnosTablaCursadaComponent,
+    SidebarNotificacionesComponent,
+    SeguimientoFormModalComponent,
   ],
   declarations: [
     Error401Component,
@@ -75,6 +79,8 @@ import { NgxPermissionsModule } from 'ngx-permissions';
     AlumnosTablaEmailComponent,
     TomarAsistenciaModalComponent,
     AlumnosTablaCursadaComponent,
+    SidebarNotificacionesComponent,
+    SeguimientoFormModalComponent,
   ],
 })
 export class SharedModule {}

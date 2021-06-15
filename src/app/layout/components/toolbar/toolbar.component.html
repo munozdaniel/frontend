@@ -42,9 +42,22 @@
       *ngIf="authService.currentUser$ | async as usuario; else sinUsuario"
       class=""
       fxFlex="0 1 auto"
-      fxLayout="row"
+      fxLayout="row wrap"
       fxLayoutAlign="start center"
     >
+      <button
+        *ngxPermissionsOnly="['PROFESOR', 'ADMIN']"
+        mat-stroked-button
+        [matBadge]="seguimientosSinLeer.length"
+        [color]="seguimientosSinLeer.length > 0 ? 'warn' : ''"
+        (click)="mostrarSideBarSeguimientos()"
+        matTooltip="Notificaciones Pendientes de Lectura"
+      >
+        <mat-icon *ngIf="!seguimientosSinLeer || seguimientosSinLeer.length < 1">notifications_none</mat-icon>
+        <mat-icon class="mover" *ngIf="seguimientosSinLeer && seguimientosSinLeer.length > 0">notification_important</mat-icon>
+        <span *ngIf="!isMobile">Notificaciones Pendientes</span>
+      </button>
+
       <button mat-button [matMenuTriggerFor]="userMenu" class="user-button">
         <div fxLayout="row" fxLayoutAlign="center center">
           <img class="avatar mr-0 mr-sm-16" [src]="usuario.picture ? usuario.picture : '/assets/auth/avatar.svg'" [alt]="usuario.nombre" />

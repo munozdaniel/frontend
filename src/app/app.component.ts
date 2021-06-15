@@ -16,6 +16,7 @@ import { AuthenticationService } from './core/services/helpers/authentication.se
 import { Router } from '@angular/router';
 import { NgxPermissionsService } from 'ngx-permissions';
 import { RolConst } from './models/constants/rol.enum';
+import { SeguimientoAlumnoService } from './core/services/seguimientoAlumno.service';
 @UntilDestroy()
 @Component({
   selector: 'app',
@@ -50,7 +51,8 @@ export class AppComponent implements OnInit, OnDestroy {
     private _designSplashScreenService: DesignSplashScreenService,
     private _platform: Platform,
     private _authService: AuthenticationService,
-    private _router: Router
+    private _router: Router,
+    private _seguimientoAlumnoService: SeguimientoAlumnoService
   ) {
     // Get default navigation
     this.navigation = navigation;
@@ -158,70 +160,83 @@ export class AppComponent implements OnInit, OnDestroy {
           this.isLogin = true; // Set the main navigation as our current navigation
           this._designNavigationService.setCurrentNavigation('main');
           const navegacionActual = this._designNavigationService.getNavigationItem('custom-function');
-          if ((datos.rol === RolConst.ADMIN || datos.rol === RolConst.JEFETALLER) && !navegacionActual) {
-            const customFunctionNavItem = {
-              id: 'custom-function',
-              title: 'Administrar',
-              type: 'collapsable',
-              children: [
-                // {
-                //   id: 'migrar',
-                //   title: 'Migrador',
-                //   type: 'item',
-                //   icon: 'users',
-                //   url: '/administrador/migrar',
-                // },
-                {
-                  id: 'alumnos',
-                  title: 'Alumnos Eliminados',
-                  type: 'item',
-                  icon: 'build_circle',
-                  url: '/administrador/alumnos-eliminados',
-                },
-                {
-                  id: 'usuarios',
-                  title: 'Usuarios',
-                  type: 'item',
-                  icon: 'build_circle',
-                  url: '/administrador/usuarios-roles',
-                },
-                {
-                  id: 'ciclo-lectivo',
-                  title: 'Ciclo Lectivo',
-                  type: 'item',
-                  icon: 'warning',
-                  url: '/administrador/ciclo-lectivo',
-                },
-                // {
-                //   id: 'micuenta',
-                //   title: 'Mi Cuenta',
-                //   type: 'item',
-                //   icon: 'account',
-                //   url: '/administrador/mi-cuenta',
-                // },
-                {
-                  id: 'calendario',
-                  title: 'Calendario',
-                  type: 'item',
-                  icon: 'today',
-                  url: '/administrador/calendario-academico',
-                },
-                // {
-                //   id: 'customize',
-                //   title: 'Diseño',
-                //   type: 'item',
-                //   icon: 'settings',
-                //   function: () => {
-                //     this.toggleSidebarOpen('themeOptionsPanel');
-                //   },
-                // },
-              ],
-            };
-            this._designNavigationService.addNavigationItem(customFunctionNavItem, 'end');
-          } else {
-            if (datos.rol === RolConst.PRECEPTOR) {
+          //  Solo lo debe usar el profesor
+          this._seguimientoAlumnoService.poolingSeguimientos(datos.email);
+          switch (datos.rol) {
+            case RolConst.ADMIN:
+            case RolConst.JEFETALLER:
+              const customFunctionNavItem = {
+                id: 'custom-function',
+                title: 'Administrar',
+                type: 'collapsable',
+                children: [
+                  // {
+                  //   id: 'migrar',
+                  //   title: 'Migrador',
+                  //   type: 'item',
+                  //   icon: 'users',
+                  //   url: '/administrador/migrar',
+                  // },
+                  {
+                    id: 'alumnos',
+                    title: 'Alumnos Eliminados',
+                    type: 'item',
+                    icon: 'build_circle',
+                    url: '/administrador/alumnos-eliminados',
+                  },
+                  {
+                    id: 'usuarios',
+                    title: 'Usuarios',
+                    type: 'item',
+                    icon: 'build_circle',
+                    url: '/administrador/usuarios-roles',
+                  },
+                  {
+                    id: 'ciclo-lectivo',
+                    title: 'Ciclo Lectivo',
+                    type: 'item',
+                    icon: 'warning',
+                    url: '/administrador/ciclo-lectivo',
+                  },
+                  // {
+                  //   id: 'micuenta',
+                  //   title: 'Mi Cuenta',
+                  //   type: 'item',
+                  //   icon: 'account',
+                  //   url: '/administrador/mi-cuenta',
+                  // },
+                  {
+                    id: 'calendario',
+                    title: 'Calendario',
+                    type: 'item',
+                    icon: 'today',
+                    url: '/administrador/calendario-academico',
+                  },
+                  // {
+                  //   id: 'customize',
+                  //   title: 'Diseño',
+                  //   type: 'item',
+                  //   icon: 'settings',
+                  //   function: () => {
+                  //     this.toggleSidebarOpen('themeOptionsPanel');
+                  //   },
+                  // },
+                ],
+              };
+              this._designNavigationService.addNavigationItem(customFunctionNavItem, 'end');
+
+              break;
+            case RolConst.PROFESOR:
+              // this._seguimientoAlumnoService.poolingSeguimientos(datos.email);
+              this._designNavigationService.removeNavigationItem('custom-function');
+              break;
+
+            case RolConst.PRECEPTOR:
               this._designNavigationService.removeNavigationItem('taller_planilla');
-            }
+              this._designNavigationService.removeNavigationItem('custom-function');
+              break;
+            default:
+              break;
           }
         }
       },

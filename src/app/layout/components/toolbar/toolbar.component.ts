@@ -1,4 +1,4 @@
-import { Component, Inject, OnDestroy, OnInit, ViewEncapsulation } from '@angular/core';
+import { ChangeDetectorRef, Component, Inject, OnDestroy, OnInit, ViewEncapsulation } from '@angular/core';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import * as _ from 'lodash';
@@ -9,7 +9,11 @@ import { DesignSidebarService } from '@design/components/sidebar/sidebar.service
 import { navigation } from 'app/navigation/navigation';
 import { DOCUMENT } from '@angular/common';
 import { AuthenticationService } from 'app/core/services/helpers/authentication.service';
-
+import { SeguimientoAlumnoService } from 'app/core/services/seguimientoAlumno.service';
+import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
+import { ISeguimientoAlumno } from 'app/models/interface/iSeguimientoAlumno';
+import { MediaMatcher, BreakpointObserver, Breakpoints, BreakpointState } from '@angular/cdk/layout';
+@UntilDestroy()
 @Component({
   selector: 'toolbar',
   templateUrl: './toolbar.component.html',
@@ -26,7 +30,11 @@ export class ToolbarComponent implements OnInit, OnDestroy {
 
   // Private
   private _unsubscribeAll: Subject<any>;
-
+  seguimientosSinLeer: ISeguimientoAlumno[] = [];
+  // Mobile
+  isMobile: boolean;
+  private _mobileQueryListener: () => void;
+  mobileQuery: MediaQueryList;
   /**
    * Constructor
    *
@@ -34,11 +42,24 @@ export class ToolbarComponent implements OnInit, OnDestroy {
    * @param {DesignSidebarService} _designSidebarService
    */
   constructor(
+    private _changeDetectorRef: ChangeDetectorRef,
+    private _media: MediaMatcher,
+    public breakpointObserver: BreakpointObserver,
     public authService: AuthenticationService,
     @Inject(DOCUMENT) public document: Document,
     private _designConfigService: DesignConfigService,
-    private _designSidebarService: DesignSidebarService
+    private _designSidebarService: DesignSidebarService,
+    private _seguimientoService: SeguimientoAlumnoService
   ) {
+    this.mobileQuery = this._media.matchMedia('(max-width: 600px)');
+    this._mobileQueryListener = () => this._changeDetectorRef.detectChanges();
+    this.breakpointObserver.observe([Breakpoints.Small, Breakpoints.HandsetPortrait]).subscribe((state: BreakpointState) => {
+      if (state.matches) {
+        this.isMobile = true;
+      } else {
+        this.isMobile = false;
+      }
+    });
     // Set the defaults
     this.userStatusOptions = [
       {
@@ -68,18 +89,18 @@ export class ToolbarComponent implements OnInit, OnDestroy {
       },
     ];
 
-    this.languages = [
-      {
-        id: 'en',
-        title: 'English',
-        flag: 'us',
-      },
-      {
-        id: 'tr',
-        title: 'Turkish',
-        flag: 'tr',
-      },
-    ];
+    // this.languages = [
+    //   {
+    //     id: 'en',
+    //     title: 'English',
+    //     flag: 'us',
+    //   },
+    //   {
+    //     id: 'tr',
+    //     title: 'Turkish',
+    //     flag: 'tr',
+    //   },
+    // ];
 
     this.navigation = navigation;
 
@@ -100,6 +121,10 @@ export class ToolbarComponent implements OnInit, OnDestroy {
       this.horizontalNavbar = settings.layout.navbar.position === 'top';
       this.rightNavbar = settings.layout.navbar.position === 'right';
       this.hiddenNavbar = settings.layout.navbar.hidden === true;
+    });
+    this._seguimientoService.seguimientos$.pipe(untilDestroyed(this)).subscribe((datos) => {
+      console.log('Seguimiento sin leer', datos.length);
+      this.seguimientosSinLeer = datos;
     });
   }
 
@@ -123,5 +148,10 @@ export class ToolbarComponent implements OnInit, OnDestroy {
    */
   toggleSidebarOpen(key): void {
     this._designSidebarService.getSidebar(key).toggleOpen();
+  }
+  mostrarSideBarSeguimientos() {
+    if (this._designSidebarService.getSidebar('notificaciones')) {
+      this._designSidebarService.getSidebar('notificaciones').toggleOpen();
+    }
   }
 }

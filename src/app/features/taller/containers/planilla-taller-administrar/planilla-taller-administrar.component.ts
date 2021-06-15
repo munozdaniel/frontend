@@ -7,9 +7,11 @@ import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { AlumnoService } from 'app/core/services/alumno.service';
 import { AsistenciaService } from 'app/core/services/asistencia.service';
 import { CalificacionService } from 'app/core/services/calificacion.service';
+import { AuthenticationService } from 'app/core/services/helpers/authentication.service';
 import { PlanillaTallerService } from 'app/core/services/planillaTaller.service';
 import { SeguimientoAlumnoService } from 'app/core/services/seguimientoAlumno.service';
 import { TemaService } from 'app/core/services/tema.service';
+import { RolConst } from 'app/models/constants/rol.enum';
 import { TemplateEnum } from 'app/models/constants/tipo-template.const';
 import { IAlumno } from 'app/models/interface/iAlumno';
 import { IAsistencia } from 'app/models/interface/iAsistencia';
@@ -18,14 +20,15 @@ import { ICalificacion } from 'app/models/interface/iCalificacion';
 import { IPlanillaTaller } from 'app/models/interface/iPlanillaTaller';
 import { ISeguimientoAlumno } from 'app/models/interface/iSeguimientoAlumno';
 import { ITema } from 'app/models/interface/iTema';
+import { IUsuario } from 'app/models/interface/iUsuario';
 import { EmailAusenteModalComponent } from 'app/shared/components/email-ausente-modal/email-ausente-modal.component';
+import { SeguimientoFormModalComponent } from 'app/shared/components/seguimiento-form-modal/seguimiento-form-modal.component';
 import { TomarAsistenciaModalComponent } from 'app/shared/components/tomar-asistencia-modal/tomar-asistencia-modal.component';
 import { of } from 'rxjs';
-import { catchError } from 'rxjs/operators';
+import { catchError, ignoreElements } from 'rxjs/operators';
 import Swal from 'sweetalert2';
 import { AsistenciaFormModalComponent } from '../asistencia-form-modal/asistencia-form-modal.component';
 import { CalificacionFormModalComponent } from '../calificacion-form-modal/calificacion-form-modal.component';
-import { SeguimientoFormModalComponent } from '../seguimiento-form-modal/seguimiento-form-modal.component';
 import { TemaFormModalComponent } from '../tema-form-modal/tema-form-modal.component';
 @UntilDestroy()
 @Component({
@@ -154,6 +157,7 @@ import { TemaFormModalComponent } from '../tema-form-modal/tema-form-modal.compo
   animations: [designAnimations],
 })
 export class PlanillaTallerAdministrarComponent implements OnInit {
+  usuario: IUsuario;
   resetTema = 0;
   asistenciasHoy: { presentes: 0; ausentes: 0 };
   anioActual = new Date().getFullYear();
@@ -169,6 +173,8 @@ export class PlanillaTallerAdministrarComponent implements OnInit {
   cargandoAlumnos = false;
   alumnos: IAlumno[];
   alumnoSeleccionado: IAlumno;
+  alumnoId: string;
+  seguimientoId: string;
   //   Calendario
   calendario: ICalendario[];
   //   Asistencias
@@ -192,6 +198,7 @@ export class PlanillaTallerAdministrarComponent implements OnInit {
   mobileQuery: MediaQueryList;
   constructor(
     private _activeRoute: ActivatedRoute,
+    private _authService: AuthenticationService,
     private _alumnoService: AlumnoService,
     private _temaService: TemaService,
     private _asistenciaService: AsistenciaService,
@@ -213,6 +220,9 @@ export class PlanillaTallerAdministrarComponent implements OnInit {
         this.isMobile = false;
       }
     });
+    this._authService.currentUser$.pipe(untilDestroyed(this)).subscribe((datos) => {
+      this.usuario = datos;
+    });
     this.suscripcionAsistenciasHoy();
   }
 
@@ -220,9 +230,34 @@ export class PlanillaTallerAdministrarComponent implements OnInit {
     this._activeRoute.params.subscribe((params) => {
       this.planillaId = params['id'];
       this.tipoPantalla = params['tipo'];
-      this.seleccionarTab();
+      this.seguimientoId = params['seguimientoId'];
+
       this.obtenerPlanilla();
     });
+  }
+  obtenerSeguimiento() {
+    this._seguimientoAlumnoService
+      .obtenerSeguimientoPorIdCompleto(this.seguimientoId)
+      .pipe(untilDestroyed(this))
+      .subscribe(
+        ({ seguimiento }) => {
+          //   if (this.usuario.rol === RolConst.ADMIN || this.usuario.rol === RolConst.JEFETALLER) {
+          //     this.indiceTab = 5;
+          //   } else {
+          //     this.indiceTab = 4;
+          //   }
+          const index = this.alumnos.findIndex((x) => x._id === seguimiento.alumno._id);
+          console.log('index', index);
+          if (index !== -1) {
+            this.alumnoSeleccionado = this.alumnos[index];
+            this.setBuscarSeguimientosPorAlumno(this.alumnoSeleccionado);
+            this.setEditarSeguimiento(seguimiento);
+          }
+        },
+        (error) => {
+          console.log('[ERROR]', error);
+        }
+      );
   }
   suscripcionAsistenciasHoy() {
     this._asistenciaService.asistenciasHoy$.pipe(untilDestroyed(this)).subscribe((datos) => {
@@ -276,6 +311,10 @@ export class PlanillaTallerAdministrarComponent implements OnInit {
         (datos) => {
           this.alumnos = datos;
           this.cargandoAlumnos = false;
+          this.seleccionarTab(); // Por si viene por parametro
+          if (this.seguimientoId) {
+            this.obtenerSeguimiento();
+          }
         },
         (error) => {
           this.cargandoAlumnos = false;
@@ -298,6 +337,10 @@ export class PlanillaTallerAdministrarComponent implements OnInit {
             })
             .filter((x) => x);
           this.cargandoAlumnos = false;
+          this.seleccionarTab(); // Por si viene por parametro
+          if (this.seguimientoId) {
+            this.obtenerSeguimiento();
+          }
         },
         (error) => {
           this.cargandoAlumnos = false;
@@ -308,6 +351,10 @@ export class PlanillaTallerAdministrarComponent implements OnInit {
 
   seleccionarTab() {
     switch (this.tipoPantalla) {
+      case 'general':
+        this.indiceTab = 1;
+
+        break;
       case 'asistencias':
         this.indiceTab = 1;
 
@@ -315,14 +362,30 @@ export class PlanillaTallerAdministrarComponent implements OnInit {
       case 'calificaciones':
         this.indiceTab = 2;
         break;
-      case 'seguimientos':
+      case 'temas':
         this.indiceTab = 3;
         break;
-      case 'temas':
-        this.indiceTab = 4;
+      case 'seguimientos':
+        if (this.usuario.rol === RolConst.ADMIN || this.usuario.rol === RolConst.JEFETALLER) {
+          this.indiceTab = 5;
+        } else {
+          this.indiceTab = 4;
+        }
+        // const index = this.alumnos.findIndex((x) => x._id === this.alumnoId);
+        // console.log('index', index);
+        // if (index !== -1) {
+        //   this.alumnoSeleccionado = this.alumnos[index];
+        //   this.setBuscarSeguimientosPorAlumno(this.alumnoSeleccionado);
+        //   this.setEditarSeguimiento();
+        // }
         break;
+
       case 'informes':
-        this.indiceTab = 5;
+        if (this.usuario.rol === RolConst.ADMIN || this.usuario.rol === RolConst.JEFETALLER) {
+          this.indiceTab = 6;
+        } else {
+          this.indiceTab = 5;
+        }
         break;
       default:
         this.indiceTab = 0;
@@ -366,14 +429,22 @@ export class PlanillaTallerAdministrarComponent implements OnInit {
         }
         break;
       case 4:
-        this.titulo = 'Calendario ';
-        if (!this.calendario) {
-          this.obtenerClasesDetalle();
+        if (this.usuario.rol === RolConst.ADMIN || this.usuario.rol === RolConst.JEFETALLER) {
+          this.titulo = 'Calendario ';
+          if (!this.calendario) {
+            this.obtenerClasesDetalle();
+          }
+        } else {
+          this.titulo = 'Seguimiento del Alumno';
         }
+
         break;
       case 5:
-        this.titulo = 'Seguimiento del Alumno';
-
+        if (this.usuario.rol === RolConst.ADMIN || this.usuario.rol === RolConst.JEFETALLER) {
+          this.titulo = 'Seguimiento del Alumno';
+        } else {
+          this.titulo = 'Informes';
+        }
         break;
       case 6:
         this.titulo = 'Informes';

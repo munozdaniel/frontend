@@ -1,54 +1,111 @@
-@import "src/@design/scss/design";
+@import 'src/@design/scss/design';
+.mover {
+  animation: shake 4.72s cubic-bezier(0.36, 0.07, 0.19, 0.97) both infinite;
+  transform: translate3d(0, 0, 0);
+  backface-visibility: hidden;
+  perspective: 1000px;
+}
+@keyframes shake {
+  0% {
+    transform: translate(0, 0);
+  }
+  1.78571% {
+    transform: translate(5px, 0);
+  }
+  3.57143% {
+    transform: translate(0, 0);
+  }
+  5.35714% {
+    transform: translate(5px, 0);
+  }
+  7.14286% {
+    transform: translate(0, 0);
+  }
+  8.92857% {
+    transform: translate(5px, 0);
+  }
+  10.71429% {
+    transform: translate(0, 0);
+  }
+  100% {
+    transform: translate(0, 0);
+  }
+  0% {
+    transform: translate(0, 0);
+  }
+  10%,
+  90% {
+    transform: translate3d(-1px, 0, 0);
+  }
 
+  20%,
+  80% {
+    transform: translate3d(2px, 0, 0);
+  }
+
+  30%,
+  50%,
+  70% {
+    transform: translate3d(-4px, 0, 0);
+  }
+
+  40%,
+  60% {
+    transform: translate3d(4px, 0, 0);
+  }
+  100% {
+    transform: translate(0, 0);
+  }
+}
 toolbar {
+  position: relative;
+  display: flex;
+  flex: 0 0 auto;
+  z-index: 4;
+
+  &.below {
+    z-index: 2;
+  }
+
+  .mat-toolbar {
     position: relative;
+    background: inherit !important;
+    color: inherit !important;
+  }
+
+  .logo {
     display: flex;
-    flex: 0 0 auto;
-    z-index: 4;
+    align-items: center;
 
-    &.below {
-        z-index: 2;
+    .logo-icon {
+      width: 38px;
     }
+  }
 
-    .mat-toolbar {
-        position: relative;
-        background: inherit !important;
-        color: inherit !important;
+  .user-button,
+  design-search-bar,
+  .language-button,
+  .chat-panel-toggle-button,
+  .quick-panel-toggle-button {
+    min-width: 64px;
+    height: 64px;
+
+    @include media-breakpoint('xs') {
+      height: 56px;
     }
+  }
 
-    .logo {
-        display: flex;
-        align-items: center;
+  .navbar-toggle-button {
+    min-width: 56px;
+    height: 56px;
+  }
 
-        .logo-icon {
-            width: 38px;
-        }
+  .toolbar-separator {
+    height: 64px;
+    width: 1px;
+
+    @include media-breakpoint('xs') {
+      height: 56px;
     }
-
-    .user-button,
-    design-search-bar,
-    .language-button,
-    .chat-panel-toggle-button,
-    .quick-panel-toggle-button {
-        min-width: 64px;
-        height: 64px;
-
-        @include media-breakpoint('xs') {
-            height: 56px;
-        }
-    }
-
-    .navbar-toggle-button {
-        min-width: 56px;
-        height: 56px;
-    }
-
-    .toolbar-separator {
-        height: 64px;
-        width: 1px;
-
-        @include media-breakpoint('xs') {
-            height: 56px;
-        }
-    }
+  }
 }

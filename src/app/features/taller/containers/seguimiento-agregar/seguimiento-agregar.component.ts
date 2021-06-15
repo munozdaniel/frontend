@@ -9,10 +9,10 @@ import { TemplateEnum } from 'app/models/constants/tipo-template.const';
 import { IAlumno } from 'app/models/interface/iAlumno';
 import { ICicloLectivo } from 'app/models/interface/iCicloLectivo';
 import { ISeguimientoAlumno } from 'app/models/interface/iSeguimientoAlumno';
+import { SeguimientoFormModalComponent } from 'app/shared/components/seguimiento-form-modal/seguimiento-form-modal.component';
 import { of } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 import Swal from 'sweetalert2';
-import { SeguimientoFormModalComponent } from '../seguimiento-form-modal/seguimiento-form-modal.component';
 @UntilDestroy()
 @Component({
   selector: 'app-seguimiento-agregar',

@@ -253,14 +253,11 @@
         [tema]="temaSeleccionado"
         (retActualizarLibro)="setActualizarLibro($event)"
       ></app-tema-form-modal>
-      <div
-        fxLayout="row"
-        fxLayoutAlign="center center"
-        class="p-24 mat-card mat-elevation-z4"
-        *ngIf="!temaSeleccionado"
-        style="height: 200px"
-      >
-        <h2>Seleccione una fecha de la columna izquierda para comenzar a editar el libro de temas</h2>
+      <div fxLayout="row" fxLayoutAlign="center center" class="p-24 mat-card mat-elevation-z4" *ngIf="!temaSeleccionado">
+        <div fxLayout="column" fxLayoutAlign="center center">
+          <img src="assets/book.png" alt="libro" style="max-width: 150px" />
+          <p>Seleccione una fecha de la columna izquierda para comenzar a editar el libro de temas</p>
+        </div>
       </div>
     </div>
   </div>

@@ -1,4 +1,3 @@
-
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { DesignSharedModule } from '@design/shared.module';
@@ -33,7 +32,6 @@ import { TomarAsistenciaComponent } from './containers/tomar-asistencia/tomar-as
 import { AsistenciaFormModalComponent } from './containers/asistencia-form-modal/asistencia-form-modal.component';
 import { CalificacionFormModalComponent } from './containers/calificacion-form-modal/calificacion-form-modal.component';
 import { TemaFormModalComponent } from './containers/tema-form-modal/tema-form-modal.component';
-import { SeguimientoFormModalComponent } from './containers/seguimiento-form-modal/seguimiento-form-modal.component';
 import { SeguimientoEditarComponent } from './containers/seguimiento-editar/seguimiento-editar.component';
 import { SeguimientoFormComponent } from './ui/seguimiento-form/seguimiento-form.component';
 import { FichaAlumnoDetalleComponent } from './containers/ficha-alumno-detalle/ficha-alumno-detalle.component';
@@ -77,7 +75,6 @@ import { PlanillaSeguimientoComponent } from './ui/planilla-seguimiento/planilla
     AsistenciaFormModalComponent,
     CalificacionFormModalComponent,
     TemaFormModalComponent,
-    SeguimientoFormModalComponent,
     SeguimientoEditarComponent,
     SeguimientoFormComponent,
     FichaAlumnoDetalleComponent,

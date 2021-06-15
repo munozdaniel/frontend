@@ -51,6 +51,11 @@ const routes: Routes = [
     //  DEBE estar autenticados
   },
   {
+    path: 'planillas-administrar/:id/:tipo/:seguimientoId',
+    component: PlanillaTallerAdministrarComponent,
+    //  DEBE estar autenticados
+  },
+  {
     path: 'planilla-ver/:id/:ciclo',
     component: PlanillaVerComponent,
     //  DEBE estar autenticados

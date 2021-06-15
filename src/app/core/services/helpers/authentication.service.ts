@@ -6,6 +6,7 @@ import { map, tap } from 'rxjs/operators';
 import { environment } from 'environments/environment';
 import { IUsuario } from 'app/models/interface/iUsuario';
 import { DesignNavigationService } from '@design/components/navigation/navigation.service';
+import { SeguimientoAlumnoService } from '../seguimientoAlumno.service';
 
 @Injectable({ providedIn: 'root' })
 export class AuthenticationService {
@@ -13,7 +14,11 @@ export class AuthenticationService {
   private currentUserSubject: BehaviorSubject<IUsuario>;
   public currentUser$: Observable<IUsuario>;
 
-  constructor(private _designNavigationService: DesignNavigationService, private http: HttpClient) {
+  constructor(
+    private _designNavigationService: DesignNavigationService,
+    private http: HttpClient,
+    private _seguimientoService: SeguimientoAlumnoService
+  ) {
     this.currentUserSubject = new BehaviorSubject<IUsuario>(JSON.parse(localStorage.getItem('currentUser')));
     this.currentUser$ = this.currentUserSubject.asObservable();
   }
@@ -37,16 +42,14 @@ export class AuthenticationService {
   login(email, password) {
     const query = `auth/login`;
     const url = this.url + query;
-    return this.http
-      .post<any>(url, { email, password })
-      .pipe(
-        map((user) => {
-          // store user details and jwt token in local storage to keep user logged in between page refreshes
-          localStorage.setItem('currentUser', JSON.stringify(user));
-          this.currentUserSubject.next(user);
-          return user;
-        })
-      );
+    return this.http.post<any>(url, { email, password }).pipe(
+      map((user) => {
+        // store user details and jwt token in local storage to keep user logged in between page refreshes
+        localStorage.setItem('currentUser', JSON.stringify(user));
+        this.currentUserSubject.next(user);
+        return user;
+      })
+    );
   }
 
   logout(returnTo?: any) {
@@ -54,5 +57,6 @@ export class AuthenticationService {
     localStorage.removeItem('currentUser');
     this.currentUserSubject.next(null);
     this._designNavigationService.setCurrentNavigation('navigationEmpty');
+    this._seguimientoService.stopPolling.next();
   }
 }

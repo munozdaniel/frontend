@@ -1,0 +1,39 @@
+<div fxLayout="column">
+  <div fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="10px">
+    <button (click)="cerrar()" mat-icon-button><mat-icon class="mr-4">close</mat-icon></button>
+    <h3>Notificaciones</h3>
+  </div>
+  <mat-accordion>
+    <mat-expansion-panel style="border-radius: 0; color: white !important; background-color: #515264">
+      <mat-expansion-panel-header>
+        <mat-panel-title style="color: white !important">
+          <mat-icon style="color: red">notifications</mat-icon>
+          Seguimientos de Alumnos</mat-panel-title
+        >
+        <mat-panel-description> </mat-panel-description>
+      </mat-expansion-panel-header>
+      <div *ngIf="!seguimientosSinLeer || seguimientosSinLeer.length < 1">No hay seguimientos sin leer</div>
+      <mat-selection-list *ngFor="let seguimiento of seguimientosSinLeer" [multiple]="false">
+        <mat-list-option (click)="redireccionarSeguimiento(seguimiento)" class="w-100-p p-12 h-100-p">
+          <div fxLayout="column" class="w-100-p" style="color: white !important">
+            <div fxLayout="row wrap" fxLayoutAlign="space-between center">
+              <span>{{ seguimiento.tipoSeguimiento }}</span>
+              <!-- <button mat-icon-button color="accent" (click)="redireccionarSeguimiento()">
+                <span class="iconify" data-icon="fluent:open-16-filled" data-inline="false" style="font-size: 24px"></span>
+              </button> -->
+            </div>
+            <div fxLayout="row wrap" fxLayoutAlign="space-between center" style="font-weight: bolder; color: rgb(7 185 255)">
+              <small> {{ seguimiento.alumno.nombreCompleto }}</small>
+            </div>
+            <small fxLayout="row" fxLayoutAlign="space-between center">
+              <span>
+                {{ seguimiento.fechaCreacion | date: 'dd/MM/yyyy':'GMT' }}
+              </span>
+              <!-- <span class="fg--red"> No Leido</span> -->
+            </small>
+          </div>
+        </mat-list-option>
+      </mat-selection-list>
+    </mat-expansion-panel>
+  </mat-accordion>
+</div>

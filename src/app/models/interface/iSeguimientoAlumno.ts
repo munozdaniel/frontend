@@ -16,7 +16,7 @@ export interface ISeguimientoAlumno {
   observacion: string;
   observacion2: string;
   observacionJefe: string;
-
+  leido?: boolean;
   fechaCreacion: Date;
   creadoPor?: IUsuario | string;
   modificadoPor?: IUsuario | string;

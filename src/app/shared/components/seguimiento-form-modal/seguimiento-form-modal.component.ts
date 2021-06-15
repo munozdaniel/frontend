@@ -1,15 +1,15 @@
 import { trigger, state, style, transition, animate } from '@angular/animations';
-import { Component, Inject, OnInit, ViewChild } from '@angular/core';
-import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
-import { MatDialogRef, MatPaginator, MatSort, MatTableDataSource, MAT_DIALOG_DATA, throwToolbarMixedModesError } from '@angular/material';
+import { Component, Inject, OnInit } from '@angular/core';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { MatDialogRef, MAT_DIALOG_DATA, throwToolbarMixedModesError } from '@angular/material';
 import { designAnimations } from '@design/animations';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { CicloLectivoService } from 'app/core/services/ciclo-lectivo.service';
-import { ValidationService } from 'app/core/services/general/validation.services';
 import { AuthenticationService } from 'app/core/services/helpers/authentication.service';
 import { PlanillaTallerService } from 'app/core/services/planillaTaller.service';
 import { SeguimientoAlumnoService } from 'app/core/services/seguimientoAlumno.service';
 import { DescripcionSeguimiento } from 'app/models/constants/descripcion-seguimiento.const';
+import { RolConst } from 'app/models/constants/rol.enum';
 import { IAlumno } from 'app/models/interface/iAlumno';
 import { ICicloLectivo } from 'app/models/interface/iCicloLectivo';
 import { IPlanillaTaller } from 'app/models/interface/iPlanillaTaller';
@@ -21,8 +21,13 @@ import Swal from 'sweetalert2';
 @UntilDestroy()
 @Component({
   selector: 'app-seguimiento-form-modal',
-  template: ` <h1 mat-dialog-title>Seguimiento de {{ alumno?.nombreCompleto }}</h1>
-    <div mat-dialog-content class="px-24">
+  template: ` <div fxLayout="row wrap" fxLayoutAlign="space-between baseline">
+      <h1 mat-dialog-title>Seguimiento de {{ alumno?.nombreCompleto }}</h1>
+      <mat-checkbox color="warn" *ngxPermissionsOnly="['PROFESOR']" #checkbox (change)="showOptions(checkbox.checked)" value="">
+        Marcar como leído
+      </mat-checkbox>
+    </div>
+    <div mat-dialog-content class="py-12 px-24 border">
       <!-- <div fxLayout="row" fxLayoutAlign="center start">
         <button mat-raised-button color="accent" (click)="buscarPlanilla()">
           <mat-icon>search</mat-icon> <span>Asignar Planilla</span>
@@ -122,7 +127,7 @@ import Swal from 'sweetalert2';
             </div>
 
             <!-- observacion ============================= -->
-            <mat-form-field appearance="fill" fxFlexAlign.gt-xs="center" class="w-100-p">
+            <mat-form-field appearance="fill" fxFlexAlign.gt-xs="center" fxFlex.gt-xs="45" fxFlex.xs="100">
               <mat-label class="lbl">Observación</mat-label>
               <textarea
                 matInput
@@ -139,7 +144,7 @@ import Swal from 'sweetalert2';
               </mat-error>
             </mat-form-field>
             <!-- observacion ============================= -->
-            <mat-form-field appearance="fill" fxFlexAlign.gt-xs="center" class="w-100-p">
+            <mat-form-field appearance="fill" fxFlexAlign.gt-xs="center" fxFlex.gt-xs="45" fxFlex.xs="100">
               <mat-label class="lbl">Segunda Observación</mat-label>
               <textarea
                 matInput
@@ -223,6 +228,7 @@ import Swal from 'sweetalert2';
   providers: CONFIG_PROVIDER,
 })
 export class SeguimientoFormModalComponent implements OnInit {
+  esLeido = false;
   //
   descripcionSeguimientos = DescripcionSeguimiento;
   cicloLectivo: ICicloLectivo; // solo va a tner datos cuando venga por planilla
@@ -247,6 +253,9 @@ export class SeguimientoFormModalComponent implements OnInit {
     public dialogRef: MatDialogRef<SeguimientoFormModalComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any
   ) {
+    this._authService.currentUser$.pipe(untilDestroyed(this)).subscribe((datos) => {
+      this.usuario = { ...datos };
+    });
     if (data.planillaTaller) {
       this.planillaTaller = data.planillaTaller;
       this.maximo = new Date(this.planillaTaller.fechaFinalizacion);
@@ -257,22 +266,34 @@ export class SeguimientoFormModalComponent implements OnInit {
     // }
 
     this.alumno = data.alumno;
+
     if (data.buscarPlanilla) {
       this.habilitarBusqueda = data.buscarPlanilla;
       this.obtenerPlanillas();
     }
     if (data.seguimiento) {
+      console.log('data.seguimiento', data.seguimiento);
       this.isUpdate = true;
       this.seguimiento = data.seguimiento;
-    }
-    this._authService.currentUser$.pipe(untilDestroyed(this)).subscribe(
-      (datos) => {
-        this.usuario = { ...datos };
-      },
-      (error) => {
-        console.log('[ERROR]', error);
+      if (data.marcarLeido) {
+        this.marcarLeido();
       }
-    );
+    }
+  }
+  marcarLeido() {
+    this.seguimiento.leido = true;
+    this._seguimientoAlumnoService
+      .actualizarSeguimientoAlumno(this.seguimiento._id, this.seguimiento)
+      .pipe(untilDestroyed(this))
+      .subscribe(
+        (datos) => {
+          this._seguimientoAlumnoService.stopPolling.next();
+          this._seguimientoAlumnoService.poolingSeguimientos(this.usuario.email);
+        },
+        (error) => {
+          console.log('[ERROR]', error);
+        }
+      );
   }
   obtenerPlanillas() {
     this.cargandoPlanillas = true;
@@ -380,6 +401,7 @@ export class SeguimientoFormModalComponent implements OnInit {
       activo: true,
       fechaCreacion: new Date(),
       creadoPor: this.usuario,
+      leido: this.usuario.rol === RolConst.ADMIN || this.usuario.rol === RolConst.JEFETALLER ? false : true,
     };
     this._seguimientoAlumnoService
       .agregarSeguimientoAlumno(seguimiento)
@@ -438,6 +460,7 @@ export class SeguimientoFormModalComponent implements OnInit {
       activo: true,
       fechaModificacion: new Date(),
       modificadoPor: this.usuario,
+      leido: this.usuario.rol === RolConst.ADMIN || this.usuario.rol === RolConst.JEFETALLER ? false : this.esLeido,
     };
     this._seguimientoAlumnoService
       .actualizarSeguimientoAlumno(this.seguimiento._id, seguimientoForm)
@@ -467,5 +490,9 @@ export class SeguimientoFormModalComponent implements OnInit {
     this.planillaTaller = evento;
     this.form.controls.planillaTaller.setValue(evento);
     this.seguimiento = this.form.value;
+  }
+  showOptions(evento) {
+    this.esLeido = evento;
+    this.seguimiento.leido = evento;
   }
 }
