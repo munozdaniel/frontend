@@ -13,6 +13,10 @@ import { SeguimientoAlumnoService } from 'app/core/services/seguimientoAlumno.se
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { ISeguimientoAlumno } from 'app/models/interface/iSeguimientoAlumno';
 import { MediaMatcher, BreakpointObserver, Breakpoints, BreakpointState } from '@angular/cdk/layout';
+import { ITemaPendiente } from 'app/models/interface/iTemaPendiente';
+import { TemaService } from 'app/core/services/tema.service';
+import { NgxPermissionsService } from 'ngx-permissions';
+import { RolConst } from 'app/models/constants/rol.enum';
 @UntilDestroy()
 @Component({
   selector: 'toolbar',
@@ -31,6 +35,7 @@ export class ToolbarComponent implements OnInit, OnDestroy {
   // Private
   private _unsubscribeAll: Subject<any>;
   seguimientosSinLeer: ISeguimientoAlumno[] = [];
+  temasPendientes: ITemaPendiente[] = [];
   // Mobile
   isMobile: boolean;
   private _mobileQueryListener: () => void;
@@ -49,6 +54,8 @@ export class ToolbarComponent implements OnInit, OnDestroy {
     @Inject(DOCUMENT) public document: Document,
     private _designConfigService: DesignConfigService,
     private _designSidebarService: DesignSidebarService,
+    private _temaService: TemaService,
+    private _permissionsService: NgxPermissionsService,
     private _seguimientoService: SeguimientoAlumnoService
   ) {
     this.mobileQuery = this._media.matchMedia('(max-width: 600px)');
@@ -122,9 +129,19 @@ export class ToolbarComponent implements OnInit, OnDestroy {
       this.rightNavbar = settings.layout.navbar.position === 'right';
       this.hiddenNavbar = settings.layout.navbar.hidden === true;
     });
-    this._seguimientoService.seguimientos$.pipe(untilDestroyed(this)).subscribe((datos) => {
-      console.log('Seguimiento sin leer', datos.length);
-      this.seguimientosSinLeer = datos;
+    this._permissionsService.permissions$.subscribe((permissions) => {
+      const permisos = Object.keys(permissions);
+      if (permisos && permisos.length > 0) {
+        const index = permisos.findIndex((x) => x.toString() === RolConst.PROFESOR);
+        if (index !== -1) {
+          this._seguimientoService.seguimientos$.pipe(untilDestroyed(this)).subscribe((datos) => {
+            this.seguimientosSinLeer = datos;
+          });
+          this._temaService.temas$.pipe(untilDestroyed(this)).subscribe((datos) => {
+            this.temasPendientes = datos;
+          });
+        }
+      }
     });
   }
 

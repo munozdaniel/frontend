@@ -39,10 +39,10 @@
             <!--  (change)="$event ? changeLista($event, row) : null"-->
             <div *ngxPermissionsOnly="['PROFESOR']" style="cursor: pointer" matTooltip="El Jefe de taller requiere que complete el tema">
               <div *ngIf="row.incompleto" class="bell" id="bell-1">
-                <div style="color: rgb(255, 115, 0)" class="anchor material-icons layer-1">notifications_active</div>
-                <div style="color: orange" class="anchor material-icons layer-2">notifications</div>
-                <div style="color: rgb(129, 106, 64)" class="anchor material-icons layer-3">notifications</div>
-              </div>
+                <div style="color: rgb(255, 38, 0)" class="anchor material-icons layer-1">notification_important</div>
+                <div style="color: rgb(216, 1, 1)" class="anchor material-icons layer-2">notifications</div>
+                <div style="color: rgb(202, 49, 29)" class="anchor material-icons layer-3">notifications</div>
+          </div>
             </div>
           </td>
         </ng-container>

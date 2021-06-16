@@ -1,9 +1,9 @@
 import { IPlanillaTaller } from './iPlanillaTaller';
-import { IUsuario } from './iUsuario';
+import { IProfesor } from './iProfesor';
 
 export interface ITemaPendiente {
   _id?: string;
   planillaTaller: IPlanillaTaller;
   fecha: Date;
-  usuario: IUsuario;
+  profesor?: IProfesor;
 }

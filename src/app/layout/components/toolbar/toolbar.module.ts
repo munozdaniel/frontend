@@ -10,6 +10,7 @@ import { DesignSharedModule } from '@design/shared.module';
 
 import { ToolbarComponent } from 'app/layout/components/toolbar/toolbar.component';
 import { NgxPermissionsModule } from 'ngx-permissions';
+import { MatBadge, MatBadgeModule } from '@angular/material';
 
 @NgModule({
   declarations: [ToolbarComponent],
@@ -18,6 +19,7 @@ import { NgxPermissionsModule } from 'ngx-permissions';
     MatButtonModule,
     MatIconModule,
     MatToolbarModule,
+    MatBadgeModule,
     MatMenuModule,
     DesignSharedModule,
     DesignSearchBarModule,

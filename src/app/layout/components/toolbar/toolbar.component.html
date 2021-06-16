@@ -48,16 +48,32 @@
       <button
         *ngxPermissionsOnly="['PROFESOR', 'ADMIN']"
         mat-stroked-button
-        [matBadge]="seguimientosSinLeer.length"
-        [color]="seguimientosSinLeer.length > 0 ? 'warn' : ''"
+        [matBadge]="seguimientosSinLeer.length + temasPendientes.length"
+        [color]="seguimientosSinLeer.length > 0 || temasPendientes.length > 0 ? 'warn' : ''"
         (click)="mostrarSideBarSeguimientos()"
         matTooltip="Notificaciones Pendientes de Lectura"
       >
-        <mat-icon *ngIf="!seguimientosSinLeer || seguimientosSinLeer.length < 1">notifications_none</mat-icon>
+        <div
+          fxLayout="row"
+          fxLayoutAlign="start center"
+          *ngIf="(!seguimientosSinLeer || seguimientosSinLeer.length < 1) && (!temasPendientes || temasPendientes.length < 1); else noti"
+        >
+          <mat-icon>notifications_none</mat-icon>
+          <span>Sin Novedades</span>
+        </div>
+        <ng-template #noti>
+          <div class="bell" id="bell-1">
+            <div style="color: rgb(255, 38, 0)" class="anchor material-icons layer-1">notification_important</div>
+            <div style="color: rgb(216, 1, 1)" class="anchor material-icons layer-2">notifications</div>
+            <div style="color: rgb(202, 49, 29)" class="anchor material-icons layer-3">notifications</div>
+          </div>
+          <span *ngIf="!isMobile">Tareas Pendientes</span>
+        </ng-template>
+        <!-- <mat-icon *ngIf="!seguimientosSinLeer || seguimientosSinLeer.length < 1">notifications_none</mat-icon>
         <mat-icon class="mover" *ngIf="seguimientosSinLeer && seguimientosSinLeer.length > 0">notification_important</mat-icon>
         <span *ngIf="!isMobile">{{
           !seguimientosSinLeer || seguimientosSinLeer.length < 1 ? 'Sin Novedades' : 'Notificaciones Pendientes'
-        }}</span>
+        }}</span> -->
       </button>
 
       <button mat-button [matMenuTriggerFor]="userMenu" class="user-button">

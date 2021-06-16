@@ -35,5 +35,34 @@
         </mat-list-option>
       </mat-selection-list>
     </mat-expansion-panel>
+
+    <mat-expansion-panel style="border-radius: 0; color: white !important; background-color: #515264">
+      <mat-expansion-panel-header>
+        <mat-panel-title style="color: white !important">
+          <mat-icon style="color: red">notifications</mat-icon>
+          Temas Incompletos</mat-panel-title
+        >
+        <mat-panel-description> </mat-panel-description>
+      </mat-expansion-panel-header>
+      <div *ngIf="!temasPendientes || temasPendientes.length < 1">No hay temas pendientes</div>
+      <mat-selection-list *ngFor="let tema of temasPendientes" [multiple]="false">
+        <mat-list-option (click)="redireccionarTema(tema)" class="w-100-p p-12 h-100-p">
+          <div fxLayout="column" class="w-100-p" style="color: white !important">
+            <div fxLayout="row wrap" fxLayoutAlign="space-between center">
+              <span>{{ tema.fecha | date: 'dd/MM/yyyy':'GMT' }}</span>
+              <!-- <button mat-icon-button color="accent" (click)="redireccionarSeguimiento()">
+                <span class="iconify" data-icon="fluent:open-16-filled" data-inline="false" style="font-size: 24px"></span>
+              </button> -->
+            </div>
+            <!-- <div fxLayout="row wrap" fxLayoutAlign="space-between center" style="font-weight: bolder; color: rgb(7 185 255)">
+              <small> {{ seguimiento.alumno.nombreCompleto }}</small>
+            </div> -->
+            <small fxLayout="row" fxLayoutAlign="space-between center">
+              <span> PENDIENTE </span>
+            </small>
+          </div>
+        </mat-list-option>
+      </mat-selection-list>
+    </mat-expansion-panel>
   </mat-accordion>
 </div>

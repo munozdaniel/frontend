@@ -844,7 +844,7 @@ export class PlanillaTallerAdministrarComponent implements OnInit {
       .pipe(untilDestroyed(this))
       .subscribe(
         (datos) => {
-            this.temasIncompletos = datos;
+          this.temasIncompletos = datos;
         },
         (error) => {
           console.log('[ERROR]', error);
@@ -853,7 +853,11 @@ export class PlanillaTallerAdministrarComponent implements OnInit {
   }
   //   Temas Incompletos
   setInformarIncompletos(temas: ITema[]) {
-    const temasPendientes: ITemaPendiente[] = temas.map((x) => ({ fecha: x.fecha, planillaTaller: x.planillaTaller}));
+    const temasPendientes: ITemaPendiente[] = temas.map((x) => ({
+      fecha: x.fecha,
+      planillaTaller: x.planillaTaller,
+      profesor: this.planillaTaller.profesor,
+    }));
     Swal.fire({
       title: '¿Está seguro de continuar?',
       html: 'Los temas seleccionados serán informados al profesor como temas a completar',
@@ -865,7 +869,7 @@ export class PlanillaTallerAdministrarComponent implements OnInit {
       cancelButtonText: 'Cancelar',
       showLoaderOnConfirm: true,
       preConfirm: () => {
-        return this._temaService.guardarTemasPendientes(temasPendientes, this.usuario.email).pipe(
+        return this._temaService.guardarTemasPendientes(temasPendientes).pipe(
           catchError((error) => {
             console.log('[ERROR]', error);
             Swal.fire({

@@ -15,7 +15,7 @@ import Swal from 'sweetalert2';
 @Component({
   selector: 'app-calificacion-form-modal',
   template: `
-    <h1 mat-dialog-title>Evaluar</h1>
+    <h1 mat-dialog-title>Evaluar a {{ alumno?.nombreCompleto }}</h1>
     <div mat-dialog-content class="px-24">
       <form
         [formGroup]="form"

@@ -17,6 +17,7 @@ import { Router } from '@angular/router';
 import { NgxPermissionsService } from 'ngx-permissions';
 import { RolConst } from './models/constants/rol.enum';
 import { SeguimientoAlumnoService } from './core/services/seguimientoAlumno.service';
+import { TemaService } from './core/services/tema.service';
 @UntilDestroy()
 @Component({
   selector: 'app',
@@ -52,7 +53,8 @@ export class AppComponent implements OnInit, OnDestroy {
     private _platform: Platform,
     private _authService: AuthenticationService,
     private _router: Router,
-    private _seguimientoAlumnoService: SeguimientoAlumnoService
+    private _seguimientoAlumnoService: SeguimientoAlumnoService,
+    private _temaService: TemaService
   ) {
     // Get default navigation
     this.navigation = navigation;
@@ -161,7 +163,7 @@ export class AppComponent implements OnInit, OnDestroy {
           this._designNavigationService.setCurrentNavigation('main');
           const navegacionActual = this._designNavigationService.getNavigationItem('custom-function');
           //  Solo lo debe usar el profesor
-          this._seguimientoAlumnoService.poolingSeguimientos(datos.email);
+
           switch (datos.rol) {
             case RolConst.ADMIN:
             case RolConst.JEFETALLER:
@@ -227,6 +229,8 @@ export class AppComponent implements OnInit, OnDestroy {
 
               break;
             case RolConst.PROFESOR:
+              this._seguimientoAlumnoService.poolingSeguimientos(datos.email);
+              this._temaService.poolingTemas(datos.email);
               // this._seguimientoAlumnoService.poolingSeguimientos(datos.email);
               this._designNavigationService.removeNavigationItem('custom-function');
               break;
