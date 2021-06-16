@@ -14,7 +14,7 @@ export class AlumnosMenuParamComponent implements OnInit {
   @Output() retHabilitarEdicion = new EventEmitter<boolean>();
   @Output() retAgregarAlumno = new EventEmitter<boolean>();
 
-  constructor(private _permissionsService: NgxPermissionsService, private _router: Router) {}
+  constructor( private _router: Router) {}
 
   ngOnInit(): void {}
   editarAlumno() {

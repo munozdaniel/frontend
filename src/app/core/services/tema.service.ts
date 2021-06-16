@@ -2,6 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { IPlanillaTaller } from 'app/models/interface/iPlanillaTaller';
 import { ITema } from 'app/models/interface/iTema';
+import { ITemaPendiente } from 'app/models/interface/iTemaPendiente';
 import { environment } from 'environments/environment';
 import { Observable } from 'rxjs';
 
@@ -48,5 +49,19 @@ export class TemaService {
     const url = this.url + query;
 
     return this.http.post<any>(url, { planillaTaller });
+  }
+
+  //   TEMAS PENDIENTES
+  guardarTemasPendientes(temasPendientes: ITemaPendiente[], email: string): Observable<any> {
+    const query = `tema-pendiente`;
+    const url = this.url + query;
+
+    return this.http.post<any>(url, { temasPendientes, email });
+  }
+  obtenerTemasIncompletosPorPlanilla(planillaId: string): Observable<ITemaPendiente[]> {
+    const query = `tema-pendiente/${planillaId}`;
+    const url = this.url + query;
+
+    return this.http.get<any>(url);
   }
 }

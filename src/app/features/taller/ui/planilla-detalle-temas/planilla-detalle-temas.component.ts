@@ -1,12 +1,16 @@
 import { trigger, state, style, transition, animate } from '@angular/animations';
+import { SelectionModel } from '@angular/cdk/collections';
 import { MediaMatcher, BreakpointObserver, Breakpoints, BreakpointState } from '@angular/cdk/layout';
 import { ChangeDetectorRef, Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges, ViewChild } from '@angular/core';
 import { MatTableDataSource, MatSort, MatPaginator } from '@angular/material';
 import { Router } from '@angular/router';
 import { designAnimations } from '@design/animations';
+import { RolConst } from 'app/models/constants/rol.enum';
 import { TemplateEnum } from 'app/models/constants/tipo-template.const';
 import { IPlanillaTaller } from 'app/models/interface/iPlanillaTaller';
 import { ITema } from 'app/models/interface/iTema';
+import { ITemaPendiente } from 'app/models/interface/iTemaPendiente';
+import { NgxPermissionsService } from 'ngx-permissions';
 
 @Component({
   selector: 'app-planilla-detalle-temas',
@@ -28,6 +32,7 @@ export class PlanillaDetalleTemasComponent implements OnInit, OnChanges {
   @Input() planillaTaller?: IPlanillaTaller;
   @Input() template?: string;
   @Input() temas: ITema[];
+  @Input() temasIncompletos: ITemaPendiente[];
   @Input() reset: number;
   temaSeleccionado: ITema = null;
   @Input() cargandoTemas: boolean;
@@ -36,6 +41,7 @@ export class PlanillaDetalleTemasComponent implements OnInit, OnChanges {
   @Output() retEliminarTema = new EventEmitter<ITema>();
   @Output() retTemasCalendario = new EventEmitter<string>();
   @Output() retCargarLista = new EventEmitter<boolean>();
+  @Output() retInformarIncompletos = new EventEmitter<ITema[]>();
 
   dataSource: MatTableDataSource<any> = new MatTableDataSource([]);
   @ViewChild('sort') set setSort(sort: MatSort) {
@@ -44,34 +50,52 @@ export class PlanillaDetalleTemasComponent implements OnInit, OnChanges {
   @ViewChild('paginator') set setPaginator(paginator: MatPaginator) {
     this.dataSource.paginator = paginator;
   }
-  columnas = ['fecha', 'nroClase', 'opciones'];
+  columnas = ['seleccionar', 'fecha', 'nroClase', 'opciones'];
   // Mobile
   expandedElement: ITema | null;
   isMobile: boolean;
   private _mobileQueryListener: () => void;
   mobileQuery: MediaQueryList;
+  seleccionA = new SelectionModel<ITema>(true, []);
   constructor(
     private _router: Router,
     private _changeDetectorRef: ChangeDetectorRef,
     private _media: MediaMatcher,
-    public breakpointObserver: BreakpointObserver
+    public breakpointObserver: BreakpointObserver // private _permissionsService: NgxPermissionsService
   ) {
     this.mobileQuery = this._media.matchMedia('(max-width: 600px)');
     this._mobileQueryListener = () => this._changeDetectorRef.detectChanges();
     this.breakpointObserver.observe([Breakpoints.Small, Breakpoints.HandsetPortrait]).subscribe((state: BreakpointState) => {
       if (state.matches) {
         this.isMobile = true;
-        this.columnas = ['fecha', 'nroClase', 'opciones'];
       } else {
         this.isMobile = false;
-        this.columnas = ['fecha', 'nroClase', 'opciones'];
       }
     });
+    // this._permissionsService.permissions$.subscribe((permissions) => {
+    //   const permisos = Object.keys(permissions);
+    //   if (permisos && permisos.length > 0) {
+    //     const index = permisos.findIndex((x) => x.toString() === RolConst.JEFETALLER || x.toString() === RolConst.ADMIN);
+    //     if (index !== -1) {
+    //       this.columnas.unshift('seleccionar');
+    //     }
+    //   }
+    // });
   }
 
   ngOnChanges(changes: SimpleChanges): void {
+    if (changes.temasIncompletos && changes.temasIncompletos.currentValue) {
+      this.temasIncompletos.forEach((t) => {
+        this.dataSource.data.forEach((x) => {
+          if (t.fecha === x.fecha) {
+            x.incompleto = true;
+            this.seleccionA.select(x);
+          }
+        });
+      });
+    }
+
     if (changes.reset && changes.reset.currentValue) {
-      console.log('temasele', this.temaSeleccionado);
       this.temaSeleccionado = null;
     }
     if (changes.temas && changes.temas.currentValue) {
@@ -118,5 +142,8 @@ export class PlanillaDetalleTemasComponent implements OnInit, OnChanges {
   }
   setActualizarLibro(event) {
     this.retCargarLista.emit(true);
+  }
+  informarIncompletos() {
+    this.retInformarIncompletos.emit(this.seleccionA.selected);
   }
 }

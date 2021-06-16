@@ -20,6 +20,7 @@ import { ICalificacion } from 'app/models/interface/iCalificacion';
 import { IPlanillaTaller } from 'app/models/interface/iPlanillaTaller';
 import { ISeguimientoAlumno } from 'app/models/interface/iSeguimientoAlumno';
 import { ITema } from 'app/models/interface/iTema';
+import { ITemaPendiente } from 'app/models/interface/iTemaPendiente';
 import { IUsuario } from 'app/models/interface/iUsuario';
 import { EmailAusenteModalComponent } from 'app/shared/components/email-ausente-modal/email-ausente-modal.component';
 import { SeguimientoFormModalComponent } from 'app/shared/components/seguimiento-form-modal/seguimiento-form-modal.component';
@@ -101,6 +102,7 @@ import { TemaFormModalComponent } from '../tema-form-modal/tema-form-modal.compo
             <app-planilla-detalle-temas
               [template]="template"
               [temas]="temas"
+              [temasIncompletos]="temasIncompletos"
               [reset]="resetTema"
               [isUpdate]="!deshabilitarEdicion"
               [planillaTaller]="planillaTaller"
@@ -109,6 +111,7 @@ import { TemaFormModalComponent } from '../tema-form-modal/tema-form-modal.compo
               (retEditarTema)="setEditarTema($event)"
               (retEliminarTema)="setEliminarTema($event)"
               (retCargarLista)="setCargarLista($event)"
+              (retInformarIncompletos)="setInformarIncompletos($event)"
             >
               <!-- (retTemasCalendario)="setTemasCalendario($event)" -->
             </app-planilla-detalle-temas>
@@ -188,6 +191,7 @@ export class PlanillaTallerAdministrarComponent implements OnInit {
   cargandoTemas: boolean;
   temas: ITema[];
   temasDelCalendario: ITema[];
+  temasIncompletos: ITemaPendiente[];
   //   Seguimiento
   seguimientos: ISeguimientoAlumno[];
   cargandoSeguimiento: boolean;
@@ -467,6 +471,7 @@ export class PlanillaTallerAdministrarComponent implements OnInit {
           this.totalClases = datos.totalClases;
           this.cargando = false;
           this.cargandoTemas = false;
+          this.obtenerTemasIncompletos();
         },
         (error) => {
           console.log('[ERROR]', error);
@@ -831,6 +836,66 @@ export class PlanillaTallerAdministrarComponent implements OnInit {
           console.log('[ERROR]', error);
         }
       );
+  }
+  //   Temas Incompletos
+  obtenerTemasIncompletos() {
+    this._temaService
+      .obtenerTemasIncompletosPorPlanilla(this.planillaTaller._id)
+      .pipe(untilDestroyed(this))
+      .subscribe(
+        (datos) => {
+            this.temasIncompletos = datos;
+        },
+        (error) => {
+          console.log('[ERROR]', error);
+        }
+      );
+  }
+  //   Temas Incompletos
+  setInformarIncompletos(temas: ITema[]) {
+    const temasPendientes: ITemaPendiente[] = temas.map((x) => ({ fecha: x.fecha, planillaTaller: x.planillaTaller}));
+    Swal.fire({
+      title: '¿Está seguro de continuar?',
+      html: 'Los temas seleccionados serán informados al profesor como temas a completar',
+      icon: 'warning',
+      focusConfirm: false,
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      confirmButtonText: 'Si, estoy seguro',
+      cancelButtonText: 'Cancelar',
+      showLoaderOnConfirm: true,
+      preConfirm: () => {
+        return this._temaService.guardarTemasPendientes(temasPendientes, this.usuario.email).pipe(
+          catchError((error) => {
+            console.log('[ERROR]', error);
+            Swal.fire({
+              title: 'Oops! Ocurrió un error',
+              text: error && error.error ? error.error.message : 'Error de conexion',
+              icon: 'error',
+            });
+            return of(error);
+          }),
+          untilDestroyed(this)
+        );
+      },
+      allowOutsideClick: () => !Swal.isLoading(),
+    }).then((result: any) => {
+      if (result.isConfirmed) {
+        if (result.value && result.value.length > 0) {
+          Swal.fire({
+            title: 'Operación Exitosa',
+            text: 'Los temas han sido guardados como pendiente. El profesor recibirá una alerta en los proximos minutos.',
+            icon: 'success',
+          });
+        } else {
+          Swal.fire({
+            title: 'Oops! Ocurrió un error',
+            text: 'No se han creado alertas de los temas pendientes. Si el problema persiste comuniquese con el soporte técnico.',
+            icon: 'error',
+          });
+        }
+      }
+    });
   }
   setAbrirModalSeguimiento(evento) {
     if (!this.alumnoSeleccionado) {

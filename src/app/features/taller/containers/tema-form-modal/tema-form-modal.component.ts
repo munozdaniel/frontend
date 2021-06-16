@@ -26,14 +26,25 @@ import Swal from 'sweetalert2';
     <div
       *ngIf="tema?.motivoSinDictar"
       class="border mat-card mat-elevation-z4 p-24 mb-12"
-      style="    border: 3px dashed #e00000;
-    background-color: #f4433633;"
+      fxLayout="row wrap"
+      fxLayoutAlign="start start"
+      fxLayoutGap="20px"
+      style="border: 2px solid red;"
     >
-      <h3>{{ fechaNombre | diaDeLaSemana }}</h3>
-      <h2 class="text-red">No se dictó clases</h2>
-      <h2><strong>Motivo: </strong>{{ tema.motivoSinDictar }}</h2>
+      <div fxLayout="column" fxLayoutAlign="start center">
+        <span>{{ fechaNombre | diaDeLaSemana }}</span>
+        <img src="/assets/empty_calendar.png" alt="empty" />
+        <span class="text-red">No se dictó clases</span>
+      </div>
+      <div fxLayout="column" fxLayoutAlign="center start ">
+        <h2><strong>Motivo </strong></h2>
+        <span>{{ tema.motivoSinDictar }}</span>
+        <button mat-flat-button color="primary" (click)="ocultar = false"><mat-icon>create</mat-icon> Editar Tema</button>
+        <button mat-flat-button color="warn" (click)="marcarComoPendiente()"><mat-icon>create</mat-icon> Editar Tema</button>
+      </div>
     </div>
-    <div mat-dialog-content class="border mat-card mat-elevation-z4 px-24">
+
+    <div [fxHide]="ocultar" mat-dialog-content class="border mat-card mat-elevation-z4 px-24">
       <div *ngIf="!template" fxLayout="row wrap" fxLayoutAlign="space-between start">
         <h4 fxFlex.xs="100" fxFlex.gt-xs="45">
           <strong>Fecha: </strong>
@@ -230,6 +241,7 @@ import Swal from 'sweetalert2';
   providers: CONFIG_PROVIDER,
 })
 export class TemaFormModalComponent implements OnInit, OnDestroy, OnChanges {
+  ocultar = false;
   caracterClases = CaracterClaseConst;
   cargando = false;
   form: FormGroup;
@@ -259,11 +271,21 @@ export class TemaFormModalComponent implements OnInit, OnDestroy, OnChanges {
       if (data.tema) {
         this.isUpdate = true;
         this.tema = data.tema;
+        if (this.tema.motivoSinDictar !== null && this.tema.caracterClase === 'SIN DICTAR') {
+          this.ocultar = true;
+        } else {
+          this.ocultar = false;
+        }
       }
     }
   }
   ngOnChanges(changes: SimpleChanges): void {
     if (changes.tema && changes.tema.currentValue) {
+      if (this.tema.motivoSinDictar !== null && this.tema.caracterClase === 'SIN DICTAR') {
+        this.ocultar = true;
+      } else {
+        this.ocultar = false;
+      }
       this.actualizarForm();
     }
   }
@@ -330,6 +352,7 @@ export class TemaFormModalComponent implements OnInit, OnDestroy, OnChanges {
       activo: true,
       fechaCreacion: new Date(),
       motivoSinDictar: null,
+      pendiente: false,
     };
     this._temaService
       .guardarTema(tema)
@@ -386,6 +409,7 @@ export class TemaFormModalComponent implements OnInit, OnDestroy, OnChanges {
       activo: true,
       fechaCreacion: new Date(),
       motivoSinDictar: null,
+      pendiente: false,
     };
     this._temaService
       .actualizarTema(this.tema._id, temaForm)
@@ -430,6 +454,7 @@ export class TemaFormModalComponent implements OnInit, OnDestroy, OnChanges {
       caracterClase: 'SIN DICTAR',
       observacionJefe: this.tema.observacionJefe,
       activo: this.tema.activo,
+      pendiente: false,
     };
     Swal.fire({
       title: '¿Está seguro de continuar?',
@@ -484,5 +509,9 @@ export class TemaFormModalComponent implements OnInit, OnDestroy, OnChanges {
         }
       }
     });
+  }
+  marcarComoPendiente() {
+    this.tema.pendiente = true;
+    if(this.tema._id){}else{}
   }
 }

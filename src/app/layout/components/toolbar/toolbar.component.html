@@ -55,7 +55,9 @@
       >
         <mat-icon *ngIf="!seguimientosSinLeer || seguimientosSinLeer.length < 1">notifications_none</mat-icon>
         <mat-icon class="mover" *ngIf="seguimientosSinLeer && seguimientosSinLeer.length > 0">notification_important</mat-icon>
-        <span *ngIf="!isMobile">Notificaciones Pendientes</span>
+        <span *ngIf="!isMobile">{{
+          !seguimientosSinLeer || seguimientosSinLeer.length < 1 ? 'Sin Novedades' : 'Notificaciones Pendientes'
+        }}</span>
       </button>
 
       <button mat-button [matMenuTriggerFor]="userMenu" class="user-button">

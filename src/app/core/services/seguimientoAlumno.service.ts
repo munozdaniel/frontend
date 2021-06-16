@@ -38,6 +38,12 @@ export class SeguimientoAlumnoService implements OnDestroy {
 
     return this.http.get<any>(url);
   }
+  obtenerTemasPendientesPorUsuario(email: string): Observable<ISeguimientoAlumno[]> {
+    const query = `tema-pendiente/por-usuario/${email}`;
+    const url = this.url + query;
+
+    return this.http.get<any>(url);
+  }
   //   obtenerSeguimientosSinVerPorUsuario(usuarioId: string) {
   //     const query = `seguimiento-alumnos/por-usuario/${usuarioId}`;
   //     const url = this.url + query;
