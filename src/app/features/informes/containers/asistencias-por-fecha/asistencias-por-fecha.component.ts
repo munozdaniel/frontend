@@ -50,6 +50,19 @@ import Swal from 'sweetalert2';
               </mat-select>
               <mat-error *ngIf="form.controls.turno.hasError('required')"> Este campo es requerido. </mat-error>
             </mat-form-field>
+
+            <mat-form-field appearance="outline" fxFlex.gt-xs="30" fxFlex.xs="100">
+              <mat-label class="lbl">Curso</mat-label>
+              <mat-select formControlName="curso">
+                <mat-option value="1">CURSO 1</mat-option>
+                <mat-option value="2">CURSO 2</mat-option>
+                <mat-option value="3">CURSO 3</mat-option>
+                <mat-option value="4">CURSO 4</mat-option>
+                <mat-option value="5">CURSO 5</mat-option>
+                <mat-option value="6">CURSO 6</mat-option>
+              </mat-select>
+              <mat-error *ngIf="form.controls.curso.hasError('required')"> Este campo es requerido. </mat-error>
+            </mat-form-field>
             <mat-error *ngIf="form.errors?.fechas">{{ form.errors.fechas }}</mat-error>
             <div fxFlex="100" fxLayout="row" fxLayoutAlign="center start">
               <button [disabled]="form.invalid" mat-raised-button color="primary"><mat-icon>search</mat-icon> Buscar</button>
@@ -90,6 +103,7 @@ export class AsistenciasPorFechaComponent implements OnInit {
         horaDesde: [horasD, Validators.required],
         horaHasta: [horasH, Validators.required],
         turno: [null, Validators.required],
+        curso: [null, Validators.required],
       },
       {
         validator: this.restriccionFecha('fechaDesde', 'fechaHasta', 'horaDesde', 'horaHasta'),
@@ -143,6 +157,7 @@ export class AsistenciasPorFechaComponent implements OnInit {
     //   Buscar todas las plantillas
     this._asistenciaService
       .buscarAsistenciasPorFechas(
+        Number(this.form.controls.curso.value),
         this.form.controls.turno.value,
         this.form.controls.fechaDesde.value,
         this.rangoHabilitado ? this.form.controls.fechaHasta.value : null
