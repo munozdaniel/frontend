@@ -157,7 +157,6 @@ export class AppComponent implements OnInit, OnDestroy {
           this.isLogin = false;
           this._router.navigate(['/auth/iniciar-sesion']);
         } else {
-          console.log('datos.rol', datos.rol);
           if (!datos.rol) {
             // Swal.fire({
             //   title: 'Usuario Sin Accesos',
@@ -181,7 +180,6 @@ export class AppComponent implements OnInit, OnDestroy {
 
                 break;
               case RolConst.PROFESOR:
-                console.log('ES UN PROFE');
                 this._seguimientoAlumnoService.poolingSeguimientos(datos.email);
                 this._temaService.poolingTemas(datos.email);
                 // this._seguimientoAlumnoService.poolingSeguimientos(datos.email);
