@@ -2,8 +2,8 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { designAnimations } from '@design/animations';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
+import { AuthService } from 'app/core/auth/auth.service';
 import { CicloLectivoService } from 'app/core/services/ciclo-lectivo.service';
-import { AuthenticationService } from 'app/core/services/helpers/authentication.service';
 import { PlanillaTallerService } from 'app/core/services/planillaTaller.service';
 import { RolConst } from 'app/models/constants/rol.enum';
 import { IPlanillaTaller } from 'app/models/interface/iPlanillaTaller';
@@ -67,7 +67,7 @@ export class PlanillasComponent implements OnInit, OnDestroy {
     private _cicloLectivoService: CicloLectivoService,
     private _router: Router,
     private _planillaTallerService: PlanillaTallerService,
-    private _authService: AuthenticationService
+    private _authService: AuthService
   ) {
     this.suscripcionPlanillaParams();
     this._permissionsService.permissions$.subscribe((permissions) => {

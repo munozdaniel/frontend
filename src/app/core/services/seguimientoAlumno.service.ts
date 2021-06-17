@@ -1,21 +1,21 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable, OnDestroy } from '@angular/core';
 import { ISeguimientoAlumno } from 'app/models/interface/iSeguimientoAlumno';
-import { IQueryPag } from 'app/models/interface/iQueryPag';
 import { environment } from 'environments/environment';
 import { BehaviorSubject, Observable, Subject, timer } from 'rxjs';
 import { retry, share, shareReplay, switchMap, takeUntil } from 'rxjs/operators';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
-import { AuthenticationService } from './helpers/authentication.service';
-import { IUsuario } from 'app/models/interface/iUsuario';
 @UntilDestroy()
 @Injectable({
   providedIn: 'root',
 })
 export class SeguimientoAlumnoService implements OnDestroy {
+  private seguimientosSubject = new BehaviorSubject<ISeguimientoAlumno[]>([]);
+  public seguimientos$ = this.seguimientosSubject.asObservable().pipe(shareReplay(1));
+
   //   private seguimientoNotificacionSubject = new BehaviorSubject<ISeguimientoAlumno[]>(null);
   //   public seguimientoNotificacion$ = this.seguimientoNotificacionSubject.asObservable().pipe(shareReplay(1));
-  public seguimientos$: Observable<ISeguimientoAlumno[]>;
+  //   public seguimientos$: Observable<ISeguimientoAlumno[]>;
   public stopPolling = new Subject();
   protected url = environment.apiURI;
   constructor(private http: HttpClient) {}
@@ -26,13 +26,31 @@ export class SeguimientoAlumnoService implements OnDestroy {
   //   setSeguimientoNotificacion(seguimientos: ISeguimientoAlumno[]) {
   //     this.seguimientoNotificacionSubject.next(seguimientos);
   //   }
-  poolingSeguimientos(email: string) {
+  poolingSeguimientos2(email: string) {
     this.seguimientos$ = timer(1, 60000).pipe(
       switchMap(() => this.obtenerSeguimientosNuevosPorUsuario(email)),
-      retry(),
+      retry(10),
       share(),
       takeUntil(this.stopPolling)
     );
+  }
+  poolingSeguimientos(email: string) {
+    timer(1, 60000)
+      .pipe(
+        switchMap(() => this.obtenerSeguimientosNuevosPorUsuario(email)),
+        retry(10),
+        share(),
+        takeUntil(this.stopPolling)
+      )
+       .subscribe(
+        (datos) => {
+          this.seguimientosSubject.next(datos);
+        },
+        (error) => {
+          this.seguimientosSubject.next([]);
+          console.log('[ERROR]', error);
+        }
+      );
   }
   obtenerSeguimientosNuevosPorUsuario(email: string): Observable<ISeguimientoAlumno[]> {
     const query = `seguimiento-alumnos/por-usuario/${email}`;

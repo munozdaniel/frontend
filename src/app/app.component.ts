@@ -12,12 +12,13 @@ import { DesignSplashScreenService } from '@design/services/splash-screen.servic
 import { navigation } from 'app/navigation/navigation';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { IUsuario } from './models/interface/iUsuario';
-import { AuthenticationService } from './core/services/helpers/authentication.service';
 import { Router } from '@angular/router';
 import { NgxPermissionsService } from 'ngx-permissions';
 import { RolConst } from './models/constants/rol.enum';
 import { SeguimientoAlumnoService } from './core/services/seguimientoAlumno.service';
 import { TemaService } from './core/services/tema.service';
+import { AuthService } from './core/auth/auth.service';
+import Swal from 'sweetalert2';
 @UntilDestroy()
 @Component({
   selector: 'app',
@@ -51,7 +52,7 @@ export class AppComponent implements OnInit, OnDestroy {
     private _designSidebarService: DesignSidebarService,
     private _designSplashScreenService: DesignSplashScreenService,
     private _platform: Platform,
-    private _authService: AuthenticationService,
+    private _authService: AuthService,
     private _router: Router,
     private _seguimientoAlumnoService: SeguimientoAlumnoService,
     private _temaService: TemaService
@@ -152,95 +153,48 @@ export class AppComponent implements OnInit, OnDestroy {
   comprobarLogin() {
     this._authService.currentUser$.pipe(untilDestroyed(this)).subscribe(
       (datos: any) => {
-        if (!datos || !datos.success) {
+        if (!datos) {
           this.isLogin = false;
           this._router.navigate(['/auth/iniciar-sesion']);
         } else {
-          const perm = [datos.rol];
-          this._permissionsService.loadPermissions(perm);
+          console.log('datos.rol', datos.rol);
+          if (!datos.rol) {
+            // Swal.fire({
+            //   title: 'Usuario Sin Accesos',
+            //   text: 'Actualmente no tiene configurado un rol. Comuniquese con el jefe de taller para que le asigne un rol.',
+            //   icon: 'warning',
+            // });
+            this._router.navigate(['/auth/iniciar-sesion']);
+          } else {
+            const perm = [datos.rol];
+            this._permissionsService.loadPermissions(perm);
 
-          this.isLogin = true; // Set the main navigation as our current navigation
-          this._designNavigationService.setCurrentNavigation('main');
-          const navegacionActual = this._designNavigationService.getNavigationItem('custom-function');
-          //  Solo lo debe usar el profesor
+            this.isLogin = true; // Set the main navigation as our current navigation
+            this._designNavigationService.setCurrentNavigation('main');
+            const navegacionActual = this._designNavigationService.getNavigationItem('custom-function');
+            //  Solo lo debe usar el profesor
 
-          switch (datos.rol) {
-            case RolConst.ADMIN:
-            case RolConst.JEFETALLER:
-              const customFunctionNavItem = {
-                id: 'custom-function',
-                title: 'Administrar',
-                type: 'collapsable',
-                children: [
-                  // {
-                  //   id: 'migrar',
-                  //   title: 'Migrador',
-                  //   type: 'item',
-                  //   icon: 'users',
-                  //   url: '/administrador/migrar',
-                  // },
-                  {
-                    id: 'alumnos',
-                    title: 'Alumnos Eliminados',
-                    type: 'item',
-                    icon: 'build_circle',
-                    url: '/administrador/alumnos-eliminados',
-                  },
-                  {
-                    id: 'usuarios',
-                    title: 'Usuarios',
-                    type: 'item',
-                    icon: 'build_circle',
-                    url: '/administrador/usuarios-roles',
-                  },
-                  {
-                    id: 'ciclo-lectivo',
-                    title: 'Ciclo Lectivo',
-                    type: 'item',
-                    icon: 'warning',
-                    url: '/administrador/ciclo-lectivo',
-                  },
-                  // {
-                  //   id: 'micuenta',
-                  //   title: 'Mi Cuenta',
-                  //   type: 'item',
-                  //   icon: 'account',
-                  //   url: '/administrador/mi-cuenta',
-                  // },
-                  {
-                    id: 'calendario',
-                    title: 'Calendario',
-                    type: 'item',
-                    icon: 'today',
-                    url: '/administrador/calendario-academico',
-                  },
-                  // {
-                  //   id: 'customize',
-                  //   title: 'Diseño',
-                  //   type: 'item',
-                  //   icon: 'settings',
-                  //   function: () => {
-                  //     this.toggleSidebarOpen('themeOptionsPanel');
-                  //   },
-                  // },
-                ],
-              };
-              this._designNavigationService.addNavigationItem(customFunctionNavItem, 'end');
+            switch (datos.rol) {
+              case RolConst.ADMIN:
+              case RolConst.JEFETALLER:
+                this.setMenuAdmin();
 
-              break;
-            case RolConst.PROFESOR:
-              this._seguimientoAlumnoService.poolingSeguimientos(datos.email);
-              this._temaService.poolingTemas(datos.email);
-              // this._seguimientoAlumnoService.poolingSeguimientos(datos.email);
-              this._designNavigationService.removeNavigationItem('custom-function');
-              break;
+                break;
+              case RolConst.PROFESOR:
+                console.log('ES UN PROFE');
+                this._seguimientoAlumnoService.poolingSeguimientos(datos.email);
+                this._temaService.poolingTemas(datos.email);
+                // this._seguimientoAlumnoService.poolingSeguimientos(datos.email);
+                this._designNavigationService.removeNavigationItem('custom-function');
+                break;
 
-            case RolConst.PRECEPTOR:
-              this._designNavigationService.removeNavigationItem('taller_planilla');
-              this._designNavigationService.removeNavigationItem('custom-function');
-              break;
-            default:
-              break;
+              case RolConst.PRECEPTOR:
+                this._designNavigationService.removeNavigationItem('taller_planilla');
+                this._designNavigationService.removeNavigationItem('custom-function');
+                break;
+              default:
+                break;
+            }
           }
         }
       },
@@ -261,6 +215,67 @@ export class AppComponent implements OnInit, OnDestroy {
     //     console.log('[ERROR]', error);
     //   }
     // );
+  }
+  setMenuAdmin() {
+    const customFunctionNavItem = {
+      id: 'custom-function',
+      title: 'Administrar',
+      type: 'collapsable',
+      children: [
+        // {
+        //   id: 'migrar',
+        //   title: 'Migrador',
+        //   type: 'item',
+        //   icon: 'users',
+        //   url: '/administrador/migrar',
+        // },
+        {
+          id: 'alumnos',
+          title: 'Alumnos Eliminados',
+          type: 'item',
+          icon: 'build_circle',
+          url: '/administrador/alumnos-eliminados',
+        },
+        {
+          id: 'usuarios',
+          title: 'Usuarios',
+          type: 'item',
+          icon: 'build_circle',
+          url: '/administrador/usuarios-roles',
+        },
+        {
+          id: 'ciclo-lectivo',
+          title: 'Ciclo Lectivo',
+          type: 'item',
+          icon: 'warning',
+          url: '/administrador/ciclo-lectivo',
+        },
+        // {
+        //   id: 'micuenta',
+        //   title: 'Mi Cuenta',
+        //   type: 'item',
+        //   icon: 'account',
+        //   url: '/administrador/mi-cuenta',
+        // },
+        {
+          id: 'calendario',
+          title: 'Calendario',
+          type: 'item',
+          icon: 'today',
+          url: '/administrador/calendario-academico',
+        },
+        // {
+        //   id: 'customize',
+        //   title: 'Diseño',
+        //   type: 'item',
+        //   icon: 'settings',
+        //   function: () => {
+        //     this.toggleSidebarOpen('themeOptionsPanel');
+        //   },
+        // },
+      ],
+    };
+    this._designNavigationService.addNavigationItem(customFunctionNavItem, 'end');
   }
   /**
    * Toggle sidebar open

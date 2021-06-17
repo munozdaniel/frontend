@@ -3,7 +3,7 @@ import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 import { designAnimations } from '@design/animations';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
-import { AuthenticationService } from 'app/core/services/helpers/authentication.service';
+import { AuthService } from 'app/core/auth/auth.service';
 import { TemaService } from 'app/core/services/tema.service';
 import { CaracterClaseConst } from 'app/models/constants/caracter-clase.const';
 import { IPlanillaTaller } from 'app/models/interface/iPlanillaTaller';
@@ -49,6 +49,11 @@ import Swal from 'sweetalert2';
       <button *ngxPermissionsOnly="['ADMIN', 'JEFETALLER']" mat-flat-button color="warn" (click)="marcarComoPendiente()">
         <mat-icon>create</mat-icon> Alertar al Profesor
       </button>
+      <div *ngxPermissionsOnly="['PROFESOR']">
+        <button *ngIf="template" [disabled]="!isUpdate" mat-flat-button color="warn" (click)="sinDictar()">
+          <mat-icon>create</mat-icon> Cambiar Motivo
+        </button>
+      </div>
     </div>
     <div [fxHide]="ocultar" mat-dialog-content class="border mat-card mat-elevation-z4 px-24">
       <div *ngIf="!template" fxLayout="row wrap" fxLayoutAlign="space-between start">
@@ -262,7 +267,7 @@ export class TemaFormModalComponent implements OnInit, OnDestroy, OnChanges {
   isModal = false;
   fechaNombre: string;
   constructor(
-    private _authService: AuthenticationService,
+    private _authService: AuthService,
     private _fb: FormBuilder,
     private _temaService: TemaService,
     @Optional() public dialogRef: MatDialogRef<TemaFormModalComponent>,

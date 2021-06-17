@@ -13,22 +13,42 @@ import { switchMap, retry, share, takeUntil, shareReplay, publishReplay, refCoun
   providedIn: 'root',
 })
 export class TemaService implements OnDestroy {
-  //   public temas$ = new BehaviorSubject<ITemaPendiente[]>([]);
-  public temas$: Observable<ITemaPendiente[]>;
+  private temasSubject = new BehaviorSubject<ITemaPendiente[]>([]);
+  public temas$ = this.temasSubject.asObservable().pipe(shareReplay(1));
+  // public temas$: Observable<ITemaPendiente[]>;
   public stopPolling = new Subject();
   protected url = environment.apiURI;
   constructor(private http: HttpClient) {}
   ngOnDestroy(): void {
     this.stopPolling.next();
   }
-  poolingTemas(email: string) {
+  poolingTemas2(email: string) {
     this.temas$ = timer(1, 60000).pipe(
       switchMap(() => this.obtenerTemasPendientesPorUsuario(email)),
-      retry(),
+      retry(10),
       publishReplay(1),
       refCount(),
       takeUntil(this.stopPolling)
     );
+  }
+  poolingTemas(email: string) {
+    timer(1, 60000)
+      .pipe(
+        switchMap(() => this.obtenerTemasPendientesPorUsuario(email)),
+        retry(10),
+        publishReplay(1),
+        refCount(),
+        takeUntil(this.stopPolling)
+      )
+      .subscribe(
+        (datos) => {
+          this.temasSubject.next(datos);
+        },
+        (error) => {
+          this.temasSubject.next([]);
+          console.log('[ERROR]', error);
+        }
+      );
   }
   obtenerTemasPendientesPorUsuario(email: string): Observable<ITemaPendiente[]> {
     const query = `tema-pendiente/por-usuario/${email}`;

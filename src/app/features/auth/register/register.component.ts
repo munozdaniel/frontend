@@ -7,13 +7,13 @@ import { DesignConfigService } from '@design/services/config.service';
 import { designAnimations } from '@design/animations';
 import Swal from 'sweetalert2';
 import { IUsuario } from 'app/models/interface/iUsuario';
-import { AuthenticationService } from 'app/core/services/helpers/authentication.service';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { Router } from '@angular/router';
 import { DesignProgressBarService } from '@design/components/progress-bar/progress-bar.service';
 import { CustomValidators } from './custom-validators';
 import { MustMatchValidator } from 'app/shared/validators/must-match.validator';
 import { DesignNavigationService } from '@design/components/navigation/navigation.service';
+import { AuthService } from 'app/core/auth/auth.service';
 
 @UntilDestroy()
 @Component({
@@ -35,7 +35,7 @@ export class RegisterComponent implements OnInit, OnDestroy {
     private _designNavigationService: DesignNavigationService,
     private _designProgressBar: DesignProgressBarService,
     private _router: Router,
-    private _authService: AuthenticationService,
+    private _authService: AuthService,
     private _designConfigService: DesignConfigService,
     private _formBuilder: FormBuilder
   ) {
@@ -147,16 +147,19 @@ export class RegisterComponent implements OnInit, OnDestroy {
       .subscribe(
         (datos) => {
           this._designProgressBar.hide();
-        //   this._designNavigationService.setCurrentNavigation('main');
-          Swal.fire({
-            title: 'Bienvenido ' + datos.usuario.apellido + ' ' + datos.usuario.nombre,
-            text: 'Redireccionando...',
-            icon: 'success',
-            timer: 2000,
-            timerProgressBar: true,
-          }).then(() => {
+          //   this._designNavigationService.setCurrentNavigation('main');
+          //   Swal.fire({
+          //     title: 'Bienvenido ' + datos.usuario.apellido + ' ' + datos.usuario.nombre,
+          //     text: 'Redireccionando...',
+          //     icon: 'success',
+          //     timer: 2000,
+          //     timerProgressBar: true,
+          //   }).then(() => {
+          //     this._router.navigate(['/']);
+          //   });
+          setTimeout(() => {
             this._router.navigate(['/']);
-          });
+          }, 2000);
         },
         ({ error }) => {
           if (error && error.status === 400) {
@@ -168,8 +171,7 @@ export class RegisterComponent implements OnInit, OnDestroy {
           } else {
             Swal.fire({
               title: 'Registro Fallido',
-              text:
-                'Verifique que los datos hayan sido ingresado correctamente. Si el problema persiste comuniquese con el soporte técnico.',
+              text: 'Verifique que los datos hayan sido ingresado correctamente. Si el problema persiste comuniquese con el soporte técnico.',
               icon: 'error',
             });
           }

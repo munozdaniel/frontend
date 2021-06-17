@@ -7,7 +7,6 @@ import { DesignConfigService } from '@design/services/config.service';
 import { designAnimations } from '@design/animations';
 import { MustMatchValidator } from 'app/shared/validators/must-match.validator';
 import { CustomValidators } from '../register/custom-validators';
-import { AuthenticationService } from 'app/core/services/helpers/authentication.service';
 import Swal from 'sweetalert2';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { ActivatedRoute, Router } from '@angular/router';

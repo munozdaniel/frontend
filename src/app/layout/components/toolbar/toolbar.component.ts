@@ -8,7 +8,6 @@ import { DesignSidebarService } from '@design/components/sidebar/sidebar.service
 
 import { navigation } from 'app/navigation/navigation';
 import { DOCUMENT } from '@angular/common';
-import { AuthenticationService } from 'app/core/services/helpers/authentication.service';
 import { SeguimientoAlumnoService } from 'app/core/services/seguimientoAlumno.service';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { ISeguimientoAlumno } from 'app/models/interface/iSeguimientoAlumno';
@@ -17,6 +16,7 @@ import { ITemaPendiente } from 'app/models/interface/iTemaPendiente';
 import { TemaService } from 'app/core/services/tema.service';
 import { NgxPermissionsService } from 'ngx-permissions';
 import { RolConst } from 'app/models/constants/rol.enum';
+import { AuthService } from 'app/core/auth/auth.service';
 @UntilDestroy()
 @Component({
   selector: 'toolbar',
@@ -50,7 +50,7 @@ export class ToolbarComponent implements OnInit, OnDestroy {
     private _changeDetectorRef: ChangeDetectorRef,
     private _media: MediaMatcher,
     public breakpointObserver: BreakpointObserver,
-    public authService: AuthenticationService,
+    public authService: AuthService,
     @Inject(DOCUMENT) public document: Document,
     private _designConfigService: DesignConfigService,
     private _designSidebarService: DesignSidebarService,

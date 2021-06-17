@@ -2,8 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { designAnimations } from '@design/animations';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
-import { AuthenticationService } from 'app/core/services/helpers/authentication.service';
-import { UsuarioService } from 'app/core/services/helpers/usuario.service';
+import { AuthService } from 'app/core/auth/auth.service';
 import { SeguimientoAlumnoService } from 'app/core/services/seguimientoAlumno.service';
 import { ISeguimientoAlumno } from 'app/models/interface/iSeguimientoAlumno';
 import { IUsuario } from 'app/models/interface/iUsuario';
@@ -38,7 +37,7 @@ export class SeguimientoEditarComponent implements OnInit {
     private _activeRoute: ActivatedRoute,
     private _seguimientoAlumnoService: SeguimientoAlumnoService,
     private _router: Router,
-    private _authService: AuthenticationService
+    private _authService: AuthService
   ) {
     this._authService.currentUser$.pipe(untilDestroyed(this)).subscribe(
       (datos) => {

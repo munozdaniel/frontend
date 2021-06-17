@@ -4,10 +4,10 @@ import { MatDialog } from '@angular/material';
 import { ActivatedRoute, Router } from '@angular/router';
 import { designAnimations } from '@design/animations';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
+import { AuthService } from 'app/core/auth/auth.service';
 import { AlumnoService } from 'app/core/services/alumno.service';
 import { AsistenciaService } from 'app/core/services/asistencia.service';
 import { CalificacionService } from 'app/core/services/calificacion.service';
-import { AuthenticationService } from 'app/core/services/helpers/authentication.service';
 import { PlanillaTallerService } from 'app/core/services/planillaTaller.service';
 import { SeguimientoAlumnoService } from 'app/core/services/seguimientoAlumno.service';
 import { TemaService } from 'app/core/services/tema.service';
@@ -202,7 +202,7 @@ export class PlanillaTallerAdministrarComponent implements OnInit {
   mobileQuery: MediaQueryList;
   constructor(
     private _activeRoute: ActivatedRoute,
-    private _authService: AuthenticationService,
+    private _authService: AuthService,
     private _alumnoService: AlumnoService,
     private _temaService: TemaService,
     private _asistenciaService: AsistenciaService,
@@ -251,7 +251,6 @@ export class PlanillaTallerAdministrarComponent implements OnInit {
           //     this.indiceTab = 4;
           //   }
           const index = this.alumnos.findIndex((x) => x._id === seguimiento.alumno._id);
-          console.log('index', index);
           if (index !== -1) {
             this.alumnoSeleccionado = this.alumnos[index];
             this.setBuscarSeguimientosPorAlumno(this.alumnoSeleccionado);

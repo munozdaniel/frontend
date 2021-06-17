@@ -4,15 +4,18 @@ export interface IUsuario {
   _id?: string;
   token?: string;
   email: string;
-  password: string;
+  password?: string;
   nombre: string;
   apellido: string;
   rol?: 'PROFESOR' | 'ADMIN' | 'DIRECTOR' | 'JEFETALLER' | 'PRECEPTOR';
   profesor?: string;
   observacion?: string; // Agregado por el dueño del comercio
 
-  fechaCreacion: Date;
+  fechaCreacion?: Date;
   usuarioCreacion?: string | null;
-  activo: boolean;
+  activo?: boolean;
   picture?: string; //
+
+  accessToken?: any;
+  refreshToken?: any;
 }

@@ -5,8 +5,8 @@ import { Router } from '@angular/router';
 import { designAnimations } from '@design/animations';
 import { DesignNavigationService } from '@design/components/navigation/navigation.service';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
+import { AuthService } from 'app/core/auth/auth.service';
 import { AsignaturaService } from 'app/core/services/asignatura.service';
-import { AuthenticationService } from 'app/core/services/helpers/authentication.service';
 import { SeguimientoAlumnoService } from 'app/core/services/seguimientoAlumno.service';
 import { ISeguimientoAlumno } from 'app/models/interface/iSeguimientoAlumno';
 @UntilDestroy()
@@ -28,7 +28,7 @@ export class HomeComponent implements OnInit {
   constructor(
     private _dialog: MatDialog,
     private title: Title,
-    public authService: AuthenticationService,
+    public authService: AuthService,
     private _designNavigationService: DesignNavigationService,
     private _seguimientoAlumnoService: SeguimientoAlumnoService,
     private _router: Router,

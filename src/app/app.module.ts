@@ -1,4 +1,4 @@
-import { LOCALE_ID, NgModule } from '@angular/core';
+import { APP_INITIALIZER, LOCALE_ID, NgModule } from '@angular/core';
 import { BrowserModule, Title } from '@angular/platform-browser';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -22,8 +22,11 @@ import { SharedModule } from './shared/shared.module';
 import { registerLocaleData } from '@angular/common';
 
 import localeEsAr from '@angular/common/locales/es-AR';
-import { AuthInterceptorProviders } from './core/services/helpers/auth.interceptor';
 import { NgxPermissionsModule } from 'ngx-permissions';
+import { appInitializer } from './core/auth/app-initializer';
+import { AuthService } from './core/auth/auth.service';
+import { JwtInterceptor } from './core/interceptors/jwt.interceptor';
+import { UnauthorizedInterceptor } from './core/interceptors/unauthorized.interceptor';
 
 registerLocaleData(localeEsAr, 'es-Ar');
 
@@ -64,6 +67,22 @@ const appRoutes: Routes = [
     LayoutModule,
   ],
   bootstrap: [AppComponent],
-  providers: [AuthInterceptorProviders, Title, { provide: LOCALE_ID, useValue: 'es-Ar' }],
+  providers: [
+    {
+      provide: APP_INITIALIZER,
+      useFactory: appInitializer,
+      multi: true,
+      deps: [AuthService],
+    },
+    { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true },
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: UnauthorizedInterceptor,
+      multi: true,
+    },
+    ,
+    Title,
+    { provide: LOCALE_ID, useValue: 'es-Ar' },
+  ],
 })
 export class AppModule {}

@@ -4,8 +4,8 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA, throwToolbarMixedModesError } from '@angular/material';
 import { designAnimations } from '@design/animations';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
+import { AuthService } from 'app/core/auth/auth.service';
 import { CicloLectivoService } from 'app/core/services/ciclo-lectivo.service';
-import { AuthenticationService } from 'app/core/services/helpers/authentication.service';
 import { PlanillaTallerService } from 'app/core/services/planillaTaller.service';
 import { SeguimientoAlumnoService } from 'app/core/services/seguimientoAlumno.service';
 import { DescripcionSeguimiento } from 'app/models/constants/descripcion-seguimiento.const';
@@ -249,7 +249,7 @@ export class SeguimientoFormModalComponent implements OnInit {
     private _planillaTallerService: PlanillaTallerService,
     private _seguimientoAlumnoService: SeguimientoAlumnoService,
     private _cicloLectivoService: CicloLectivoService,
-    private _authService: AuthenticationService,
+    private _authService: AuthService,
     public dialogRef: MatDialogRef<SeguimientoFormModalComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any
   ) {
@@ -275,26 +275,26 @@ export class SeguimientoFormModalComponent implements OnInit {
       console.log('data.seguimiento', data.seguimiento);
       this.isUpdate = true;
       this.seguimiento = data.seguimiento;
-      if (data.marcarLeido) {
-        this.marcarLeido();
-      }
+      //   if (data.marcarLeido) {
+      //     this.marcarLeido();
+      //   }
     }
   }
-  marcarLeido() {
-    this.seguimiento.leido = true;
-    this._seguimientoAlumnoService
-      .actualizarSeguimientoAlumno(this.seguimiento._id, this.seguimiento)
-      .pipe(untilDestroyed(this))
-      .subscribe(
-        (datos) => {
-          this._seguimientoAlumnoService.stopPolling.next();
-          this._seguimientoAlumnoService.poolingSeguimientos(this.usuario.email);
-        },
-        (error) => {
-          console.log('[ERROR]', error);
-        }
-      );
-  }
+  //   marcarLeido() {
+  //     this.seguimiento.leido = true;
+  //     this._seguimientoAlumnoService
+  //       .actualizarSeguimientoAlumno(this.seguimiento._id, this.seguimiento)
+  //       .pipe(untilDestroyed(this))
+  //       .subscribe(
+  //         (datos) => {
+  //           this._seguimientoAlumnoService.stopPolling.next();
+  //           this._seguimientoAlumnoService.poolingSeguimientos(this.usuario.email);
+  //         },
+  //         (error) => {
+  //           console.log('[ERROR]', error);
+  //         }
+  //       );
+  //   }
   obtenerPlanillas() {
     this.cargandoPlanillas = true;
     this._planillaTallerService
@@ -473,7 +473,6 @@ export class SeguimientoFormModalComponent implements OnInit {
             icon: 'success',
           });
           this.cargando = false;
-          this._seguimientoAlumnoService.stopPolling.next();
           this._seguimientoAlumnoService.poolingSeguimientos(this.usuario.email);
           this.dialogRef.close(true);
         },

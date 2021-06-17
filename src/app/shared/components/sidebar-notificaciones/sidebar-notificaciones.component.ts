@@ -2,11 +2,13 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { DesignSidebarService } from '@design/components/sidebar/sidebar.service';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
+import { AuthService } from 'app/core/auth/auth.service';
 import { SeguimientoAlumnoService } from 'app/core/services/seguimientoAlumno.service';
 import { TemaService } from 'app/core/services/tema.service';
 import { RolConst } from 'app/models/constants/rol.enum';
 import { ISeguimientoAlumno } from 'app/models/interface/iSeguimientoAlumno';
 import { ITemaPendiente } from 'app/models/interface/iTemaPendiente';
+import { IUsuario } from 'app/models/interface/iUsuario';
 import { NgxPermissionsService } from 'ngx-permissions';
 import Swal from 'sweetalert2';
 @UntilDestroy()
@@ -19,13 +21,19 @@ export class SidebarNotificacionesComponent implements OnInit {
   cargando: boolean;
   seguimientosSinLeer: ISeguimientoAlumno[] = [];
   temasPendientes: ITemaPendiente[] = [];
+  usuario: IUsuario;
   constructor(
     private _permissionsService: NgxPermissionsService,
     private _router: Router,
     private _seguimientoService: SeguimientoAlumnoService,
     private _temaService: TemaService,
-    private _designSidebarService: DesignSidebarService
-  ) {}
+    private _designSidebarService: DesignSidebarService,
+    private _authService: AuthService
+  ) {
+    this._authService.currentUser$.pipe(untilDestroyed(this)).subscribe((datos) => {
+      this.usuario = datos;
+    });
+  }
 
   ngOnInit(): void {
     this._permissionsService.permissions$.subscribe((permissions) => {
@@ -37,7 +45,6 @@ export class SidebarNotificacionesComponent implements OnInit {
             this.seguimientosSinLeer = datos;
           });
           this._temaService.temas$.pipe(untilDestroyed(this)).subscribe((datos) => {
-            console.log('================', datos);
             this.temasPendientes = datos;
           });
         }
@@ -49,7 +56,12 @@ export class SidebarNotificacionesComponent implements OnInit {
   }
   redireccionarSeguimiento(seguimiento: ISeguimientoAlumno) {
     seguimiento.leido = true;
-    this.actualizarComoLeido(seguimiento);
+    // this.actualizarComoLeido(seguimiento);
+    if (seguimiento.planillaTaller._id) {
+      this._router.navigate(['/taller/planillas-administrar/' + seguimiento.planillaTaller._id + '/seguimientos/' + seguimiento._id]);
+    } else {
+      this._router.navigate(['/taller/planillas-administrar/' + seguimiento.planillaTaller + '/seguimientos/' + seguimiento._id]);
+    }
   }
   actualizarComoLeido(seguimiento: ISeguimientoAlumno) {
     this.cargando = true;
@@ -60,6 +72,7 @@ export class SidebarNotificacionesComponent implements OnInit {
       .subscribe(
         (datos) => {
           this.cargando = false;
+          this._seguimientoService.poolingSeguimientos(this.usuario.email);
           if (seguimiento.planillaTaller._id) {
             this._router.navigate(['/taller/planillas-administrar/' + seguimiento.planillaTaller._id + '/seguimientos/' + seguimiento._id]);
           } else {
