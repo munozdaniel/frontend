@@ -6,6 +6,8 @@ import { environment } from 'environments/environment';
 import { BehaviorSubject, Observable, Subject, timer } from 'rxjs';
 import { retry, share, shareReplay, switchMap, takeUntil } from 'rxjs/operators';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
+import { AuthenticationService } from './helpers/authentication.service';
+import { IUsuario } from 'app/models/interface/iUsuario';
 @UntilDestroy()
 @Injectable({
   providedIn: 'root',
@@ -15,12 +17,12 @@ export class SeguimientoAlumnoService implements OnDestroy {
   //   public seguimientoNotificacion$ = this.seguimientoNotificacionSubject.asObservable().pipe(shareReplay(1));
   public seguimientos$: Observable<ISeguimientoAlumno[]>;
   public stopPolling = new Subject();
-
   protected url = environment.apiURI;
   constructor(private http: HttpClient) {}
   ngOnDestroy(): void {
     this.stopPolling.next();
   }
+
   //   setSeguimientoNotificacion(seguimientos: ISeguimientoAlumno[]) {
   //     this.seguimientoNotificacionSubject.next(seguimientos);
   //   }
@@ -139,5 +141,11 @@ export class SeguimientoAlumnoService implements OnDestroy {
     const url = this.url + query;
 
     return this.http.get<any>(url);
+  }
+  marcarSeguimientoLeido(seguimiento: ISeguimientoAlumno) {
+    const query = `seguimiento-alumnos/marcar-leido`;
+    const url = this.url + query;
+
+    return this.http.post<any>(url, { seguimiento });
   }
 }

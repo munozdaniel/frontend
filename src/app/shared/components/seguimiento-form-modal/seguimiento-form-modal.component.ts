@@ -23,9 +23,9 @@ import Swal from 'sweetalert2';
   selector: 'app-seguimiento-form-modal',
   template: ` <div fxLayout="row wrap" fxLayoutAlign="space-between baseline">
       <h1 mat-dialog-title>Seguimiento de {{ alumno?.nombreCompleto }}</h1>
-      <mat-checkbox color="warn" *ngxPermissionsOnly="['PROFESOR']" #checkbox (change)="showOptions(checkbox.checked)" value="">
+      <!-- <mat-checkbox color="warn" *ngxPermissionsOnly="['PROFESOR']" #checkbox (change)="showOptions(checkbox.checked)" [value]="esLeido">
         Marcar como leído
-      </mat-checkbox>
+      </mat-checkbox> -->
     </div>
     <div mat-dialog-content class="py-12 px-24 border">
       <!-- <div fxLayout="row" fxLayoutAlign="center start">
@@ -473,6 +473,8 @@ export class SeguimientoFormModalComponent implements OnInit {
             icon: 'success',
           });
           this.cargando = false;
+          this._seguimientoAlumnoService.stopPolling.next();
+          this._seguimientoAlumnoService.poolingSeguimientos(this.usuario.email);
           this.dialogRef.close(true);
         },
         (error) => {

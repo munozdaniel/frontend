@@ -3,10 +3,13 @@ import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 import { designAnimations } from '@design/animations';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
+import { AuthenticationService } from 'app/core/services/helpers/authentication.service';
 import { TemaService } from 'app/core/services/tema.service';
 import { CaracterClaseConst } from 'app/models/constants/caracter-clase.const';
 import { IPlanillaTaller } from 'app/models/interface/iPlanillaTaller';
 import { ITema } from 'app/models/interface/iTema';
+import { ITemaPendiente } from 'app/models/interface/iTemaPendiente';
+import { IUsuario } from 'app/models/interface/iUsuario';
 import { CONFIG_PROVIDER } from 'app/shared/config.provider';
 import * as moment from 'moment';
 import { of } from 'rxjs';
@@ -39,11 +42,14 @@ import Swal from 'sweetalert2';
       <div fxLayout="column" fxLayoutAlign="center start ">
         <h2><strong>Motivo </strong></h2>
         <span>{{ tema.motivoSinDictar }}</span>
-        <button mat-flat-button color="primary" (click)="ocultar = false"><mat-icon>create</mat-icon> Editar Tema</button>
-        <button mat-flat-button color="warn" (click)="marcarComoPendiente()"><mat-icon>create</mat-icon> Editar Tema</button>
       </div>
     </div>
-
+    <div *ngIf="tema?.motivoSinDictar" fxLayout="row wrap" fxLayoutAlign="center start" fxLayoutGap="10px" class="mb-8">
+      <button mat-flat-button color="primary" (click)="ocultar = false"><mat-icon>create</mat-icon> Editar Tema</button>
+      <button *ngxPermissionsOnly="['ADMIN', 'JEFETALLER']" mat-flat-button color="warn" (click)="marcarComoPendiente()">
+        <mat-icon>create</mat-icon> Alertar al Profesor
+      </button>
+    </div>
     <div [fxHide]="ocultar" mat-dialog-content class="border mat-card mat-elevation-z4 px-24">
       <div *ngIf="!template" fxLayout="row wrap" fxLayoutAlign="space-between start">
         <h4 fxFlex.xs="100" fxFlex.gt-xs="45">
@@ -241,6 +247,7 @@ import Swal from 'sweetalert2';
   providers: CONFIG_PROVIDER,
 })
 export class TemaFormModalComponent implements OnInit, OnDestroy, OnChanges {
+  usuario: IUsuario;
   ocultar = false;
   caracterClases = CaracterClaseConst;
   cargando = false;
@@ -255,11 +262,15 @@ export class TemaFormModalComponent implements OnInit, OnDestroy, OnChanges {
   isModal = false;
   fechaNombre: string;
   constructor(
+    private _authService: AuthenticationService,
     private _fb: FormBuilder,
     private _temaService: TemaService,
     @Optional() public dialogRef: MatDialogRef<TemaFormModalComponent>,
     @Optional() @Inject(MAT_DIALOG_DATA) public data: any
   ) {
+    this._authService.currentUser$.pipe(untilDestroyed(this)).subscribe((datos) => {
+      this.usuario = datos;
+    });
     if (data) {
       this.isModal = true;
       if (data.planillaTaller) {
@@ -409,7 +420,7 @@ export class TemaFormModalComponent implements OnInit, OnDestroy, OnChanges {
       activo: true,
       fechaCreacion: new Date(),
       motivoSinDictar: null,
-      pendiente: false,
+      incompleto: false,
     };
     this._temaService
       .actualizarTema(this.tema._id, temaForm)
@@ -423,11 +434,7 @@ export class TemaFormModalComponent implements OnInit, OnDestroy, OnChanges {
           });
           this.tema._id = datos.tema._id;
           this.cargando = false;
-          if (this.dialogRef) {
-            this.dialogRef.close(true);
-          } else {
-            this.retActualizarLibro.emit(true);
-          }
+          this.eliminarTemaPendiente();
         },
         (error) => {
           this.cargando = false;
@@ -454,7 +461,7 @@ export class TemaFormModalComponent implements OnInit, OnDestroy, OnChanges {
       caracterClase: 'SIN DICTAR',
       observacionJefe: this.tema.observacionJefe,
       activo: this.tema.activo,
-      pendiente: false,
+      incompleto: false,
     };
     Swal.fire({
       title: '¿Está seguro de continuar?',
@@ -475,7 +482,6 @@ export class TemaFormModalComponent implements OnInit, OnDestroy, OnChanges {
         placeholder: 'Ingrese el motivo',
       },
       preConfirm: (motivoSinDictar) => {
-        console.log('tema', tema);
         tema.motivoSinDictar = motivoSinDictar;
         return this._temaService.actualizarTema(this.tema._id, tema).pipe(
           catchError((error) => {
@@ -495,11 +501,11 @@ export class TemaFormModalComponent implements OnInit, OnDestroy, OnChanges {
         if (result.value) {
           Swal.fire({
             title: 'Operación Exitosa',
-            text: 'La planilla de taller ha sido actualizada',
+            text: 'La clase se ha marcado correctamente como SIN DICTAR',
             icon: 'success',
           });
           this.form.reset();
-          this.retActualizarLibro.emit(true);
+          this.eliminarTemaPendiente();
         } else {
           Swal.fire({
             title: 'Oops! Ocurrió un error',
@@ -511,7 +517,47 @@ export class TemaFormModalComponent implements OnInit, OnDestroy, OnChanges {
     });
   }
   marcarComoPendiente() {
-    this.tema.pendiente = true;
-    if(this.tema._id){}else{}
+    const temaPendiente: ITemaPendiente = {
+      planillaTaller: this.planillaTaller,
+      fecha: this.tema.fecha,
+      profesor: this.planillaTaller.profesor,
+    };
+    this._temaService
+      .guardarTemasPendientes([temaPendiente])
+      .pipe(untilDestroyed(this))
+      .subscribe(
+        (datos) => {
+          Swal.fire({
+            title: 'Tema marcado como pendiente',
+            text: 'Se le ha informado al profesor de la planilla que complete el tema seleccionado',
+            icon: 'success',
+            timer: 2000,
+            timerProgressBar: true,
+          }).then(() => {});
+        },
+        (error) => {
+          console.log('[ERROR]', error);
+        }
+      );
+  }
+  eliminarTemaPendiente() {
+    this._temaService
+      .eliminarTemaPendiente(this.tema)
+      .pipe(untilDestroyed(this))
+      .subscribe(
+        (datos) => {
+          console.log('[ELIMINADO COMO PENDIENTE]', datos);
+          //this._temaService.stopPolling.next();
+          this._temaService.poolingTemas(this.usuario.email);
+          if (this.dialogRef) {
+            this.dialogRef.close(true);
+          } else {
+            this.retActualizarLibro.emit(true);
+          }
+        },
+        (error) => {
+          console.log('[ERROR]', error);
+        }
+      );
   }
 }

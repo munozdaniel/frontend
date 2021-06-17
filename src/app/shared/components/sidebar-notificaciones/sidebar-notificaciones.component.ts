@@ -8,6 +8,7 @@ import { RolConst } from 'app/models/constants/rol.enum';
 import { ISeguimientoAlumno } from 'app/models/interface/iSeguimientoAlumno';
 import { ITemaPendiente } from 'app/models/interface/iTemaPendiente';
 import { NgxPermissionsService } from 'ngx-permissions';
+import Swal from 'sweetalert2';
 @UntilDestroy()
 @Component({
   selector: 'app-sidebar-notificaciones',
@@ -15,6 +16,7 @@ import { NgxPermissionsService } from 'ngx-permissions';
   styleUrls: ['./sidebar-notificaciones.component.scss'],
 })
 export class SidebarNotificacionesComponent implements OnInit {
+  cargando: boolean;
   seguimientosSinLeer: ISeguimientoAlumno[] = [];
   temasPendientes: ITemaPendiente[] = [];
   constructor(
@@ -35,6 +37,7 @@ export class SidebarNotificacionesComponent implements OnInit {
             this.seguimientosSinLeer = datos;
           });
           this._temaService.temas$.pipe(untilDestroyed(this)).subscribe((datos) => {
+            console.log('================', datos);
             this.temasPendientes = datos;
           });
         }
@@ -45,11 +48,34 @@ export class SidebarNotificacionesComponent implements OnInit {
     this._designSidebarService.getSidebar('notificaciones').close();
   }
   redireccionarSeguimiento(seguimiento: ISeguimientoAlumno) {
-    if (seguimiento.planillaTaller._id) {
-      this._router.navigate(['/taller/planillas-administrar/' + seguimiento.planillaTaller._id + '/seguimientos/' + seguimiento._id]);
-    } else {
-      this._router.navigate(['/taller/planillas-administrar/' + seguimiento.planillaTaller + '/seguimientos/' + seguimiento._id]);
-    }
+    seguimiento.leido = true;
+    this.actualizarComoLeido(seguimiento);
+  }
+  actualizarComoLeido(seguimiento: ISeguimientoAlumno) {
+    this.cargando = true;
+
+    this._seguimientoService
+      .marcarSeguimientoLeido(seguimiento)
+      .pipe(untilDestroyed(this))
+      .subscribe(
+        (datos) => {
+          this.cargando = false;
+          if (seguimiento.planillaTaller._id) {
+            this._router.navigate(['/taller/planillas-administrar/' + seguimiento.planillaTaller._id + '/seguimientos/' + seguimiento._id]);
+          } else {
+            this._router.navigate(['/taller/planillas-administrar/' + seguimiento.planillaTaller + '/seguimientos/' + seguimiento._id]);
+          }
+        },
+        (error) => {
+          this.cargando = false;
+          console.log('[ERROR]', error);
+          Swal.fire({
+            title: 'Ocurrió un error',
+            text: 'No se pudo marcar el seguimiento como leído',
+            icon: 'error',
+          });
+        }
+      );
   }
   redireccionarTema(tema: ITemaPendiente) {
     if (tema.planillaTaller._id) {

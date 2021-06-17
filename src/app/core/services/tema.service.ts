@@ -6,13 +6,14 @@ import { IProfesor } from 'app/models/interface/iProfesor';
 import { ITema } from 'app/models/interface/iTema';
 import { ITemaPendiente } from 'app/models/interface/iTemaPendiente';
 import { environment } from 'environments/environment';
-import { Observable, Subject, timer } from 'rxjs';
-import { switchMap, retry, share, takeUntil } from 'rxjs/operators';
+import { BehaviorSubject, Observable, Subject, timer } from 'rxjs';
+import { switchMap, retry, share, takeUntil, shareReplay, publishReplay, refCount } from 'rxjs/operators';
 @UntilDestroy()
 @Injectable({
   providedIn: 'root',
 })
 export class TemaService implements OnDestroy {
+  //   public temas$ = new BehaviorSubject<ITemaPendiente[]>([]);
   public temas$: Observable<ITemaPendiente[]>;
   public stopPolling = new Subject();
   protected url = environment.apiURI;
@@ -24,7 +25,8 @@ export class TemaService implements OnDestroy {
     this.temas$ = timer(1, 60000).pipe(
       switchMap(() => this.obtenerTemasPendientesPorUsuario(email)),
       retry(),
-      share(),
+      publishReplay(1),
+      refCount(),
       takeUntil(this.stopPolling)
     );
   }
@@ -84,5 +86,11 @@ export class TemaService implements OnDestroy {
     const url = this.url + query;
 
     return this.http.get<any>(url);
+  }
+  eliminarTemaPendiente(tema: ITema): Observable<any> {
+    const query = `tema-pendiente/eliminar`;
+    const url = this.url + query;
+
+    return this.http.post<any>(url, { tema });
   }
 }
