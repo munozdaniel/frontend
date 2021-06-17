@@ -272,7 +272,6 @@ export class SeguimientoFormModalComponent implements OnInit {
       this.obtenerPlanillas();
     }
     if (data.seguimiento) {
-      console.log('data.seguimiento', data.seguimiento);
       this.isUpdate = true;
       this.seguimiento = data.seguimiento;
       //   if (data.marcarLeido) {
@@ -460,7 +459,7 @@ export class SeguimientoFormModalComponent implements OnInit {
       activo: true,
       fechaModificacion: new Date(),
       modificadoPor: this.usuario,
-      leido: this.usuario.rol === RolConst.ADMIN || this.usuario.rol === RolConst.JEFETALLER ? false : this.esLeido,
+      leido: this.usuario.rol === RolConst.ADMIN || this.usuario.rol === RolConst.JEFETALLER ? false : true,
     };
     this._seguimientoAlumnoService
       .actualizarSeguimientoAlumno(this.seguimiento._id, seguimientoForm)

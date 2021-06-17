@@ -217,7 +217,7 @@ import Swal from 'sweetalert2';
           mat-raised-button
           [disabled]="form.invalid"
           ngClass.xs=""
-          class="mt-8 w-100-p"
+          class="my-8 w-100-p"
           fxFlex.xs="100"
           (click)="guardar()"
           color="primary"
@@ -229,7 +229,7 @@ import Swal from 'sweetalert2';
           mat-raised-button
           [disabled]="form.invalid"
           ngClass.xs=""
-          class="mt-8 w-100-p"
+          class="my-8 w-100-p"
           fxFlex.xs="100"
           [disabled]="cargando"
           (click)="actualizar()"
