@@ -120,7 +120,7 @@ export class InasistenciasAlumnosComponent implements OnInit {
         horaDesde: [horasD, Validators.required],
         horaHasta: [horasH, Validators.required],
         turno: [null, Validators.required],
-        curso: [null, Validators.required],
+        curso: [null],
       },
       {
         validator: this.restriccionFecha('fechaDesde', 'fechaHasta', 'horaDesde', 'horaHasta'),
