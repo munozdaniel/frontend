@@ -118,7 +118,6 @@ export class AlumnosTablaEmailComponent implements OnInit, OnChanges {
   }
   ngOnChanges(changes: SimpleChanges): void {
     if (changes.alumnos && changes.alumnos.currentValue) {
-      console.log('changes.alumnos.currentValue', changes.alumnos.currentValue);
       this.dataSource.data = changes.alumnos.currentValue;
     }
   }

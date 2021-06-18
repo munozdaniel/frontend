@@ -551,7 +551,6 @@ export class TemaFormModalComponent implements OnInit, OnDestroy, OnChanges {
       .pipe(untilDestroyed(this))
       .subscribe(
         (datos) => {
-          console.log('[ELIMINADO COMO PENDIENTE]', datos);
           //this._temaService.stopPolling.next();
           this._temaService.poolingTemas(this.usuario.email);
           if (this.dialogRef) {

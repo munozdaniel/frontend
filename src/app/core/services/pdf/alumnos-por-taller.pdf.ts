@@ -353,7 +353,6 @@ export class AlumnosPorTallerPdf {
       total.push(tablaTaller);
       tabla.push({ stack: [tablaCabecera, tablaCalificaciones, tablaAsistencias, tablaTaller], unbreakable: true });
     });
-    console.log('>o', tabla);
     return [...tabla];
     //  return [...total];
     // return _.chunk(tabla, 1).map((x) => ({ stack: [x], unbreakable: true }));

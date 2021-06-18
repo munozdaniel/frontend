@@ -24,7 +24,7 @@ export class PlanillaTallerDataSource implements DataSource<IPlanillaTaller> {
       .pipe(
         catchError(() => of([])),
         finalize(() => this.cargandoSubject.next(false)),
-        tap((datos) => console.log('tap 2', datos)),
+        // tap((datos) => console.log('tap 2', datos)),
         tap((datos) => this.totalSubject.next(datos ? datos.totalDocs : 0))
       )
       .subscribe((planillaTaller) => this.planillaTallerSubject.next(planillaTaller ? planillaTaller.docs : []));

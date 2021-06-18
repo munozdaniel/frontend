@@ -176,7 +176,6 @@ export class ImportarAlumnosComponent implements OnInit {
         cantidadIntegranteGrupoFamiliar: 0,
         incompleto: true,
       };
-      console.log('row', row);
       return row;
     });
     // " ": 304470

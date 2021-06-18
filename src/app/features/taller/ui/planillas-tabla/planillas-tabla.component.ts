@@ -318,11 +318,9 @@ export class PlanillasTablaComponent implements OnInit, OnChanges, OnDestroy {
     this._router.navigate([`taller/planillas-administrar/${planilla._id}/informes`]);
   }
   dobleClickPlanilla(planilla: IPlanillaTaller) {
-    console.log('dobleClickPlanilla');
     this._router.navigate([`taller/planillas-administrar/${planilla._id}`]);
   }
   clickPlanilla(planilla: IPlanillaTaller) {
-    console.log('clickPlanilla');
     if (this.planillaTouch && this.planillaTouch._id === planilla._id) {
       this.simularDobleClick(planilla);
     } else {
@@ -330,7 +328,6 @@ export class PlanillasTablaComponent implements OnInit, OnChanges, OnDestroy {
     }
   }
   simularDobleClick(planilla) {
-    console.log('simularDobleClick');
     if (this.touchtime == 0) {
       // set first click
       this.touchtime = new Date().getTime();
