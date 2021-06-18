@@ -9,6 +9,7 @@ import { DesignNavigationService } from '@design/components/navigation/navigatio
 import { SeguimientoAlumnoService } from '../services/seguimientoAlumno.service';
 import { UntilDestroy } from '@ngneat/until-destroy';
 import Swal from 'sweetalert2';
+import { TemaService } from '../services/tema.service';
 @UntilDestroy()
 @Injectable({
   providedIn: 'root',
@@ -47,7 +48,7 @@ export class AuthService implements OnDestroy {
     private router: Router,
     private http: HttpClient,
     private _designNavigationService: DesignNavigationService,
-
+    private _temaService: TemaService,
     private _seguimientoService: SeguimientoAlumnoService
   ) {
     // this.obtenerUsuarioLogueadoPorToken()
@@ -68,6 +69,7 @@ export class AuthService implements OnDestroy {
   ngOnDestroy(): void {
     window.removeEventListener('storage', this.storageEventListener.bind(this));
   }
+
   obtenerUsuarioLogueadoPorToken(): Observable<IUsuario> {
     const refreshToken = localStorage.getItem('refresh_token');
     if (!refreshToken) {
@@ -135,6 +137,7 @@ export class AuthService implements OnDestroy {
           localStorage.removeItem('currentUser');
           this._designNavigationService.setCurrentNavigation('navigationEmpty');
           this._seguimientoService.stopPolling.next();
+          this._temaService.stopPolling.next();
         })
       )
       .subscribe();
@@ -174,6 +177,8 @@ export class AuthService implements OnDestroy {
     localStorage.removeItem('access_token');
     localStorage.removeItem('refresh_token');
     localStorage.setItem('logout-event', 'logout' + Math.random());
+    this._seguimientoService.stopPolling.next();
+    this._temaService.stopPolling.next();
   }
 
   private getTokenRemainingTime() {
