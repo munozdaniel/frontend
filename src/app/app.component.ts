@@ -176,6 +176,7 @@ export class AppComponent implements OnInit, OnDestroy {
             switch (datos.rol) {
               case RolConst.ADMIN:
               case RolConst.JEFETALLER:
+                this._designNavigationService.removeNavigationItem('custom-function');
                 this.setMenuAdmin();
 
                 break;
