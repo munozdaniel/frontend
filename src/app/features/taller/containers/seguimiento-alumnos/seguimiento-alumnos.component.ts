@@ -28,7 +28,7 @@ import Swal from 'sweetalert2';
             ></app-tipo-seguimiento-form>
           </div>
           <!-- *ngxPermissionsOnly="['ADMIN', 'JEFETALLER']" -->
-          <button  mat-raised-button color="primary" fxFlex.gt-xs="35" fxFlex.xs="100" (click)="redireccionar()">
+          <button mat-raised-button color="primary" fxFlex.gt-xs="35" fxFlex.xs="100" (click)="redireccionar()">
             <mat-icon>add</mat-icon>Agregar Seguimiento
           </button>
         </div>
@@ -62,17 +62,19 @@ export class SeguimientoAlumnosComponent implements OnInit {
   }
   setTipoSeguimiento(evento) {
     let resuelto = null;
-    switch (evento.valor) {
+    switch (Number(evento)) {
       case 1:
-        resuelto = true;
+        resuelto = false;
+        this.buscarAlumnosPorSeguimiento(resuelto);
         break;
       case 2:
-        resuelto = false;
+        resuelto = true;
+        this.buscarAlumnosPorSeguimiento(resuelto);
         break;
-      default:
+      case 3:
+        this.buscarAlumnosPorSeguimiento();
         break;
     }
-    this.buscarAlumnosPorSeguimiento(resuelto);
   }
   buscarAlumnosPorSeguimiento(resuelto?: boolean) {
     this.cargando = true;
