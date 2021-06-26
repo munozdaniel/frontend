@@ -20,22 +20,19 @@ import Swal from 'sweetalert2';
           <h1 [@animate]="{ value: '*', params: { x: '50px' } }" class="px-12">{{ titulo }}</h1>
           <mat-spinner *ngIf="cargando" matSuffix class="ml-10" diameter="20"></mat-spinner>
         </div>
-        <form *ngIf="form" [formGroup]="form" class=" w-100-p" (ngSubmit)="buscarInasistencias()">
+        <form *ngIf="form" [formGroup]="form" fxLayout="column" class=" w-100-p" (ngSubmit)="buscarInasistencias()">
           <div
             fxLayout="row wrap"
-            [fxLayoutGap]="rangoHabilitado ? '0px' : '10px'"
-            [fxLayoutAlign]="rangoHabilitado ? 'space-between baseline' : 'start baseline'"
+            [fxLayoutAlign]="rangoHabilitado ? 'start center' : 'start center'"
+            [fxLayoutGap]="rangoHabilitado ? '10px' : '10px'"
           >
-            <div fxLayout="column" fxFlex.gt-xs="30" fxFlex.xs="100">
-              <mat-form-field appearance="outline">
-                <mat-label>Fecha Desde </mat-label>
-                <input matInput [matDatepicker]="picker" formControlName="fechaDesde" />
-                <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-                <mat-datepicker #picker></mat-datepicker>
-                <mat-error *ngIf="form.controls.fechaDesde.hasError('required')"> Este campo es requerido. </mat-error>
-              </mat-form-field>
-              <mat-checkbox class="mb-12" (click)="habilitarRango()">Buscar por rango</mat-checkbox>
-            </div>
+            <mat-form-field appearance="outline" fxFlex.gt-xs="30" fxFlex.xs="100">
+              <mat-label>Fecha Desde </mat-label>
+              <input matInput [matDatepicker]="picker" formControlName="fechaDesde" />
+              <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+              <mat-datepicker #picker></mat-datepicker>
+              <mat-error *ngIf="form.controls.fechaDesde.hasError('required')"> Este campo es requerido. </mat-error>
+            </mat-form-field>
             <mat-form-field *ngIf="rangoHabilitado" appearance="outline" fxFlex.gt-xs="30" fxFlex.xs="100">
               <mat-label>Fecha Hasta</mat-label>
               <input matInput [matDatepicker]="pickerHasta" formControlName="fechaHasta" />
@@ -43,6 +40,9 @@ import Swal from 'sweetalert2';
               <mat-datepicker #pickerHasta></mat-datepicker>
               <mat-error *ngIf="form.controls.fechaHasta.hasError('required')"> Este campo es requerido. </mat-error>
             </mat-form-field>
+            <mat-checkbox class="mb-12" (click)="habilitarRango()">Buscar por rango</mat-checkbox>
+          </div>
+          <div fxLayout="row wrap" fxLayoutAlign="space-between start">
             <mat-form-field appearance="outline" fxFlex.gt-xs="30" fxFlex.xs="100">
               <mat-label class="lbl">Turno</mat-label>
               <mat-select formControlName="turno">
@@ -65,10 +65,27 @@ import Swal from 'sweetalert2';
               </mat-select>
               <mat-error *ngIf="form.controls.curso.hasError('required')"> Este campo es requerido. </mat-error>
             </mat-form-field>
-            <mat-error *ngIf="form.errors?.fechas" fxFlex="100">{{ form.errors.fechas }}</mat-error>
-            <div fxFlex="100" fxLayout="row" fxLayoutAlign="center start">
-              <button [disabled]="form.invalid" mat-raised-button color="primary"><mat-icon>search</mat-icon> Buscar</button>
-            </div>
+            <!-- division ============================= -->
+            <mat-form-field appearance="outline" fxFlex.gt-xs="30" fxFlex.xs="100">
+              <mat-label class="lbl">División</mat-label>
+              <mat-select formControlName="division">
+                <mat-option value=""></mat-option>
+                <mat-option value="1">DIVISIÓN 1</mat-option>
+                <mat-option value="2">DIVISIÓN 2</mat-option>
+                <mat-option value="3">DIVISIÓN 3</mat-option>
+                <mat-option value="4">DIVISIÓN 4</mat-option>
+                <mat-option value="5">DIVISIÓN 5</mat-option>
+                <mat-option value="6">DIVISIÓN 6</mat-option>
+                <mat-option value="6">DIVISIÓN 7</mat-option>
+                <mat-option value="6">DIVISIÓN 8</mat-option>
+                <mat-option value="6">DIVISIÓN 9</mat-option>
+              </mat-select>
+              <mat-error *ngIf="form.controls.division.hasError('required')"> Este campo es requerido. </mat-error>
+            </mat-form-field>
+          </div>
+          <mat-error *ngIf="form.errors?.fechas" fxFlex="100">{{ form.errors.fechas }}</mat-error>
+          <div fxFlex="100" fxLayout="row" fxLayoutAlign="center start">
+            <button [disabled]="form.invalid" mat-raised-button color="primary"><mat-icon>search</mat-icon> Buscar</button>
           </div>
         </form>
       </div>
@@ -121,6 +138,7 @@ export class InasistenciasAlumnosComponent implements OnInit {
         horaHasta: [horasH, Validators.required],
         turno: [null, Validators.required],
         curso: [null],
+        division: [null],
       },
       {
         validator: this.restriccionFecha('fechaDesde', 'fechaHasta', 'horaDesde', 'horaHasta'),
@@ -175,7 +193,8 @@ export class InasistenciasAlumnosComponent implements OnInit {
     //   Buscar todas las plantillas
     this._asistenciaService
       .buscarInasistencias(
-        this.form.controls.curso.value,
+        Number(this.form.controls.division.value),
+        Number(this.form.controls.curso.value),
         this.form.controls.turno.value,
         this.form.controls.fechaDesde.value,
         this.rangoHabilitado ? this.form.controls.fechaHasta.value : null

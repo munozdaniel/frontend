@@ -65,11 +65,11 @@ export class AsistenciaService {
     const url = this.url + query;
     return this.http.post<any>(url, { planillaTaller });
   }
-  buscarAsistenciasPorFechas(curso:number,turno: string, desde: any, hasta?: any): Observable<IAlumno[]> {
+  buscarAsistenciasPorFechas(curso: number, turno: string, desde: any, hasta?: any): Observable<IAlumno[]> {
     const query = `asistencia/buscar-asistencias-por-fechas`;
     const url = this.url + query;
 
-    return this.http.post<any>(url, { curso,turno, desde, hasta });
+    return this.http.post<any>(url, { curso, turno, desde, hasta });
   }
   buscarAsistenciasPorFechaYPlanilla(fecha: Date, planilla: IPlanillaTaller, alumnos: IAlumno[]): Observable<IAsistencia[]> {
     const query = `asistencia/obtener-asistencias-fecha`; // va una planilla
@@ -77,11 +77,11 @@ export class AsistenciaService {
 
     return this.http.post<any>(url, { fecha, planilla, alumnos });
   }
-  buscarInasistencias(curso:number,turno: string, desde: any, hasta?: any): Observable<IAlumno[]> {
+  buscarInasistencias(division: number, curso: number, turno: string, desde: any, hasta?: any): Observable<IAlumno[]> {
     const query = `asistencia/buscar-inasistencias`;
     const url = this.url + query;
 
-    return this.http.post<any>(url, { curso,turno, desde, hasta });
+    return this.http.post<any>(url, { division, curso, turno, desde, hasta });
   }
   tomarAsistencia(alumno: IAlumno, fecha: string): Observable<any> {
     const query = `asistencia/tomar-asistencias`;
