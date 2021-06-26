@@ -12,7 +12,7 @@ import { IPlanillaTaller } from 'app/models/interface/iPlanillaTaller';
   animations: [designAnimations],
 })
 export class AsistenciaPorTallerComponent implements OnInit {
-  titulo = 'Informe de Asistencias por Taller';
+  titulo = 'Informes por Taller';
   cargando = false;
   planillas: IPlanillaTaller[];
   panelOpenState = true;
