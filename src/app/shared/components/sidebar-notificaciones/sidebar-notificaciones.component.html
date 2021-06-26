@@ -46,20 +46,22 @@
       </mat-expansion-panel-header>
       <div *ngIf="!temasPendientes || temasPendientes.length < 1">No hay temas pendientes</div>
       <mat-selection-list *ngFor="let tema of temasPendientes" [multiple]="false">
-        <mat-list-option (click)="redireccionarTema(tema)" class="w-100-p p-12 h-100-p">
+        <mat-list-option (click)="redireccionarTema(tema)" class="w-100-p p-12 h-100-p opcion_sin_checkbox">
           <div fxLayout="column" class="w-100-p" style="color: white !important">
             <div fxLayout="row wrap" fxLayoutAlign="space-between center">
               <span>{{ tema.fecha | date: 'dd/MM/yyyy':'GMT' }}</span>
+              <mat-icon matTooltip="Pendiente de lectura">visibility</mat-icon>
               <!-- <button mat-icon-button color="accent" (click)="redireccionarSeguimiento()">
                 <span class="iconify" data-icon="fluent:open-16-filled" data-inline="false" style="font-size: 24px"></span>
               </button> -->
             </div>
+            <span>{{ tema.motivoAlerta }}</span>
             <!-- <div fxLayout="row wrap" fxLayoutAlign="space-between center" style="font-weight: bolder; color: rgb(7 185 255)">
               <small> {{ seguimiento.alumno.nombreCompleto }}</small>
             </div> -->
-            <small fxLayout="row" fxLayoutAlign="space-between center">
+            <!-- <small fxLayout="row" fxLayoutAlign="space-between center">
               <span> PENDIENTE </span>
-            </small>
+            </small> -->
           </div>
         </mat-list-option>
       </mat-selection-list>

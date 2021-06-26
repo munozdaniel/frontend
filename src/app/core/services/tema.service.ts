@@ -93,7 +93,12 @@ export class TemaService implements OnDestroy {
 
     return this.http.post<any>(url, { planillaTaller });
   }
+  eliminarTemas(temas: ITema[]) {
+    const query = `tema/eliminar-temas`;
+    const url = this.url + query;
 
+    return this.http.post<any>(url, { temas });
+  }
   //   TEMAS PENDIENTES
   guardarTemasPendientes(temasPendientes: ITemaPendiente[]): Observable<any> {
     const query = `tema-pendiente`;

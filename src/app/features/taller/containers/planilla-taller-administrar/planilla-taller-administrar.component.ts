@@ -110,6 +110,7 @@ import { TemaFormModalComponent } from '../tema-form-modal/tema-form-modal.compo
               (retAbrirModalTemas)="setAbrirModalTemas($event)"
               (retEditarTema)="setEditarTema($event)"
               (retEliminarTema)="setEliminarTema($event)"
+              (retEliminarTemas)="setEliminarTemas($event)"
               (retCargarLista)="setCargarLista($event)"
               (retInformarIncompletos)="setInformarIncompletos($event)"
             >
@@ -768,6 +769,52 @@ export class PlanillaTallerAdministrarComponent implements OnInit {
       }
     });
   }
+  setEliminarTemas(temas: ITema[]) {
+    Swal.fire({
+      title: '¿Está seguro de continuar?',
+      html: 'Está a punto de <strong>ELIMINAR PERMANENTEMENTE</strong> '+temas.length+' temas',
+      icon: 'warning',
+      focusConfirm: false,
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      confirmButtonText: 'Si, estoy seguro',
+      cancelButtonText: 'Cancelar',
+      showLoaderOnConfirm: true,
+      preConfirm: () => {
+        return this._temaService.eliminarTemas(temas).pipe(
+          catchError((error) => {
+            console.log('[ERROR]', error);
+            Swal.fire({
+              title: 'Oops! Ocurrió un error',
+              text: error && error.error ? error.error.message : 'Error de conexion',
+              icon: 'error',
+            });
+            return of(error);
+          })
+        );
+      },
+      allowOutsideClick: () => !Swal.isLoading(),
+    }).then((result: any) => {
+      if (result.isConfirmed) {
+        if (result.value && result.value.status === 200) {
+          Swal.fire({
+            title: 'Operación Exitosa',
+            text: 'El tema ha sido actualizado correctamente.',
+            icon: 'success',
+          });
+          this.obtenerClasesDetalle();
+          this.resetTema++;
+          //   this.obtenerLibroDeTemas();
+        } else {
+          Swal.fire({
+            title: 'Oops! Ocurrió un error',
+            text: 'Intentelo nuevamente. Si el problema persiste comuniquese con el soporte técnico.',
+            icon: 'error',
+          });
+        }
+      }
+    });
+  }
   setEliminarTema(tema: ITema) {
     Swal.fire({
       title: '¿Está seguro de continuar?',
@@ -850,13 +897,9 @@ export class PlanillaTallerAdministrarComponent implements OnInit {
         }
       );
   }
-  //   Temas Incompletos
+  // Temas Incompletos
   setInformarIncompletos(temas: ITema[]) {
-    const temasPendientes: ITemaPendiente[] = temas.map((x) => ({
-      fecha: x.fecha,
-      planillaTaller: x.planillaTaller,
-      profesor: this.planillaTaller.profesor,
-    }));
+   
     Swal.fire({
       title: '¿Está seguro de continuar?',
       html: 'Los temas seleccionados serán informados al profesor como temas a completar',
@@ -867,7 +910,19 @@ export class PlanillaTallerAdministrarComponent implements OnInit {
       confirmButtonText: 'Si, estoy seguro',
       cancelButtonText: 'Cancelar',
       showLoaderOnConfirm: true,
-      preConfirm: () => {
+      input: 'text',
+      inputAttributes: {
+        autocapitalize: 'off',
+        required: 'true',
+        placeholder: 'Ingrese el motivo',
+      },
+      preConfirm: (motivoAlerta) => {
+        const temasPendientes: ITemaPendiente[] = temas.map((x) => ({
+            fecha: x.fecha,
+            planillaTaller: x.planillaTaller,
+            profesor: this.planillaTaller.profesor,
+            motivoAlerta
+          }));
         return this._temaService.guardarTemasPendientes(temasPendientes).pipe(
           catchError((error) => {
             console.log('[ERROR]', error);

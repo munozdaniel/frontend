@@ -6,15 +6,45 @@
   </div>
   <div fxLayout="row wrap" fxLayoutAlign="space-between start">
     <div fxLayout="column" fxFlex.xs="100" fxFlex.gt-xs="45" fxFlex.gt-md="38">
-      <div fxLayout="row" fxLayoutGap="5px" fxLayoutAlign="start end" class="mat-card mat-elevation-z4 p-12 mb-12">
-        <span
-          style="font-size: 28px; color: #3f6542"
-          class="iconify"
-          data-icon="line-md:clipboard-check-twotone"
-          data-inline="false"
-        ></span>
-        <h3>Clases Dictadas: {{ clasesDictadas }}/{{ temas?.length }}</h3>
+      <div fxLayout="row wrap" fxLayoutAlign="space-between center" class="mat-card mat-elevation-z4 mb-12 w-100-p" style="padding: 0">
+        <div fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="5px">
+          <span
+            style="font-size: 28px; color: #3f6542"
+            class="iconify"
+            data-icon="line-md:clipboard-check-twotone"
+            data-inline="false"
+          ></span>
+          <h3>Clases Dictadas: {{ clasesDictadas }}/{{ temas?.length }}</h3>
+        </div>
       </div>
+      <button
+        *ngxPermissionsOnly="['ADMIN', 'JEFETALLER']"
+        mat-raised-button
+        color="accent"
+        (click)="informarIncompletos()"
+        [disabled]="!seleccionA || seleccionA.selected.length < 1"
+        style="margin: 0 !important; padding: 0 !important; border-radius: 0 !important"
+      >
+        <mat-icon>notification_important</mat-icon>
+        <span>Notificar al profesor</span>
+        <span>({{ seleccionA.selected ? seleccionA.selected.length : 0 }})</span>
+      </button>
+      <!-- <button mat-raised-button [matMenuTriggerFor]="menu" matTooltip="Gestionar los temas" color="primary" fxFlex="100">
+        <mat-icon>settings</mat-icon>
+        Gestionar Temas
+      </button>
+      <mat-menu #menu="matMenu">
+        <button mat-menu-item color="accent" (click)="informarIncompletos()" [disabled]="!seleccionA || seleccionA.selected.length < 1">
+          <mat-icon>notification_important</mat-icon>
+          <span>Notificar al profesor</span>
+          <span>({{ seleccionA.selected ? seleccionA.selected.length : 0 }})</span>
+        </button>
+        <button mat-menu-item color="warn" (click)="eliminarTemas()" [disabled]="!seleccionA || seleccionA.selected.length < 1">
+          <mat-icon>delete_forever</mat-icon>
+          <span>Eliminar temas</span>
+          <span>({{ seleccionA.selected ? seleccionA.selected.length : 0 }})</span>
+        </button>
+      </mat-menu> -->
       <table
         multiTemplateDataRows
         mat-table
@@ -258,18 +288,18 @@
         [pageSizeOptions]="[5, 15, 25, 50, 100]"
       >
       </mat-paginator>
+
       <button
         *ngxPermissionsOnly="['ADMIN', 'JEFETALLER']"
         mat-raised-button
-        color="accent"
-        (click)="informarIncompletos()"
+        color="warn"
+        (click)="eliminarTemas()"
         [disabled]="!seleccionA || seleccionA.selected.length < 1"
-        class="mt-12 p-8"
+        style="margin: 0 !important; padding: 0 !important; border-radius: 0 !important"
       >
-        <div fxLayout="column">
-          <span>Informar al profesor de los temas incompletos</span>
-          <span>({{ seleccionA.selected ? seleccionA.selected.length : 0 }})</span>
-        </div>
+        <mat-icon>delete_forever</mat-icon>
+        <span>Eliminar temas</span>
+        <span>({{ seleccionA.selected ? seleccionA.selected.length : 0 }})</span>
       </button>
     </div>
     <!-- <div fxLayout="column" *ngIf="temaSeleccionado && temaSeleccionado.temaDelDia" fxFlex.xs="100" fxFlex.gt-xs="70">

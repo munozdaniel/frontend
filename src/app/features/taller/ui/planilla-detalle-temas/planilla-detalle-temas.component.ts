@@ -39,6 +39,7 @@ export class PlanillaDetalleTemasComponent implements OnInit, OnChanges {
   @Output() retAbrirModalTemas = new EventEmitter<boolean>();
   @Output() retEditarTema = new EventEmitter<ITema>();
   @Output() retEliminarTema = new EventEmitter<ITema>();
+  @Output() retEliminarTemas = new EventEmitter<ITema[]>();
   @Output() retTemasCalendario = new EventEmitter<string>();
   @Output() retCargarLista = new EventEmitter<boolean>();
   @Output() retInformarIncompletos = new EventEmitter<ITema[]>();
@@ -145,5 +146,8 @@ export class PlanillaDetalleTemasComponent implements OnInit, OnChanges {
   }
   informarIncompletos() {
     this.retInformarIncompletos.emit(this.seleccionA.selected);
+  }
+  eliminarTemas() {
+    this.retEliminarTemas.emit(this.seleccionA.selected);
   }
 }

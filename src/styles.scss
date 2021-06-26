@@ -4,6 +4,10 @@
 
 // Import app.theme.scss
 @import 'app/app.theme';
+.opcion_sin_checkbox > .mat-list-item-content > .mat-pseudo-checkbox {
+  opacity: 0 !important;
+}
+
 .position_relative {
   position: relative;
 }
