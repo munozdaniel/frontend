@@ -24,6 +24,7 @@ import { AlumnosTablaCursadaComponent } from './components/alumnos-tabla-cursada
 import { NgxPermissionsModule } from 'ngx-permissions';
 import { SidebarNotificacionesComponent } from './components/sidebar-notificaciones/sidebar-notificaciones.component';
 import { SeguimientoFormModalComponent } from './components/seguimiento-form-modal/seguimiento-form-modal.component';
+import { PlanillaSeguimientoComponent } from './components/planilla-seguimiento/planilla-seguimiento.component';
 
 @NgModule({
   imports: [
@@ -60,6 +61,7 @@ import { SeguimientoFormModalComponent } from './components/seguimiento-form-mod
     AlumnosTablaCursadaComponent,
     SidebarNotificacionesComponent,
     SeguimientoFormModalComponent,
+    PlanillaSeguimientoComponent,
   ],
   declarations: [
     Error401Component,
@@ -81,6 +83,7 @@ import { SeguimientoFormModalComponent } from './components/seguimiento-form-mod
     AlumnosTablaCursadaComponent,
     SidebarNotificacionesComponent,
     SeguimientoFormModalComponent,
+    PlanillaSeguimientoComponent,
   ],
 })
 export class SharedModule {}

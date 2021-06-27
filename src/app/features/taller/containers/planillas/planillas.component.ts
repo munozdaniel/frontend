@@ -73,6 +73,7 @@ export class PlanillasComponent implements OnInit, OnDestroy {
     this._permissionsService.permissions$.subscribe((permissions) => {
       this.permisos = Object.keys(permissions);
       if (this.permisos && this.permisos.length > 0) {
+        console.log('>>this.permisos', this.permisos);
         const index = this.permisos.findIndex((x) => x.toString() === RolConst.PROFESOR);
         if (index !== -1) {
           // Es perofesor

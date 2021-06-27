@@ -1,5 +1,6 @@
 import { trigger, state, style, transition, animate } from '@angular/animations';
-import { Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges, ViewChild } from '@angular/core';
+import { MediaMatcher, BreakpointObserver, Breakpoints, BreakpointState } from '@angular/cdk/layout';
+import { ChangeDetectorRef, Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges, ViewChild } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { MatPaginator, MatSort, MatTableDataSource } from '@angular/material';
 import { designAnimations } from '@design/animations';
@@ -41,10 +42,21 @@ export class PlanillaSeguimientoComponent implements OnInit, OnChanges {
   @Input() planillas: IPlanillaTaller[];
   @Input() cargando: boolean;
   @Output() retPlanilla = new EventEmitter<IPlanillaTaller>();
-  constructor() {}
+  // Mobile
+  isMobile: boolean;
+  private _mobileQueryListener: () => void;
+  constructor(private _changeDetectorRef: ChangeDetectorRef, private _media: MediaMatcher, public breakpointObserver: BreakpointObserver) {
+    this.breakpointObserver.observe([Breakpoints.Small, Breakpoints.HandsetPortrait]).subscribe((state: BreakpointState) => {
+      if (state.matches) {
+        this.isMobile = true;
+      } else {
+        this.isMobile = false;
+      }
+    });
+  }
   ngOnChanges(changes: SimpleChanges): void {
     if (changes.planillas && changes.planillas.currentValue) {
-      this.dataSource.data = changes.planillas.currentValue;
+      this.dataSource.data = this.planillas;
       this.customSearchSortTable();
       this.turnoFilter.valueChanges.subscribe((positionFilterValue) => {
         this.filteredValues['turno'] = positionFilterValue;
@@ -152,6 +164,13 @@ export class PlanillaSeguimientoComponent implements OnInit, OnChanges {
     };
   }
   seleccionarPlanilla(planilla: IPlanillaTaller) {
+    this.dataSource.data.forEach((x) => {
+      if (x._id === planilla._id) {
+        x.selected = true;
+      } else {
+        x.selected = false;
+      }
+    });
     this.retPlanilla.emit(planilla);
   }
 }

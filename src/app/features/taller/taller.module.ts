@@ -42,7 +42,6 @@ import { CalendarModule, DateAdapter } from 'angular-calendar';
 import { AdministradorModule, momentAdapterFactory } from '../administrador/administrador.module';
 import { CustomPlanillaAlumnosModalComponent } from './containers/custom-planilla-alumnos-modal/custom-planilla-alumnos-modal.component';
 import { NgxPermissionsModule } from 'ngx-permissions';
-import { PlanillaSeguimientoComponent } from './ui/planilla-seguimiento/planilla-seguimiento.component';
 
 @NgModule({
   declarations: [
@@ -82,7 +81,6 @@ import { PlanillaSeguimientoComponent } from './ui/planilla-seguimiento/planilla
     InasistenciasAlumnosComponent,
     PlanillaCalendarioComponent,
     CustomPlanillaAlumnosModalComponent,
-    PlanillaSeguimientoComponent,
   ],
   imports: [
     CommonModule,

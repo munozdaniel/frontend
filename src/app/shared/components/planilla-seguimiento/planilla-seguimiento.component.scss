@@ -1,0 +1,13 @@
+tr.selected {
+  color: white !important;
+  background-color: rgb(43, 137, 226);
+}
+td.selected,
+td.selected > div > .text_blue,
+td.selected > button > mat-icon {
+  color: white !important;
+  background-color: rgb(43, 137, 226);
+}
+.text_blue {
+  color: rgb(0, 131, 207);
+}

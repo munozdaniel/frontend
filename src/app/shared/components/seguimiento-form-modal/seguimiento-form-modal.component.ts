@@ -22,7 +22,10 @@ import Swal from 'sweetalert2';
 @Component({
   selector: 'app-seguimiento-form-modal',
   template: ` <div fxLayout="row wrap" fxLayoutAlign="space-between baseline">
-      <h1 mat-dialog-title>Seguimiento de {{ alumno?.nombreCompleto }}</h1>
+      <h1 mat-dialog-title>
+        {{ seguimiento?._id }}
+        Seguimiento de {{ alumno?.nombreCompleto }}
+      </h1>
       <!-- <mat-checkbox color="warn" *ngxPermissionsOnly="['PROFESOR']" #checkbox (change)="showOptions(checkbox.checked)" [value]="esLeido">
         Marcar como leído
       </mat-checkbox> -->
@@ -33,7 +36,12 @@ import Swal from 'sweetalert2';
           <mat-icon>search</mat-icon> <span>Asignar Planilla</span>
         </button>
       </div> -->
-      <div fxLayout="row wrap" fxLayoutAlign="space-between start">
+      <div
+        fxLayout="row wrap"
+        fxLayoutAlign="space-between start"
+        style="    border-bottom: 1px solid gray;
+    padding-bottom: 10px;"
+      >
         <div
           *ngIf="seguimiento?.creadoPor"
           fxFlex.xs="100"
@@ -180,8 +188,16 @@ import Swal from 'sweetalert2';
           </div>
         </form>
         <!-- TABLA ================================ -->
-        <div *ngIf="habilitarBusqueda" fxFlex.xs="100" fxFlex.gt-xs="45">
-          <app-planilla-seguimiento (retPlanilla)="setPlanilla($event)" [cargando]="cargandoPlanilla" [planillas]="planillasTaller">
+        <div *ngIf="habilitarBusqueda" fxFlex.xs="100" fxFlex.gt-xs="45" fxLayout="column">
+          <div>
+            <span>Seleccione una planilla para vincular el seguimiento del alumno con el profesor para que sea notificado.</span>
+          </div>
+          <app-planilla-seguimiento
+            class=""
+            [cargando]="cargandoPlanillas"
+            [planillas]="planillasTaller"
+            (retPlanilla)="setPlanilla($event)"
+          >
           </app-planilla-seguimiento>
         </div>
         <!-- ================================ -->
@@ -266,7 +282,6 @@ export class SeguimientoFormModalComponent implements OnInit {
     // }
 
     this.alumno = data.alumno;
-
     if (data.buscarPlanilla) {
       this.habilitarBusqueda = data.buscarPlanilla;
       this.obtenerPlanillas();
@@ -489,7 +504,8 @@ export class SeguimientoFormModalComponent implements OnInit {
   setPlanilla(evento: IPlanillaTaller) {
     this.planillaTaller = evento;
     this.form.controls.planillaTaller.setValue(evento);
-    this.seguimiento = this.form.value;
+    this.seguimiento.planillaTaller = evento;
+    // this.seguimiento = this.form.value;
   }
   showOptions(evento) {
     this.esLeido = evento;

@@ -25,4 +25,7 @@ export interface IPlanillaTaller {
   fechaModificacion?: Date;
   activo: boolean;
   personalizada?: boolean; // obtiene los alumnos que forman parte de una mezcla de curso
+
+  //
+  selected?: boolean;
 }
