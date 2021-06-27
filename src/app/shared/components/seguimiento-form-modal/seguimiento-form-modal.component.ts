@@ -23,7 +23,6 @@ import Swal from 'sweetalert2';
   selector: 'app-seguimiento-form-modal',
   template: ` <div fxLayout="row wrap" fxLayoutAlign="space-between baseline">
       <h1 mat-dialog-title>
-        {{ seguimiento?._id }}
         Seguimiento de {{ alumno?.nombreCompleto }}
       </h1>
       <!-- <mat-checkbox color="warn" *ngxPermissionsOnly="['PROFESOR']" #checkbox (change)="showOptions(checkbox.checked)" [value]="esLeido">
