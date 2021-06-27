@@ -198,7 +198,7 @@ export class AppComponent implements OnInit, OnDestroy {
         }
       },
       (error) => {
-        console.log('[ERROR]', error);
+        console.log('[LOG INICIAL]', error);
       }
     );
     // this._auth.user$.pipe(untilDestroyed(this)).subscribe(

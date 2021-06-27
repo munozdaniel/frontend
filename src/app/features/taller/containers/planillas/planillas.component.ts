@@ -73,8 +73,8 @@ export class PlanillasComponent implements OnInit, OnDestroy {
     this._permissionsService.permissions$.subscribe((permissions) => {
       this.permisos = Object.keys(permissions);
       if (this.permisos && this.permisos.length > 0) {
-        console.log('>>this.permisos', this.permisos);
         const index = this.permisos.findIndex((x) => x.toString() === RolConst.PROFESOR);
+        console.log(index);
         if (index !== -1) {
           // Es perofesor
           this.ultimoCiclo(false);
@@ -116,6 +116,7 @@ export class PlanillasComponent implements OnInit, OnDestroy {
   recuperarPlanillasPorCicloProfesor(cicloLectivo: number) {
     this._authService.currentUser$.pipe(untilDestroyed(this)).subscribe(
       (usuario) => {
+        console.log('recuperarPlanillasPorCicloProfesor', usuario);
         if (usuario) {
           this._planillaTallerService
             //   .obtenerPlanillaTalleresPorCiclo( this.cicloActual)

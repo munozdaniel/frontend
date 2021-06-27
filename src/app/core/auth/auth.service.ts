@@ -37,6 +37,7 @@ export class AuthService implements OnDestroy {
             rol: x.rol,
             nombre: x.nombre,
             apellido: x.apellido,
+            profesor: x.profesor,
             // originalUserName: x.originalUserName,
           });
         });
@@ -98,6 +99,7 @@ export class AuthService implements OnDestroy {
     );
   }
   login(email: string, password: string) {
+    // this.logout();
     return this.http.post<IUsuario>(`${this.apiUrl}auth/login`, { email, password }).pipe(
       map((x) => {
         if (!x.rol) {
@@ -113,7 +115,7 @@ export class AuthService implements OnDestroy {
             nombre: x.nombre,
             apellido: x.apellido,
             rol: x.rol,
-            // role: x.role,
+            profesor: x.profesor, // role: x.role,
             // originalUserName: x.originalUserName,
           });
           this.setLocalStorage(x);
@@ -157,7 +159,7 @@ export class AuthService implements OnDestroy {
           nombre: x.nombre,
           apellido: x.apellido,
           rol: x.rol,
-          // role: x.role,
+          profesor: x.profesor, // role: x.role,
           // originalUserName: x.originalUserName,
         });
         this.setLocalStorage(x);
