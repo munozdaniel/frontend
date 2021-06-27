@@ -87,7 +87,7 @@ export class AlumnosPorTallerPdf {
         fillColor: '#d9d6d6',
       },
       {
-        text: `Curso: ${this.planilla.curso.curso} - Div.: ${this.planilla.curso.division} - Com.: ${this.planilla.curso.comision}`,
+        text: `Curso: ${this.planilla.curso.curso} - Div.: ${this.planilla.curso.division} - Com: ${this.planilla.curso.comision} \n ${this.planilla.bimestre}`,
         bold: false,
         fontSize: 12,
         colSpan: 1,
@@ -96,16 +96,22 @@ export class AlumnosPorTallerPdf {
     ];
   }
   calificaciones(alumno) {
+    let contadorAusentes = 0;
     let notas = '';
     let suma = 0;
     let totalPromediados = 0;
     let totalCalificaciones = alumno.calificaciones.length;
     alumno.calificaciones.forEach((a, index: number) => {
       if (a) {
-        notas += '  ' + Number(a.promedioGeneral).toFixed(2) + '  ';
-        if (a.promedia) {
-          totalPromediados += 1;
-          suma += a.promedioGeneral;
+        if (!a.ausente) {
+          notas += '  ' + Number(a.promedioGeneral).toFixed(2) + '  ';
+          if (a.promedia) {
+            totalPromediados += 1;
+            suma += a.promedioGeneral;
+          }
+        } else {
+          contadorAusentes += 1;
+          notas += '  AUSENTE  ';
         }
       }
       // subtotal.push(terceraLinea);
@@ -160,7 +166,12 @@ export class AlumnosPorTallerPdf {
               ],
               [
                 {
-                  text: promedioFinal,
+                  text:
+                    alumno.calificaciones.length < 1
+                      ? 'SIN CALIFICACIONES'
+                      : contadorAusentes > 0 && contadorAusentes === alumno.calificaciones.length
+                      ? 'AUSENTE'
+                      : promedioFinal,
                 },
               ],
             ],
@@ -216,7 +227,10 @@ export class AlumnosPorTallerPdf {
           ],
           [
             { text: 'Clases: ' + alumno.totalClases, fontSize: 12 },
-            { text: 'Asistencia: ' + alumno.porcentajeAsistencias + '%', fontSize: 12 },
+            {
+              text: 'Asistencia: ' + alumno.porcentajeAsistencias + '%',
+              fontSize: 12,
+            },
             { text: 'Tarde: ' + alumno.llegadasTardes, fontSize: 12 },
             { text: 'Inasistencia: ' + alumno.porcentajeInasistencias + '%', fontSize: 12 },
           ],
