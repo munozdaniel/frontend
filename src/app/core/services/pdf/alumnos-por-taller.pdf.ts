@@ -75,21 +75,21 @@ export class AlumnosPorTallerPdf {
       {
         text: alumno.legajo,
         bold: false,
-        fontSize: 12,
+        fontSize: 10,
         colSpan: 1,
         fillColor: '#d9d6d6',
       },
       {
         text: alumno.alumnoNombre,
         bold: false,
-        fontSize: 12,
+        fontSize: 10,
         colSpan: 1,
         fillColor: '#d9d6d6',
       },
       {
         text: `Curso: ${this.planilla.curso.curso} - Div.: ${this.planilla.curso.division} - Com: ${this.planilla.curso.comision} \n ${this.planilla.bimestre}`,
         bold: false,
-        fontSize: 12,
+        fontSize: 10,
         colSpan: 1,
         fillColor: '#d9d6d6',
       },
@@ -128,7 +128,7 @@ export class AlumnosPorTallerPdf {
                 {
                   text: 'Calificaciones',
                   bold: true,
-                  fontSize: 12,
+                  fontSize: 10,
                   alignment: 'right',
                   width: '100%',
                 },
@@ -139,7 +139,7 @@ export class AlumnosPorTallerPdf {
                   // if there's more than one star-column, available width is divided equally
                   text: 'Promedio Final',
                   bold: true,
-                  fontSize: 12,
+                  fontSize: 10,
                   alignment: 'right',
                   width: '100%',
                 },
@@ -172,6 +172,7 @@ export class AlumnosPorTallerPdf {
                       : contadorAusentes > 0 && contadorAusentes === alumno.calificaciones.length
                       ? 'AUSENTE'
                       : promedioFinal,
+                  fontSize: 10,
                 },
               ],
             ],
@@ -191,7 +192,7 @@ export class AlumnosPorTallerPdf {
               {
                 text: 'Inasistencias',
                 bold: true,
-                fontSize: 12,
+                fontSize: 10,
                 alignment: 'right',
                 width: '100%',
               },
@@ -215,24 +216,26 @@ export class AlumnosPorTallerPdf {
             {
               colSpan: 4,
               layout: {
-                defaultBorder: false,
+                defaultBorder: true,
               },
-              table: {
-                body: [alumno.inasistencias.map((x) => ({ text: x ? moment(x.fecha).format('DD/MM/YYYY') : '', fontSize: 12 }))],
-              },
+              text: alumno.inasistencias.map((x) => (x ? moment(x.fecha).format('DD/MM/YYYY') : '')).join('  '),
+              fontSize: 10,
+              //   table: {
+              //     body: [alumno.inasistencias.map((x) => ({ text: x ? moment(x.fecha).format('DD/MM/YYYY') : '', fontSize: 10 }))],
+              //   },
             },
             {},
             {},
             {},
           ],
           [
-            { text: 'Clases: ' + alumno.totalClases, fontSize: 12 },
+            { text: 'Clases: ' + alumno.totalClases, fontSize: 10 },
             {
               text: 'Asistencia: ' + alumno.porcentajeAsistencias + '',
-              fontSize: 12,
+              fontSize: 10,
             },
-            { text: 'Tarde: ' + alumno.llegadasTardes, fontSize: 12 },
-            { text: 'Inasistencia: ' + alumno.porcentajeInasistencias + '', fontSize: 12 },
+            { text: 'Tarde: ' + alumno.llegadasTardes, fontSize: 10 },
+            { text: 'Inasistencia: ' + alumno.porcentajeInasistencias + '', fontSize: 10 },
           ],
         ],
       },
@@ -250,7 +253,7 @@ export class AlumnosPorTallerPdf {
               {
                 text: 'Taller',
                 bold: true,
-                fontSize: 12,
+                fontSize: 10,
                 alignment: 'right',
                 width: '100%',
               },
@@ -259,7 +262,7 @@ export class AlumnosPorTallerPdf {
               {
                 text: 'Profesor',
                 bold: true,
-                fontSize: 12,
+                fontSize: 10,
                 alignment: 'right',
                 width: '100%',
               },
@@ -283,6 +286,7 @@ export class AlumnosPorTallerPdf {
             {
               colSpan: 2,
               text: this.planilla.asignatura.detalle,
+              fontSize: 10,
             },
             {},
           ],
@@ -290,6 +294,7 @@ export class AlumnosPorTallerPdf {
             {
               colSpan: 1,
               text: this.planilla.profesor.nombreCompleto,
+              fontSize: 10,
             },
             {
               colSpan: 1,
