@@ -228,11 +228,11 @@ export class AlumnosPorTallerPdf {
           [
             { text: 'Clases: ' + alumno.totalClases, fontSize: 12 },
             {
-              text: 'Asistencia: ' + alumno.porcentajeAsistencias + '%',
+              text: 'Asistencia: ' + alumno.porcentajeAsistencias + '',
               fontSize: 12,
             },
             { text: 'Tarde: ' + alumno.llegadasTardes, fontSize: 12 },
-            { text: 'Inasistencia: ' + alumno.porcentajeInasistencias + '%', fontSize: 12 },
+            { text: 'Inasistencia: ' + alumno.porcentajeInasistencias + '', fontSize: 12 },
           ],
         ],
       },
