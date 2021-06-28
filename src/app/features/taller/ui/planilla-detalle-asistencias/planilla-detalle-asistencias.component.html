@@ -76,8 +76,8 @@
             >
               {{ row.seguimientoEtap ? 'SI' : 'NO' }}
             </h4> -->
-            <span *ngIf="!row.seguimientoEtap" class="nav-link-badge text-center no_tiene_etap"> NO </span>
-            <span *ngIf="row.seguimientoEtap" class="nav-link-badge text-center tiene_etap">SI</span>
+            <span *ngIf="row.seguimientoEtap == 'NO'" class="nav-link-badge text-center no_tiene_etap"> NO </span>
+            <span *ngIf="row.seguimientoEtap == 'SI'" class="nav-link-badge text-center tiene_etap">SI</span>
           </td>
         </ng-container>
 

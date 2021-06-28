@@ -74,7 +74,6 @@ export class PlanillasComponent implements OnInit, OnDestroy {
       this.permisos = Object.keys(permissions);
       if (this.permisos && this.permisos.length > 0) {
         const index = this.permisos.findIndex((x) => x.toString() === RolConst.PROFESOR);
-        console.log(index);
         if (index !== -1) {
           // Es perofesor
           this.ultimoCiclo(false);

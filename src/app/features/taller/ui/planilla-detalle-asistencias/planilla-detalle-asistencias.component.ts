@@ -15,8 +15,7 @@ import Swal from 'sweetalert2';
   animations: [designAnimations],
 })
 export class PlanillaDetalleAsistenciasComponent implements OnInit, OnChanges {
-  
-    TemplateEnum = TemplateEnum;
+  TemplateEnum = TemplateEnum;
   touchtime = 0;
   hoy = moment().format('DD/MM/YYYY');
   totalNoRegistradas = { valor: 0, porcentaje: 0 };
