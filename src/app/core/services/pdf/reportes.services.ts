@@ -257,7 +257,8 @@ export class ReportesService {
       cancelButtonText: 'Cancelar',
       showLoaderOnConfirm: true,
       preConfirm: () => {
-        return this._calificacioService.informeCalificacionesPorPlanilla(this.planillaTaller).pipe(
+        return this._calificacioService.informeAlumnosPorTaller(this.planillaTaller).pipe(
+          // return this._calificacioService.informeCalificacionesPorPlanilla(this.planillaTaller).pipe(
           catchError((error) => {
             console.log('[ERROR]', error);
             Swal.fire({
@@ -275,7 +276,8 @@ export class ReportesService {
       this._designProgressBarService.hide();
       if (result.isConfirmed) {
         if (result.value) {
-          if (!result.value.calificacionesPorAlumno || result.value.calificacionesPorAlumno.length < 1) {
+          //   if (!result.value.calificacionesPorAlumno || result.value.calificacionesPorAlumno.length < 1) {
+          if (!result.value.reporteAlumnos || result.value.reporteAlumnos.length < 1) {
             Swal.fire({
               title: 'Informe cancelado',
               text: 'NO hay registros cargados',
@@ -285,7 +287,8 @@ export class ReportesService {
           }
           this._designProgressBarService.hide();
           this._designProgressBarService.hide();
-          this._calificacionesResumidoPdf.generatePdf(this.planillaTaller, result.value.calificacionesPorAlumno);
+          //   this._calificacionesResumidoPdf.generatePdf(this.planillaTaller, result.value.calificacionesPorAlumno);
+          this._alumnosPorTallerResumidoPdf.generatePdf(this.planillaTaller, result.value.reporteAlumnos);
         } else {
           Swal.fire({
             title: 'Oops! Ocurrió un error',
