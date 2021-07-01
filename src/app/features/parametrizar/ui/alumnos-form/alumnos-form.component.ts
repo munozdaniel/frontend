@@ -241,12 +241,16 @@ export class AlumnosFormComponent implements OnInit, OnChanges {
 
     const alumno: IAlumno = {
       ...this.formDatosPersonales.value,
-      ...this.formEtap.value,
+      //   ...this.formEtap.value,
       adultos: this.adultos,
       estadoCursadas: this.estadoCursadas,
       telefono: this.formDatosPersonales.controls.telefono.value ? this.formDatosPersonales.controls.telefono.value.toString() : null,
       celular: this.formDatosPersonales.controls.celular.value ? this.formDatosPersonales.controls.celular.value.toString() : null,
       seguimientoEtap: this.seguimientoEtap ? 'SI' : 'NO',
+      nombreCompletoTae: this.seguimientoEtap ? this.formEtap.controls.nombreCompletoTae.value : null,
+      emailTae: this.seguimientoEtap ? this.formEtap.controls.emailTae.value : null,
+      diagnostico: this.seguimientoEtap ? this.formEtap.controls.diagnostico.value : null,
+      archivoDiagnostico: this.seguimientoEtap ? this.formEtap.controls.archivoDiagnostico.value : null,
     };
     this.retDatosForm.emit(alumno);
   }
