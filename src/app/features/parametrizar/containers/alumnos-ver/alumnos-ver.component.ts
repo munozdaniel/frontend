@@ -92,6 +92,7 @@ export class AlumnosVerComponent implements OnInit {
     this._router.navigate(['/parametrizar/alumnos-editar/' + this.alumnoId]);
   }
   setAgregarCursada() {
+    console.log('alumnos ver');
     const dialogRef = this._dialog.open(CursadaFormComponent, {
       width: '50%',
       data: { esModal: true },

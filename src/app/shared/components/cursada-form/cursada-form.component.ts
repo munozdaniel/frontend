@@ -156,6 +156,7 @@ export class CursadaFormComponent implements OnInit {
       },
     };
     if (this.esModal) {
+      console.log('retornarDatosModal');
       this.retornarDatosModal();
     } else {
       this.retDatosForm.emit(estadoCursada);
@@ -173,6 +174,7 @@ export class CursadaFormComponent implements OnInit {
     };
     // delete this.estadoCursada.division;
     // delete this.estadoCursada.comision;
+    console.log('retornarDatosModal', this.estadoCursada);
     this.dialogRef.close(this.estadoCursada);
   }
 }

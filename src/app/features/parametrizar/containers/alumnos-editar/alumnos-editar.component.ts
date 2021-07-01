@@ -120,6 +120,7 @@ export class AlumnosEditarComponent implements OnInit {
   }
   //   Antes de poder editar un estadoDeCursada tenemos que verificar que no haya estado usado por algun alumno
   setAgregarCursada(evento: IEstadoCursada) {
+    console.log('alumnos editar', evento);
     this._alumnoService
       .agregarEstadoCursada(evento, this.alumnoId)
       .pipe(untilDestroyed(this))

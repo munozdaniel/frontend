@@ -7,22 +7,6 @@
   <form *ngIf="form" [formGroup]="form" fxLayout="column" (ngSubmit)="guardarComision()">
     <div class="w-100-p" fxLayout="row wrap" fxLayoutAlign="space-between start">
       <div fxFlex.gt-xs="42" fxFlex.xs="100" fxLayout="column">
-        <!-- tipoComision ============================= -->
-        <mat-form-field appearance="outline" fxFlex.gt-xs="45" fxFlex.xs="100">
-          <mat-label class="lbl">Comision</mat-label>
-          <mat-select formControlName="comision">
-            <mat-option *ngFor="let tipo of tiposComision" [value]="tipo">{{ tipo }}</mat-option>
-          </mat-select>
-          <mat-error *ngIf="form.controls.comision.hasError('required')"> Este campo es requerido. </mat-error>
-        </mat-form-field>
-        <!-- cicloLectivo ============================= -->
-        <mat-form-field appearance="outline" fxFlex.gt-xs="45" fxFlex.xs="100">
-          <mat-label class="lbl">Ciclo Lectivo</mat-label>
-          <mat-select formControlName="cicloLectivo">
-            <mat-option *ngFor="let ciclo of ciclosLectivos" [value]="ciclo">{{ ciclo.anio }}</mat-option>
-          </mat-select>
-          <mat-error *ngIf="form.controls.cicloLectivo.hasError('required')"> Este campo es requerido. </mat-error>
-        </mat-form-field>
         <!-- curso ============================= -->
         <mat-form-field appearance="outline" fxFlex.gt-xs="45" fxFlex.xs="100">
           <mat-label class="lbl">Curso</mat-label>
@@ -36,8 +20,14 @@
           </mat-select>
           <mat-error *ngIf="form.controls.curso.hasError('required')"> Este campo es requerido. </mat-error>
         </mat-form-field>
-      </div>
-      <div fxFlex.gt-xs="42" fxFlex.xs="100" fxLayout="column">
+        <!-- tipoComision ============================= -->
+        <mat-form-field appearance="outline" fxFlex.gt-xs="45" fxFlex.xs="100">
+          <mat-label class="lbl">Comision</mat-label>
+          <mat-select formControlName="comision">
+            <mat-option *ngFor="let tipo of tiposComision" [value]="tipo">{{ tipo }}</mat-option>
+          </mat-select>
+          <mat-error *ngIf="form.controls.comision.hasError('required')"> Este campo es requerido. </mat-error>
+        </mat-form-field>
         <!-- division ============================= -->
 
         <mat-form-field appearance="outline" fxFlex.gt-xs="45" fxFlex.xs="100">
@@ -51,6 +41,16 @@
             <mat-option value="6">DIVISION 6</mat-option>
           </mat-select>
           <mat-error *ngIf="form.controls.division.hasError('required')"> Este campo es requerido. </mat-error>
+        </mat-form-field>
+      </div>
+      <div fxFlex.gt-xs="42" fxFlex.xs="100" fxLayout="column">
+        <!-- cicloLectivo ============================= -->
+        <mat-form-field appearance="outline" fxFlex.gt-xs="45" fxFlex.xs="100">
+          <mat-label class="lbl">Ciclo Lectivo</mat-label>
+          <mat-select formControlName="cicloLectivo">
+            <mat-option *ngFor="let ciclo of ciclosLectivos" [value]="ciclo">{{ ciclo.anio }}</mat-option>
+          </mat-select>
+          <mat-error *ngIf="form.controls.cicloLectivo.hasError('required')"> Este campo es requerido. </mat-error>
         </mat-form-field>
         <!-- condicion ============================= -->
         <mat-form-field appearance="outline" fxFlex.gt-xs="45" fxFlex.xs="100">

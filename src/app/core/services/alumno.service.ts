@@ -237,7 +237,7 @@ export class AlumnoService {
     const query = `alumnos/enviar-email-masivo`;
     const url = this.url + query;
 
-    return this.http.post<any>(url, { alumnos, fechaDesde,fechaHasta });
+    return this.http.post<any>(url, { alumnos, fechaDesde, fechaHasta });
   }
   comprobarEstadoCursadaParaEditar(_id: string): Observable<boolean> {
     const query = `alumnos/comprobar-estado-cursada/${_id}`;

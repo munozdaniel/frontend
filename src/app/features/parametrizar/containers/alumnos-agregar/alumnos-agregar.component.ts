@@ -1,12 +1,14 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { designAnimations } from '@design/animations';
+import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { AlumnoService } from 'app/core/services/alumno.service';
 import { IAlumno } from 'app/models/interface/iAlumno';
+import { IEstadoCursada } from 'app/models/interface/iEstadoCursada';
 import { of } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 import Swal from 'sweetalert2';
-
+@UntilDestroy()
 @Component({
   selector: 'app-alumnos-agregar',
   template: `
@@ -21,7 +23,13 @@ import Swal from 'sweetalert2';
           <div fxLayout fxLayoutAlign="end center" fxFlex="25"></div>
         </div>
       </div>
-      <app-alumnos-form [resetear]="resetear" [cargando]="cargando" (retDatosForm)="setDatosForm($event)"></app-alumnos-form>
+      <app-alumnos-form
+        [resetear]="resetear"
+        [cargando]="cargando"
+        (retActualizarEstadoCursadas)="setActualizarEstadoCursadas($event)"
+        (retAgregarCursada)="setAgregarCursada($event)"
+        (retDatosForm)="setDatosForm($event)"
+      ></app-alumnos-form>
     </div>
   `,
   styles: [],
@@ -31,6 +39,7 @@ export class AlumnosAgregarComponent implements OnInit {
   titulo = 'Agregar Alumno';
   cargando = false;
   resetear = false;
+  estadoCursada: IEstadoCursada[] = [];
   constructor(private _alumnoService: AlumnoService, private _router: Router) {}
 
   ngOnInit(): void {}
@@ -40,6 +49,7 @@ export class AlumnosAgregarComponent implements OnInit {
     }
   }
   confirmarGuardar(alumno: IAlumno) {
+    alumno.estadoCursadas = this.estadoCursada;
     Swal.fire({
       title: '¿Está seguro de continuar?',
       html: 'Está a punto de guardar un nuevo alumno.',
@@ -60,7 +70,8 @@ export class AlumnosAgregarComponent implements OnInit {
               icon: 'error',
             });
             return of(error);
-          })
+          }),
+          untilDestroyed(this)
         );
       },
       allowOutsideClick: () => !Swal.isLoading(),
@@ -93,5 +104,13 @@ export class AlumnosAgregarComponent implements OnInit {
         }
       }
     });
+  }
+  1;
+  setAgregarCursada(evento: IEstadoCursada) {
+    console.log('alumnos editar', evento);
+    this.estadoCursada.push(evento);
+  }
+  setActualizarEstadoCursadas(evento: IEstadoCursada[]) {
+    this.estadoCursada = [...evento];
   }
 }
