@@ -13,7 +13,7 @@ export class UnauthorizedInterceptor implements HttpInterceptor {
   intercept(request: HttpRequest<unknown>, next: HttpHandler): Observable<HttpEvent<unknown>> {
     return next.handle(request).pipe(
       catchError((err) => {
-        if (err.status === 401) {
+        if (err.status === 401 || err.status === 403) {
           this.authService.clearLocalStorage();
           this.authService.logout();
           this.router.navigate(['/auth/iniciar-sesion']);
