@@ -31,6 +31,7 @@ export class AdultosFormComponent implements OnInit {
       telefono: [adulto ? adulto.telefono : null, []],
       celular: [adulto ? adulto.celular : null, []],
       email: [adulto ? adulto.email : null, [Validators.required, Validators.email]],
+      preferencia:[adulto ? adulto.preferencia: null]
     });
   }
   agregarAdulto() {

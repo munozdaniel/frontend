@@ -186,6 +186,12 @@ export class AlumnosFormComponent implements OnInit, OnChanges {
       this.adultos.splice(index, 1);
     }
   }
+  setEditarNotificarAdulto(adulto: IAdulto) {
+    const index = this.adultos.findIndex((x) => x.index === adulto.index);
+    if (index !== -1) {
+      this.adultos[index] = adulto;
+    }
+  }
   setEditarAdulto(adulto: IAdulto) {
     const index = this.adultos.findIndex((x) => x.index === adulto.index);
     if (index !== -1) {

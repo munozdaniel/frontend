@@ -1,5 +1,13 @@
 <div *ngFor="let adulto of adultos" fxLayout="row" fxLayoutAlign="space-between start" class="mat-card mat-elevation-z4 mb-8 w-100-p p-24">
-  <div>
+  <div fxFlex="20" fxLayout="column" fxLayoutAlign="center center">
+    <img src="assets/parents.svg" alt="padre/madre/tutor" width="78" />
+    <div fxFlex="100" matTooltip="Seleccione esta casilla si desea que sea notificado por email sobre las inasistencias">
+      <mat-checkbox [(ngModel)]="adulto.preferencia" (ngModelChange)="actualizarNotificar(adulto)">
+        <small>Notificar Inasistencias</small>
+      </mat-checkbox>
+    </div>
+  </div>
+  <div fxFlex="55">
     <span class="fg--red"> {{ adulto.tipoAdulto }}</span>
     <div>
       <strong> {{ adulto.nombreCompleto }}</strong>
@@ -15,7 +23,7 @@
       <strong>Email: </strong> <span> {{ adulto.email }}</span>
     </div>
   </div>
-  <div fxLayout="row wrap" fxLayoutAlign="end center">
+  <div fxFlex="20" fxLayout="row wrap" fxLayoutAlign="end center">
     <button mat-icon-button color="accent" (click)="editarAdulto(adulto)">
       <mat-icon>create</mat-icon>
     </button>

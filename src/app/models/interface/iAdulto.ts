@@ -6,6 +6,7 @@ export interface IAdulto {
   tipoAdulto: 'TUTOR' | 'PADRE' | 'MADRE';
   fechaCreacion: Date;
   fechaModificacion?: Date;
+  preferencia?:boolean;
   activo: boolean;
 
   index?:number; // Para trabajarlo en la vista

@@ -9,6 +9,7 @@ export class AdultosTablaParamComponent implements OnInit {
   @Input() adultos: IAdulto[];
   @Output() retEliminarAdulto = new EventEmitter<IAdulto>();
   @Output() retEditarAdulto = new EventEmitter<IAdulto>();
+  @Output() retEditarNotificarAdulto = new EventEmitter<IAdulto>();
   constructor() {}
 
   ngOnInit(): void {}
@@ -17,5 +18,8 @@ export class AdultosTablaParamComponent implements OnInit {
   }
   editarAdulto(adulto) {
     this.retEditarAdulto.emit(adulto);
+  }
+  actualizarNotificar(adulto: IAdulto) {
+    this.retEditarNotificarAdulto.emit(adulto);
   }
 }

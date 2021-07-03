@@ -38,6 +38,19 @@
       </mat-error>
       <mat-error *ngIf="formAdulto.controls.email.hasError('required')"> Este campo es requerido. </mat-error>
     </mat-form-field>
+    <!-- preferencia ============================= -->
+    <div
+      fxLayout="row"
+      fxLayoutAlign="center center"
+      fxFlex.xs="100"
+      fxFlex.gt-xs="45"
+      class="py-12"
+      style="border: 1px solid rgb(175, 175, 175); border-radius: 4px"
+    >
+      <mat-checkbox formControlName="preferencia">
+        <span>Notificar Inasistencias por Email</span>
+      </mat-checkbox>
+    </div>
   </div>
   <div fxLayout="row" fxLayoutAlign="center start">
     <button mat-raised-button color="accent" type="submit">
