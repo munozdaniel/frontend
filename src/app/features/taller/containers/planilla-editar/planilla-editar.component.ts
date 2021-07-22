@@ -93,7 +93,7 @@ export class PlanillaEditarComponent implements OnInit, OnChanges {
   actualizarPlanillaTaller(planilla: any) {
     Swal.fire({
       title: '¿Está seguro de continuar?',
-      html: 'Está a punto de actualizar la planilla de taller.',
+      html: 'Está a punto de actualizar la planilla de taller. <br> Una vez guardado los cambios la página se actualizará para que los cambios surtan efecto.',
       icon: 'warning',
       focusConfirm: false,
       showCancelButton: true,
