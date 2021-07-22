@@ -177,6 +177,7 @@ export class TomarAsistenciaModalComponent implements OnInit {
             icon: 'success',
           });
           this._asistenciaService.buscarAsistenciasHoy(this.planillaTaller._id);
+          this.cerrar();
         } else {
           Swal.fire({
             title: 'Oops! Ocurrió un error',
