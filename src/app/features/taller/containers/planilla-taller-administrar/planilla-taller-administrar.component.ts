@@ -773,7 +773,7 @@ export class PlanillaTallerAdministrarComponent implements OnInit {
   setEliminarTemas(temas: ITema[]) {
     Swal.fire({
       title: '¿Está seguro de continuar?',
-      html: 'Está a punto de <strong>ELIMINAR PERMANENTEMENTE</strong> '+temas.length+' temas',
+      html: 'Está a punto de <strong>ELIMINAR PERMANENTEMENTE</strong> ' + temas.length + ' temas',
       icon: 'warning',
       focusConfirm: false,
       showCancelButton: true,
@@ -900,7 +900,6 @@ export class PlanillaTallerAdministrarComponent implements OnInit {
   }
   // Temas Incompletos
   setInformarIncompletos(temas: ITema[]) {
-   
     Swal.fire({
       title: '¿Está seguro de continuar?',
       html: 'Los temas seleccionados serán informados al profesor como temas a completar',
@@ -919,11 +918,11 @@ export class PlanillaTallerAdministrarComponent implements OnInit {
       },
       preConfirm: (motivoAlerta) => {
         const temasPendientes: ITemaPendiente[] = temas.map((x) => ({
-            fecha: x.fecha,
-            planillaTaller: x.planillaTaller,
-            profesor: this.planillaTaller.profesor,
-            motivoAlerta
-          }));
+          fecha: x.fecha,
+          planillaTaller: x.planillaTaller,
+          profesor: this.planillaTaller.profesor,
+          motivoAlerta,
+        }));
         return this._temaService.guardarTemasPendientes(temasPendientes).pipe(
           catchError((error) => {
             console.log('[ERROR]', error);
@@ -1048,13 +1047,15 @@ export class PlanillaTallerAdministrarComponent implements OnInit {
     });
   }
   setPlanillaActualizada(evento) {
-    this.calendario = this.temas = null;
-    if (this.planillaTaller.curso) {
-      if (!this.planillaTaller.personalizada) {
-        this.obtenerAlumnosPorCursoEspecifico();
-      } else {
-        this.obtenerAlumnosPorPlanillaPersonalizada();
-      }
-    }
+    window.location.reload();
+
+    // this.calendario = this.temas = null;
+    // if (this.planillaTaller.curso) {
+    //   if (!this.planillaTaller.personalizada) {
+    //     this.obtenerAlumnosPorCursoEspecifico();
+    //   } else {
+    //     this.obtenerAlumnosPorPlanillaPersonalizada();
+    //   }
+    // }
   }
 }
