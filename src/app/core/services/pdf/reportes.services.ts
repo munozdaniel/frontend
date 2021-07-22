@@ -221,7 +221,7 @@ export class ReportesService {
       this._designProgressBarService.hide();
       if (result.isConfirmed) {
         if (result.value) {
-          if (!result.value.calificacionesPorAlumno || result.value.calificacionesPorAlumno.length < 1) {
+          if (!result.value.calificaciones || result.value.calificaciones.length < 1) {
             Swal.fire({
               title: 'Informe cancelado',
               text: 'NO hay registros cargados',
@@ -231,7 +231,7 @@ export class ReportesService {
           }
           this._designProgressBarService.hide();
           this._designProgressBarService.hide();
-          this._calificacionesDetalladoPdf.generatePdf(this.planillaTaller, result.value.calificacionesPorAlumno);
+          this._calificacionesDetalladoPdf.generatePdf(this.planillaTaller, result.value.calificaciones);
         } else {
           Swal.fire({
             title: 'Oops! Ocurrió un error',

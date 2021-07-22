@@ -328,6 +328,7 @@ export class PlanillaTallerAdministrarComponent implements OnInit {
   }
   obtenerAlumnosPorPlanillaPersonalizada() {
     this.cargandoAlumnos = true;
+    // TODO: Que traiga los alumnos seleccionados
     this._alumnoService
       .obtenerAlumnosPorPlanillaPersonalizada(this.planillaTaller._id)
       .pipe(untilDestroyed(this))

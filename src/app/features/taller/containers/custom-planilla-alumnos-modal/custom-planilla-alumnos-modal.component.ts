@@ -173,12 +173,14 @@ export class CustomPlanillaAlumnosModalComponent implements OnInit {
             }
             Swal.fire({
               title: 'Operación exitosa',
-              text: datos.message,
+              text: 'La pantalla se va a refrescar automaticamente para actualizar los datos',
               icon: 'success',
-              timer: 2000,
+              timer: 5000,
               timerProgressBar: true,
             }).then(() => {
               this.dialogRef.close();
+              window.location.reload();
+
             });
           }
         },
