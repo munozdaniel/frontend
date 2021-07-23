@@ -60,6 +60,7 @@ export class ForgotPasswordComponent implements OnInit {
     });
   }
   enviarEmailRecupero() {
+    console.log('enviarEmailRecupero');
     if (this.forgotPasswordForm.valid) {
       this._usuarioService
         .enviarLink(this.forgotPasswordForm.controls.email.value)
@@ -80,6 +81,14 @@ export class ForgotPasswordComponent implements OnInit {
             console.log('[ERROR]', error);
           }
         );
+    } else {
+      Swal.fire({
+        title: 'Ocurrió un problema',
+        text: 'No se pudo enviar el email para recuperar la contraseña',
+        icon: 'success',
+        timer: 2000,
+        timerProgressBar: true,
+      }).then(() => {});
     }
   }
 }

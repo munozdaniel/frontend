@@ -27,6 +27,11 @@ const routes: Routes = [
     component: ResetPasswordComponent,
     //  DEBE estar autenticados
   },
+  {
+    path: 'reset',
+    component: ResetPasswordComponent,
+    //  DEBE estar autenticados
+  },
 ];
 
 @NgModule({

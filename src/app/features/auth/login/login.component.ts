@@ -79,9 +79,9 @@ export class LoginComponent implements OnInit {
       return;
     }
     let { email, password } = this.loginForm.value;
-    if (!environment.production) {
-      password = '2314Dani$';
-    }
+    // if (!environment.production) {
+    //   password = '2314Dani$';
+    // }
     this._designProgressBar.show();
     this._authService
       .login(email, password)

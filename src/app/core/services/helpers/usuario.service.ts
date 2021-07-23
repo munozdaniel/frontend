@@ -7,7 +7,6 @@ import { IProfesor } from 'app/models/interface/iProfesor';
 
 @Injectable({ providedIn: 'root' })
 export class UsuarioService {
-  
   protected url = environment.apiURI;
   constructor(private http: HttpClient) {}
   enviarLink(email: string): Observable<any> {
@@ -46,10 +45,10 @@ export class UsuarioService {
     const url = this.url + query;
     return this.http.get<any>(url);
   }
-  cambiarContrasena(email: string, password: string, passwordConfirm: string, _id: string): Observable<any> {
-    const query = `/usuarios/change-password`;
+  cambiarContrasena(email: string, password: string, passwordConfirm: string, _id: string, code: string): Observable<any> {
+    const query = `/auth/set-lost-password`;
     const url = this.url + query;
 
-    return this.http.post<any>(url, { password, passwordConfirm, email, _id });
+    return this.http.post<any>(url, { password, passwordConfirm, email, _id, code });
   }
 }

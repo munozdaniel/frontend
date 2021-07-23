@@ -72,6 +72,7 @@ export class ResetPasswordComponent implements OnInit, OnDestroy {
     });
     this.resetPasswordForm = this._formBuilder.group(
       {
+        code: ['', [Validators.required]],
         email: ['', [Validators.required, Validators.email]],
         password: [
           null,
@@ -131,9 +132,9 @@ export class ResetPasswordComponent implements OnInit, OnDestroy {
       });
       return;
     }
-    const { email, password, passwordConfirm } = this.resetPasswordForm.value;
+    const { email, password, passwordConfirm, code } = this.resetPasswordForm.value;
     this._usuarioService
-      .cambiarContrasena(email, password, passwordConfirm, this._id)
+      .cambiarContrasena(email, password, passwordConfirm, this._id, code)
       .pipe(untilDestroyed(this))
       .subscribe(
         (datos) => {

@@ -101,25 +101,34 @@ export class AuthService implements OnDestroy {
   login(email: string, password: string) {
     // this.logout();
     return this.http.post<IUsuario>(`${this.apiUrl}auth/login`, { email, password }).pipe(
-      map((x) => {
-        if (!x.rol) {
+      map((x: any) => {
+        console.log('x', x);
+        if (x.message) {
           Swal.fire({
-            title: 'Usuario Sin Acceso',
-            text: 'Actualmente no tiene configurado un rol. Comuniquese con el jefe de taller para que le asigne un rol.',
+            title: 'Error al iniciar sesión',
+            text: x.message,
             icon: 'warning',
           });
-          this.router.navigate(['/auth/iniciar-sesion']);
         } else {
-          this._user.next({
-            email: x.email,
-            nombre: x.nombre,
-            apellido: x.apellido,
-            rol: x.rol,
-            profesor: x.profesor, // role: x.role,
-            // originalUserName: x.originalUserName,
-          });
-          this.setLocalStorage(x);
-          this.startTokenTimer();
+          if (!x.rol) {
+            Swal.fire({
+              title: 'Usuario Sin Acceso',
+              text: 'Actualmente no tiene configurado un rol. Comuniquese con el jefe de taller para que le asigne un rol.',
+              icon: 'warning',
+            });
+            this.router.navigate(['/auth/iniciar-sesion']);
+          } else {
+            this._user.next({
+              email: x.email,
+              nombre: x.nombre,
+              apellido: x.apellido,
+              rol: x.rol,
+              profesor: x.profesor, // role: x.role,
+              // originalUserName: x.originalUserName,
+            });
+            this.setLocalStorage(x);
+            this.startTokenTimer();
+          }
         }
         return x;
       })

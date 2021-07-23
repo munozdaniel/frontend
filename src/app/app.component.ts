@@ -12,13 +12,12 @@ import { DesignSplashScreenService } from '@design/services/splash-screen.servic
 import { navigation } from 'app/navigation/navigation';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { IUsuario } from './models/interface/iUsuario';
-import { Router } from '@angular/router';
+import { NavigationEnd, Router } from '@angular/router';
 import { NgxPermissionsService } from 'ngx-permissions';
 import { RolConst } from './models/constants/rol.enum';
 import { SeguimientoAlumnoService } from './core/services/seguimientoAlumno.service';
 import { TemaService } from './core/services/tema.service';
 import { AuthService } from './core/auth/auth.service';
-import Swal from 'sweetalert2';
 @UntilDestroy()
 @Component({
   selector: 'app',
@@ -57,11 +56,29 @@ export class AppComponent implements OnInit, OnDestroy {
     private _seguimientoAlumnoService: SeguimientoAlumnoService,
     private _temaService: TemaService
   ) {
-    // Get default navigation
+    this._router.events.subscribe((route: any) => {
+      if (route instanceof NavigationEnd && route.url) {
+        console.log('NavigationEnd', route, route.url.includes('reset'));
+        if (route.url.includes('reset') || route.url.includes('forgot') || route.url.includes('registrar')) {
+        } else {
+          this.comprobarLogin();
+        }
+        //     this.linkActivo = route.url;
+        //     this.opcionesMenu.forEach((opcion, i) => {
+        //       this.step[i] = this.linkActivo.includes(opcion.href);
+        //     });
+      }
+      //   if (route instanceof RouteConfigLoadStart) {
+      //     this.cargandoChild = true;
+      //   } else if (route instanceof RouteConfigLoadEnd) {
+      //     this.cargandoChild = false;
+      //   }
+    });
+
     this.navigation = navigation;
     this._designNavigationService.register('main', this.navigation);
     // Register the navigation to the service
-    this.comprobarLogin();
+    // this.comprobarLogin();
     // const perm = ['ADMIN', 'PROFESOR', 'PRECEPTOR', 'INVITADO', 'JEFE', 'DIRECTOR'];
     // this.permissionsService.loadPermissions(perm);
     /**
