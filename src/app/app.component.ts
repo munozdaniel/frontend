@@ -58,7 +58,7 @@ export class AppComponent implements OnInit, OnDestroy {
   ) {
     this._router.events.subscribe((route: any) => {
       if (route instanceof NavigationEnd && route.url) {
-        console.log('NavigationEnd', route, route.url.includes('reset'));
+       
         if (route.url.includes('reset') || route.url.includes('forgot') || route.url.includes('registrar')) {
         } else {
           this.comprobarLogin();
