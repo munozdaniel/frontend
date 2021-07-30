@@ -55,6 +55,7 @@ export class FichaAsistenciasPorDiaPdf {
                   text: `Fecha: ${moment.utc(this.fechaInicio).format('DD/MM/YYYY')}`,
                   style: 'tableHeader',
                   alignment: 'left',
+                  fontSize: 10,
                   bold: true,
                   colSpan: 3,
                   border: [true, true, true, false],
@@ -66,6 +67,7 @@ export class FichaAsistenciasPorDiaPdf {
               [
                 {
                   text: planilla.curso.comision ? 'Taller: ' + planilla.asignatura.detalle : planilla.asignatura.detalle,
+                  fontSize: 10,
                   style: 'tableHeader',
                   colSpan: 1,
                   alignment: 'left',
@@ -77,11 +79,13 @@ export class FichaAsistenciasPorDiaPdf {
                   }`,
                   style: 'tableHeader',
                   colSpan: 1,
+                  fontSize: 10,
                   alignment: 'center',
                   border: [false, false, false, false],
                 },
                 {
                   text: `Prof: ${planilla.profesor.nombreCompleto}`,
+                  fontSize: 10,
                   style: 'tableHeader',
                   alignment: 'center',
                   border: [false, false, true, false],
@@ -93,11 +97,13 @@ export class FichaAsistenciasPorDiaPdf {
                   style: 'tableHeader',
                   alignment: 'left',
                   bold: 'true',
+                  fontSize: 10,
                   fillColor: '#eeeeee',
                 },
                 {
                   text: `Nombre y Apellido`,
                   style: 'tableHeader',
+                  fontSize: 10,
                   alignment: 'left',
                   bold: 'true',
                   fillColor: '#eeeeee',
@@ -105,6 +111,7 @@ export class FichaAsistenciasPorDiaPdf {
                 {
                   text: `Asistencia`,
                   style: 'tableHeader',
+                  fontSize: 10,
                   alignment: 'center',
                   bold: 'true',
                   fillColor: '#eeeeee',
@@ -117,14 +124,17 @@ export class FichaAsistenciasPorDiaPdf {
                 return [
                   {
                     text: asistencia.alumno.dni,
+                    fontSize: 10,
                     bold: asistencia.presente ? false : true,
                   },
                   {
+                    fontSize: 10,
                     text: asistencia.alumno.nombreCompleto,
                     bold: asistencia.presente ? false : true,
                   },
                   {
                     text: asistencia.presente ? 'Presente' : 'Ausente',
+                    fontSize: 10,
                     alignment: 'center',
                     bold: asistencia.presente ? false : true,
                   },
@@ -134,6 +144,7 @@ export class FichaAsistenciasPorDiaPdf {
                 {},
                 {},
                 {
+                  fontSize: 10,
                   text:
                     contador === unaPlanillaAsistencia.length
                       ? 'Asistencia Completa'
@@ -175,7 +186,7 @@ export class FichaAsistenciasPorDiaPdf {
             body: [
               [
                 { text: '', border: [false, false, false, false] },
-                { text: 'FIRMA PROFESOR', border: [false, true, false, false], alignment: 'center' },
+                { text: 'FIRMA PROFESOR', fontSize: 10, border: [false, true, false, false], alignment: 'center' },
                 { text: '', border: [false, false, false, false] },
               ],
             ],
@@ -190,14 +201,14 @@ export class FichaAsistenciasPorDiaPdf {
   getDocumentDefinition() {
     return {
       pageMargins: [40, 40, 20, 40],
-      pageOrientation: 'landscape',
+      //   pageOrientation: 'landscape',
       width: 1344,
       height: 'auto',
       content: [
         {
           text: 'Informe de asistencia por día',
           bold: true,
-          fontSize: 14,
+          fontSize: 12,
           alignment: 'center',
           margin: [0, 0, 0, 20],
         },
