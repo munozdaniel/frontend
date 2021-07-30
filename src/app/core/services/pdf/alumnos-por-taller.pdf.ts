@@ -71,9 +71,12 @@ export class AlumnosPorTallerPdf {
     };
   }
   cabecera(alumno) {
+    const now = new Date();
+    const hoy: string = moment(now).format('DD/MM/YYYY');
+
     return [
       {
-        text: alumno.legajo,
+        text: hoy,
         bold: false,
         fontSize: 10,
         colSpan: 1,
