@@ -3,6 +3,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { CicloLectivoService } from 'app/core/services/ciclo-lectivo.service';
 import { ICicloLectivo } from 'app/models/interface/iCicloLectivo';
+import * as moment from 'moment';
 import Swal from 'sweetalert2';
 @UntilDestroy()
 @Component({
@@ -26,13 +27,16 @@ export class BuscarPlanillaFormComponent implements OnInit {
       .pipe(untilDestroyed(this))
       .subscribe(
         (datos) => {
+          const now = new Date();
+          const hoy: string = moment(now).format('YYYY');
           this.cargando = false;
           this.ciclos = datos;
+          const anoActual = datos.find((x) => x.anio === Number(hoy));
           this.form = this._fb.group({
             curso: [null, [Validators.required]],
             comision: [null, [Validators.required]],
             division: [null, [Validators.required]],
-            cicloLectivo: [null, [Validators.required]],
+            cicloLectivo: [anoActual, [Validators.required]],
           });
         },
         (error) => {
