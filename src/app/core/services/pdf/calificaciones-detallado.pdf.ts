@@ -47,16 +47,19 @@ export class CalificacionesDetalladoPdf {
     }
   }
   getDocumentDefinition() {
+    const now = new Date();
+    const hoy: string = moment(now).format('YYYY');
+
     return {
       pageMargins: [40, 40, 20, 40],
-      pageOrientation: 'landscape',
+      //   pageOrientation: 'landscape',
       width: 1344,
       height: 'auto',
       content: [
         {
-          text: 'Informe de calificaciones por taller',
+          text: 'Registro de Notas ' + hoy,
           bold: true,
-          fontSize: 20,
+          fontSize: 12,
           alignment: 'center',
           margin: [0, 0, 0, 20],
         },
@@ -66,25 +69,46 @@ export class CalificacionesDetalladoPdf {
               // auto-sized columns have their widths based on their content
               text: this.planilla.asignatura.detalle,
               bold: true,
-              fontSize: 16,
-              alignment: 'left',
-              width: '50%',
+              fontSize: 10,
+              width: '20%',
+            },
+            {
+              // auto-sized columns have their widths based on their content
+              text: ` ${this.planilla.curso.curso}° AÑO ${this.planilla.curso.division}° DIV. `,
+              bold: true,
+              fontSize: 10,
+              width: '20%',
+            },
+            {
+              // star-sized columns fill the remaining space
+              // if there's more than one star-column, available width is divided equally
+              text: this.planilla.bimestre,
+              width: '20%',
+              bold: true,
+              fontSize: 10,
+            },
+            {
+              // star-sized columns fill the remaining space
+              // if there's more than one star-column, available width is divided equally
+              text: `Turno  ${this.planilla.turno}`,
+              width: '20%',
+              bold: true,
+              fontSize: 10,
             },
             {
               // star-sized columns fill the remaining space
               // if there's more than one star-column, available width is divided equally
               text: 'Prof. ' + this.planilla.profesor.nombreCompleto,
-              width: '50%',
+              width: '20%',
               bold: true,
-              fontSize: 16,
-              alignment: 'right',
+              fontSize: 10,
             },
           ],
         },
 
         {
           table: {
-            widths: ['12%', '31%', '23%', '28%', '5%'],
+            widths: ['40%', '40%', '10%', '10%'],
             body: [...this.bodyCalificaciones()],
           },
         },
@@ -100,179 +124,134 @@ export class CalificacionesDetalladoPdf {
   bodyCalificaciones() {
     const total = [];
     const subtotal = [];
-    this.calificacionesPorAlumno.forEach((x) => {
+    const primeraLinea = [
+      {
+        text: 'Alumno',
+        bold: true,
+        fontSize: 10,
+        colSpan: 1,
+        fillColor: '#d9d6d6',
+      },
+      {
+        text: 'Notas',
+        bold: true,
+        fontSize: 10,
+        colSpan: 1,
+        fillColor: '#d9d6d6',
+      },
+      {
+        text: 'Prom.',
+        bold: true,
+        fontSize: 10,
+        colSpan: 1,
+        fillColor: '#d9d6d6',
+      },
+      {
+        text: 'P.Final',
+        bold: true,
+        fontSize: 10,
+        colSpan: 1,
+        fillColor: '#d9d6d6',
+      },
+    ];
+    total.push(primeraLinea);
+    this.calificacionesPorAlumno.forEach((x, indexPpal) => {
       let suma = 0;
       let totalPromedios = 0;
       let totalCalificaciones = x.calificaciones.length;
-      const primeraLinea = [
-        {
-          text: 'Legajo',
-          bold: true,
-          fontSize: 12,
-          colSpan: 1,
-          fillColor: '#d9d6d6',
-        },
-        {
-          text: 'Nombre Completo',
-          bold: true,
-          fontSize: 12,
-          colSpan: 1,
-          fillColor: '#d9d6d6',
-        },
-        {
-          text: ' Examen',
-          bold: true,
-          fontSize: 12,
-          colSpan: 1,
-          fillColor: '#d9d6d6',
-        },
-        {
-          text: 'Tipo Examen',
-          bold: true,
-          fontSize: 12,
-          colSpan: 1,
-          fillColor: '#d9d6d6',
-        },
-        {
-          text: 'Cal.',
-          bold: true,
-          fontSize: 12,
-          colSpan: 1,
-          fillColor: '#d9d6d6',
-        },
-      ];
-      let terceraLinea = [];
-      x.calificaciones.forEach((a, index: number) => {
-        if (a) {
-          terceraLinea.push([
-            {
-              text: a.formaExamen,
-              bold: false,
-              fontSize: 12,
-              colSpan: 1,
-              fillColor: index % 2 === 0 ? '' : '#d9d6d6',
-            },
-            {
-              text: a.tipoExamen,
-              bold: false,
-              fontSize: 12,
-              colSpan: 1,
-              fillColor: index % 2 === 0 ? '' : '#d9d6d6',
-            },
-            {
-              text: a.promedioGeneral,
-              bold: false,
-              fontSize: 12,
-              colSpan: 1,
-              fillColor: index % 2 === 0 ? '' : '#d9d6d6',
-            },
-          ]);
-          if (a.promedia) {
-            totalPromedios += 1;
+      const notas = x.calificaciones
+        .map((a) => {
+          let retorno = '';
+          if (a) {
+            retorno += a.promedioGeneral ? ' ' + a.promedioGeneral + ' ' : ' A ';
+            if (a.promedia) {
+              totalPromedios += 1;
+            }
+            suma += a.promedioGeneral;
+            return retorno;
           }
-          suma += a.promedioGeneral;
-        }
-        // subtotal.push(terceraLinea);
-      });
-
-      const t = terceraLinea.length > 0 ? _.zip.apply(_, terceraLinea) : [{}, {}, {}];
-      const segundaLinea = [
-        {
-          text: x.legajo,
-          bold: true,
-          fontSize: 12,
-          colSpan: 1,
-        },
-        {
-          text: x.alumnoNombre,
-          bold: true,
-          fontSize: 12,
-          colSpan: 1,
-        },
-        {
-          table: {
-            widths: ['41%', '50%', '*'],
-            body: [t],
-          },
-          colSpan: 3,
-
-          //   layout: {
-          //     hLineWidth: function (i, node) {
-          //       return i === 0 || i === node.table.body.length ? 2 : 1;
-          //     },
-          //     vLineWidth: function (i, node) {
-          //       return i === 0 || i === node.table.widths.length ? 2 : 1;
-          //     },
-          //     hLineColor: function (i, node) {
-          //       return i === 0 || i === node.table.body.length ? 'black' : 'gray';
-          //     },
-          //     vLineColor: function (i, node) {
-          //       return i === 0 || i === node.table.widths.length ? 'black' : 'gray';
-          //     },
-          //   },
-          layout: 'noBorders',
-        },
-
-        // {
-        //   text: '',
-        //   colSpan: 3,
-        // },
-        {},
-        {},
-      ];
-
-      //
-      total.push(primeraLinea);
-      total.push(segundaLinea);
-      //   total.push(subtotal);
+        })
+        .join(' ');
       const promedio = suma ? (suma / totalCalificaciones).toFixed(2) : Number(0).toFixed(2);
       const promedioFinal = (Math.ceil(Number(promedio) * 2) / 2).toFixed(2);
-      total.push([
-        { text: '', colSpan: 2 },
-        {},
+      let lineaAlumno = [
         {
-          columns: [
-            {
-              // auto-sized columns have their widths based on their content
-              width: 'auto',
-              text: 'Promedio',
-              alignment: 'left',
-              bold: true,
-            },
-            {
-              // star-sized columns fill the remaining space
-              // if there's more than one star-column, available width is divided equally
-              width: '*',
-              text: promedio ? promedio : 0,
-              alignment: 'right',
-              bold: true,
-            },
-          ],
+          text: x.alumnoNombre,
+          bold: false,
+          fontSize: 10,
+          //   fillColor: indexPpal % 2 === 0 ? '' : '#d9d6d6',
         },
         {
-          columns: [
-            {
-              // auto-sized columns have their widths based on their content
-              width: 'auto',
-              text: 'Promedio Final',
-              alignment: 'left',
-              bold: true,
-            },
-            {
-              // star-sized columns fill the remaining space
-              // if there's more than one star-column, available width is divided equally
-              width: '*',
-              text: promedioFinal,
-              alignment: 'right',
-              bold: true,
-            },
-          ],
+          text: notas,
+          bold: false,
+          fontSize: 10,
+          //   fillColor: indexPpal % 2 === 0 ? '' : '#d9d6d6',
         },
-        {},
+        {
+          text: notas,
+          bold: false,
+          fontSize: 10,
+          //   fillColor: indexPpal % 2 === 0 ? '' : '#d9d6d6',
+        },
+        {
+          text: promedioFinal,
+          bold: false,
+          fontSize: 10,
+          //   fillColor: indexPpal % 2 === 0 ? '' : '#d9d6d6',
+        },
+      ];
+      total.push(lineaAlumno);
+      //   total.push(...lineaAlumno);
 
-        // { text: x.totalAusentes, bold: true, fontSize: 12, fillColor: '#d9d6d6', colSpan: 1, alignment: 'left' },
-      ]);
-      total.push([{ text: '', colSpan: 5 }, {}, {}, {}, {}]);
+      //   total.push(subtotal);
+      //   const promedio = suma ? (suma / totalCalificaciones).toFixed(2) : Number(0).toFixed(2);
+      //   const promedioFinal = (Math.ceil(Number(promedio) * 2) / 2).toFixed(2);
+      //   total.push([
+      //     { text: '', colSpan: 2 },
+      //     {},
+      //     {
+      //       columns: [
+      //         {
+      //           // auto-sized columns have their widths based on their content
+      //           width: 'auto',
+      //           text: 'Promedio',
+      //           alignment: 'left',
+      //           bold: true,
+      //         },
+      //         {
+      //           // star-sized columns fill the remaining space
+      //           // if there's more than one star-column, available width is divided equally
+      //           width: '*',
+      //           text: promedio ? promedio : 0,
+      //           alignment: 'right',
+      //           bold: true,
+      //         },
+      //       ],
+      //     },
+      //     {
+      //       columns: [
+      //         {
+      //           // auto-sized columns have their widths based on their content
+      //           width: 'auto',
+      //           text: 'Promedio Final',
+      //           alignment: 'left',
+      //           bold: true,
+      //         },
+      //         {
+      //           // star-sized columns fill the remaining space
+      //           // if there's more than one star-column, available width is divided equally
+      //           width: '*',
+      //           text: promedioFinal,
+      //           alignment: 'right',
+      //           bold: true,
+      //         },
+      //       ],
+      //     },
+      //     {},
+
+      //     // { text: x.totalAusentes, bold: true, fontSize: 12, fillColor: '#d9d6d6', colSpan: 1, alignment: 'left' },
+      //   ]);
+      //   total.push([{ text: '', colSpan: 5 }, {}, {}, {}, {}]);
     });
     return total;
   }
