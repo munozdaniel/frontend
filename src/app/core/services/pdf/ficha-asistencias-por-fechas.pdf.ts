@@ -53,7 +53,7 @@ export class FichaAsistenciasPorFechasPdf {
   getDocumentDefinition() {
     return {
       pageMargins: [40, 40, 20, 40],
-      pageOrientation: 'landscape',
+      //   pageOrientation: 'landscape',
       width: 1344,
       height: 'auto',
       content: [
@@ -62,7 +62,7 @@ export class FichaAsistenciasPorFechasPdf {
             .utc(this.fechaFinal)
             .format('DD/MM/YYYY')}`,
           bold: true,
-          fontSize: 20,
+          fontSize: 12,
           alignment: 'center',
           margin: [0, 0, 0, 20],
         },
@@ -109,6 +109,7 @@ export class FichaAsistenciasPorFechasPdf {
                   text: `Fecha: ${fecha}`,
                   style: 'tableHeader',
                   alignment: 'left',
+                  fontSize: 10,
                   bold: true,
                   colSpan: 3,
                   border: [true, true, true, false],
@@ -121,6 +122,7 @@ export class FichaAsistenciasPorFechasPdf {
                 {
                   text: planilla.curso.comision ? 'Taller: ' + planilla.asignatura.detalle : planilla.asignatura.detalle,
                   style: 'tableHeader',
+                  fontSize: 10,
                   colSpan: 1,
                   alignment: 'left',
                   border: [true, false, false, false],
@@ -130,12 +132,14 @@ export class FichaAsistenciasPorFechasPdf {
                     planilla.curso.comision ? planilla.curso.comision : ''
                   }`,
                   style: 'tableHeader',
+                  fontSize: 10,
                   colSpan: 1,
                   alignment: 'center',
                   border: [false, false, false, false],
                 },
                 {
                   text: `Prof: ${planilla.profesor.nombreCompleto}`,
+                  fontSize: 10,
                   style: 'tableHeader',
                   alignment: 'center',
                   border: [false, false, true, false],
@@ -144,6 +148,7 @@ export class FichaAsistenciasPorFechasPdf {
               [
                 {
                   text: `Dni`,
+                  fontSize: 10,
                   style: 'tableHeader',
                   alignment: 'left',
                   bold: 'true',
@@ -151,18 +156,24 @@ export class FichaAsistenciasPorFechasPdf {
                 {
                   text: `Nombre y Apellido`,
                   style: 'tableHeader',
+                  fontSize: 10,
                   alignment: 'left',
                   bold: 'true',
                 },
                 {
                   text: `Asistencia`,
+                  fontSize: 10,
                   style: 'tableHeader',
                   alignment: 'center',
                   bold: 'true',
                 },
               ],
               ...asistencia.map((a) => {
-                return [a.alumno.dni, a.alumno.nombreCompleto, { text: a.presente ? 'Presente' : 'Ausente', alignment: 'center' }];
+                return [
+                  { text: a.alumno.dni, fontSize: 10 },
+                  { text: a.alumno.nombreCompleto, fontSize: 10 },
+                  { text: a.presente ? 'Presente' : 'Ausente', fontSize: 10, alignment: 'center' },
+                ];
               }),
             ],
           },
@@ -196,7 +207,7 @@ export class FichaAsistenciasPorFechasPdf {
             body: [
               [
                 { text: '', border: [false, false, false, false] },
-                { text: 'FIRMA PROFESOR', border: [false, true, false, false], alignment: 'center' },
+                { text: 'FIRMA PROFESOR', fontSize: 10, border: [false, true, false, false], alignment: 'center' },
                 { text: '', border: [false, false, false, false] },
               ],
             ],
