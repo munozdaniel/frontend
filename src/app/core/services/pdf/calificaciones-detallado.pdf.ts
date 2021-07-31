@@ -74,7 +74,7 @@ export class CalificacionesDetalladoPdf {
             },
             {
               // auto-sized columns have their widths based on their content
-              text: ` ${this.planilla.curso.curso}° AÑO ${this.planilla.curso.division}° DIV. `,
+              text: ` ${this.planilla.curso.curso}° AÑO ${this.planilla.curso.division}° DIV. COM. ${this.planilla.curso.comision} `,
               bold: true,
               fontSize: 10,
               width: '20%',
@@ -158,16 +158,19 @@ export class CalificacionesDetalladoPdf {
     this.calificacionesPorAlumno.forEach((x, indexPpal) => {
       let suma = 0;
       let totalPromedios = 0;
-      let totalCalificaciones = x.calificaciones.length;
+      let totalCalificaciones = 0;
       const notas = x.calificaciones
         .map((a) => {
           let retorno = '';
           if (a) {
+            if (a.promedioGeneral) {
+              totalCalificaciones++;
+            }
             retorno += a.promedioGeneral ? ' ' + a.promedioGeneral + ' ' : ' A ';
             if (a.promedia) {
               totalPromedios += 1;
             }
-            suma += a.promedioGeneral;
+            suma += a.promedioGeneral ? Number(a.promedioGeneral) : 0;
             return retorno;
           }
         })
@@ -188,7 +191,7 @@ export class CalificacionesDetalladoPdf {
           //   fillColor: indexPpal % 2 === 0 ? '' : '#d9d6d6',
         },
         {
-          text: notas,
+          text: promedio,
           bold: false,
           fontSize: 10,
           //   fillColor: indexPpal % 2 === 0 ? '' : '#d9d6d6',
