@@ -12,15 +12,21 @@ export class LibroTemasPdf {
   temasPorFecha: any[];
   calendario: any[];
   planilla: IPlanillaTaller;
+  totalClases: number;
+  totalClasesDictadas: number;
   constructor(private scriptService: ScriptService) {
     this.scriptService.load('pdfMake', 'vfsFonts');
   }
 
-  generatePdf(planilla: IPlanillaTaller, temasPorFecha: any[], action = 'open') {
+  generatePdf(planilla: IPlanillaTaller, datos: any, action = 'open') {
+    const { temasPorFecha, totalClases, totalClasesDictadas } = datos;
     this.temasPorFecha = temasPorFecha;
+    this.totalClases = totalClases;
+    this.totalClasesDictadas = totalClasesDictadas;
     let fechaInicio = moment(planilla.fechaInicio, 'YYYY-MM-DD').utc();
     let fechaFinal = moment(planilla.fechaFinalizacion, 'YYYY-MM-DD').utc();
     const calendarioMaterias = [];
+
     while (fechaFinal.utc().isSameOrAfter(fechaInicio)) {
       calendarioMaterias.push({
         planillaTaller: planilla,
@@ -109,6 +115,24 @@ export class LibroTemasPdf {
             widths: ['10%', '10%', '10%', '10%', '60%'],
             body: [...this.bodyTemas()],
           },
+        },
+        {
+          columns: [
+            {
+              // auto-sized columns have their widths based on their content
+              text: 'Total de Clases Dictadas:' + this.totalClasesDictadas,
+              bold: true,
+              fontSize: 10,
+              width: '50%',
+            },
+            {
+              // auto-sized columns have their widths based on their content
+              text: 'Total de Clases :' + this.totalClases,
+              bold: true,
+              fontSize: 10,
+              width: '50%',
+            },
+          ],
         },
       ],
       styles: {
@@ -202,7 +226,7 @@ export class LibroTemasPdf {
       const segundaLinea = [
         {
           border: [false, false, false, true],
-          text: 'OBS. JEFE: ' + x.observacionJefe ? x.observacionJefe : ' - ',
+          text: x.observacionJefe ? 'OBS. JEFE: ' + x.observacionJefe : ' - ',
           bold: false,
           fontSize: 10,
           colSpan: 5,
@@ -222,6 +246,8 @@ export class LibroTemasPdf {
       //   total.push(subtotal);
       //   total.push([{ text: '-', color: 'white', colSpan: 5, border: [false, false, false, false] }, {}, {}, {}, {}]);
     });
+
+    console.log('total', total);
     return total;
   }
 }

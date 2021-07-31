@@ -229,8 +229,6 @@ export class ReportesService {
             });
             return;
           }
-          this._designProgressBarService.hide();
-          this._designProgressBarService.hide();
           this._calificacionesDetalladoPdf.generatePdf(this.planillaTaller, result.value.calificaciones);
         } else {
           Swal.fire({
@@ -345,7 +343,10 @@ export class ReportesService {
           }
           this._designProgressBarService.hide();
           this._designProgressBarService.hide();
-          this._libroTemasPdf.generatePdf(this.planillaTaller, result.value.temasPorFecha);
+          this._libroTemasPdf.generatePdf(
+            this.planillaTaller,
+            result.value
+          );
         } else {
           Swal.fire({
             title: 'Oops! Ocurrió un error',
