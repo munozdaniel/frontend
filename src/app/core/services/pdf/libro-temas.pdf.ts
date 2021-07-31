@@ -57,7 +57,7 @@ export class LibroTemasPdf {
         {
           text: 'Libro de Temas',
           bold: true,
-          fontSize: 20,
+          fontSize: 12,
           alignment: 'center',
           margin: [0, 0, 0, 20],
         },
@@ -67,64 +67,40 @@ export class LibroTemasPdf {
               // auto-sized columns have their widths based on their content
               text: this.planilla.asignatura.detalle,
               bold: true,
-              fontSize: 16,
-              alignment: 'left',
-              width: '50%',
+              fontSize: 10,
+              width: '20%',
+            },
+            {
+              // auto-sized columns have their widths based on their content
+              text: ` ${this.planilla.curso.curso}° AÑO ${this.planilla.curso.division}° DIV. COM. ${this.planilla.curso.comision}`,
+              bold: true,
+              fontSize: 10,
+              width: '20%',
+            },
+            {
+              // star-sized columns fill the remaining space
+              // if there's more than one star-column, available width is divided equally
+              text: this.planilla.bimestre,
+              width: '20%',
+              bold: true,
+              fontSize: 10,
+            },
+            {
+              // star-sized columns fill the remaining space
+              // if there's more than one star-column, available width is divided equally
+              text: `Turno  ${this.planilla.turno}`,
+              width: '20%',
+              bold: true,
+              fontSize: 10,
             },
             {
               // star-sized columns fill the remaining space
               // if there's more than one star-column, available width is divided equally
               text: 'Prof. ' + this.planilla.profesor.nombreCompleto,
-              width: '50%',
+              width: '20%',
               bold: true,
-              fontSize: 16,
-              alignment: 'right',
+              fontSize: 10,
             },
-          ],
-        },
-        {
-          columns: [
-            {
-              // auto-sized columns have their widths based on their content
-              text: 'Curso: ' + this.planilla.curso.curso,
-              bold: true,
-              fontSize: 16,
-              alignment: 'left',
-              width: '25%',
-            },
-            {
-              // auto-sized columns have their widths based on their content
-              text: 'Div.: ' + this.planilla.curso.division,
-              bold: true,
-              fontSize: 16,
-              alignment: 'left',
-              width: '25%',
-            },
-            {
-              // auto-sized columns have their widths based on their content
-              text: 'Com.: ' + this.planilla.curso.comision,
-              bold: true,
-              fontSize: 16,
-              alignment: 'left',
-              width: '25%',
-            },
-            {
-              // auto-sized columns have their widths based on their content
-              text: this.planilla.bimestre,
-              bold: true,
-              fontSize: 16,
-              alignment: 'right',
-              width: '25%',
-            },
-            // {
-            //   // star-sized columns fill the remaining space
-            //   // if there's more than one star-column, available width is divided equally
-            //   text: 'Prof. ' + this.planilla.profesor.nombreCompleto,
-            //   width: '40%',
-            //   bold: true,
-            //   fontSize: 16,
-            //   alignment: 'right',
-            // },
           ],
         },
 
@@ -137,7 +113,7 @@ export class LibroTemasPdf {
       ],
       styles: {
         tabla_cursadas: {
-          margin: [0, 20, 0, 0],
+          margin: [0, 0, 0, 0],
         },
         tableExample: {},
       },
@@ -146,82 +122,89 @@ export class LibroTemasPdf {
   bodyTemas() {
     const total = [];
     const subtotal = [];
+    const zeroLinea = [
+      {
+        text: 'Fecha',
+        bold: true,
+        fontSize: 10,
+        colSpan: 1,
+        fillColor: '#d9d6d6',
+      },
+      {
+        text: 'Nro Clase',
+        bold: false,
+        fontSize: 10,
+        colSpan: 1,
+        fillColor: '#d9d6d6',
+      },
+      {
+        text: 'Unidad',
+        bold: false,
+        fontSize: 10,
+        colSpan: 1,
+        fillColor: '#d9d6d6',
+      },
+      {
+        text: 'Caracter Clase',
+        bold: false,
+        fontSize: 10,
+        colSpan: 1,
+        fillColor: '#d9d6d6',
+      },
+      {
+        text: 'Desarrollo',
+        bold: false,
+        fontSize: 10,
+        colSpan: 1,
+        fillColor: '#d9d6d6',
+      },
+    ];
+    total.push(zeroLinea);
     this.temasPorFecha.forEach((x) => {
-      const zeroLinea = [
-        {
-          text: x.fecha,
-          bold: true,
-          fontSize: 12,
-          colSpan: 1,
-          fillColor: '#d9d6d6',
-        },
-        {
-          text: 'Nro Clase',
-          bold: false,
-          fontSize: 12,
-          colSpan: 1,
-          fillColor: '#d9d6d6',
-        },
-        {
-          text: 'Unidad',
-          bold: false,
-          fontSize: 12,
-          colSpan: 1,
-          fillColor: '#d9d6d6',
-        },
-        {
-          text: 'Caracter Clase',
-          bold: false,
-          fontSize: 12,
-          colSpan: 1,
-          fillColor: '#d9d6d6',
-        },
-        {
-          text: 'Desarrollo',
-          bold: false,
-          fontSize: 12,
-          colSpan: 1,
-          fillColor: '#d9d6d6',
-        },
-      ];
       const primeraLinea = [
         {
-          text: x.fecha,
+          border: [false, true, false, false],
+          text: moment.utc(x.fecha).format('DD/MM/YYYY'),
           bold: true,
-          fontSize: 12,
+          fontSize: 10,
           colSpan: 1,
         },
         {
           text: x.temaNro,
+          border: [false, true, false, false],
           bold: false,
-          fontSize: 12,
+          fontSize: 10,
           colSpan: 1,
         },
         {
+          border: [false, true, false, false],
           text: x.unidad,
           bold: false,
-          fontSize: 12,
+          fontSize: 10,
           colSpan: 1,
         },
         {
           text: x.caracterClase,
+          border: [false, true, false, false],
           bold: false,
-          fontSize: 12,
+          fontSize: 10,
           colSpan: 1,
         },
         {
+          border: [false, true, false, false],
           text: x.temaDelDia,
           bold: false,
-          fontSize: 12,
+          fontSize: 10,
           colSpan: 1,
         },
       ];
 
       const segundaLinea = [
         {
-          text: 'OBS. JEFE: ' + x.observacionJefe,
+          border: [false, false, false, true],
+          text: 'OBS. JEFE: ' + x.observacionJefe ? x.observacionJefe : ' - ',
           bold: false,
-          fontSize: 12,
+          fontSize: 10,
           colSpan: 5,
         },
         {},
@@ -232,13 +215,12 @@ export class LibroTemasPdf {
       ];
 
       //
-      total.push(zeroLinea);
       total.push(primeraLinea);
-      if (x.observacionJefe) {
-        total.push(segundaLinea);
-      }
+
+      total.push(segundaLinea);
+
       //   total.push(subtotal);
-      total.push([{ text: '-', color: 'white', colSpan: 5, border: [false, false, false, false] }, {}, {}, {}, {}]);
+      //   total.push([{ text: '-', color: 'white', colSpan: 5, border: [false, false, false, false] }, {}, {}, {}, {}]);
     });
     return total;
   }
