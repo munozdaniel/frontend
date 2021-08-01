@@ -1047,15 +1047,15 @@ export class PlanillaTallerAdministrarComponent implements OnInit {
     });
   }
   setPlanillaActualizada(evento) {
-    window.location.reload();
+    // window.location.reload();
 
-    // this.calendario = this.temas = null;
-    // if (this.planillaTaller.curso) {
-    //   if (!this.planillaTaller.personalizada) {
-    //     this.obtenerAlumnosPorCursoEspecifico();
-    //   } else {
-    //     this.obtenerAlumnosPorPlanillaPersonalizada();
-    //   }
-    // }
+    this.calendario = this.temas = null;
+    if (this.planillaTaller.curso) {
+      if (!this.planillaTaller.personalizada) {
+        this.obtenerAlumnosPorCursoEspecifico();
+      } else {
+        this.obtenerAlumnosPorPlanillaPersonalizada();
+      }
+    }
   }
 }
