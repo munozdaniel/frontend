@@ -102,7 +102,6 @@ export class AuthService implements OnDestroy {
     // this.logout();
     return this.http.post<IUsuario>(`${this.apiUrl}auth/login`, { email, password }).pipe(
       map((x: any) => {
-        console.log('x', x);
         if (x.message) {
           Swal.fire({
             title: 'Error al iniciar sesión',
