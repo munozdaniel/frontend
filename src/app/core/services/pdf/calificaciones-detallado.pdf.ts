@@ -156,27 +156,38 @@ export class CalificacionesDetalladoPdf {
     ];
     total.push(primeraLinea);
     this.calificacionesPorAlumno.forEach((x, indexPpal) => {
+      let sumaAusente = 0;
       let suma = 0;
       let totalPromedios = 0;
       let totalCalificaciones = 0;
       const notas = x.calificaciones
         .map((a) => {
           let retorno = '';
+          if (a.ausente && !a.ausentePermitido) {
+            sumaAusente++;
+            let retorno = 'A';
+            return retorno;
+          }
           if (a) {
-            if (a.promedioGeneral) {
+            retorno += a.promedioGeneral ? ' ' + a.promedioGeneral + ' ' : ' A ';
+            if (a.promedia && !a.ausente) {
+              totalPromedios += 1;
+              suma += a.promedioGeneral ? Number(a.promedioGeneral) : 0;
               totalCalificaciones++;
             }
-            retorno += a.promedioGeneral ? ' ' + a.promedioGeneral + ' ' : ' A ';
-            if (a.promedia) {
-              totalPromedios += 1;
-            }
-            suma += a.promedioGeneral ? Number(a.promedioGeneral) : 0;
             return retorno;
           }
         })
         .join(' ');
-      const promedio = suma ? (suma / totalCalificaciones).toFixed(2) : Number(0).toFixed(2);
-      const promedioFinal = (Math.ceil(Number(promedio) * 2) / 2).toFixed(2);
+      let promedioFinal = '';
+      let promedio = '';
+      if (sumaAusente === x.calificaciones.length) {
+        promedio = 'A';
+        promedioFinal = 'A';
+      } else {
+        promedio = suma ? (suma / totalCalificaciones).toFixed(2) : Number(0).toFixed(2);
+        promedioFinal = (Math.ceil(Number(promedio) * 2) / 2).toFixed(2);
+      }
       let lineaAlumno = [
         {
           text: x.alumnoNombre,
