@@ -17,6 +17,7 @@ import { IAlumno } from 'app/models/interface/iAlumno';
 import { IAsistencia } from 'app/models/interface/iAsistencia';
 import { ICalendario } from 'app/models/interface/iCalendario';
 import { ICalificacion } from 'app/models/interface/iCalificacion';
+import { IExamen } from 'app/models/interface/iExamen';
 import { IPlanillaTaller } from 'app/models/interface/iPlanillaTaller';
 import { ISeguimientoAlumno } from 'app/models/interface/iSeguimientoAlumno';
 import { ITema } from 'app/models/interface/iTema';
@@ -87,6 +88,7 @@ import { TemaFormModalComponent } from '../tema-form-modal/tema-form-modal.compo
           <mat-tab label="Calificaciones">
             <app-planilla-detalle-calificaciones
               [template]="template"
+              [examenes]="examenes"
               [cargandoCalificaciones]="cargandoCalificaciones"
               [cargandoAlumnos]="cargandoAlumnos"
               [alumnos]="alumnos"
@@ -97,6 +99,7 @@ import { TemaFormModalComponent } from '../tema-form-modal/tema-form-modal.compo
               (retEliminarCalificacion)="setEliminarCalificacion($event)"
               [deshabilitarEdicion]="deshabilitarEdicion"
               (retExamenEspecial)="setExamenEspecial($event)"
+              (retEliminarExamenEspecial)="retEliminarExamenEspecial($event)"
             >
             </app-planilla-detalle-calificaciones>
           </mat-tab>
@@ -190,6 +193,7 @@ export class PlanillaTallerAdministrarComponent implements OnInit {
   //   Calificaciones
   cargandoCalificaciones: boolean;
   calificaciones: ICalificacion[];
+  examenes: IExamen[];
   //   Temas
   cargandoTemas: boolean;
   temas: ITema[];
@@ -493,6 +497,51 @@ export class PlanillaTallerAdministrarComponent implements OnInit {
 
     dialogRef.afterClosed().subscribe((result) => {
       if (result) {
+        this.obtenerExamenes(this.alumnoSeleccionado._id);
+      }
+    });
+  }
+  retEliminarExamenEspecial(_id) {
+    Swal.fire({
+      title: '¿Está seguro de continuar?',
+      html: 'Está a punto de <strong>ELIMINAR PERMANENTEMENTE</strong> el examen',
+      icon: 'warning',
+      focusConfirm: false,
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      confirmButtonText: 'Si, estoy seguro',
+      cancelButtonText: 'Cancelar',
+      showLoaderOnConfirm: true,
+      preConfirm: () => {
+        return this._calificacionService.eliminarExamen(_id).pipe(
+          catchError((error) => {
+            console.log('[ERROR]', error);
+            Swal.fire({
+              title: 'Oops! Ocurrió un error',
+              text: error && error.error ? error.error.message : 'Error de conexion',
+              icon: 'error',
+            });
+            return of(error);
+          })
+        );
+      },
+      allowOutsideClick: () => !Swal.isLoading(),
+    }).then((result: any) => {
+      if (result.isConfirmed) {
+        if (result.value && result.value.status === 200) {
+          Swal.fire({
+            title: 'Operación Exitosa',
+            text: 'La asistencia ha sido actualizado correctamente.',
+            icon: 'success',
+          });
+          this.obtenerExamenes(this.alumnoSeleccionado._id);
+        } else {
+          Swal.fire({
+            title: 'Oops! Ocurrió un error',
+            text: 'Intentelo nuevamente. Si el problema persiste comuniquese con el soporte técnico.',
+            icon: 'error',
+          });
+        }
       }
     });
   }
@@ -661,6 +710,20 @@ export class PlanillaTallerAdministrarComponent implements OnInit {
         (error) => {
           console.log('[ERROR]', error);
           this.cargandoCalificaciones = false;
+        }
+      );
+    this.obtenerExamenes(alumno._id);
+  }
+  obtenerExamenes(id) {
+    this._calificacionService
+      .obtenerExamenes(id, this.planillaId)
+      .pipe(untilDestroyed(this))
+      .subscribe(
+        (datos) => {
+          this.examenes = [...datos];
+        },
+        (error) => {
+          console.log('[ERROR]', error);
         }
       );
   }

@@ -5,6 +5,7 @@ import { designAnimations } from '@design/animations';
 import { TemplateEnum } from 'app/models/constants/tipo-template.const';
 import { IAlumno } from 'app/models/interface/iAlumno';
 import { ICalificacion } from 'app/models/interface/iCalificacion';
+import { IExamen } from 'app/models/interface/iExamen';
 
 @Component({
   selector: 'app-planilla-detalle-calificaciones',
@@ -16,6 +17,7 @@ export class PlanillaDetalleCalificacionesComponent implements OnInit, OnChanges
   TemplateEnum = TemplateEnum;
   touchtime = 0;
   @Input() template?: string;
+  @Input() examenes: IExamen;
   @Input() cargandoCalificaciones: boolean;
   @Input() cargandoAlumnos: boolean;
   @Input() deshabilitarEdicion: boolean;
@@ -26,6 +28,7 @@ export class PlanillaDetalleCalificacionesComponent implements OnInit, OnChanges
   @Output() retEditarCalificacion = new EventEmitter<ICalificacion>();
   @Output() retEliminarCalificacion = new EventEmitter<ICalificacion>();
   @Output() retExamenEspecial = new EventEmitter<boolean>();
+  @Output() retEliminarExamenEspecial = new EventEmitter<string>();
   titulo = 'Calificaciones';
   //   Alumnos
   dataSource: MatTableDataSource<any> = new MatTableDataSource([]);
@@ -90,7 +93,6 @@ export class PlanillaDetalleCalificacionesComponent implements OnInit, OnChanges
         this.totalCalificaciones = this.calificaciones.length;
         this.calificaciones.forEach((x) => {
           if (x.ausente) {
-           
           } else {
             if (x.promedia) {
               this.totalPromedios += 1;
@@ -163,5 +165,8 @@ export class PlanillaDetalleCalificacionesComponent implements OnInit, OnChanges
   }
   mostrarFormExamen() {
     this.retExamenEspecial.emit(true);
+  }
+  eliminarExamen(_id) {
+    this.retEliminarExamenEspecial.emit(_id);
   }
 }

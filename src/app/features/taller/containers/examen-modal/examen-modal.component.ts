@@ -54,7 +54,9 @@ export class ExamenModalComponent implements OnInit {
         .agregarExamen(mes, nota, alumnoId, planillaId)
         .pipe(untilDestroyed(this))
         .subscribe(
-          (datos) => {},
+          (datos) => {
+            this.dialogRef.close(true);
+          },
           (error) => {
             console.log('[ERROR]', error);
           }

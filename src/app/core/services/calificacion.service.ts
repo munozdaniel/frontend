@@ -55,6 +55,18 @@ export class CalificacionService {
     const query = `examen`;
     const url = this.url + query;
 
-    return this.http.put<any>(url, {mes, nota, alumnoId, planillaId});
+    return this.http.put<any>(url, { mes, nota, alumnoId, planillaId });
+  }
+  obtenerExamenes(alumnoId, planillaId): Observable<any> {
+    const query = `examen/por-planilla-alumno`;
+    const url = this.url + query;
+
+    return this.http.post<any>(url, { alumnoId, planillaId });
+  }
+  eliminarExamen(_id): Observable<any> {
+    const query = `examen/eliminar/${_id}`;
+    const url = this.url + query;
+
+    return this.http.delete<any>(url);
   }
 }
