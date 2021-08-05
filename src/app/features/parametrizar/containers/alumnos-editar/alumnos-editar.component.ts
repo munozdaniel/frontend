@@ -6,8 +6,8 @@ import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { AlumnoService } from 'app/core/services/alumno.service';
 import { IAlumno } from 'app/models/interface/iAlumno';
 import { IEstadoCursada } from 'app/models/interface/iEstadoCursada';
-import { Observable, of } from 'rxjs';
-import { catchError, finalize } from 'rxjs/operators';
+import { of } from 'rxjs';
+import { catchError } from 'rxjs/operators';
 import Swal from 'sweetalert2';
 @UntilDestroy()
 @Component({
@@ -27,12 +27,13 @@ import Swal from 'sweetalert2';
       <!-- (retEditarEstadoCursada)="setEditarEstadoCursada($event)" -->
       <app-alumnos-form
         [titulo]="titulo"
-        [alumno]="alumno$ | async"
+        [alumno]="alumno"
         [resetear]="resetear"
         [cargando]="cargando"
         [estadoCursadaEditada]="estadoCursadaEditada"
         (retAgregarCursada)="setAgregarCursada($event)"
         (retDatosForm)="setDatosForm($event)"
+        (retEliminarArchivo)="setEliminarArchivo($event)"
       ></app-alumnos-form>
     </div>
   `,
@@ -43,7 +44,7 @@ export class AlumnosEditarComponent implements OnInit {
   titulo = 'Editar Alumno';
   cargando = true;
   resetear = false;
-  alumno$: Observable<IAlumno>;
+  alumno: IAlumno;
   alumnoId: string;
   estadoCursadaEditada: IEstadoCursada;
   constructor(
@@ -57,16 +58,80 @@ export class AlumnosEditarComponent implements OnInit {
     this.recuperarDatos();
   }
   recuperarDatos() {
+    this.cargando = true;
     this._activeRoute.params.subscribe((params) => {
       this.alumnoId = params['id'];
-      this.alumno$ = this._alumnoService.obtenerAlumnoPorId(this.alumnoId).pipe(
-        catchError((error: any) => {
-          console.log('[ERROR]', error);
-          this._router.navigate(['/parametrizar/alumnos']);
-          return of(error);
-        }),
-        finalize(() => (this.cargando = false))
-      );
+      this._alumnoService
+        .obtenerAlumnoPorId(this.alumnoId)
+        .pipe(untilDestroyed(this))
+        .subscribe(
+          (datos) => {
+            this.cargando = false;
+            if (!datos) {
+              Swal.fire({
+                title: 'Alumno no encontrado',
+                text: 'Es posible que el alumno solicitado haya sido eliminado',
+                icon: 'error',
+                timer: 2000,
+                timerProgressBar: true,
+              }).then(() => {
+                this._router.navigate(['/parametrizar/alumnos']);
+              });
+            } else {
+              this.alumno = { ...datos };
+            }
+          },
+          (error) => {
+            console.log('[ERROR]', error);
+            this.cargando = false;
+            this._router.navigate(['/parametrizar/alumnos']);
+          }
+        );
+    });
+  }
+  setEliminarArchivo({ alumno, archivo }) {
+    Swal.fire({
+      title: '¿Está seguro de continuar?',
+      html: 'Está a punto de ELIMINAR el archivo ',
+      icon: 'warning',
+      focusConfirm: false,
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      confirmButtonText: 'Si, estoy seguro',
+      cancelButtonText: 'Cancelar',
+      showLoaderOnConfirm: true,
+      preConfirm: () => {
+        return this._alumnoService.eliminarArchivo(this.alumnoId, archivo).pipe(
+          catchError((error) => {
+            console.log('[ERROR]', error);
+            Swal.fire({
+              title: 'Oops! Ocurrió un error',
+              text: error && error.error ? error.error.message : 'Error de conexion',
+              icon: 'error',
+            });
+            return of(error);
+          })
+        );
+      },
+      allowOutsideClick: () => !Swal.isLoading(),
+    }).then((result: any) => {
+      if (result.isConfirmed) {
+        if (result.value) {
+          this.alumno.archivoDiagnostico = result.value;
+          this.alumno = { ...this.alumno };
+          Swal.fire({
+            title: 'Operación Exitosa',
+            text: 'El archivo ha sido eliminado correctamente.',
+            icon: 'success',
+          });
+        } else {
+          Swal.fire({
+            title: 'Oops! Ocurrió un error',
+            text: 'Intentelo nuevamente. Si el problema persiste comuniquese con el soporte técnico.',
+            icon: 'error',
+          });
+        }
+      }
     });
   }
   setDatosForm(evento: IAlumno) {

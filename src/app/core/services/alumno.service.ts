@@ -269,4 +269,10 @@ export class AlumnoService {
 
     return this.http.post<any>(url, { planillaTaller, curso, division, cicloLectivo });
   }
+  eliminarArchivo(id: any, archivo: any): Observable<any> {
+    const query = `alumnos/eliminar-archivo/${id}`;
+    const url = this.url + query;
+
+    return this.http.post<any>(url, { archivo });
+  }
 }

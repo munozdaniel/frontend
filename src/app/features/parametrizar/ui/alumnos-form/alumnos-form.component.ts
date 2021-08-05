@@ -37,6 +37,7 @@ export class AlumnosFormComponent implements OnInit, OnChanges {
   //   @Output() retEditarEstadoCursada = new EventEmitter<IEstadoCursada>();
   @Output() retAgregarCursada = new EventEmitter<IEstadoCursada>();
   @Output() retActualizarEstadoCursadas = new EventEmitter<IEstadoCursada[]>();
+  @Output() retEliminarArchivo = new EventEmitter<{ alumno: IAlumno; archivo: string }>();
   //
   formDatosPersonales: FormGroup;
   formEtap: FormGroup;
@@ -88,7 +89,10 @@ export class AlumnosFormComponent implements OnInit, OnChanges {
       this.setFormularios();
     }
   }
-
+  eliminarArchivo(alumno, item) {
+    console.log('eleiminar', alumno, item);
+    this.retEliminarArchivo.emit({ alumno, archivo: item });
+  }
   ngOnInit(): void {
     this.formDatosPersonales = this._fb.group({
       tipoDni: [null, []],
@@ -268,7 +272,6 @@ export class AlumnosFormComponent implements OnInit, OnChanges {
 
     dialogRef.afterClosed().subscribe((estadoCursada: IEstadoCursada) => {
       if (estadoCursada) {
-        console.log('estadoCursadsssa', estadoCursada);
         this.estadoCursadas = [...this.estadoCursadas, estadoCursada];
         this.estadoCursadas.forEach((x: any, index) => {
           x.index = index;
@@ -281,7 +284,6 @@ export class AlumnosFormComponent implements OnInit, OnChanges {
   }
 
   setEliminarComision(evento: IEstadoCursada) {
-    console.log('setEliminarComision', evento);
     if (evento) {
       const index = this.estadoCursadas.findIndex((x) => x.index === evento.index);
       if (index !== -1) {
