@@ -1,0 +1,31 @@
+<h1 mat-dialog-title>Examen</h1>
+<div mat-dialog-content>
+  <form [formGroup]="form" fxLayout="column">
+    {{ form.value | json }}
+    <mat-form-field appearance="outline" class="w-100-p">
+      <mat-label class="lbl">Curso</mat-label>
+      <mat-select formControlName="mes">
+        <mat-option value="DICIEMBRE">DICIEMBRE</mat-option>
+        <mat-option value="ENERO">ENERO </mat-option>
+        <mat-option value="FEBRERO">FEBRERO </mat-option>
+        <mat-option value="MARZO">MARZO </mat-option>
+        <mat-option value="JUNIO">JUNIO </mat-option>
+        <mat-option value="JULIO">JULIO </mat-option>
+        <mat-option value="AGOSTO">AGOSTO</mat-option>
+        <mat-option value="SEPTIEMBRE">SEPTIEMBRE </mat-option>
+        <mat-option value="OCTUBRE">OCTUBRE </mat-option>
+        <mat-option value="NOVIEMBRE">NOVIEMBRE </mat-option>
+      </mat-select>
+      <mat-error *ngIf="form.controls.mes.hasError('required')"> Este campo es requerido. </mat-error>
+    </mat-form-field>
+    <mat-form-field appearance="outline" class="w-100-p">
+      <mat-label class="lbl">Nota</mat-label>
+      <input matInput type="number" class="actual" formControlName="nota" />
+      <mat-error *ngIf="form.controls.nota.hasError('required')"> Este campo es requerido. </mat-error>
+    </mat-form-field>
+  </form>
+</div>
+<div mat-dialog-actions fxLayout="row" fxLayoutAlign="space-between start">
+  <button mat-button color="warn" (click)="cerrar()">Cerrar</button>
+  <button mat-raised-button color="accent" (click)="guardarNota()">Guardar</button>
+</div>

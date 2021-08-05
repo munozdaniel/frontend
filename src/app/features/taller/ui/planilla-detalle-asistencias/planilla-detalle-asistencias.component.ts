@@ -1,12 +1,13 @@
 import { MediaMatcher, BreakpointObserver, Breakpoints, BreakpointState } from '@angular/cdk/layout';
 import { ChangeDetectorRef, Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges, ViewChild } from '@angular/core';
-import { MatTableDataSource, MatSort, MatPaginator } from '@angular/material';
+import { MatTableDataSource, MatSort, MatPaginator, MatDialog } from '@angular/material';
 import { designAnimations } from '@design/animations';
 import { TemplateEnum } from 'app/models/constants/tipo-template.const';
 import { IAlumno } from 'app/models/interface/iAlumno';
 import { IAsistencia } from 'app/models/interface/iAsistencia';
 import * as moment from 'moment';
 import Swal from 'sweetalert2';
+import { ExamenModalComponent } from '../../containers/examen-modal/examen-modal.component';
 
 @Component({
   selector: 'app-planilla-detalle-asistencias',
@@ -60,7 +61,12 @@ export class PlanillaDetalleAsistenciasComponent implements OnInit, OnChanges {
   isMobile: boolean;
   private _mobileQueryListener: () => void;
   mobileQuery: MediaQueryList;
-  constructor(private _changeDetectorRef: ChangeDetectorRef, private _media: MediaMatcher, public breakpointObserver: BreakpointObserver) {
+  constructor(
+    private _dialog: MatDialog,
+    private _changeDetectorRef: ChangeDetectorRef,
+    private _media: MediaMatcher,
+    public breakpointObserver: BreakpointObserver
+  ) {
     this.mobileQuery = this._media.matchMedia('(max-width: 600px)');
     this._mobileQueryListener = () => this._changeDetectorRef.detectChanges();
     this.breakpointObserver.observe([Breakpoints.Small, Breakpoints.HandsetPortrait]).subscribe((state: BreakpointState) => {
@@ -186,4 +192,5 @@ export class PlanillaDetalleAsistenciasComponent implements OnInit, OnChanges {
     });
     this.retEnviarEmail.emit({ asistencia: row, faltas });
   }
+  
 }

@@ -25,6 +25,7 @@ export class PlanillaDetalleCalificacionesComponent implements OnInit, OnChanges
   @Output() retAbrirModalCalificaciones = new EventEmitter<boolean>();
   @Output() retEditarCalificacion = new EventEmitter<ICalificacion>();
   @Output() retEliminarCalificacion = new EventEmitter<ICalificacion>();
+  @Output() retExamenEspecial = new EventEmitter<boolean>();
   titulo = 'Calificaciones';
   //   Alumnos
   dataSource: MatTableDataSource<any> = new MatTableDataSource([]);
@@ -159,5 +160,8 @@ export class PlanillaDetalleCalificacionesComponent implements OnInit, OnChanges
 
   eliminar(calificacion: ICalificacion) {
     this.retEliminarCalificacion.emit(calificacion);
+  }
+  mostrarFormExamen() {
+    this.retExamenEspecial.emit(true);
   }
 }

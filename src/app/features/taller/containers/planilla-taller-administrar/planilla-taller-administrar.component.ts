@@ -30,6 +30,7 @@ import { catchError, ignoreElements } from 'rxjs/operators';
 import Swal from 'sweetalert2';
 import { AsistenciaFormModalComponent } from '../asistencia-form-modal/asistencia-form-modal.component';
 import { CalificacionFormModalComponent } from '../calificacion-form-modal/calificacion-form-modal.component';
+import { ExamenModalComponent } from '../examen-modal/examen-modal.component';
 import { TemaFormModalComponent } from '../tema-form-modal/tema-form-modal.component';
 @UntilDestroy()
 @Component({
@@ -95,6 +96,7 @@ import { TemaFormModalComponent } from '../tema-form-modal/tema-form-modal.compo
               (retEditarCalificacion)="setEditarCalificacion($event)"
               (retEliminarCalificacion)="setEliminarCalificacion($event)"
               [deshabilitarEdicion]="deshabilitarEdicion"
+              (retExamenEspecial)="setExamenEspecial($event)"
             >
             </app-planilla-detalle-calificaciones>
           </mat-tab>
@@ -483,6 +485,17 @@ export class PlanillaTallerAdministrarComponent implements OnInit {
   }
 
   //   Output Asistencias
+  setExamenEspecial(evento) {
+    const dialogRef = this._dialog.open(ExamenModalComponent, {
+      width: '330px',
+      data: { alumnoId: this.alumnoSeleccionado._id, planillaId: this.planillaId },
+    });
+
+    dialogRef.afterClosed().subscribe((result) => {
+      if (result) {
+      }
+    });
+  }
   setBuscarAsistenciaPorAlumno(alumno: IAlumno) {
     this.alumnoSeleccionado = alumno; // cuando viene por output se actualiza
     this.cargandoAsistencias = true;

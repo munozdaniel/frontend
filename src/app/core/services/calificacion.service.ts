@@ -49,4 +49,12 @@ export class CalificacionService {
 
     return this.http.post<any>(url, { planillaTaller });
   }
+
+  // Examen
+  agregarExamen(mes, nota, alumnoId, planillaId): Observable<any> {
+    const query = `examen`;
+    const url = this.url + query;
+
+    return this.http.put<any>(url, {mes, nota, alumnoId, planillaId});
+  }
 }

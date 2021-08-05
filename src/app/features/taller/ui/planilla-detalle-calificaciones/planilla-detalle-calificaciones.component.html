@@ -104,14 +104,15 @@
     <!-- ================================================ -->
     <!-- CALIFICACIONES ================================================ -->
     <!-- ================================================ -->
-    <div
-      *ngIf="calificaciones"
-      fxLayout="column"
-      class="w-100-p"
-      fxFlex.xs="100"
-      fxFlex.gt-xs="45"
-      [class.mt-100]="calificaciones.length < 1"
-    >
+    <div *ngIf="calificaciones" fxLayout="column" class="w-100-p" fxFlex.xs="100" fxFlex.gt-xs="45">
+      <div
+        *ngxPermissionsOnly="['ADMIN', 'JEFETALLER']"
+        fxLayout="row"
+        class="w-100-p text-center border p-24"
+        fxLayoutAlign="center start"
+      >
+        <button mat-raised-button color="warn" (click)="mostrarFormExamen()">Agregar Examen</button>
+      </div>
       <div
         [@animate]="{ value: '*', params: { delay: '50ms', scale: '0.2' } }"
         fxLayout="column"
