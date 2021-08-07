@@ -148,6 +148,7 @@ export class PlanillasTablaComponent implements OnInit, OnChanges, OnDestroy {
       this.bimestreFilter.setValue(this.planillaParams.bimestre);
     }
     if (this.planillaParams.general) {
+      this.globalFilter = this.planillaParams.general;
       this.filtroRapido(this.planillaParams.general);
     }
   }
