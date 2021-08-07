@@ -51,14 +51,25 @@ export class TomarAsistenciaModalComponent implements OnInit {
       if (moment.utc(this.planillaTaller.fechaInicio).isAfter(moment.utc())) {
         this.deshabilitadoTemporalmente = true;
       }
-      this.maximo = fechaHoy.toDate();
       let f = fechaHoy;
-      if (this.planillaTaller && !fechaHoy.isSameOrBefore(moment.utc(this.planillaTaller.fechaFinalizacion))) {
-        f = moment.utc(this.planillaTaller.fechaFinalizacion);
-        this.maximo = new Date(this.planillaTaller.fechaFinalizacion);
+      //   this.maximo = fechaHoy.toDate();
+      //   La fecha de hoy es igual a la fecha de finalizacion?
+      if (this.planillaTaller && fechaHoy.isSame(moment.utc(this.planillaTaller.fechaFinalizacion))) {
+        f = moment.utc(this.planillaTaller.fechaFinalizacion).add(1, 'd');
+        this.maximo = moment.utc(this.planillaTaller.fechaFinalizacion).add(1, 'd').toDate();
+      } else {
+        //   La fecha de hoy es MAYOR a la fecha de finalizacion?
+        if (this.planillaTaller && !fechaHoy.isBefore(moment.utc(this.planillaTaller.fechaFinalizacion))) {
+          f = moment.utc(this.planillaTaller.fechaFinalizacion).add(1, 'd');
+          this.maximo = moment.utc(this.planillaTaller.fechaFinalizacion).add(1, 'd').toDate();
+        } else {
+          // La fecha de hoy es MENOR a la fecha de finalizacion
+          this.maximo = fechaHoy.toDate();
+        }
       }
+
       this.form = this._fb.group({
-        fecha: [f.utc().toDate(), [Validators.required]],
+        fecha: [f.toDate(), [Validators.required]],
       });
       this.obtenerAsistenciasDeLaFecha(f.toDate());
       this.form
