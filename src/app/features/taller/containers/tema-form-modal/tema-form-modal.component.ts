@@ -561,6 +561,7 @@ export class TemaFormModalComponent implements OnInit, OnDestroy, OnChanges {
         },
         (error) => {
           console.log('[ERROR]', error);
+          this.retActualizarLibro.emit(true);
         }
       );
   }
