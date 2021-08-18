@@ -51,9 +51,10 @@ export class PlanillasTablaComponent implements OnInit, OnChanges, OnDestroy {
     general: '',
   };
   @Input() planillaParams: IPlanillaTallerParam;
-  @Output() retPlanillaParams = new EventEmitter<IPlanillaTallerParam>();
   @Input() planillas: IPlanillaTaller[];
   @Input() cargando: boolean;
+  @Output() retPlanillaParams = new EventEmitter<IPlanillaTallerParam>();
+  @Output() retEliminarPlanilla = new EventEmitter<IPlanillaTaller>();
   columnas = [
     'planillaTallerNro',
     'turno',
@@ -297,6 +298,9 @@ export class PlanillasTablaComponent implements OnInit, OnChanges, OnDestroy {
   verPlanillaDetalle(planilla: IPlanillaTaller) {
     const anio = (planilla.cicloLectivo as any).anio;
     this._router.navigate([`taller/planilla-ver/${planilla._id}/${anio}`]);
+  }
+  eliminarPlanilla(planilla: IPlanillaTaller) {
+    this.retEliminarPlanilla.emit(planilla);
   }
   editarPlanillaDetalle(planilla: IPlanillaTaller) {
     const anio = (planilla.cicloLectivo as any).anio;

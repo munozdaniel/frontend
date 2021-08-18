@@ -10,6 +10,9 @@ import { IPlanillaTaller } from 'app/models/interface/iPlanillaTaller';
 import { IPlanillaTallerParam } from 'app/models/interface/iPlanillaTallerParams';
 import * as moment from 'moment';
 import { NgxPermissionsService } from 'ngx-permissions';
+import { of } from 'rxjs';
+import { catchError } from 'rxjs/operators';
+import Swal from 'sweetalert2';
 @UntilDestroy()
 @Component({
   selector: 'app-planillas',
@@ -70,6 +73,12 @@ export class PlanillasComponent implements OnInit, OnDestroy {
     private _authService: AuthService
   ) {
     this.suscripcionPlanillaParams();
+    this.obtenerPlanillaPorPermisos();
+  }
+  ngOnDestroy(): void {}
+
+  ngOnInit(): void {}
+  obtenerPlanillaPorPermisos() {
     this._permissionsService.permissions$.subscribe((permissions) => {
       this.permisos = Object.keys(permissions);
       if (this.permisos && this.permisos.length > 0) {
@@ -89,9 +98,6 @@ export class PlanillasComponent implements OnInit, OnDestroy {
       }
     });
   }
-  ngOnDestroy(): void {}
-
-  ngOnInit(): void {}
   suscripcionPlanillaParams() {
     this._planillaTallerService.planillaParams$.pipe(untilDestroyed(this)).subscribe((datos) => {
       this.planillaParams = { ...datos };
@@ -115,7 +121,6 @@ export class PlanillasComponent implements OnInit, OnDestroy {
   recuperarPlanillasPorCicloProfesor(cicloLectivo: number) {
     this._authService.currentUser$.pipe(untilDestroyed(this)).subscribe(
       (usuario) => {
-        console.log('recuperarPlanillasPorCicloProfesor', usuario);
         if (usuario) {
           this._planillaTallerService
             //   .obtenerPlanillaTalleresPorCiclo( this.cicloActual)
@@ -159,5 +164,50 @@ export class PlanillasComponent implements OnInit, OnDestroy {
     this._router.navigate(['taller/planillas-agregar']);
   }
   setEditarPlanilla(evento: IPlanillaTaller) {}
-  setEliminarPlanilla(evento: IPlanillaTaller) {}
+  setEliminarPlanilla(evento: IPlanillaTaller) {
+    console.log(evento);
+    Swal.fire({
+      title: '¿Está seguro de continuar?',
+      html: 'Está a punto de <strong>ELIMINAR PERMANENTEMENTE</strong> la planilla',
+      icon: 'warning',
+      focusConfirm: false,
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      confirmButtonText: 'Si, estoy seguro',
+      cancelButtonText: 'Cancelar',
+      showLoaderOnConfirm: true,
+      preConfirm: () => {
+        return this._planillaTallerService.eliminarPlanillaTaller(evento._id).pipe(
+          catchError((error) => {
+            console.log('[ERROR]', error);
+            Swal.fire({
+              title: 'Oops! Ocurrió un error',
+              text: error && error.error ? error.error.message : 'Error de conexion',
+              icon: 'error',
+            });
+            return of(error);
+          }),
+          untilDestroyed(this)
+        );
+      },
+      allowOutsideClick: () => !Swal.isLoading(),
+    }).then((result: any) => {
+      if (result.isConfirmed) {
+        if (result.value) {
+          Swal.fire({
+            title: 'Operación Exitosa',
+            text: 'La planilla de taller ha sido eliminada correctamente.',
+            icon: 'success',
+          });
+          this.obtenerPlanillaPorPermisos();
+        } else {
+          Swal.fire({
+            title: 'Oops! Ocurrió un error',
+            text: 'Intentelo nuevamente. Si el problema persiste comuniquese con el soporte técnico.',
+            icon: 'error',
+          });
+        }
+      }
+    });
+  }
 }
