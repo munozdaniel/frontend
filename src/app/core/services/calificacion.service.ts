@@ -51,11 +51,11 @@ export class CalificacionService {
   }
 
   // Examen
-  agregarExamen(mes, nota, alumnoId, planillaId): Observable<any> {
+  agregarExamen(mes, nota, alumnoId, planillaId, ausente): Observable<any> {
     const query = `examen`;
     const url = this.url + query;
 
-    return this.http.put<any>(url, { mes, nota, alumnoId, planillaId });
+    return this.http.put<any>(url, { mes, nota, alumnoId, planillaId, ausente });
   }
   obtenerExamenes(alumnoId, planillaId): Observable<any> {
     const query = `examen/por-planilla-alumno`;

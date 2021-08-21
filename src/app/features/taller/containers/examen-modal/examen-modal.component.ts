@@ -11,6 +11,7 @@ import Swal from 'sweetalert2';
   styleUrls: ['./examen-modal.component.scss'],
 })
 export class ExamenModalComponent implements OnInit {
+  ausente = false;
   form: FormGroup;
   alumnoId: number;
   planillaId: number;
@@ -34,6 +35,7 @@ export class ExamenModalComponent implements OnInit {
     this.form = this._fb.group({
       mes: [null, Validators.required],
       nota: [null, Validators.required],
+      ausente: [false],
       alumnoId: [this.alumnoId, Validators.required],
       planillaId: [this.planillaId, Validators.required],
     });
@@ -49,9 +51,9 @@ export class ExamenModalComponent implements OnInit {
       }).then(() => {});
       return;
     } else {
-      const { mes, nota, alumnoId, planillaId } = this.form.value;
+      const { mes, nota, alumnoId, planillaId,ausente } = this.form.value;
       this._calificacionService
-        .agregarExamen(mes, nota, alumnoId, planillaId)
+        .agregarExamen(mes, nota, alumnoId, planillaId, ausente)
         .pipe(untilDestroyed(this))
         .subscribe(
           (datos) => {
@@ -62,5 +64,9 @@ export class ExamenModalComponent implements OnInit {
           }
         );
     }
+  }
+  ausentar(evento) {
+    this.ausente = !this.ausente;
+    this.form.controls.ausente.setValue(this.ausente);
   }
 }

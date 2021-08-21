@@ -286,7 +286,10 @@
       <mat-list [multiple]="false">
         <mat-list-item *ngFor="let examen of examenes" [value]="examen" class="mb-8 mat-card mat-elevation-z4">
           <div fxLayout="row" fxLayoutAlign="space-between center" class="w-100-p">
-            <strong>MES DE {{ examen.mes }} - NOTA DE EXAMEN {{ examen.nota }} </strong>
+            <strong
+              >MES DE {{ examen.mes }} - <span *ngIf="!examen.ausente">NOTA DE EXAMEN {{ examen.nota }}</span
+              ><span *ngIf="examen.ausente" style="color: rgb(148, 1, 1)">AUSENTE</span>
+            </strong>
             <button mat-icon-button color="warn" (click)="eliminarExamen(examen._id)"><mat-icon>delete_forever</mat-icon></button>
           </div>
         </mat-list-item>

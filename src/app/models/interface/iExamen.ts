@@ -7,4 +7,5 @@ export interface IExamen {
   mes: string;
   alumno: IAlumno;
   planilla: IPlanillaTaller;
+  ausente?: boolean;
 }
