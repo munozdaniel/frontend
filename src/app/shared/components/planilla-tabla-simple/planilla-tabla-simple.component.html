@@ -59,16 +59,16 @@
       </td>
     </ng-container>
     <ng-container matColumnDef="fechaFinalizacion">
-        <th mat-header-cell *matHeaderCellDef mat-sort-header>
-          <span *ngIf="!isMobile">Fecha Finalización</span>
-          <span *ngIf="isMobile">Fin</span>
-        </th>
-        <td mat-cell *matCellDef="let row">
-          <div fxLayout="row" fxLayoutAlign="center center">
-            {{ row.fechaFinalizacion | date: 'dd/MM/yyyy':'GMT' }}
-          </div>
-        </td>
-      </ng-container>
+      <th mat-header-cell *matHeaderCellDef mat-sort-header>
+        <span *ngIf="!isMobile">Fecha Finalización</span>
+        <span *ngIf="isMobile">Fin</span>
+      </th>
+      <td mat-cell *matCellDef="let row">
+        <div fxLayout="row" fxLayoutAlign="center center">
+          {{ row.fechaFinalizacion | date: 'dd/MM/yyyy':'GMT' }}
+        </div>
+      </td>
+    </ng-container>
     <!-- -->
 
     <ng-container matColumnDef="bimestre">
@@ -133,14 +133,14 @@
           <mat-icon>more_vert</mat-icon>
         </button>
         <mat-menu #menu="matMenu">
-          <button mat-menu-item (click)="reporteAsistenciasPorTaller(row)">
+          <!-- <button mat-menu-item (click)="reporteAsistenciasPorTaller(row)">
             <span class="iconify" data-icon="carbon:report" data-inline="false"></span>
             <span> Asistencias por taller</span>
           </button>
           <button mat-menu-item (click)="reporteAsistenciasPorDia(row)">
             <span class="iconify" data-icon="carbon:report" data-inline="false"></span>
             <span> Asistencias por día</span>
-          </button>
+          </button> -->
           <button mat-menu-item (click)="reporteCalificacionesPorTaller(row)">
             <span class="iconify" data-icon="carbon:report" data-inline="false"></span>
             <span> Calificaciones por taller</span>
@@ -153,14 +153,14 @@
             <span class="iconify" data-icon="carbon:report" data-inline="false"></span>
             <span> Libro de Temas</span>
           </button>
-          <button mat-menu-item (click)="reporteAlumnosPorTaller(row)">
+          <!-- <button mat-menu-item (click)="reporteAlumnosPorTaller(row)">
             <span class="iconify" data-icon="carbon:report" data-inline="false"></span>
             <span>Alumnos Por Taller</span>
           </button>
           <button mat-menu-item (click)="reporteTallerPorAlumnos(row)">
             <span class="iconify" data-icon="carbon:report" data-inline="false"></span>
             <span>Taller por Alumos</span>
-          </button>
+          </button> -->
         </mat-menu>
       </td>
     </ng-container>
