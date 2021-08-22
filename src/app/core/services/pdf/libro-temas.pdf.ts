@@ -194,7 +194,7 @@ export class LibroTemasPdf {
           colSpan: 1,
         },
         {
-          text: x.temaNro,
+          text: x.nroClase,
           border: [false, true, false, false],
           bold: false,
           fontSize: 10,
