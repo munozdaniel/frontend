@@ -29,6 +29,7 @@ export class AlumnosTablaParamComponent implements OnInit, OnChanges {
   // Input
   @Input() alumnos: IAlumno[];
   @Output() retEliminarAlumno = new EventEmitter<IAlumno>();
+  @Output() retInformePromediosPorTaller = new EventEmitter<IAlumno>();
   // Mobile
   isMobile: boolean;
   private _mobileQueryListener: () => void;
@@ -130,5 +131,8 @@ export class AlumnosTablaParamComponent implements OnInit, OnChanges {
   }
   eliminarAlumno(alumno: IAlumno) {
     this.retEliminarAlumno.emit(alumno);
+  }
+  buscarInformePromedios(alumno: IAlumno) {
+    this.retInformePromediosPorTaller.emit(alumno);
   }
 }

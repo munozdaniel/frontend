@@ -214,6 +214,12 @@ export class AlumnoService {
 
     return this.http.get<any>(url);
   }
+//   informePromediosPorTaller(planillaTaller: IPlanillaTaller): Observable<any> {
+//     const query = `alumnos/informe-promedio-taller/${planillaTaller._id}`;
+//     const url = this.url + query;
+
+//     return this.http.get<any>(url);
+//   }
   obtenerInasistenciasPorDia(fecha: any): Observable<any> {
     const query = `alumnos/informe-inasistencia-por-dia`;
     const url = this.url + query;

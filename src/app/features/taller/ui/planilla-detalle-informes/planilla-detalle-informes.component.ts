@@ -7,43 +7,49 @@ import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 })
 export class PlanillaDetalleInformesComponent implements OnInit {
   listaA = [
-    {
-      id: 1,
-      titulo: 'Listado de Asistencias por Taller ',
-      subtitulo: 'GENERAL',
-    },
-    {
-      id: 2,
-      titulo: 'Listado de Asistencias por Taller ',
-      subtitulo: 'TALLER POR DÍA',
-    },
-    {
-      id: 3,
-      titulo: 'Listado de Calificaciones por Taller ',
-      subtitulo: 'DETALLADO',
-    },
-    {
-      id: 4,
-      titulo: 'Listado de Calificaciones por Taller ',
-      subtitulo: 'RESUMIDO',
-    },
-  ];
-  listaB = [
-    {
-      id: 5,
-      titulo: 'Seguimiento de Alumnos por Taller',
-      subtitulo: 'GENERAL',
-    },
+    // {
+    //   id: 1,
+    //   titulo: 'Listado de Asistencias por Taller ',
+    //   subtitulo: 'GENERAL',
+    // },
+    // {
+    //   id: 2,
+    //   titulo: 'Listado de Asistencias por Taller ',
+    //   subtitulo: 'TALLER POR DÍA',
+    // },
+    // {
+    //   id: 3,
+    //   titulo: 'Listado de Calificaciones por Taller ',
+    //   subtitulo: 'DETALLADO',
+    // },
+    // {
+    //   id: 4,
+    //   titulo: 'Listado de Calificaciones por Taller ',
+    //   subtitulo: 'RESUMIDO',
+    // },
     {
       id: 6,
       titulo: 'Libro de Temas',
       subtitulo: 'GENERAL',
     },
-    {
-      id: 7,
-      titulo: 'Resumen de Taller por Alumnos',
-      subtitulo: 'TUTORES',
-    },
+    // {
+    //   id: 9,
+    //   titulo: 'Promedios del Taller ',
+    //   subtitulo: 'POR ALUMNOS',
+    // },
+  ];
+  listaB = [
+    // {
+    //   id: 5,
+    //   titulo: 'Seguimiento de Alumnos por Taller',
+    //   subtitulo: 'GENERAL',
+    // },
+
+    // {
+    //   id: 7,
+    //   titulo: 'Resumen de Taller por Alumnos',
+    //   subtitulo: 'TUTORES',
+    // },
     {
       id: 8,
       titulo: 'Listado de Alumnos por Taller ',
@@ -90,6 +96,8 @@ export class PlanillaDetalleInformesComponent implements OnInit {
         break;
       case 8:
         this.retInformeListadoAlumnosTaller.emit(true);
+        break;
+      case 9:
         break;
 
       default:

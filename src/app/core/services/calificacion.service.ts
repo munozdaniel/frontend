@@ -49,7 +49,12 @@ export class CalificacionService {
 
     return this.http.post<any>(url, { planillaTaller });
   }
+  informePromediosPorTaller(alumnoId: string): Observable<any> {
+    const query = `calificacion/informe-promedio-taller/${alumnoId}`;
+    const url = this.url + query;
 
+    return this.http.get<any>(url);
+  }
   // Examen
   agregarExamen(mes, nota, alumnoId, planillaId, ausente): Observable<any> {
     const query = `examen`;

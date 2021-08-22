@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { AlumnoService } from 'app/core/services/alumno.service';
+import { CalificacionService } from 'app/core/services/calificacion.service';
+import { AlumnosPromediosPdf } from 'app/core/services/pdf/alumnos-promedios';
 import { ALUMNO_OPERACION } from 'app/models/constants/alumno-operacion.enum';
 import { ALUMNO_ELIMINADO_SUCCESS, ERROR_EJECUTAR_API, OPERACION_INTERRUMPIDA } from 'app/models/constants/respuestas.const';
 import { IAlumno } from 'app/models/interface/iAlumno';
@@ -19,6 +21,7 @@ import Swal from 'sweetalert2';
         [alumnos]="alumnos"
         (retAgregarAlumno)="setAgregarAlumno($event)"
         (retEliminarAlumno)="setEliminarAlumno($event)"
+        (retInformePromediosPorTaller)="setInformePromediosPorTaller($event)"
       ></app-alumnos-tabla-param>
     </div>
   `,
@@ -29,7 +32,12 @@ export class AlumnosComponent implements OnInit {
   alumnos: IAlumno[] = [];
   // alumnos$: Observable<IAlumno[]>;
   cargando = false;
-  constructor(private _router: Router, private _alumnoService: AlumnoService) {}
+  constructor(
+    private _alumnoPromediosPdf: AlumnosPromediosPdf,
+    private _router: Router,
+    private _alumnoService: AlumnoService,
+    private _calificacionService: CalificacionService
+  ) {}
 
   ngOnInit(): void {
     this.obtenerAlumnos();
@@ -112,6 +120,58 @@ export class AlumnosComponent implements OnInit {
               icon: 'error',
             });
           }
+        }
+      }
+    });
+  }
+  setInformePromediosPorTaller(alumno: IAlumno) {
+    this.cargando = true;
+    // this._designProgressBarService.show();
+
+    Swal.fire({
+      title: 'Generar Informe de Promedios',
+      html: 'El proceso puede tardar varios minutos debido a la cantidad de datos que se procesan. <br> <strong>¿Desea continuar?</strong>',
+      icon: 'warning',
+      focusConfirm: false,
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      confirmButtonText: 'Continuar',
+      cancelButtonText: 'Cancelar',
+      showLoaderOnConfirm: true,
+      preConfirm: () => {
+        return this._calificacionService.informePromediosPorTaller(alumno._id).pipe(
+          catchError((error) => {
+            console.log('[ERROR]', error);
+            Swal.fire({
+              title: 'Oops! Ocurrió un error',
+              text: error && error.error ? error.error.message : 'Error de conexion',
+              icon: 'error',
+            });
+            return of(error);
+          }),
+          untilDestroyed(this)
+        );
+      },
+      allowOutsideClick: () => !Swal.isLoading(),
+    }).then((result: any) => {
+      this.cargando = false;
+      if (result.isConfirmed) {
+        if (result.value) {
+          if (!result.value.calificaciones || result.value.calificaciones.length < 1) {
+            Swal.fire({
+              title: 'Informe cancelado',
+              text: 'El alumno seleccionado no tiene calificaciones cargadas',
+              icon: 'error',
+            });
+            return;
+          }
+          this._alumnoPromediosPdf.generatePdf(alumno, result.value.calificaciones);
+        } else {
+          Swal.fire({
+            title: 'Oops! Ocurrió un error',
+            text: 'Intentelo nuevamente. Si el problema persiste comuniquese con el soporte técnico.',
+            icon: 'error',
+          });
         }
       }
     });
