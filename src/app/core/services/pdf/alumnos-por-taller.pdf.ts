@@ -165,6 +165,7 @@ export class AlumnosPorTallerPdf {
               [
                 {
                   text: notas,
+                  fontSize: 10,
                 },
               ],
               [
@@ -221,7 +222,7 @@ export class AlumnosPorTallerPdf {
               layout: {
                 defaultBorder: true,
               },
-              text: alumno.inasistencias.map((x) => (x ? moment(x.fecha).format('DD/MM/YYYY') : '')).join('  '),
+              text: alumno.inasistencias.map((x) => (x ? moment.utc(x.fecha).format('DD/MM/YYYY') : '')).join('  '),
               fontSize: 10,
               //   table: {
               //     body: [alumno.inasistencias.map((x) => ({ text: x ? moment(x.fecha).format('DD/MM/YYYY') : '', fontSize: 10 }))],
