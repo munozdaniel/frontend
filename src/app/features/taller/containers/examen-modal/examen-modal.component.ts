@@ -3,6 +3,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { CalificacionService } from 'app/core/services/calificacion.service';
+import * as moment from 'moment';
 import Swal from 'sweetalert2';
 @UntilDestroy()
 @Component({
@@ -38,6 +39,7 @@ export class ExamenModalComponent implements OnInit {
       ausente: [false],
       alumnoId: [this.alumnoId, Validators.required],
       planillaId: [this.planillaId, Validators.required],
+      fecha: [moment(), Validators.required],
     });
   }
   guardarNota() {
@@ -51,9 +53,9 @@ export class ExamenModalComponent implements OnInit {
       }).then(() => {});
       return;
     } else {
-      const { mes, nota, alumnoId, planillaId,ausente } = this.form.value;
+      const { mes, nota, alumnoId, planillaId, ausente , fecha} = this.form.value;
       this._calificacionService
-        .agregarExamen(mes, nota, alumnoId, planillaId, ausente)
+        .agregarExamen(mes, nota, alumnoId, planillaId, ausente, fecha)
         .pipe(untilDestroyed(this))
         .subscribe(
           (datos) => {

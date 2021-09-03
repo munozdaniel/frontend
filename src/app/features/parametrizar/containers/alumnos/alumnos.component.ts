@@ -4,6 +4,7 @@ import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { AlumnoService } from 'app/core/services/alumno.service';
 import { CalificacionService } from 'app/core/services/calificacion.service';
 import { AlumnosPromediosPdf } from 'app/core/services/pdf/alumnos-promedios';
+import { FichaAlumnoPdf } from 'app/core/services/pdf/ficha-alumno.pdf';
 import { ALUMNO_OPERACION } from 'app/models/constants/alumno-operacion.enum';
 import { ALUMNO_ELIMINADO_SUCCESS, ERROR_EJECUTAR_API, OPERACION_INTERRUMPIDA } from 'app/models/constants/respuestas.const';
 import { IAlumno } from 'app/models/interface/iAlumno';
@@ -22,6 +23,7 @@ import Swal from 'sweetalert2';
         (retAgregarAlumno)="setAgregarAlumno($event)"
         (retEliminarAlumno)="setEliminarAlumno($event)"
         (retInformePromediosPorTaller)="setInformePromediosPorTaller($event)"
+        (retFichaAlumno)="setFichaAlumno($event)"
       ></app-alumnos-tabla-param>
     </div>
   `,
@@ -33,6 +35,7 @@ export class AlumnosComponent implements OnInit {
   // alumnos$: Observable<IAlumno[]>;
   cargando = false;
   constructor(
+    private _fichaAlumnoPdf: FichaAlumnoPdf,
     private _alumnoPromediosPdf: AlumnosPromediosPdf,
     private _router: Router,
     private _alumnoService: AlumnoService,
@@ -175,5 +178,19 @@ export class AlumnosComponent implements OnInit {
         }
       }
     });
+  }
+  setFichaAlumno(evento: IAlumno) {
+    this._alumnoService
+      .buscarCursadasPorAlumnoId(evento._id)
+      .pipe(untilDestroyed(this))
+      .subscribe(
+        (datos) => {
+          console.log('datos', datos);
+          this._fichaAlumnoPdf.generatePdf(datos);
+        },
+        (error) => {
+          console.log('[ERROR]', error);
+        }
+      );
   }
 }

@@ -4,7 +4,6 @@ import { MatTableDataSource, MatSort, MatPaginator } from '@angular/material';
 import { Router } from '@angular/router';
 import { designAnimations } from '@design/animations';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
-import { FichaAlumnoPdf } from 'app/core/services/pdf/ficha-alumno.pdf';
 import { SeguimientoAlumnoPdf } from 'app/core/services/pdf/seguimiento-alumno.pdf';
 import { SeguimientoAlumnoService } from 'app/core/services/seguimientoAlumno.service';
 import { IAlumno } from 'app/models/interface/iAlumno';
@@ -30,13 +29,13 @@ export class AlumnosTablaParamComponent implements OnInit, OnChanges {
   @Input() alumnos: IAlumno[];
   @Output() retEliminarAlumno = new EventEmitter<IAlumno>();
   @Output() retInformePromediosPorTaller = new EventEmitter<IAlumno>();
+  @Output() retFichaAlumno = new EventEmitter<IAlumno>();
   // Mobile
   isMobile: boolean;
   private _mobileQueryListener: () => void;
   mobileQuery: MediaQueryList;
   constructor(
     private _seguimientoService: SeguimientoAlumnoService,
-    private _fichaAlumnoPdf: FichaAlumnoPdf,
     private _seguimientoAlumnoPdf: SeguimientoAlumnoPdf,
     private _router: Router,
     private _changeDetectorRef: ChangeDetectorRef,
@@ -113,7 +112,8 @@ export class AlumnosTablaParamComponent implements OnInit, OnChanges {
   }
 
   verFichaPersonalAlumno(alumno: IAlumno) {
-    this._fichaAlumnoPdf.generatePdf(alumno);
+    // this._fichaAlumnoPdf.generatePdf(alumno);
+    this.retFichaAlumno.emit(alumno);
   }
   verSeguimientoAlumno(alumno: IAlumno) {
     // obtener seguimiento por alumno

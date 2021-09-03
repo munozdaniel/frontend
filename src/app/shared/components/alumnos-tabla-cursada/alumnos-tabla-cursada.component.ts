@@ -111,6 +111,7 @@ export class AlumnosTablaCursadaComponent implements OnInit, OnChanges {
   }
 
   verFichaPersonalAlumno(alumno: IAlumno) {
+    console.log('alumno', alumno);
     this._fichaAlumnoPdf.generatePdf(alumno);
   }
   verSeguimientoAlumno(alumno: IAlumno) {

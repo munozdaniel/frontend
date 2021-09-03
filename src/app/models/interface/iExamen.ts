@@ -8,4 +8,5 @@ export interface IExamen {
   alumno: IAlumno;
   planilla: IPlanillaTaller;
   ausente?: boolean;
+  fecha?: string;
 }

@@ -113,7 +113,9 @@ export class AlumnosPromediosPdf {
         },
       ];
       total.push(primeraLinea);
+
       const lineas = x.datos.map((y) => {
+        const promedioFinal = (Math.ceil(Number(y.notaFinal) * 2) / 2).toFixed(2);
         return [
           {
             text: '' + y.materia.toUpperCase(),
@@ -124,13 +126,26 @@ export class AlumnosPromediosPdf {
 
           {
             // text: `  ${item.notaFinal} `,
-            text: 'Promedio: ' + y.notaFinal,
+            text: 'Promedio: ' + promedioFinal, // y.notaFinal,
             bold: true,
             fontSize: 9,
             colSpan: 1,
           },
           {
-            text: ` ${y.notaFinal < 7 ? 'EXAMEN: ' + y.examen.map((e) => e.mes + ' ' + e.nota).join(' - ') : ''} `,
+            text: ` ${
+              y.notaFinal < 7
+                ? y.examen
+                    .map((e) => {
+                      const f = e.fecha ? ' (' + moment.utc(e.fecha).format('DD/MM/YYYY') + '): ' : ': ';
+                      if (e.ausente) {
+                        return 'EXAMEN ' + e.mes + f + ' AUSENTE ';
+                      } else {
+                        return 'EXAMEN ' + e.mes + ' ' + f + ' ' + e.nota;
+                      }
+                    })
+                    .join(' - ')
+                : ''
+            } `,
             bold: true,
             fontSize: 9,
             colSpan: 2,

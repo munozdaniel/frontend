@@ -214,12 +214,12 @@ export class AlumnoService {
 
     return this.http.get<any>(url);
   }
-//   informePromediosPorTaller(planillaTaller: IPlanillaTaller): Observable<any> {
-//     const query = `alumnos/informe-promedio-taller/${planillaTaller._id}`;
-//     const url = this.url + query;
+  //   informePromediosPorTaller(planillaTaller: IPlanillaTaller): Observable<any> {
+  //     const query = `alumnos/informe-promedio-taller/${planillaTaller._id}`;
+  //     const url = this.url + query;
 
-//     return this.http.get<any>(url);
-//   }
+  //     return this.http.get<any>(url);
+  //   }
   obtenerInasistenciasPorDia(fecha: any): Observable<any> {
     const query = `alumnos/informe-inasistencia-por-dia`;
     const url = this.url + query;
@@ -280,5 +280,12 @@ export class AlumnoService {
     const url = this.url + query;
 
     return this.http.post<any>(url, { archivo });
+  }
+
+  buscarCursadasPorAlumnoId(_id: string): Observable<IAlumno> {
+    const query = `alumnos/buscar-cursadas-por-alumno/${_id}`;
+    const url = this.url + query;
+
+    return this.http.get<any>(url);
   }
 }

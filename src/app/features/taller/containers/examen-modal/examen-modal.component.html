@@ -22,6 +22,14 @@
       <input matInput type="number" class="actual" formControlName="nota" />
       <mat-error *ngIf="form.controls.nota.hasError('required')"> Este campo es requerido. </mat-error>
     </mat-form-field>
+    <!-- Fecha -->
+    <mat-form-field appearance="outline" fxFlex.xs="100" fxFlex.gt-xs="45">
+      <mat-label>Fecha</mat-label>
+      <input autocomplete="off" matInput [matDatepicker]="picker" formControlName="fecha" />
+      <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+      <mat-datepicker #picker></mat-datepicker>
+      <mat-error *ngIf="form?.controls.fecha.hasError('required')"> Este campo es requerido. </mat-error>
+    </mat-form-field>
     <div fxFlex.xs="100" fxFlex.gt-xs="45" fxLayout="row wrap" fxLayoutAlign="space-between start" class="border p-12">
       <mat-slide-toggle formControlName="ausente" (click)="ausentar($event)">AUSENTE</mat-slide-toggle>
     </div>

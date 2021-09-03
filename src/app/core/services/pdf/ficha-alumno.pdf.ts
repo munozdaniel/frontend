@@ -38,7 +38,7 @@ export class FichaAlumnoPdf {
         {
           text: 'Ficha individual del alumno',
           bold: true,
-          fontSize: 20,
+          fontSize: 12,
           alignment: 'center',
           margin: [0, 0, 0, 20],
         },
@@ -52,7 +52,7 @@ export class FichaAlumnoPdf {
                 {
                   text: 'DATOS PERSONALES',
                   bold: true,
-                  fontSize: 16,
+                  fontSize: 10,
                   fillColor: '#282936',
                   color: '#ffffff',
                 },
@@ -62,7 +62,7 @@ export class FichaAlumnoPdf {
                 {
                   text: 'DATOS ESCOLARES',
                   bold: true,
-                  fontSize: 16,
+                  fontSize: 10,
                   fillColor: '#282936',
                   color: '#ffffff',
                 },
@@ -72,7 +72,7 @@ export class FichaAlumnoPdf {
                 {
                   text: 'ADULTOS A CARGO',
                   bold: true,
-                  fontSize: 16,
+                  fontSize: 10,
                   fillColor: '#282936',
                   color: '#ffffff',
                 },
@@ -98,7 +98,7 @@ export class FichaAlumnoPdf {
                 {
                   text: 'CURSADAS',
                   bold: true,
-                  fontSize: 16,
+                  fontSize: 10,
                   fillColor: '#282936',
                   color: '#ffffff',
                   colSpan: 5,
@@ -123,6 +123,7 @@ export class FichaAlumnoPdf {
   }
   getCursadas() {
     const retorno = this.alumno.estadoCursadas.map((x: IEstadoCursada) => {
+      console.log('x', x);
       return [x.cicloLectivo.anio, x.curso.curso, x.curso.comision, x.curso.division, x.condicion];
     });
     return retorno;
@@ -237,7 +238,7 @@ export class FichaAlumnoPdf {
             // star-sized columns fill the remaining space
             // if there's more than one star-column, available width is divided equally
             width: '70%',
-            text: this.alumno.tipoDni + '' + this.alumno.dni,
+            text: this.alumno.tipoDni ? this.alumno.tipoDni : '' + '' + this.alumno.dni,
             alignment: 'start',
           },
           {

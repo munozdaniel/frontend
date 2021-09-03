@@ -135,6 +135,7 @@ export class AlumnosTablaEmailComponent implements OnInit, OnChanges {
   }
 
   verFichaPersonalAlumno(alumno: IAlumno) {
+    console.log('verFichaPersonalAlumno', alumno);
     this._fichaAlumnoPdf.generatePdf(alumno);
   }
   verSeguimientoAlumno(alumno: IAlumno) {
