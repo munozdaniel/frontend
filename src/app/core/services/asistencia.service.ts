@@ -89,10 +89,9 @@ export class AsistenciaService {
 
     return this.http.post<any>(url, { alumno, fecha });
   }
-  tomarAsistenciaPorPlanilla(planilla: IPlanillaTaller, alumnos: IAlumno[], fecha: string): Observable<any> {
+  tomarAsistenciaPorPlanilla(planilla: IPlanillaTaller, alumnos: IAlumno[], fecha: any): Observable<any> {
     const query = `asistencia/tomar-asistencias`;
     const url = this.url + query;
-
     return this.http.post<any>(url, { planilla, alumnos, fecha });
   }
   obtenerAsistenciasHoyPorPlanilla(planilla: IPlanillaTaller, alumnos: IAlumno[]): Observable<IAsistencia[]> {

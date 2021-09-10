@@ -70,7 +70,10 @@ export class PlanillaDetalleCalificacionesComponent implements OnInit, OnChanges
         this.columnasCalificacion = ['formaExamen', 'tipoExamen', 'promedia', 'promedioGeneral'];
       }
       if (this.template === TemplateEnum.EDICION) {
-        this.columnasCalificacion = [...this.columnasCalificacion, 'opciones'];
+        const index = this.columnasCalificacion.findIndex((x) => x === 'opciones');
+        if (index === -1) {
+          this.columnasCalificacion = [...this.columnasCalificacion, 'opciones'];
+        }
       }
     });
   }
@@ -78,7 +81,10 @@ export class PlanillaDetalleCalificacionesComponent implements OnInit, OnChanges
     if (changes.alumnos && changes.alumnos.currentValue) {
       this.dataSource.data = this.alumnos;
       if (this.template === TemplateEnum.EDICION) {
-        this.columnasCalificacion = [...this.columnasCalificacion, 'opciones'];
+        const index = this.columnasCalificacion.findIndex((x) => x === 'opciones');
+        if (index === -1) {
+          this.columnasCalificacion = [...this.columnasCalificacion, 'opciones'];
+        }
       }
     }
     if (changes.calificaciones && changes.calificaciones.currentValue) {

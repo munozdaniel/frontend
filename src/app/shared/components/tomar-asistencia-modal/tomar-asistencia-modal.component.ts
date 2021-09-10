@@ -55,6 +55,7 @@ export class TomarAsistenciaModalComponent implements OnInit {
       //   this.maximo = fechaHoy.toDate();
       //   La fecha de hoy es igual a la fecha de finalizacion?
       if (this.planillaTaller && fechaHoy.isSame(moment.utc(this.planillaTaller.fechaFinalizacion))) {
+        console.log('f', f);
         f = moment.utc(this.planillaTaller.fechaFinalizacion).add(1, 'd');
         this.maximo = moment.utc(this.planillaTaller.fechaFinalizacion).add(1, 'd').toDate();
       } else {
@@ -164,19 +165,17 @@ export class TomarAsistenciaModalComponent implements OnInit {
       cancelButtonText: 'Cancelar',
       showLoaderOnConfirm: true,
       preConfirm: () => {
-        return this._asistenciaService
-          .tomarAsistenciaPorPlanilla(this.planillaTaller, asistenciasTomadas, this.form.controls.fecha.value)
-          .pipe(
-            catchError((error) => {
-              console.log('[ERROR]', error);
-              Swal.fire({
-                title: 'Oops! Ocurrió un error',
-                text: error && error.error ? error.error.message : 'Error de conexion',
-                icon: 'error',
-              });
-              return of(error);
-            })
-          );
+        return this._asistenciaService.tomarAsistenciaPorPlanilla(this.planillaTaller, asistenciasTomadas, fecha).pipe(
+          catchError((error) => {
+            console.log('[ERROR]', error);
+            Swal.fire({
+              title: 'Oops! Ocurrió un error',
+              text: error && error.error ? error.error.message : 'Error de conexion',
+              icon: 'error',
+            });
+            return of(error);
+          })
+        );
       },
       allowOutsideClick: () => !Swal.isLoading(),
     }).then((result: any) => {

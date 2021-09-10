@@ -78,7 +78,10 @@ export class PlanillaDetalleAsistenciasComponent implements OnInit, OnChanges {
         this.columnasAsistencia = ['fecha', 'presente', 'llegoTarde'];
       }
       if (this.template === TemplateEnum.EDICION) {
-        this.columnasAsistencia = [...this.columnasAsistencia, 'opciones'];
+        const index = this.columnasAsistencia.findIndex((x) => x === 'opciones');
+        if (index === -1) {
+          this.columnasAsistencia = [...this.columnasAsistencia, 'opciones'];
+        }
       }
     });
   }
@@ -86,7 +89,10 @@ export class PlanillaDetalleAsistenciasComponent implements OnInit, OnChanges {
     if (changes.alumnos && changes.alumnos.currentValue) {
       this.dataSource.data = this.alumnos;
       if (this.template === TemplateEnum.EDICION) {
-        this.columnasAsistencia = [...this.columnasAsistencia, 'opciones'];
+        const index = this.columnasAsistencia.findIndex((x) => x === 'opciones');
+        if (index === -1) {
+          this.columnasAsistencia = [...this.columnasAsistencia, 'opciones'];
+        }
       }
     }
     if (changes.template && changes.template.currentValue) {
@@ -192,5 +198,4 @@ export class PlanillaDetalleAsistenciasComponent implements OnInit, OnChanges {
     });
     this.retEnviarEmail.emit({ asistencia: row, faltas });
   }
-  
 }
