@@ -112,6 +112,12 @@ export class AlumnoService {
 
     return this.http.get<any>(url);
   }
+  obtenerAlumnosPorPlanillaTaller(planillaTallerId: string): Observable<IAlumno[]> {
+    const query = `alumnos/por-planilla-taller/${planillaTallerId}`;
+    const url = this.url + query;
+
+    return this.http.get<any>(url);
+  }
   obtenerAlumnos(): Observable<IAlumno[]> {
     const query = `alumnos/todos`;
     const url = this.url + query;

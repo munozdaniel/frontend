@@ -32,6 +32,11 @@ export class PlanillaDetalleInformesComponent implements OnInit {
       titulo: 'Libro de Temas',
       subtitulo: 'GENERAL',
     },
+    {
+      id: 9,
+      titulo: 'Template del Taller',
+      subtitulo: 'GENERAL',
+    },
     // {
     //   id: 9,
     //   titulo: 'Promedios del Taller ',
@@ -65,6 +70,7 @@ export class PlanillaDetalleInformesComponent implements OnInit {
   @Output() retInformeLibroDeTemas = new EventEmitter<boolean>();
   @Output() retInformeResumenTallerPorAlumnos = new EventEmitter<boolean>();
   @Output() retInformeListadoAlumnosTaller = new EventEmitter<boolean>();
+  @Output() retTemplatePlanillaTaller = new EventEmitter<boolean>();
   constructor() {}
 
   ngOnInit(): void {}
@@ -97,7 +103,8 @@ export class PlanillaDetalleInformesComponent implements OnInit {
       case 8:
         this.retInformeListadoAlumnosTaller.emit(true);
         break;
-      case 9:
+        case 9:
+          this.retTemplatePlanillaTaller.emit(true);
         break;
 
       default:

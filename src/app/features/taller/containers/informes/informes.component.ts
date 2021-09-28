@@ -11,6 +11,7 @@ import { CalificacionesResumidoPdf } from 'app/core/services/pdf/calificaciones-
 import { FichaAsistenciaDiaPdf } from 'app/core/services/pdf/ficha-asistencias-dia.pdf';
 import { FichaAsistenciaGeneralPdf } from 'app/core/services/pdf/ficha-asistencias-general.pdf';
 import { LibroTemasPdf } from 'app/core/services/pdf/libro-temas.pdf';
+import { PlanillaTallerTemplatePdf } from 'app/core/services/pdf/planilla-taller-template.pdf';
 import { TemaService } from 'app/core/services/tema.service';
 import { IPlanillaTaller } from 'app/models/interface/iPlanillaTaller';
 import { of } from 'rxjs';
@@ -30,6 +31,7 @@ import Swal from 'sweetalert2';
       (retInformeLibroDeTemas)="setInformeLibroDeTemas($event)"
       (retInformeResumenTallerPorAlumnos)="setInformeResumenTallerPorAlumnos($event)"
       (retInformeListadoAlumnosTaller)="setInformeListadoAlumnosTaller($event)"
+      (retTemplatePlanillaTaller)="setTemplatePlanillaTaller($event)"
     >
     </app-planilla-detalle-informes>
   `,
@@ -54,7 +56,8 @@ export class InformesComponent implements OnInit, OnChanges {
     private _libroTemasPdf: LibroTemasPdf,
     //
     private _alumnosPorTallerPdf: AlumnosPdf,
-    private _alumnosPorTallerResumidoPdf: AlumnosPorTallerPdf
+    private _alumnosPorTallerResumidoPdf: AlumnosPorTallerPdf,
+    private _planillaTallerTemplatePdf: PlanillaTallerTemplatePdf
   ) {}
   ngOnChanges(changes: SimpleChanges): void {
     if (changes.planillaTaller && changes.planillaTaller.currentValue) {
@@ -389,6 +392,20 @@ export class InformesComponent implements OnInit, OnChanges {
         }
       }
     });
+  }
+  setTemplatePlanillaTaller(evento) {
+    console.log(this.planillaTaller);
+    this._alumnoService
+      .obtenerAlumnosPorCurso(this.planillaTaller.curso.curso, this.planillaTaller.curso.division, this.planillaTaller.curso.comision)
+      .pipe(untilDestroyed(this))
+      .subscribe(
+        (datos) => {
+          this._planillaTallerTemplatePdf.generatePdf(this.planillaTaller, datos);
+        },
+        (error) => {
+          console.log('[ERROR]', error);
+        }
+      );
   }
   setInformeListadoAlumnosTaller(evento) {
     this.cargando = true;
