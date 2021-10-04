@@ -394,9 +394,15 @@ export class InformesComponent implements OnInit, OnChanges {
     });
   }
   setTemplatePlanillaTaller(evento) {
-    console.log(this.planillaTaller);
     this._alumnoService
-      .obtenerAlumnosPorCurso(this.planillaTaller.curso.curso, this.planillaTaller.curso.division, this.planillaTaller.curso.comision)
+      .obtenerAlumnosPorCursoCicloTemplate(
+        this.planillaTaller.curso.curso,
+        this.planillaTaller.curso.division,
+        this.planillaTaller.curso.comision,
+        this.planillaTaller.cicloLectivo.anio,
+        this.planillaTaller._id,
+        this.planillaTaller.personalizada
+      )
       .pipe(untilDestroyed(this))
       .subscribe(
         (datos) => {

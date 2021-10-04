@@ -82,7 +82,25 @@ export class PlanillaTallerTemplatePdf {
 
         {
           table: {
-            widths: ['30%', '10%', '10%', '10%', '10%', '10%', '10%', '10%'],
+            widths: [
+              '20%',
+              '5%',
+              '5%', //1 10%
+              '5%',
+              '5%', //2 20%
+              '5%',
+              '5%', //3 30%
+              '5%',
+              '5%', //4 40%
+              '5%',
+              '5%', //5 50%
+              '5%',
+              '5%', //6 60%
+              '5%',
+              '5%', //7 70%
+              '5%',
+              '5%', //8 80%
+            ],
             body: [...this.bodyAlumnos()],
           },
         },
@@ -112,6 +130,15 @@ export class PlanillaTallerTemplatePdf {
       { text: '' },
       { text: '' },
       { text: '' },
+      { text: '' },
+      { text: '' },
+      { text: '' },
+      { text: '' },
+      { text: '' },
+      { text: '' },
+      { text: '' },
+      { text: '' },
+      { text: '' },
     ];
     total.push(zeroLinea);
     this.alumnos.forEach((x) => {
@@ -122,7 +149,15 @@ export class PlanillaTallerTemplatePdf {
           fontSize: 9,
           colSpan: 1,
         },
-
+        { text: '' },
+        { text: '' },
+        { text: '' },
+        { text: '' },
+        { text: '' },
+        { text: '' },
+        { text: '' },
+        { text: '' },
+        { text: '' },
         { text: '' },
         { text: '' },
         { text: '' },
