@@ -13,5 +13,9 @@
     (retParametrosBusqueda)="setParametrosBusqueda($event)"
     class="w-100-p"
   ></app-form-busqueda-alumnos>
-  <app-alumnos-tabla-cursada [cargando]="cargando" [alumnos]="alumnos"></app-alumnos-tabla-cursada>
+  <app-alumnos-tabla-cursada
+    [cargando]="cargando"
+    [alumnos]="alumnos"
+    (retInformePromediosPorTaller)="setInformePromediosPorTaller($event)"
+  ></app-alumnos-tabla-cursada>
 </div>

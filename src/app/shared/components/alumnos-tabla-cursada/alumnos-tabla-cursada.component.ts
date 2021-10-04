@@ -17,6 +17,7 @@ import { IAlumno } from 'app/models/interface/iAlumno';
 })
 export class AlumnosTablaCursadaComponent implements OnInit, OnChanges {
   @Input() cargando: boolean;
+  @Output() retInformePromediosPorTaller = new EventEmitter<IAlumno>();
   // ALUMNOS ________________________________
   dataSource: MatTableDataSource<any> = new MatTableDataSource([]);
   @ViewChild('sort') set setSort(sort: MatSort) {
@@ -127,5 +128,8 @@ export class AlumnosTablaCursadaComponent implements OnInit, OnChanges {
           console.log('[ERROR]', error);
         }
       );
+  }
+  buscarInformePromedios(alumno: IAlumno) {
+    this.retInformePromediosPorTaller.emit(alumno);
   }
 }
