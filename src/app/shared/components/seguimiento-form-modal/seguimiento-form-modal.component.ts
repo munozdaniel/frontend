@@ -147,7 +147,7 @@ import Swal from 'sweetalert2';
                 formControlName="observacion"
               ></textarea>
               <mat-error *ngIf="form.get('observacion').hasError('minlength') || form.get('observacion').hasError('maxlength')">
-                Minimo 7 caracteres y Máximo 100
+                Minimo 7 caracteres y Máximo 200
               </mat-error>
             </mat-form-field>
             <!-- observacion ============================= -->
@@ -164,7 +164,7 @@ import Swal from 'sweetalert2';
                 formControlName="observacion2"
               ></textarea>
               <mat-error *ngIf="form.get('observacion2').hasError('minlength') || form.get('observacion2').hasError('maxlength')">
-                Minimo 7 caracteres y Máximo 100
+                Minimo 7 caracteres y Máximo 200
               </mat-error>
             </mat-form-field>
             <!-- observacionJefe ============================= -->
@@ -181,7 +181,7 @@ import Swal from 'sweetalert2';
                 formControlName="observacionJefe"
               ></textarea>
               <mat-error *ngIf="form.get('observacionJefe').hasError('minlength') || form.get('observacionJefe').hasError('maxlength')">
-                Minimo 7 caracteres y Máximo 100
+                Minimo 7 caracteres y Máximo 200
               </mat-error>
             </mat-form-field>
           </div>
@@ -343,15 +343,15 @@ export class SeguimientoFormModalComponent implements OnInit {
       ],
       tipoSeguimiento: [
         this.seguimiento ? this.seguimiento.tipoSeguimiento : null,
-        [Validators.required, Validators.minLength(7), Validators.maxLength(100)],
+        [Validators.required, Validators.minLength(7), Validators.maxLength(200)],
       ],
       resuelto: [this.seguimiento ? this.seguimiento.resuelto : false, [Validators.required]],
       observacion: [
         this.seguimiento ? this.seguimiento.observacion : null,
-        [Validators.required, Validators.minLength(7), Validators.maxLength(100)],
+        [Validators.required, Validators.minLength(7), Validators.maxLength(200)],
       ],
-      observacion2: [this.seguimiento ? this.seguimiento.observacion2 : null, [Validators.minLength(7), Validators.maxLength(100)]],
-      observacionJefe: [this.seguimiento ? this.seguimiento.observacionJefe : null, [Validators.minLength(7), Validators.maxLength(100)]],
+      observacion2: [this.seguimiento ? this.seguimiento.observacion2 : null, [Validators.minLength(7), Validators.maxLength(200)]],
+      observacionJefe: [this.seguimiento ? this.seguimiento.observacionJefe : null, [Validators.minLength(7), Validators.maxLength(200)]],
       fechaCreacion: [new Date(moment().format('YYYY-MM-DD')), Validators.required],
       activo: [this.seguimiento ? this.seguimiento.activo : true, [Validators.required]],
     });
