@@ -126,7 +126,7 @@ export class AlumnosPromediosPdf {
 
           {
             // text: `  ${item.notaFinal} `,
-            text: 'Promedio: ' + promedioFinal, // y.notaFinal,
+            text: promedioFinal === '0.00' ? 'A' : 'Promedio: ' + promedioFinal, // y.notaFinal,
             bold: true,
             fontSize: 9,
             colSpan: 1,
