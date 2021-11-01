@@ -216,7 +216,7 @@ export class LibroTemasPdf {
         },
         {
           border: [false, true, false, false],
-          text: x.temaDelDia,
+          text: x.caracterClase === 'SIN DICTAR' ? x.motivoSinDictar : x.temaDelDia,
           bold: false,
           fontSize: 10,
           colSpan: 1,
