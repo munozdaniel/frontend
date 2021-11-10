@@ -58,13 +58,13 @@
           <mat-icon>more_vert</mat-icon>
         </button>
         <mat-menu #menu="matMenu">
-          <button mat-menu-item matTooltip="Modificar asistencia" (click)="ver(row)">
+          <button mat-menu-item matTooltip="Ver detalle" (click)="ver(row)">
             <mat-icon>remove_red_eye</mat-icon>
             <span>Ver Detalle</span>
           </button>
           <button
             mat-menu-item
-            matTooltip="Modificar asistencia"
+            matTooltip="Modificar alumno"
             (click)="editar(row)"
             *ngxPermissionsOnly="['ADMIN', 'JEFETALLER', 'PRECEPTOR']"
           >
@@ -73,7 +73,12 @@
           </button>
 
           <mat-divider></mat-divider>
-          <button mat-menu-item matTooltip="Modificar asistencia" (click)="buscarInformePromedios(row)">
+          <button
+            mat-menu-item
+            matTooltip="Informe de promedios"
+            (click)="buscarInformePromedios(row)"
+            *ngxPermissionsOnly="['ADMIN', 'JEFETALLER', 'PRECEPTOR']"
+          >
             <mat-icon>info</mat-icon>
             <span>Informe de Promedios</span>
           </button>
