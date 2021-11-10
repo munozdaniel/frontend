@@ -4,6 +4,7 @@ import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { AlumnoService } from 'app/core/services/alumno.service';
 import { CalificacionService } from 'app/core/services/calificacion.service';
 import { AlumnosPromediosPdf } from 'app/core/services/pdf/alumnos-promedios';
+import { FichaAlumnoPdf } from 'app/core/services/pdf/ficha-alumno.pdf';
 import { ERROR_EJECUTAR_API, OPERACION_INTERRUMPIDA, ALUMNO_ELIMINADO_SUCCESS } from 'app/models/constants/respuestas.const';
 import { IAlumno } from 'app/models/interface/iAlumno';
 import { of } from 'rxjs';
@@ -29,6 +30,7 @@ import Swal from 'sweetalert2';
         [alumnos]="alumnos"
         (retEliminarAlumno)="setEliminarAlumno($event)"
         (retInformePromediosPorTaller)="setInformePromediosPorTaller($event)"
+        (retFichaAlumno)="setFichaAlumno($event)"
       ></app-alumnos-tabla-param>
     </div>
   `,
@@ -40,6 +42,7 @@ export class AlumnosEliminadosComponent implements OnInit {
   alumnos: IAlumno[] = [];
   cargando = false;
   constructor(
+    private _fichaAlumnoPdf: FichaAlumnoPdf,
     private _alumnoService: AlumnoService,
     private _alumnoPromediosPdf: AlumnosPromediosPdf,
     private _calificacionService: CalificacionService
@@ -175,5 +178,19 @@ export class AlumnosEliminadosComponent implements OnInit {
         }
       }
     });
+  }
+  setFichaAlumno(evento: IAlumno) {
+    this._alumnoService
+      .buscarCursadasPorAlumnoId(evento._id)
+      .pipe(untilDestroyed(this))
+      .subscribe(
+        (datos) => {
+          console.log('datos', datos);
+          this._fichaAlumnoPdf.generatePdf(datos);
+        },
+        (error) => {
+          console.log('[ERROR]', error);
+        }
+      );
   }
 }
