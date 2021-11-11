@@ -129,7 +129,7 @@
           ></textarea>
           <mat-error *ngIf="form.controls.observacion.hasError('required')"> Este campo es requerido. </mat-error>
           <mat-error *ngIf="form.get('observacion').hasError('minlength') || form.get('observacion').hasError('maxlength')">
-            Minimo 7 caracteres y Máximo 100
+            Minimo 7 caracteres y Máximo 300
           </mat-error>
         </mat-form-field>
         <!-- observacion ============================= -->
@@ -146,7 +146,7 @@
             formControlName="observacion2"
           ></textarea>
           <mat-error *ngIf="form.get('observacion2').hasError('minlength') || form.get('observacion2').hasError('maxlength')">
-            Minimo 7 caracteres y Máximo 100
+            Minimo 7 caracteres y Máximo 300
           </mat-error>
         </mat-form-field>
         <!-- observacionJefe ============================= -->
@@ -163,7 +163,7 @@
             formControlName="observacionJefe"
           ></textarea>
           <mat-error *ngIf="form.get('observacionJefe').hasError('minlength') || form.get('observacionJefe').hasError('maxlength')">
-            Minimo 7 caracteres y Máximo 100
+            Minimo 7 caracteres y Máximo 300
           </mat-error>
         </mat-form-field>
       </div>
