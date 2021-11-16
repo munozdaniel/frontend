@@ -31,8 +31,9 @@ export interface IAlumno {
 
   nombreCompletoTae: string;
   emailTae: string;
-  diagnostico:string;
+  diagnostico: string;
   archivoDiagnostico: string[];
+  fechasDiagnostico?: string[];
 
   observacion?: string;
 

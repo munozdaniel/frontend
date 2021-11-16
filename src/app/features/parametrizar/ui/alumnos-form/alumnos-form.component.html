@@ -354,9 +354,18 @@
           <div class="p-24 border">
             <h3>Archivos de diagnosticos</h3>
             <ul>
-              <li *ngFor="let item of alumno.archivoDiagnostico" fxLayout="row" fxLayoutAlign="space-between center" class="mb-12">
-                <a [href]="apiUpload + item" target="_blank">{{ item | spliturl }}</a>
-                <button mat-stroked-button color="warn" (click)="eliminarArchivo(alumno,item)">Eliminar</button>
+              <li
+                *ngFor="let item of alumno.archivoDiagnostico; let i = index"
+                fxLayout="row"
+                fxLayoutAlign="space-between center"
+                class="mb-12"
+              >
+                <a [href]="apiUpload + item" target="_blank"
+                  >{{ item | spliturl }}
+                  <br />
+                  <span *ngIf="alumno.fechasDiagnostico">{{ alumno.fechasDiagnostico[i] | date: 'dd/MM/yyyy':'GMT' }}</span>
+                </a>
+                <button mat-stroked-button color="warn" (click)="eliminarArchivo(alumno, item)">Eliminar</button>
               </li>
             </ul>
             <div fxLayout="row" fxLayoutAlign="center center">

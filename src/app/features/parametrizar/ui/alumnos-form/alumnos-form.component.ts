@@ -70,6 +70,7 @@ export class AlumnosFormComponent implements OnInit, OnChanges {
         this.uploader.onSuccessItem = (file, response) => {
           let data = JSON.parse(response); //success server response
           this.alumno.archivoDiagnostico = data.data.archivoDiagnostico;
+          this.alumno.fechasDiagnostico = data.data.fechasDiagnostico;
         };
         this.uploader.onAfterAddingFile = (file) => {
           file.withCredentials = false;
@@ -90,7 +91,6 @@ export class AlumnosFormComponent implements OnInit, OnChanges {
     }
   }
   eliminarArchivo(alumno, item) {
-    console.log('eleiminar', alumno, item);
     this.retEliminarArchivo.emit({ alumno, archivo: item });
   }
   ngOnInit(): void {
