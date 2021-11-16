@@ -343,13 +343,13 @@
             </mat-form-field>
           </form>
           <div *ngIf="alumno" class="file-upload">
-            <input type="file" name="image" ng2FileSelect [uploader]="uploader" accept="image/x-png,image/gif,image/jpeg" />
+            <input type="file" name="image" ng2FileSelect [uploader]="uploader" accept="image/x-png,image/gif,image/jpeg,application/pdf" />
             <button type="button" (click)="uploader.uploadAll()" [disabled]="!uploader.getNotUploadedItems().length">Subir</button>
-            <small
-              >Nota: No puede subir consecutivamente el mismo archivo, el servidor no lo permite. Si desea subir el mismo archivo nuevamente
-              puede actualizar la página.</small
-            >
           </div>
+          <small
+            >Nota: No puede subir consecutivamente el mismo archivo, el servidor no lo permite. Si desea subir el mismo archivo nuevamente
+            puede actualizar la página.</small
+          >
         </div>
         <div *ngIf="alumno" fxFlex.xs="100" fxFlex.gt-xs="45">
           <div *ngIf="!alumno.archivoDiagnostico || alumno.archivoDiagnostico.length < 1">
