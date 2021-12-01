@@ -53,7 +53,7 @@ export class SeguimientoFormComponent implements OnInit, OnChanges {
   }
 
   ngOnInit(): void {
-    const fechaHoy = moment();
+    const fechaHoy = moment.utc();
     let f = fechaHoy;
 
     this.form = this._fb.group({
@@ -77,6 +77,7 @@ export class SeguimientoFormComponent implements OnInit, OnChanges {
       }, 1000);
     } else {
       this.form.patchValue(this.seguimiento);
+      this.form.controls.fecha.setValue(moment(this.seguimiento.fecha).utc());
     }
   }
   actualizar() {
