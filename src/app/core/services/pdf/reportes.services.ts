@@ -30,6 +30,8 @@ export class ReportesService {
     private _alumnoService: AlumnoService,
     private _asistenciasPorDiaPdf: FichaAsistenciasPorDiaPdf,
     private _asistenciasPorFechasPdf: FichaAsistenciasPorFechasPdf,
+    private _asistenciasPorDiaVacioPdf: FichaAsistenciasPorDiaPdf,
+    private _asistenciasPorFechasVacioPdf: FichaAsistenciasPorFechasPdf,
     private _fichaAsistenciaGeneralPdf: FichaAsistenciaGeneralPdf,
     private _fichaAsistenciaDiaPdf: FichaAsistenciaDiaPdf,
     private _calificacioService: CalificacionService,
@@ -40,6 +42,45 @@ export class ReportesService {
     private _alumnosPorTallerPdf: AlumnosPdf,
     private _alumnosPorTallerResumidoPdf: AlumnosPorTallerPdf
   ) {}
+  setInformeDeAsistenciasPorDiaVacio(asistencias: any[], fechaInicio: string) {
+    this._designProgressBarService.show();
+    Swal.fire({
+      title: 'Generar Informe de Asistencias',
+      html: 'El proceso puede tardar varios minutos debido a la cantidad de datos que se procesan. <br> <strong>¿Desea continuar?</strong>',
+      icon: 'warning',
+      focusConfirm: false,
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      confirmButtonText: 'Continuar',
+      cancelButtonText: 'Cancelar',
+      showLoaderOnConfirm: true,
+    }).then((result: any) => {
+      this._designProgressBarService.hide();
+      if (result.isConfirmed) {
+        this._asistenciasPorDiaVacioPdf.generatePdf(asistencias, fechaInicio);
+        // this._asistenciasPorDiaVacioPdf.generatePdf(fechaDesde, turno, curso, division);
+      }
+    });
+  }
+  setInformeDeAsistenciasPorFechasVacio(asistenciasGrupo: any[], fechaInicio: string, fechaFinal = null) {
+    this._designProgressBarService.show();
+    Swal.fire({
+      title: 'Generar Informe de Asistencias',
+      html: 'El proceso puede tardar varios minutos debido a la cantidad de datos que se procesan. <br> <strong>¿Desea continuar?</strong>',
+      icon: 'warning',
+      focusConfirm: false,
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      confirmButtonText: 'Continuar',
+      cancelButtonText: 'Cancelar',
+      showLoaderOnConfirm: true,
+    }).then((result: any) => {
+      this._designProgressBarService.hide();
+      if (result.isConfirmed) {
+        this._asistenciasPorFechasVacioPdf.generatePdf(asistenciasGrupo, fechaInicio, fechaFinal);
+      }
+    });
+  }
   setInformeDeAsistenciasPorFechas(asistenciasGrupo: any[], fechaInicio: string, fechaFinal = null) {
     this._designProgressBarService.show();
     Swal.fire({
@@ -343,10 +384,7 @@ export class ReportesService {
           }
           this._designProgressBarService.hide();
           this._designProgressBarService.hide();
-          this._libroTemasPdf.generatePdf(
-            this.planillaTaller,
-            result.value
-          );
+          this._libroTemasPdf.generatePdf(this.planillaTaller, result.value);
         } else {
           Swal.fire({
             title: 'Oops! Ocurrió un error',

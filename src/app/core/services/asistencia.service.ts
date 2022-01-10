@@ -71,6 +71,12 @@ export class AsistenciaService {
 
     return this.http.post<any>(url, { division, curso, turno, desde, hasta });
   }
+  buscarAsistenciasPorFechasVacias(division: number, curso: number, turno: string, desde: any, hasta?: any): Observable<IAlumno[]> {
+    const query = `asistencia/buscar-asistencias-por-fechas-vacias`;
+    const url = this.url + query;
+
+    return this.http.post<any>(url, { division, curso, turno, desde, hasta });
+  }
   buscarAsistenciasPorFechaYPlanilla(fecha: Date, planilla: IPlanillaTaller, alumnos: IAlumno[]): Observable<IAsistencia[]> {
     const query = `asistencia/obtener-asistencias-fecha`; // va una planilla
     const url = this.url + query;

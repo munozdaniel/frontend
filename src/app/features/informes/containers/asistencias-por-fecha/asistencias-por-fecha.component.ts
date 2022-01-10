@@ -77,9 +77,6 @@ import Swal from 'sweetalert2';
                 <mat-option value="4">DIVISIÓN 4</mat-option>
                 <mat-option value="5">DIVISIÓN 5</mat-option>
                 <mat-option value="6">DIVISIÓN 6</mat-option>
-                <mat-option value="6">DIVISIÓN 7</mat-option>
-                <mat-option value="6">DIVISIÓN 8</mat-option>
-                <mat-option value="6">DIVISIÓN 9</mat-option>
               </mat-select>
               <mat-error *ngIf="form.controls.division.hasError('required')"> Este campo es requerido. </mat-error>
             </mat-form-field>
@@ -96,6 +93,9 @@ import Swal from 'sweetalert2';
         <button [disabled]="!alumnos || alumnos.length < 1" mat-raised-button color="warn" (click)="generarReporte()">
           Generar Reporte
         </button>
+        <!-- <button *ngIf="asistenciaCompleta" mat-raised-button color="primary" (click)="generarReporteVacio()">
+          Generar Reporte de Asistencia Completa
+        </button> -->
       </div>
     </div>
   `,
@@ -108,6 +108,7 @@ export class AsistenciasPorFechaComponent implements OnInit {
   alumnos: any[];
   form: FormGroup;
   rangoHabilitado = false;
+  asistenciaCompleta = false;
   // Mobile
 
   constructor(private _fb: FormBuilder, private _reportesService: ReportesService, private _asistenciaService: AsistenciaService) {}
@@ -122,9 +123,9 @@ export class AsistenciasPorFechaComponent implements OnInit {
         fechaHasta: [today],
         horaDesde: [horasD, Validators.required],
         horaHasta: [horasH, Validators.required],
-        turno: [null, Validators.required],
-        curso: [null],
-        division: [null],
+        turno: ['MAÑANA', Validators.required],
+        curso: ['1'],
+        division: ['4'],
       },
       {
         validator: this.restriccionFecha('fechaDesde', 'fechaHasta', 'horaDesde', 'horaHasta'),
@@ -166,6 +167,7 @@ export class AsistenciasPorFechaComponent implements OnInit {
     }
   }
   buscarAsistencias() {
+    this.asistenciaCompleta = false;
     this.cargando = true;
     if (this.form.invalid) {
       Swal.fire({
@@ -187,6 +189,7 @@ export class AsistenciasPorFechaComponent implements OnInit {
       .pipe(untilDestroyed(this))
       .subscribe(
         (datos: any) => {
+          this.asistenciaCompleta = datos.asistenciaCompleta;
           this.alumnos = [...datos.alumnos];
           this.cargando = false;
         },
@@ -232,5 +235,55 @@ export class AsistenciasPorFechaComponent implements OnInit {
         .value();
       this._reportesService.setInformeDeAsistenciasPorDia(agrupar, fechaDesde);
     }
+  }
+  generarReporteVacio() {
+    // const alumnos = [...this.alumnos, ...this.alumnosNoRegistrados];
+    this.cargando = true;
+    if (this.form.invalid) {
+      Swal.fire({
+        title: 'Oops! Datos incorrectos',
+        text: 'El formulario no tiene una fecha válida. Verifique sus datos.',
+        icon: 'error',
+      });
+      return;
+    }
+    //   Buscar todas las plantillas
+    this._asistenciaService
+      .buscarAsistenciasPorFechasVacias(
+        Number(this.form.controls.division.value),
+        Number(this.form.controls.curso.value),
+        this.form.controls.turno.value,
+        this.form.controls.fechaDesde.value,
+        this.rangoHabilitado ? this.form.controls.fechaHasta.value : null
+      )
+      .pipe(untilDestroyed(this))
+      .subscribe(
+        (datos: any) => {
+          const { fechaDesde, fechaHasta } = this.form.value;
+
+          if (this.rangoHabilitado) {
+            const agrupacion = this.groupByMultipleCampos(this.alumnos, (x) => {
+              return [x.fecha, x.planillaTaller._id];
+            });
+            console.log('agrupacion', agrupacion);
+            this._reportesService.setInformeDeAsistenciasPorFechasVacio(agrupacion, fechaDesde, fechaHasta);
+          } else {
+            // Agrupar por un solo  campo
+            const agrupar: any = _.chain(this.alumnos)
+              // Group the elements of Array based on `color` property
+              .groupBy('planillaTaller._id')
+              // `key` is group's name (color), `value` is the array of objects
+              .map((value, key) => ({ planillaTaller: key, grupoPlanilla: value }))
+              .value();
+            console.log('agrupar', agrupar);
+            this._reportesService.setInformeDeAsistenciasPorDiaVacio(agrupar, fechaDesde);
+          }
+          this.cargando = false;
+        },
+        (error) => {
+          this.cargando = false;
+          console.log('[ERROR]', error);
+        }
+      );
   }
 }

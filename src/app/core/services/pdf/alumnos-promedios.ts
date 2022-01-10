@@ -118,6 +118,7 @@ export class AlumnosPromediosPdf {
         const promedioFinal = (Math.ceil(Number(y.notaFinal) * 2) / 2).toFixed(2);
         return [
           {
+            // text: '' + y.materia.toUpperCase() + ` (${y.bimestre.substring(0, 8)}.)`,
             text: '' + y.materia.toUpperCase(),
             bold: true,
             fontSize: 9,
