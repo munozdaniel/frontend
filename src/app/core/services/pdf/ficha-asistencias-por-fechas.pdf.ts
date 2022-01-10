@@ -32,7 +32,6 @@ export class FichaAsistenciasPorFechasPdf {
 
   async generatePdf(asistenciasGrupo: any[], fechaInicio: string, fechaFinal: string, action = 'open') {
     this.asistenciasGrupo = asistenciasGrupo;
-    console.log('asistenciasGrupo', asistenciasGrupo);
     this.fechaInicio = fechaInicio;
     this.fechaFinal = fechaFinal;
     const documentDefinition = await this.getDocumentDefinition();
@@ -198,6 +197,7 @@ export class FichaAsistenciasPorFechasPdf {
                     alignment: 'left',
                     colSpan: 1,
                     bold: 'true',
+                    fillColor: `${completa ? '' : '#eeeeee'}`,
                   },
                   {
                     text: `${completa ? '' : 'Nombre y Apellido'}`,
@@ -205,6 +205,7 @@ export class FichaAsistenciasPorFechasPdf {
                     colSpan: 1,
                     fontSize: 10,
                     alignment: 'left',
+                    fillColor: `${completa ? '' : '#eeeeee'}`,
                     bold: 'true',
                   },
                   {
@@ -214,6 +215,7 @@ export class FichaAsistenciasPorFechasPdf {
                     style: 'tableHeader',
                     alignment: 'center',
                     bold: 'true',
+                    fillColor: `${completa ? '' : '#eeeeee'}`,
                   },
                 ],
                 ...asis,

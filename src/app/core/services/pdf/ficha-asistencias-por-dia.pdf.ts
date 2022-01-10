@@ -1,5 +1,4 @@
 import { Injectable } from '@angular/core';
-import { IAlumno } from 'app/models/interface/iAlumno';
 import { IPlanillaTaller } from 'app/models/interface/iPlanillaTaller';
 import * as _ from 'lodash';
 import * as moment from 'moment';
@@ -39,6 +38,47 @@ export class FichaAsistenciasPorDiaPdf {
       const unaPlanillaAsistencia: any[] = x.grupoPlanilla;
       const planilla: IPlanillaTaller = unaPlanillaAsistencia[0].planillaTaller;
       let contador = 0;
+      let asis: any = unaPlanillaAsistencia.map((asistencia) => {
+        if (asistencia.presente) {
+          contador++;
+        }
+        return [
+          {
+            text: asistencia.alumno.dni,
+            fontSize: 10,
+            bold: asistencia.presente ? false : true,
+          },
+          {
+            fontSize: 10,
+            text: asistencia.alumno.nombreCompleto,
+            bold: asistencia.presente ? false : true,
+          },
+          {
+            text: asistencia.presente ? 'Presente' : 'Ausente',
+            fontSize: 10,
+            alignment: 'center',
+            bold: asistencia.presente ? false : true,
+          },
+        ];
+      });
+      const completa = contador === unaPlanillaAsistencia.length;
+      if (completa) {
+        asis = [
+          [
+            {
+              text: `Asistencia Completa`,
+              style: 'tableHeader',
+              alignment: 'center',
+              bold: 'true',
+              fontSize: 10,
+              fillColor: '#eeeeee',
+              colSpan: 3,
+            },
+            {},
+            {},
+          ],
+        ];
+      }
       return [
         {
           // stack:
@@ -93,62 +133,37 @@ export class FichaAsistenciasPorDiaPdf {
               ],
               [
                 {
-                  text: `Dni`,
+                  text: `${completa ? '' : 'Dni'}`,
                   style: 'tableHeader',
                   alignment: 'left',
                   bold: 'true',
                   fontSize: 10,
-                  fillColor: '#eeeeee',
+                  fillColor: `${completa ? '' : '#eeeeee'}`,
                 },
                 {
-                  text: `Nombre y Apellido`,
+                  text: `${completa ? '' : 'Nombre y Apellido'}`,
                   style: 'tableHeader',
                   fontSize: 10,
                   alignment: 'left',
                   bold: 'true',
-                  fillColor: '#eeeeee',
+                  fillColor: `${completa ? '' : '#eeeeee'}`,
                 },
                 {
-                  text: `Asistencia`,
+                  text: `${completa ? '' : 'Asistencia'}`,
                   style: 'tableHeader',
                   fontSize: 10,
                   alignment: 'center',
                   bold: 'true',
-                  fillColor: '#eeeeee',
+                  fillColor: `${completa ? '' : '#eeeeee'}`,
                 },
               ],
-              ...unaPlanillaAsistencia.map((asistencia) => {
-                if (asistencia.presente) {
-                  contador++;
-                }
-                return [
-                  {
-                    text: asistencia.alumno.dni,
-                    fontSize: 10,
-                    bold: asistencia.presente ? false : true,
-                  },
-                  {
-                    fontSize: 10,
-                    text: asistencia.alumno.nombreCompleto,
-                    bold: asistencia.presente ? false : true,
-                  },
-                  {
-                    text: asistencia.presente ? 'Presente' : 'Ausente',
-                    fontSize: 10,
-                    alignment: 'center',
-                    bold: asistencia.presente ? false : true,
-                  },
-                ];
-              }),
+              ...asis,
               [
                 {},
                 {},
                 {
                   fontSize: 10,
-                  text:
-                    contador === unaPlanillaAsistencia.length
-                      ? 'Asistencia Completa'
-                      : 'Total Ausentes: ' + (unaPlanillaAsistencia.length - contador),
+                  text: completa ? '' : 'Total Ausentes: ' + (unaPlanillaAsistencia.length - contador),
                   colSpan: 1,
                   alignment: 'center',
                   bold: 'true',
