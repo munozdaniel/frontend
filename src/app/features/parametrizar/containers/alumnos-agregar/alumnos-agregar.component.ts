@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { MatSnackBar } from '@angular/material';
 import { Router } from '@angular/router';
 import { designAnimations } from '@design/animations';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
@@ -40,7 +41,7 @@ export class AlumnosAgregarComponent implements OnInit {
   cargando = false;
   resetear = false;
   estadoCursada: IEstadoCursada[] = [];
-  constructor(private _alumnoService: AlumnoService, private _router: Router) {}
+  constructor(private _snackBar: MatSnackBar, private _alumnoService: AlumnoService, private _router: Router) {}
 
   ngOnInit(): void {}
   setDatosForm(evento: IAlumno) {
@@ -107,10 +108,16 @@ export class AlumnosAgregarComponent implements OnInit {
   }
   1;
   setAgregarCursada(evento: IEstadoCursada) {
-    console.log('alumnos editar', evento);
     this.estadoCursada.push(evento);
   }
   setActualizarEstadoCursadas(evento: IEstadoCursada[]) {
     this.estadoCursada = [...evento];
+    const texto = 'Recuerde guardar los cambios';
+    const accion = 'INFO';
+    const duracion = 5000;
+    this._snackBar.open(texto, accion, {
+      duration: duracion,
+      panelClass: ['alert', 'alert-info'],
+    });
   }
 }

@@ -144,7 +144,7 @@ export class AlumnosFormComponent implements OnInit, OnChanges {
       }, 1000);
       return;
     }
-    this.estadoCursadas = this.alumno.estadoCursadas;
+    this.estadoCursadas = this.alumno.estadoCursadas.map((x, index) => ({ ...x, index }));
     this.formDatosPersonales.patchValue(this.alumno);
     if (this.alumno.fechaIngreso !== 'Sin Registrar' && moment.utc(this.alumno.fechaIngreso).isValid()) {
       this.formDatosPersonales.controls.fechaIngreso.setValue(moment.utc(this.alumno.fechaIngreso));
@@ -290,6 +290,7 @@ export class AlumnosFormComponent implements OnInit, OnChanges {
         this.estadoCursadas.splice(index, 1);
         this.estadoCursadas = [...this.estadoCursadas];
         this.retActualizarEstadoCursadas.emit(this.estadoCursadas);
+        console.log('borrar2');
       }
     }
   }

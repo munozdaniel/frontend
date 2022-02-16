@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { MatDialog } from '@angular/material';
+import { MatDialog, MatSnackBar } from '@angular/material';
 import { ActivatedRoute, Router } from '@angular/router';
 import { designAnimations } from '@design/animations';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
@@ -31,6 +31,7 @@ import Swal from 'sweetalert2';
         [resetear]="resetear"
         [cargando]="cargando"
         [estadoCursadaEditada]="estadoCursadaEditada"
+        (retActualizarEstadoCursadas)="setActualizarEstadoCursadas($event)"
         (retAgregarCursada)="setAgregarCursada($event)"
         (retDatosForm)="setDatosForm($event)"
         (retEliminarArchivo)="setEliminarArchivo($event)"
@@ -48,6 +49,7 @@ export class AlumnosEditarComponent implements OnInit {
   alumnoId: string;
   estadoCursadaEditada: IEstadoCursada;
   constructor(
+    private _snackBar: MatSnackBar,
     private _alumnoService: AlumnoService,
     private _activeRoute: ActivatedRoute,
     private _router: Router,
@@ -185,7 +187,6 @@ export class AlumnosEditarComponent implements OnInit {
   }
   //   Antes de poder editar un estadoDeCursada tenemos que verificar que no haya estado usado por algun alumno
   setAgregarCursada(evento: IEstadoCursada) {
-    console.log('alumnos editar', evento);
     this._alumnoService
       .agregarEstadoCursada(evento, this.alumnoId)
       .pipe(untilDestroyed(this))
@@ -197,6 +198,15 @@ export class AlumnosEditarComponent implements OnInit {
           console.log('[ERROR]', error);
         }
       );
+  }
+  setActualizarEstadoCursadas(evento: IEstadoCursada[]) {
+    const texto = 'Recuerde guardar los cambios';
+    const accion = 'INFO';
+    const duracion = 5000;
+    this._snackBar.open(texto, accion, {
+      duration: duracion,
+      panelClass: ['alert', 'alert-info'],
+    });
   }
   //   setEditarEstadoCursada(evento: IEstadoCursada) {
   //     this._alumnoService
