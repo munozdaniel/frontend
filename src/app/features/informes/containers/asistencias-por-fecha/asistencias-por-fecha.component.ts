@@ -49,11 +49,12 @@ import Swal from 'sweetalert2';
                 <mat-option value="MAÑANA">MAÑANA</mat-option>
                 <mat-option value="TARDE">TARDE</mat-option>
                 <mat-option value="VESPERTINO">VESPERTINO</mat-option>
+                <mat-option value="">SIN ESPECIFICAR</mat-option>
               </mat-select>
               <mat-error *ngIf="form.controls.turno.hasError('required')"> Este campo es requerido. </mat-error>
             </mat-form-field>
 
-            <mat-form-field appearance="outline" fxFlex.gt-xs="30" fxFlex.xs="100">
+            <mat-form-field appearance="outline" fxFlex.gt-xs="20" fxFlex.xs="100">
               <mat-label class="lbl">Curso</mat-label>
               <mat-select formControlName="curso">
                 <mat-option value=""></mat-option>
@@ -67,7 +68,7 @@ import Swal from 'sweetalert2';
               <mat-error *ngIf="form.controls.curso.hasError('required')"> Este campo es requerido. </mat-error>
             </mat-form-field>
             <!-- division ============================= -->
-            <mat-form-field appearance="outline" fxFlex.gt-xs="30" fxFlex.xs="100">
+            <mat-form-field appearance="outline" fxFlex.gt-xs="20" fxFlex.xs="100">
               <mat-label class="lbl">División</mat-label>
               <mat-select formControlName="division">
                 <mat-option value=""></mat-option>
@@ -80,6 +81,15 @@ import Swal from 'sweetalert2';
               </mat-select>
               <mat-error *ngIf="form.controls.division.hasError('required')"> Este campo es requerido. </mat-error>
             </mat-form-field>
+            <!--  -->
+            <div
+              fxFlex.gt-xs="20"
+              fxFlex.xs="100"
+              fxFlexAlign="baseline"
+              style="padding:10px; border:1px solid rgb(224, 224 ,224); border-radius:5px; margin-top:4px; "
+            >
+              <mat-checkbox class="mb-12" formControlName="incluirPresente">Incluir Presentes</mat-checkbox>
+            </div>
           </div>
           <mat-error *ngIf="form.errors?.fechas">{{ form.errors.fechas }}</mat-error>
           <div fxFlex="100" fxLayout="row" fxLayoutAlign="center start">
@@ -123,9 +133,10 @@ export class AsistenciasPorFechaComponent implements OnInit {
         fechaHasta: [today],
         horaDesde: [horasD, Validators.required],
         horaHasta: [horasH, Validators.required],
-        turno: ['MAÑANA', Validators.required],
+        turno: ['MAÑANA'],
         curso: ['1'],
         division: ['4'],
+        incluirPresente: [false],
       },
       {
         validator: this.restriccionFecha('fechaDesde', 'fechaHasta', 'horaDesde', 'horaHasta'),
@@ -182,9 +193,10 @@ export class AsistenciasPorFechaComponent implements OnInit {
       .buscarAsistenciasPorFechas(
         Number(this.form.controls.division.value),
         Number(this.form.controls.curso.value),
-        this.form.controls.turno.value,
         this.form.controls.fechaDesde.value,
-        this.rangoHabilitado ? this.form.controls.fechaHasta.value : null
+        this.form.controls.turno.value,
+        this.rangoHabilitado ? this.form.controls.fechaHasta.value : null,
+        this.form.controls.incluirPresente.value
       )
       .pipe(untilDestroyed(this))
       .subscribe(

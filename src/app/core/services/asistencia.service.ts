@@ -65,17 +65,32 @@ export class AsistenciaService {
     const url = this.url + query;
     return this.http.post<any>(url, { planillaTaller });
   }
-  buscarAsistenciasPorFechas(division: number, curso: number, turno: string, desde: any, hasta?: any): Observable<IAlumno[]> {
+  buscarAsistenciasPorFechas(
+    division: number,
+    curso: number,
+    desde: any,
+    turno?: string,
+    hasta?: any,
+    incluirPresente?: boolean
+  ): Observable<IAlumno[]> {
     const query = `asistencia/buscar-asistencias-por-fechas`;
     const url = this.url + query;
 
-    return this.http.post<any>(url, { division, curso, turno, desde, hasta });
+    return this.http.post<any>(url, { division, curso, turno, desde, hasta, incluirPresente });
   }
-  buscarAsistenciasPorFechasVacias(division: number, curso: number, turno: string, desde: any, hasta?: any): Observable<IAlumno[]> {
+  //   No se usa?
+  buscarAsistenciasPorFechasVacias(
+    division: number,
+    curso: number,
+    desde: any,
+    turno?: string,
+    hasta?: any,
+    incluirPresente?: boolean
+  ): Observable<IAlumno[]> {
     const query = `asistencia/buscar-asistencias-por-fechas-vacias`;
     const url = this.url + query;
 
-    return this.http.post<any>(url, { division, curso, turno, desde, hasta });
+    return this.http.post<any>(url, { division, curso, turno, desde, hasta, incluirPresente });
   }
   buscarAsistenciasPorFechaYPlanilla(fecha: Date, planilla: IPlanillaTaller, alumnos: IAlumno[]): Observable<IAsistencia[]> {
     const query = `asistencia/obtener-asistencias-fecha`; // va una planilla
