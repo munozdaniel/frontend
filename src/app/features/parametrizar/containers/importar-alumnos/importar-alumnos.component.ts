@@ -100,7 +100,7 @@ export class ImportarAlumnosComponent implements OnInit {
         const ws: XLSX.WorkSheet = wb.Sheets[wsname];
 
         /* save data */
-        const usuarioArchivo = XLSX.utils.sheet_to_json(ws, { header: 0, defval: '' });
+        const usuarioArchivo = XLSX.utils.sheet_to_json(ws, { header: 0, defval: '', raw: false });
         this.validacionesDeCampo(usuarioArchivo);
         //  this._usuarios$.next(usuarioArchivo);
       };
@@ -155,8 +155,8 @@ export class ImportarAlumnosComponent implements OnInit {
         condicion: x.CONDICION ? x.CONDICION : 'REGULAR',
         cicloLectivo: x['CICLO LECTIVO'],
         dni: x.DOCUMENTO,
-        nombreCompleto: _.capitalize(x['APELLIDO Y NOMBRES']),
-        fechaNacimiento: x['FECHA NACIMIENTO'] ? moment(x['FECHA NACIMIENTO'], 'DD/MM/YYYY').utc().format('YYYY-MM-DD') : null,
+        nombreCompleto: this.capitalizeTheFirstLetterOfEachWord(x['APELLIDO Y NOMBRES']),
+        fechaNacimiento: x['FECHA NACIMIENTO'] ? moment(x['FECHA NACIMIENTO']).utc().format('YYYY-MM-DD') : null,
         // 'LUGAR DE NACIMIENTO': x['LUGAR DE NACIMIENTO'],
         // 'ES REPITENTE': x['ES REPITENTE'],
         telefono: x.TELEFONO,
@@ -190,6 +190,13 @@ export class ImportarAlumnosComponent implements OnInit {
     // Documento: "DNI - 47283150"
     // Estado: ""
     this.validacionesAsincronicas(u);
+  }
+  capitalizeTheFirstLetterOfEachWord(words) {
+    var separateWord = words.toLowerCase().split(' ');
+    for (var i = 0; i < separateWord.length; i++) {
+      separateWord[i] = separateWord[i].charAt(0).toUpperCase() + separateWord[i].substring(1).toLowerCase();
+    }
+    return separateWord.join(' ');
   }
   validacionesAsincronicas(usuariosFiltrados: any[]) {
     from(usuariosFiltrados)
@@ -266,7 +273,7 @@ export class ImportarAlumnosComponent implements OnInit {
   }
   setUsuariosFallados(evento: IAlumno[]) {
     if (evento) {
-    //   console.log('ALUMNOS FALLADOS', evento);
+      //   console.log('ALUMNOS FALLADOS', evento);
     }
   }
   guardar() {
