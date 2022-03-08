@@ -146,9 +146,9 @@ export class ImportarAlumnosComponent implements OnInit {
         // tipoDoc = documento[0].trim();
         // doc = documento[1].trim();
       }
-      console.log('1.', x['FECHA NACIMIENTO']);
-      console.log('2.', moment(x['FECHA NACIMIENTO'], 'dmmmyy').format('YYYY-MM-DD'));
-      console.log('3.', moment(x['FECHA NACIMIENTO'], 'DD/MM/YYYY'));
+      //   console.log('1.', x['FECHA NACIMIENTO']);
+      //   console.log('2.', moment(x['FECHA NACIMIENTO'], 'dmmmyy').format('YYYY-MM-DD'));
+      //   console.log('3.', moment(x['FECHA NACIMIENTO'], 'DD/MM/YYYY'));
       const row: any = {
         turno: x.TURNO,
         curso: x.CURSO,
@@ -157,7 +157,7 @@ export class ImportarAlumnosComponent implements OnInit {
         condicion: x.CONDICION ? x.CONDICION : 'REGULAR',
         cicloLectivo: x['CICLO LECTIVO'],
         dni: x.DOCUMENTO,
-        nombreCompleto: this.capitalizeTheFirstLetterOfEachWord(x['APELLIDO Y NOMBRES']),
+        nombreCompleto: x['APELLIDO Y NOMBRES'].toUpperCase(),
         fechaNacimiento: x['FECHA NACIMIENTO'] ? moment(x['FECHA NACIMIENTO']).utc().format('YYYY-MM-DD') : null,
         // 'LUGAR DE NACIMIENTO': x['LUGAR DE NACIMIENTO'],
         // 'ES REPITENTE': x['ES REPITENTE'],
@@ -178,7 +178,6 @@ export class ImportarAlumnosComponent implements OnInit {
         cantidadIntegranteGrupoFamiliar: 0,
         incompleto: true,
       };
-      console.log('row', row);
       return row;
     });
     // " ": 304470
