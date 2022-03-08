@@ -177,6 +177,7 @@ export class ImportarAlumnosComponent implements OnInit {
         // domicilio: 'SIN REGISTRAR',
         cantidadIntegranteGrupoFamiliar: 0,
         incompleto: true,
+        seguimientoEtap: 'NO',
       };
       return row;
     });
