@@ -54,7 +54,7 @@ import Swal from 'sweetalert2';
               <mat-error *ngIf="form.controls.turno.hasError('required')"> Este campo es requerido. </mat-error>
             </mat-form-field>
 
-            <mat-form-field appearance="outline" fxFlex.gt-xs="20" fxFlex.xs="100">
+            <mat-form-field appearance="outline" fxFlex.gt-xs="30" fxFlex.xs="100">
               <mat-label class="lbl">Curso</mat-label>
               <mat-select formControlName="curso">
                 <mat-option value=""></mat-option>
@@ -68,7 +68,7 @@ import Swal from 'sweetalert2';
               <mat-error *ngIf="form.controls.curso.hasError('required')"> Este campo es requerido. </mat-error>
             </mat-form-field>
             <!-- division ============================= -->
-            <mat-form-field appearance="outline" fxFlex.gt-xs="20" fxFlex.xs="100">
+            <mat-form-field appearance="outline" fxFlex.gt-xs="30" fxFlex.xs="100">
               <mat-label class="lbl">División</mat-label>
               <mat-select formControlName="division">
                 <mat-option value=""></mat-option>
@@ -83,10 +83,10 @@ import Swal from 'sweetalert2';
             </mat-form-field>
             <!--  -->
             <div
-              fxFlex.gt-xs="20"
+              fxFlex.gt-xs="100"
               fxFlex.xs="100"
               fxFlexAlign="baseline"
-              style="padding:10px; border:1px solid rgb(224, 224 ,224); border-radius:5px; margin-top:4px; "
+              style="padding:10px; border:1px solid rgb(224, 224 ,224); border-radius:5px; margin-top:4px; opacity:0;"
             >
               <mat-checkbox class="mb-12" formControlName="incluirPresente">Incluir Presentes</mat-checkbox>
             </div>
@@ -103,7 +103,6 @@ import Swal from 'sweetalert2';
         <button [disabled]="!alumnos || alumnos.length < 1" mat-raised-button color="warn" (click)="generarReporte()">
           Generar Reporte
         </button>
-      
       </div>
     </div>
   `,
@@ -111,6 +110,7 @@ import Swal from 'sweetalert2';
   animations: [designAnimations],
 })
 export class AsistenciasPorFechaComponent implements OnInit {
+  busquedaActiva = false;
   titulo = 'Generar informe de inasistencias';
   cargando = false;
   alumnos: any[];
@@ -133,7 +133,7 @@ export class AsistenciasPorFechaComponent implements OnInit {
         turno: ['MAÑANA'],
         curso: ['1'],
         division: ['4'],
-        incluirPresente: [false],
+        incluirPresente: [true],
       },
       {
         validator: this.restriccionFecha('fechaDesde', 'fechaHasta', 'horaDesde', 'horaHasta'),
@@ -175,6 +175,7 @@ export class AsistenciasPorFechaComponent implements OnInit {
     }
   }
   buscarAsistencias() {
+    this.busquedaActiva = true;
     this.cargando = true;
     if (this.form.invalid) {
       Swal.fire({
