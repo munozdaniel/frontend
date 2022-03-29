@@ -82,6 +82,7 @@ export class FichaAsistenciasPorFechasPdf {
   async bodyAsistencias() {
     const tabla2 = await Promise.all(
       this.asistenciasGrupo.map(async (asistencia: any) => {
+        let contadorAusentes = 0;
         let completa = false;
         //   [
         //     // Un Grupo
@@ -98,25 +99,17 @@ export class FichaAsistenciasPorFechasPdf {
           asis = await (
             asistencia.map((a) => {
               if (!a.presente && !a.ausentePermitido) {
+                contadorAusentes++;
                 return [
                   { colSpan: 1, text: a.alumno.dni, fontSize: 10 },
                   { colSpan: 1, text: a.alumno.nombreCompleto, fontSize: 10 },
-                  { colSpan: 1, text: a.presente ? 'Presente' : 'Ausente', fontSize: 10, alignment: 'center' },
+                  { colSpan: 1, text: 'Ausente', fontSize: 10, alignment: 'center' },
                 ];
               } else {
                 return null;
               }
             }) as any[]
           ).filter((m) => m);
-          // asistencia.forEach((a) => {
-          //   if (!a.presente && !a.ausentePermitido) {
-          //     asis.push([
-          //       { text: a.alumno.dni, fontSize: 10 },
-          //       { text: a.alumno.nombreCompleto, fontSize: 10 },
-          //       { text: a.presente ? 'Presente' : 'Ausente', fontSize: 10, alignment: 'center' },
-          //     ]);
-          //   }
-          // });
         } else {
           completa = true;
           asis = [
@@ -224,7 +217,7 @@ export class FichaAsistenciasPorFechasPdf {
                   {},
                   {
                     fontSize: 10,
-                    text: completa ? '' : 'Total Ausentes: ' + asistencia.length,
+                    text: completa ? '' : 'Total Ausentes: ' + contadorAusentes,
                     colSpan: 1,
                     alignment: 'center',
                     bold: 'true',

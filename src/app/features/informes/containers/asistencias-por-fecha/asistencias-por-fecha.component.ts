@@ -103,9 +103,7 @@ import Swal from 'sweetalert2';
         <button [disabled]="!alumnos || alumnos.length < 1" mat-raised-button color="warn" (click)="generarReporte()">
           Generar Reporte
         </button>
-        <!-- <button *ngIf="asistenciaCompleta" mat-raised-button color="primary" (click)="generarReporteVacio()">
-          Generar Reporte de Asistencia Completa
-        </button> -->
+      
       </div>
     </div>
   `,
@@ -118,7 +116,6 @@ export class AsistenciasPorFechaComponent implements OnInit {
   alumnos: any[];
   form: FormGroup;
   rangoHabilitado = false;
-  asistenciaCompleta = false;
   // Mobile
 
   constructor(private _fb: FormBuilder, private _reportesService: ReportesService, private _asistenciaService: AsistenciaService) {}
@@ -178,7 +175,6 @@ export class AsistenciasPorFechaComponent implements OnInit {
     }
   }
   buscarAsistencias() {
-    this.asistenciaCompleta = false;
     this.cargando = true;
     if (this.form.invalid) {
       Swal.fire({
@@ -201,7 +197,6 @@ export class AsistenciasPorFechaComponent implements OnInit {
       .pipe(untilDestroyed(this))
       .subscribe(
         (datos: any) => {
-          this.asistenciaCompleta = datos.asistenciaCompleta;
           this.alumnos = [...datos.alumnos];
           this.cargando = false;
         },
