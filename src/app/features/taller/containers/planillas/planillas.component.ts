@@ -65,6 +65,7 @@ export class PlanillasComponent implements OnInit, OnDestroy {
   planillas: IPlanillaTaller[];
   cicloActual: number;
   permisos;
+  mostrarEliminados = false;
   constructor(
     private _permissionsService: NgxPermissionsService,
     private _cicloLectivoService: CicloLectivoService,
@@ -79,6 +80,8 @@ export class PlanillasComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {}
   obtenerPlanillaPorPermisos() {
+    this.mostrarEliminados = false;
+
     this._permissionsService.permissions$.subscribe((permissions) => {
       this.permisos = Object.keys(permissions);
       if (this.permisos && this.permisos.length > 0) {
@@ -90,6 +93,7 @@ export class PlanillasComponent implements OnInit, OnDestroy {
           // No es profesor
           const index2 = this.permisos.findIndex((x) => x.toString() === RolConst.ADMIN || x.toString() === RolConst.JEFETALLER);
           if (index2 !== -1) {
+            this.mostrarEliminados = true;
             this.ultimoCiclo(true);
           } else {
             this.planillas = [];
@@ -124,7 +128,7 @@ export class PlanillasComponent implements OnInit, OnDestroy {
         if (usuario) {
           this._planillaTallerService
             //   .obtenerPlanillaTalleresPorCiclo( this.cicloActual)
-            .obtenerPlanillaTalleresPorCicloPorProfesor(cicloLectivo, usuario.profesor)
+            .obtenerPlanillaTalleresPorCicloPorProfesor(cicloLectivo, usuario.profesor, this.mostrarEliminados)
             .pipe(untilDestroyed(this))
             .subscribe(
               (datos) => {
@@ -144,7 +148,7 @@ export class PlanillasComponent implements OnInit, OnDestroy {
   recuperarPlanillasPorCiclo(cicloLectivo: number) {
     this._planillaTallerService
       //   .obtenerPlanillaTalleresPorCiclo( this.cicloActual)
-      .obtenerPlanillaTalleresPorCiclo(cicloLectivo)
+      .obtenerPlanillaTalleresPorCiclo(cicloLectivo, this.mostrarEliminados)
       .pipe(untilDestroyed(this))
       .subscribe(
         (datos) => {

@@ -110,16 +110,20 @@ export class PlanillaTallerService {
     return this.http.post<any>(url, { curso, comision, division, cicloLectivo });
   }
   //
-  obtenerPlanillaTalleresPorCiclo(cicloLectivo: number): Observable<IPlanillaTaller[]> {
+  obtenerPlanillaTalleresPorCiclo(cicloLectivo: number, mostrarEliminados: boolean): Observable<IPlanillaTaller[]> {
     const query = `planilla-taller/ciclo/${cicloLectivo}`;
     const url = this.url + query;
 
-    return this.http.get<any>(url);
+    return this.http.post<any>(url, { mostrarEliminados });
   }
-  obtenerPlanillaTalleresPorCicloPorProfesor(cicloLectivo: number, profesorId: string): Observable<IPlanillaTaller[]> {
+  obtenerPlanillaTalleresPorCicloPorProfesor(
+    cicloLectivo: number,
+    profesorId: string,
+    mostrarEliminados: boolean
+  ): Observable<IPlanillaTaller[]> {
     const query = `planilla-taller/ciclo-profesor/${cicloLectivo}`;
     const url = this.url + query;
 
-    return this.http.post<any>(url, { profesorId });
+    return this.http.post<any>(url, { profesorId, mostrarEliminados });
   }
 }

@@ -22,9 +22,7 @@ import Swal from 'sweetalert2';
 @Component({
   selector: 'app-seguimiento-form-modal',
   template: ` <div fxLayout="row wrap" fxLayoutAlign="space-between baseline">
-      <h1 mat-dialog-title>
-        Seguimiento de {{ alumno?.nombreCompleto }}
-      </h1>
+      <h1 mat-dialog-title>Seguimiento de {{ alumno?.nombreCompleto }}</h1>
       <!-- <mat-checkbox color="warn" *ngxPermissionsOnly="['PROFESOR']" #checkbox (change)="showOptions(checkbox.checked)" [value]="esLeido">
         Marcar como leído
       </mat-checkbox> -->
@@ -311,7 +309,7 @@ export class SeguimientoFormModalComponent implements OnInit {
   obtenerPlanillas() {
     this.cargandoPlanillas = true;
     this._planillaTallerService
-      .obtenerPlanillaTalleresPorCiclo(moment().year())
+      .obtenerPlanillaTalleresPorCiclo(moment().year(), false)
       .pipe(untilDestroyed(this))
       .subscribe(
         (datos) => {

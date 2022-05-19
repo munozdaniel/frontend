@@ -273,7 +273,7 @@ export class PlanillasTablaComponent implements OnInit, OnChanges, OnDestroy {
     this.dataSource.sortingDataAccessor = (item: IPlanillaTaller, property) => {
       switch (property) {
         case 'planillaTallerNro':
-          return item.planillaTallerNro.toString();
+          return item.planillaTallerNro;
 
         case 'turno':
           return item.turno ? item.turno.toString().toLowerCase() : '';
