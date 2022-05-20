@@ -58,7 +58,7 @@
             mat-menu-item
             matTooltip="Modificar alumno"
             (click)="editar(row)"
-            *ngxPermissionsOnly="['ADMIN', 'JEFETALLER', 'PRECEPTOR']"
+            *ngxPermissionsOnly="['ADMIN', 'JEFETALLER', 'PRECEPTOR', 'PROFESOR']"
           >
             <mat-icon>create</mat-icon>
             <span>Editar</span>
@@ -89,7 +89,7 @@
               <span>Informe de Promedios</span>
             </button>
           </div>
-          <div *ngxPermissionsOnly="['PRECEPTOR']">
+          <div *ngxPermissionsOnly="['PRECEPTOR', 'PROFESOR']">
             <button mat-menu-item matTooltip="Informe de Promedios" (click)="buscarInformePromedios(row)">
               <mat-icon>info</mat-icon>
               <span>Informe de Promedios</span>
