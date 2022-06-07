@@ -153,7 +153,7 @@ export class CalificacionesResumidoPdf {
       let terceraLinea = [];
       let notas = '';
       x.calificaciones.forEach((a, index: number) => {
-        if (a) {
+        if (a.promedia) {
           notas += '  ' + Number(a.promedioGeneral).toFixed(2) + '  ';
           if (a.promedia) {
             totalPromedios += 1;

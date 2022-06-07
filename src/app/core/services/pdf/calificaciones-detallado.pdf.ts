@@ -168,7 +168,7 @@ export class CalificacionesDetalladoPdf {
             let retorno = 'A';
             return retorno;
           }
-          if (a) {
+          if (a && a.promedia ) {
             retorno += a.promedioGeneral ? ' ' + a.promedioGeneral + ' ' : ' A ';
             if (a.promedia && !a.ausente) {
               totalPromedios += 1;
